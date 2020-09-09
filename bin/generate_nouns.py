@@ -535,8 +535,8 @@ def known_singular(word):
         pass
 
 if __name__ == "__main__":    
-    in_fname = "Python//nouns.lei"
-    out_fname = "Python//noun_output.py"
+    in_fname = "lei//nouns.lei"
+    out_fname = "noun_output.py"
     reader = Reader(in_fname)
     reader.parse_file()
     writer = Writer(reader, out_fname)

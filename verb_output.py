@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200908.204841
+VERSION = 20200909.233913
 
 plural_of = {
     "": "s",

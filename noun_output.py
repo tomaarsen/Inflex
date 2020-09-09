@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200909.193024
+VERSION = 20200909.233910
 
 def rei(regex):
     """
@@ -545,7 +545,6 @@ modern_plural_of = {
     "clippers": "clippers",
     "clitoris": "clitorises",
     "clostridium": "clostridia",
-    "clothes": "clothes",
     "co": "coes",
     "coagulum": "coagula",
     "coccidium": "coccidia",
@@ -1035,8 +1034,6 @@ modern_plural_of = {
     "jalapeno": "jalapenos",
     "jambeau": "jambeaus",
     "jazz": "jazzes",
-    "jean": "jeans",
-    "jeans": "jeans",
     "jerry": "jerries",
     "jeu": "jeux",
     "jo": "joes",
@@ -2958,7 +2955,6 @@ classical_plural_of = {
     "clippers": "clippers",
     "clitoris": "clitorides",
     "clostridium": "clostridia",
-    "clothes": "clothes",
     "co": "coes",
     "coagulum": "coagula",
     "coccidium": "coccidia",
@@ -3448,8 +3444,6 @@ classical_plural_of = {
     "jalapeno": "jalapenos",
     "jambeau": "jambeaux",
     "jazz": "jazzes",
-    "jean": "jeans",
-    "jeans": "jeans",
     "jerry": "jerries",
     "jeu": "jeux",
     "jo": "joes",
@@ -5468,7 +5462,6 @@ singular_of = {
     "clitorides": "clitoris",
     "clitorises": "clitoris",
     "clostridia": "clostridium",
-    "clothes": "clothes",
     "coagula": "coagulum",
     "coccidia": "coccidium",
     "cochitos": "cochito",
@@ -6068,7 +6061,6 @@ singular_of = {
     "jambeaus": "jambeau",
     "jambeaux": "jambeau",
     "jazzes": "jazz",
-    "jeans": "jeans",
     "jerries": "jerry",
     "jeux": "jeu",
     "joes": "joe",

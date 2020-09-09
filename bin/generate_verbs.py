@@ -383,8 +383,8 @@ def known_pres_part(word):
         pass
 
 if __name__ == "__main__":    
-    in_fname = "..//verbs.lei"
-    out_fname = "..//verb_output.py"
+    in_fname = "lei//verbs.lei"
+    out_fname = "verb_output.py"
     reader = Reader(in_fname)
     reader.parse_file()
     writer = Writer(reader, out_fname)
