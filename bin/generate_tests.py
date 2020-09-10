@@ -54,7 +54,7 @@ if __name__ == "__main__":
         Give test_args a nicer formatting.
         Note that we don't use json.dumps as it will eg. turn "True" into "true"
         """
-        return "[\n" + "".join(f"        {test_case},\n" for test_case in test_args) + "    ]"
+        return "[\n" + "".join(f"        {test_case},\n" for test_case in sorted(test_args, key=lambda x: x["in"])) + "    ]"
 
     def write_test(self, test_path, test_function, test_name_pascal, test_args):
         with open(test_path, "w+") as f:

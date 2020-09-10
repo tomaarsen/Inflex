@@ -470,6 +470,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["past"]
+            if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -486,6 +487,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["pres_part"]
+            if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -502,6 +504,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["past_part"]
+            if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
