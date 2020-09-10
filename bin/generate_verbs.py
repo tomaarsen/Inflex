@@ -5,6 +5,8 @@ import re, json
 from datetime import datetime
 from typing import List, Tuple, Optional
 
+from generate_tests import TestWriter
+
 """
 Compiled variants of useful regexes used all around this file
 """
@@ -120,6 +122,10 @@ class Verb(object):
             word.expand_dash_star()
             word.restrict_word()
 
+    def replace_hyphens(self, repl: str):
+        for word in self.verbs.values():
+            word.word = word.word.replace("-", repl)
+
     def __getitem__(self, key):
         return self.verbs[key]
 
@@ -143,7 +149,7 @@ class Reader(object):
         types = ["plural", "singular", "past", "pres_part", "past_part"]
         self.patterns = {key:[] for key in types}
         self.literals = {key:{} for key in types}
-        self.words    = {key:[] for key in types}
+        self.words    = {key:set() for key in types}
         self.fname    = fname
 
     def get_readlines(self) -> List[str]:
@@ -212,47 +218,54 @@ class Reader(object):
                     })
             
             if not (verb.sing.gen and verb.plur.gen and verb.pret.gen):
-                self.literals["plural"][verb.sing.word]   = verb.plur.word
-                self.literals["singular"][verb.plur.word] = verb.sing.word
+                self.add_literals_and_words(verb)
 
-                self.words["singular"].append(verb.sing.word)
-                self.words["plural"].append(verb.plur.word)
-            
-                if verb.pret.word:
-                    self.words["past"].append(verb.pret.word)
+                # If there is a hyphen in the singular verb, replace the hyphens
+                # in all verbs, and add those to the literals and words too
+                if "-" in verb.sing.word:
+                    verb.replace_hyphens(" ")
+                    self.add_literals_and_words(verb)
 
-                    self.literals["past"][verb.sing.word] = verb.pret.word
-                    self.literals["past"][verb.past.word] = verb.pret.word
-                    self.literals["past"][verb.pres.word] = verb.pret.word
-                    self.literals["past"][verb.past.word] = verb.pret.word
+    def add_literals_and_words(self, verb):
+        self.literals["plural"][verb.sing.word]   = verb.plur.word
+        self.literals["singular"][verb.plur.word] = verb.sing.word
 
-                    if verb.pret_plur:
-                        self.literals["past"][verb.plur.word] = verb.pret_plur
-                        self.words["past"].append(verb.pret_plur)
-                    else:
-                        self.literals["past"][verb.plur.word] = verb.pret.word
-                
-                if verb.pres.word:
-                    self.words["pres_part"].append(verb.pres.word)
+        self.words["singular"].add(verb.sing.word)
+        self.words["plural"].add(verb.plur.word)
+    
+        if verb.pret.word:
+            self.words["past"].add(verb.pret.word)
 
-                    self.literals["pres_part"][verb.sing.word] = verb.pres.word
-                    self.literals["pres_part"][verb.plur.word] = verb.pres.word
-                    self.literals["pres_part"][verb.pret.word] = verb.pres.word
-                    self.literals["pres_part"][verb.pres.word] = verb.pres.word
-                    self.literals["pres_part"][verb.past.word] = verb.pres.word
+            self.literals["past"][verb.sing.word] = verb.pret.word
+            self.literals["past"][verb.past.word] = verb.pret.word
+            self.literals["past"][verb.pres.word] = verb.pret.word
+            self.literals["past"][verb.past.word] = verb.pret.word
 
-                if verb.past.word:
-                    self.words["past_part"].append(verb.pres.word)
+            if verb.pret_plur:
+                self.literals["past"][verb.plur.word] = verb.pret_plur
+                self.words["past"].add(verb.pret_plur)
+            else:
+                self.literals["past"][verb.plur.word] = verb.pret.word
+        
+        if verb.pres.word:
+            self.words["pres_part"].add(verb.pres.word)
 
-                    self.literals["past_part"][verb.sing.word] = verb.past.word
-                    self.literals["past_part"][verb.plur.word] = verb.past.word
-                    self.literals["past_part"][verb.pret.word] = verb.past.word
-                    self.literals["past_part"][verb.pres.word] = verb.past.word
-                    self.literals["past_part"][verb.past.word] = verb.past.word
+            self.literals["pres_part"][verb.sing.word] = verb.pres.word
+            self.literals["pres_part"][verb.plur.word] = verb.pres.word
+            self.literals["pres_part"][verb.pret.word] = verb.pres.word
+            self.literals["pres_part"][verb.pres.word] = verb.pres.word
+            self.literals["pres_part"][verb.past.word] = verb.pres.word
 
-            # TODO: Investigate redo
+        if verb.past.word:
+            self.words["past_part"].add(verb.past.word)
 
-class Writer(object):
+            self.literals["past_part"][verb.sing.word] = verb.past.word
+            self.literals["past_part"][verb.plur.word] = verb.past.word
+            self.literals["past_part"][verb.pret.word] = verb.past.word
+            self.literals["past_part"][verb.pres.word] = verb.past.word
+            self.literals["past_part"][verb.past.word] = verb.past.word
+
+class CodeWriter(object):
     def __init__(self, reader, fname):
         super().__init__()
         self.reader = reader
@@ -291,7 +304,8 @@ def rei(regex):
         for key in self.reader.literals:
             generated_code += self.get_recognize_rule_output(key, self.reader.patterns[key]) + "\n\n"
         
-        generated_code += """def known_plural(word):
+        generated_code += """\
+def known_plural(word):
     return word in plural_of.values() or\\
         word in singular_of.keys() or\\
         word in past_of.values() or\\
@@ -339,7 +353,8 @@ def known_pres_part(word):
         return output
 
     def get_converter_output(self, name, replacement_suffixes):
-        output = f"""def convert_to_{name}(word):
+        output = f"""\
+def convert_to_{name}(word):
     if word in {name}_of:
         return {name}_of[word]
     if word.lower() in {name}_of:
@@ -362,7 +377,8 @@ def known_pres_part(word):
         return output
 
     def get_recognizer_output(self, name, compl_name, replacement_suffixes):
-        output = f"""def is_{name}(word):
+        output = f"""\
+def is_{name}(word):
     if known_{name}(word) or known_{name}(word.lower()):
         return True"""
         if compl_name:
@@ -380,14 +396,186 @@ def known_pres_part(word):
             output += "return False"
         return output
 
+class VerbTestWriter(TestWriter):
+    def __init__(self, reader, out_fname):
+        super().__init__(out_fname)
+        self.reader = reader
+        """
+        For each test case we need the following information to be passed to the format:
+        import_fname:       Equivalent to out_fname, already known as self.import_fname
+        test_function:      Name of function to test.
+        test_args:          List of dictionaries with testing arguments.
+        test_name_pascal:   Name of the test in Pascal Case
+        """
+    
     def write_tests(self):
-        pass
+        # Ignore "am", "is" and "are" for these tests
+        self.reader.words["plural"] -= {"am", "is", "are"}
+        self.reader.words["singular"] -= {"am", "is", "are"}
+        
+        self.write_is_singular_test()
+        self.write_is_plural_test()
+        self.write_is_past_test()
+        self.write_is_pres_part_test()
+        self.write_is_past_part_test()
+
+        self.write_to_singular_test()
+        self.write_to_plural_test()
+        self.write_to_past_test()
+        self.write_to_pres_part_test()
+        self.write_to_past_part_test()
+
+    def write_is_singular_test(self):
+        """
+        Note, only tests whether `is_singular` detects that known singular 
+        words are indeed singular
+        """
+        test_path = self.test_folder_name + "//test_verb_is_singular.py"
+        test_function = "is_singular"
+        test_name_pascal = "VerbIsSingular"
+        test_args = [
+            {
+                "in": word,
+                "out": True
+            } for word in self.reader.words["singular"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_is_plural_test(self):
+        """
+        Note, only tests whether `is_plural` detects that known plural 
+        words are indeed plural
+        """
+        test_path = self.test_folder_name + "//test_verb_is_plural.py"
+        test_function = "is_plural"
+        test_name_pascal = "VerbIsPlural"
+        test_args = [
+            {
+                "in": word,
+                "out": True
+            } for word in self.reader.words["plural"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_is_past_test(self):
+        """
+        Note, only tests whether `is_past` detects that known past 
+        words are indeed past
+        """
+        test_path = self.test_folder_name + "//test_verb_is_past.py"
+        test_function = "is_past"
+        test_name_pascal = "VerbIsPast"
+        test_args = [
+            {
+                "in": word,
+                "out": True
+            } for word in self.reader.words["past"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_is_pres_part_test(self):
+        """
+        Note, only tests whether `is_pres_part` detects that known present participle 
+        words are indeed present participles
+        """
+        test_path = self.test_folder_name + "//test_verb_is_pres_part.py"
+        test_function = "is_pres_part"
+        test_name_pascal = "VerbIsPresPart"
+        test_args = [
+            {
+                "in": word,
+                "out": True
+            } for word in self.reader.words["pres_part"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_is_past_part_test(self):
+        """
+        Note, only tests whether `is_past_part` detects that known past participle 
+        words are indeed past participles
+        """
+        test_path = self.test_folder_name + "//test_verb_is_past_part.py"
+        test_function = "is_past_part"
+        test_name_pascal = "VerbIsPastPart"
+        test_args = [
+            {
+                "in": word,
+                "out": True
+            } for word in self.reader.words["past_part"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_singular_test(self):
+        test_path = self.test_folder_name + "//test_verb_to_singular.py"
+        test_function = "convert_to_singular"
+        test_name_pascal = "VerbToSingular"
+        test_args = [
+            {
+                "in": plur,
+                "out": sing
+            } for plur, sing in self.reader.literals["singular"].items()
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_plural_test(self):
+        test_path = self.test_folder_name + "//test_verb_to_plural.py"
+        test_function = "convert_to_plural"
+        test_name_pascal = "VerbToPlural"
+        test_args = [
+            {
+                "in": sing,
+                "out": plur
+            } for sing, plur in self.reader.literals["plural"].items()
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_past_test(self):
+        test_path = self.test_folder_name + "//test_verb_to_past.py"
+        test_function = "convert_to_past"
+        test_name_pascal = "VerbToPast"
+        test_args = [
+            {
+                "in": verb,
+                "out": past
+            } for verb, past in self.reader.literals["past"].items()
+            if verb and past != "_"
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_pres_part_test(self):
+        test_path = self.test_folder_name + "//test_verb_to_pres_part.py"
+        test_function = "convert_to_pres_part"
+        test_name_pascal = "VerbToPresPart"
+        test_args = [
+            {
+                "in": verb,
+                "out": pres_part
+            } for verb, pres_part in self.reader.literals["pres_part"].items()
+            if verb and pres_part != "_"
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_past_part_test(self):
+        test_path = self.test_folder_name + "//test_verb_to_past_part.py"
+        test_function = "convert_to_past_part"
+        test_name_pascal = "VerbToPastPart"
+        test_args = [
+            {
+                "in": verb,
+                "out": past_part
+            } for verb, past_part in self.reader.literals["past_part"].items()
+            if verb and past_part != "_"
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
 
 if __name__ == "__main__":    
     in_fname = "lei//verbs.lei"
-    out_fname = "verb_output.py"
+    out_fname = "verb_output"
     reader = Reader(in_fname)
     reader.parse_file()
-    writer = Writer(reader, out_fname)
-    writer.write_file()
-    writer.write_tests()
+    
+    cwriter = CodeWriter(reader, out_fname + ".py")
+    cwriter.write_file()
+    
+    twriter = VerbTestWriter(reader, out_fname)
+    twriter.write_tests()
