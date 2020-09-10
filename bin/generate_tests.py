@@ -52,9 +52,11 @@ if __name__ == "__main__":
     def _format_test_args(self, test_args):
         """
         Give test_args a nicer formatting.
-        Note that we don't use json.dumps as it will eg. turn "True" into "true"
+        Note that we don't use json.dumps as it will eg. turn "True" into "true".
+
+        This also removes duplicates
         """
-        return "[\n" + "".join(f"        {test_case},\n" for test_case in sorted(test_args, key=lambda x: x["in"])) + "    ]"
+        return "[\n" + "".join(sorted({f"        {test_case},\n" for test_case in test_args})) + "    ]"
 
     def write_test(self, test_path, test_function, test_name_pascal, test_args):
         with open(test_path, "w+") as f:

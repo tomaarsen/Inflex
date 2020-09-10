@@ -518,6 +518,13 @@ class VerbTestWriter(TestWriter):
                 "out": sing
             } for plur, sing in self.reader.literals["singular"].items()
         ]
+        test_args += [
+            {
+                "in": sing,
+                "out": sing
+            } for sing in self.reader.literals["singular"].values()
+            if sing not in self.reader.words["plural"]
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_plural_test(self):
@@ -529,6 +536,13 @@ class VerbTestWriter(TestWriter):
                 "in": sing,
                 "out": plur
             } for sing, plur in self.reader.literals["plural"].items()
+        ]
+        test_args += [
+            {
+                "in": plur,
+                "out": plur
+            } for plur in self.reader.literals["plural"].values()
+            if plur not in self.reader.words["singular"]
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
