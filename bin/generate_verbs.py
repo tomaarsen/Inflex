@@ -96,7 +96,7 @@ class Verb(object):
 
         ..._gen holds "-" and "*" generator for suffixes, e.g. in "-ys" or "*melts"
         """
-        types = ["plur", "sing", "pret", "pres", "past"]
+        types = ["sing", "plur", "pret", "pres", "past"]
         self.verbs = {}
         for i, key in enumerate(types):
             # Get gen and verb of this word
@@ -137,13 +137,6 @@ class Verb(object):
 
     def __str__(self) -> str:
         return "\n".join(f"{key: <9}: {self.verbs[key]}" for key in self.verbs) + (f"\npret_plur: {self.pret_plur}" if self.pret_plur else "")
-        """
-        return f"Singular        : {self.sing_gen or ''}{self.sing_restrict}{self.sing}\n"\
-               f"Plural          : {self.plur_gen or ''}{self.plur_restrict}{self.plur}\n"\
-               f"Preterite       : {self.pret_gen or ''}{self.pret_restrict}{self.pret}\n"\
-               f"Pres participle : {self.pres_gen or ''}{self.pres_restrict}{self.pres}\n"\
-               f"Past participle : {self.past_gen or ''}{self.past_restrict}{self.past}\n"
-        """
 
 class Reader(object):
     def __init__(self, fname: str):
@@ -180,42 +173,42 @@ class Reader(object):
                 self.patterns["plural"].append({
                     "is": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                     "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
-                    "to": "{}" + verb.plur.word
+                    "to": 'lambda match: f"{match.group(1)}' + f'{verb.plur.word}"' 
                 })
                 self.patterns["singular"].append({
                     "is": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
                     "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
-                    "to": "{}" + verb.sing.word
+                    "to": 'lambda match: f"{match.group(1)}' + f'{verb.sing.word}"'
                 })
                 if verb.pret.word != "_":
                     self.patterns["past"].append({
                         "is": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
                         "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
-                        "to": "{}" + verb.pret.word
+                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
                     })
                     self.patterns["past"].append({
                         "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
-                        "to": "{}" + verb.pret.word
+                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
                     })
                 if verb.pres.word != "_":
                     self.patterns["pres_part"].append({
                         "is": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
                         "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
-                        "to": "{}" + verb.pres.word
+                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
                     })
                     self.patterns["pres_part"].append({
                         "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
-                        "to": "{}" + verb.pres.word
+                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
                     })
                 if verb.past.word != "_":
                     self.patterns["past_part"].append({
                         "is": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
                         "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
-                        "to": "{}" + verb.past.word
+                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
                     })
                     self.patterns["past_part"].append({
                         "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
-                        "to": "{}" + verb.past.word
+                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
                     })
             
             if not (verb.sing.gen and verb.plur.gen and verb.pret.gen):
@@ -267,7 +260,7 @@ class Writer(object):
     
     def write_file(self):
         version = datetime.strftime(datetime.now(), '%Y%m%d.%H%M%S')
-        generated_code = f"""\
+        generated_code = f'''\
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -280,7 +273,14 @@ import re
 
 VERSION = {version}
 
-"""
+def rei(regex):
+    """
+    Return compiled regular expression object with 
+    pattern `regex` and the IGNORECASE flag.
+    """
+    return re.compile(regex, flags=re.I)
+
+'''
 
         for key in self.reader.literals:
             generated_code += f"{key}_of = " + json.dumps(reader.literals[key], indent=4, sort_keys=True) + "\n\n" 
@@ -334,7 +334,7 @@ def known_pres_part(word):
     def get_convert_rule_output(self, name, replacement_suffixes):
         output = name + "_convert_rules = {\n"
         for replacement_dict in replacement_suffixes:
-            output += f'    re.compile("{replacement_dict["from"]}$", flags=re.I): "{replacement_dict["to"]}",\n'
+            output += f'    rei("{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
         output += "}"
         return output
 
@@ -347,8 +347,9 @@ def known_pres_part(word):
     if known_{name}(word):
         return word
     for rule in {name}_convert_rules:
-        if rule.match(word):
-            return {name}_convert_rules[rule]
+        match = rule.match(word)
+        if match:
+            return {name}_convert_rules[rule](match)
     return '_'"""
         return output
 
@@ -356,7 +357,7 @@ def known_pres_part(word):
         output = name + "_recognize_rules = [\n"
         for replacement_dict in replacement_suffixes:
             if "is" in replacement_dict:
-                output += f'    re.compile("{replacement_dict["is"]}$", flags=re.I),\n'
+                output += f'    rei("{replacement_dict["is"]}$"),\n'
         output += "]"
         return output
 
