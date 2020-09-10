@@ -6,6 +6,18 @@ from datetime import datetime
 from typing import List, Tuple, Optional
 
 """
+Keys existing in Lingua::EN::Inflexion, but not in mine:
+classical_plural_of:
+{'zoon', 'arf', 'lf', 'nse', 'sis', '-ox', ' ox'}
+modern_plural_of:
+{'zoon', 'arf', 'lf', 'nse', 'sis', '-ox', ' ox'}
+singular_of:
+{'zoa', 'arves', 'lves', 'nses', 'ses', '-oxen', ' oxen'}
+
+There are no keys in mine that are not in Lingua
+"""
+
+"""
 Compiled variants of useful regexes used all around this file
 """
 xms  = re.VERBOSE | re.MULTILINE | re.DOTALL
@@ -430,7 +442,7 @@ def known_singular(word):
         generated_code += self.get_recognizer_output("plural", "singular") + "\n\n"
         generated_code += self.get_recognizer_output("singular", "plural") + "\n\n"
 
-        generated_code += "breakpoint()\n"
+        #generated_code += "breakpoint()\n"
 
         self.output_code(generated_code)
 
@@ -483,7 +495,7 @@ def known_singular(word):
                 return {name}_convert_rules[rule]["output"](match)
             else:
                 if verbose: print(word, 'failed the conditional')
-    return '_'"""
+    return word"""
         return output
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
@@ -542,8 +554,3 @@ if __name__ == "__main__":
     writer = Writer(reader, out_fname)
     writer.write_file()
     #writer.write_tests()
-
-"""
-Problems:
-- Empty string
-"""

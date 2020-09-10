@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200909.233910
+VERSION = 20200910.135117
 
 def rei(regex):
     """
@@ -8429,7 +8429,7 @@ def convert_to_modern_plural(word, verbose=False):
                 return modern_plural_convert_rules[rule]["output"](match)
             else:
                 if verbose: print(word, 'failed the conditional')
-    return '_'
+    return word
 
 def convert_to_classical_plural(word, verbose=False):
     if word in classical_plural_of:
@@ -8451,7 +8451,7 @@ def convert_to_classical_plural(word, verbose=False):
                 return classical_plural_convert_rules[rule]["output"](match)
             else:
                 if verbose: print(word, 'failed the conditional')
-    return '_'
+    return word
 
 def convert_to_singular(word, verbose=False):
     if word in singular_of:
@@ -8473,7 +8473,7 @@ def convert_to_singular(word, verbose=False):
                 return singular_convert_rules[rule]["output"](match)
             else:
                 if verbose: print(word, 'failed the conditional')
-    return '_'
+    return word
 
 def is_plural(word, verbose=False):
     if known_plural(word) or known_plural(word.lower()):
@@ -8512,5 +8512,3 @@ def is_singular(word, verbose=False):
                 if verbose: print(word, 'failed the conditional')
     if verbose: print("Matched no rules")
     return not is_plural(word)
-
-breakpoint()
