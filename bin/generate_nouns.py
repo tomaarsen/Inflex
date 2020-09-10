@@ -5,6 +5,8 @@ import re, json
 from datetime import datetime
 from typing import List, Tuple, Optional
 
+from generate_tests import TestWriter
+
 """
 Keys existing in Lingua::EN::Inflexion, but not in mine:
 classical_plural_of:
@@ -378,7 +380,7 @@ class Reader(object):
             "check_conditional": check_conditional
         }
 
-class Writer(object):
+class CodeWriter(object):
     def __init__(self, reader, fname):
         super().__init__()
         self.reader = reader
@@ -543,14 +545,116 @@ def known_singular(word):
             output += "\n    return word.strip().endswith('s')"
         return output
 
+class NounTestWriter(TestWriter):
+    def __init__(self, reader, out_fname):
+        super().__init__(out_fname)
+        self.reader = reader
+        """
+        For each test case we need the following information to be passed to the format:
+        import_fname:       Equivalent to out_fname, already known as self.import_fname
+        test_function:      Name of function to test.
+        test_args:          List of dictionaries with testing arguments.
+        test_name_pascal:   Name of the test in Pascal Case
+        """
+    
     def write_tests(self):
-        pass
+        self.write_is_singular_test()
+        self.write_is_plural_test()
+
+        self.write_to_singular_test()
+        self.write_to_modern_plural_test()
+        self.write_to_classical_plural_test()
+
+    def write_is_singular_test(self):
+        test_path = self.test_folder_name + "//test_noun_is_singular.py"
+        test_function = "is_singular"
+        test_name_pascal = "NounIsSingular"
+        test_args = [
+            {
+                "in": word,
+                "out": True
+            } for word in self.reader.words["singular"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_is_plural_test(self):
+        test_path = self.test_folder_name + "//test_noun_is_plural.py"
+        test_function = "is_plural"
+        test_name_pascal = "NounIsPlural"
+        test_args = [
+            {
+                "in": word,
+                "out": True
+            } for word in self.reader.words["plural"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_singular_test(self):
+        test_path = self.test_folder_name + "//test_noun_to_singular.py"
+        test_function = "convert_to_singular"
+        test_name_pascal = "NounToSingular"
+        test_args = [
+            {
+                "in": plur,
+                "out": sing
+            } for plur, sing in self.reader.literals["singular"].items()
+        ]
+        test_args += [
+            {
+                "in": sing,
+                "out": sing
+            } for sing in self.reader.literals["singular"].values()
+            if sing not in self.reader.words["plural"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_modern_plural_test(self):
+        test_path = self.test_folder_name + "//test_noun_to_modern_plural.py"
+        test_function = "convert_to_modern_plural"
+        test_name_pascal = "NounToModernPlural"
+        test_args = [
+            {
+                "in": sing,
+                "out": plur
+            } for sing, plur in self.reader.literals["modern_plural"].items()
+        ]
+        test_args += [
+            {
+                "in": plur,
+                "out": plur
+            } for plur in self.reader.literals["modern_plural"].values()
+            if plur not in self.reader.words["singular"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_classical_plural_test(self):
+        test_path = self.test_folder_name + "//test_noun_to_classical_plural.py"
+        test_function = "convert_to_classical_plural"
+        test_name_pascal = "NounToClassicalPlural"
+        test_args = [
+            {
+                "in": sing,
+                "out": plur
+            } for sing, plur in self.reader.literals["classical_plural"].items()
+        ]
+        test_args += [
+            {
+                "in": plur,
+                "out": plur
+            } for plur in self.reader.literals["classical_plural"].values()
+            if plur not in self.reader.words["singular"]
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
 
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"
-    out_fname = "noun_output.py"
+    out_fname = "noun_output"
+
     reader = Reader(in_fname)
     reader.parse_file()
-    writer = Writer(reader, out_fname)
-    writer.write_file()
-    #writer.write_tests()
+
+    cwriter = CodeWriter(reader, out_fname + ".py")
+    cwriter.write_file()
+
+    twriter = NounTestWriter(reader, out_fname)
+    twriter.write_tests()

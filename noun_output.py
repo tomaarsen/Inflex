@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200910.135117
+VERSION = 20200910.164939
 
 def rei(regex):
     """
@@ -8512,3 +8512,4 @@ def is_singular(word, verbose=False):
                 if verbose: print(word, 'failed the conditional')
     if verbose: print("Matched no rules")
     return not is_plural(word)
+
