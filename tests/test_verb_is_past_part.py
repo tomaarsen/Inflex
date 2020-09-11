@@ -14,7 +14,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 import unittest
 
-from verb_output import is_past_part
+from verb import is_past_part
 
 class TestVerbIsPastPart(unittest.TestCase):
     # test_args has the format [{

@@ -648,7 +648,7 @@ class NounTestWriter(TestWriter):
 
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"
-    out_fname = "noun_output"
+    out_fname = "noun"
 
     reader = Reader(in_fname)
     reader.parse_file()

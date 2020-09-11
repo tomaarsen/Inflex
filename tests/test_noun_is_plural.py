@@ -14,7 +14,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 import unittest
 
-from noun_output import is_plural
+from noun import is_plural
 
 class TestNounIsPlural(unittest.TestCase):
     # test_args has the format [{

@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200910.164939
+VERSION = 20200911.142329
 
 def rei(regex):
     """

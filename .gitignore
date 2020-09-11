@@ -128,3 +128,5 @@ dmypy.json
 .vscode
 # For now keep my personal testing scripts ignored
 scripts
+# For now keep folder with several kinds of nouns ignored
+nouns

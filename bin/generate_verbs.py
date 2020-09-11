@@ -587,7 +587,7 @@ class VerbTestWriter(TestWriter):
 
 if __name__ == "__main__":    
     in_fname = "lei//verbs.lei"
-    out_fname = "verb_output"
+    out_fname = "verb"
     reader = Reader(in_fname)
     reader.parse_file()
     
