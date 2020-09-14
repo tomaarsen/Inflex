@@ -11,7 +11,7 @@ class Adjective(Term):
     """
     Override default methods from Term    
     """
-    def is_adjective(self) -> bool:
+    def is_adj(self) -> bool:
         return True
 
     def is_singular(self) -> bool:
