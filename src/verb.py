@@ -4,9 +4,8 @@ from typing import Optional
 from term import Term
 
 class Verb(Term):
-    def __init__(self, verb):
-        super().__init__()
-        self.verb = verb
+    def __init__(self, term: str, classical:Optional[bool] = False):
+        super().__init__(term, classical)
 
     """
     Override default methods from Term    

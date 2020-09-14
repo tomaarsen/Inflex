@@ -2,8 +2,10 @@
 from typing import Optional
 
 class Term(object):
-    def __init__(self):
+    def __init__(self, term: str, classical: bool):
         super().__init__()
+        self.term = term
+        self.classical = classical
 
     def is_noun(self) -> bool:
         return False

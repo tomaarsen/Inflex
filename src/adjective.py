@@ -4,9 +4,8 @@ from typing import Optional
 from term import Term
 
 class Adjective(Term):
-    def __init__(self, adjective):
-        super().__init__()
-        self.adjective = adjective
+    def __init__(self, term: str, classical:Optional[bool] = False):
+        super().__init__(term, classical)
 
     """
     Override default methods from Term    

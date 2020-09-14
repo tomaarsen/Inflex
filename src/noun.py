@@ -2,11 +2,15 @@
 from typing import Optional
 
 from term import Term
+from noun_core import is_singular,\
+                      is_plural,\
+                      convert_to_classical_plural,\
+                      convert_to_modern_plural,\
+                      convert_to_singular
 
 class Noun(Term):
-    def __init__(self, noun):
-        super().__init__()
-        self.noun = noun
+    def __init__(self, term: str, classical:Optional[bool] = False):
+        super().__init__(term, classical)
 
     """
     Override default methods from Term    
@@ -15,14 +19,14 @@ class Noun(Term):
         return True
 
     def is_singular(self) -> bool:
-        raise NotImplementedError()
+        return is_singular(self.noun)
 
     def is_plural(self) -> bool:
-        raise NotImplementedError()
+        return is_plural(self.noun)
 
     def singular(self, person:Optional[int] = None) -> str:
         raise NotImplementedError()
-
+        
     def plural(self, person:Optional[int] = None) -> str:
         raise NotImplementedError()
 
