@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200914.155705
+VERSION = 20200914.182309
 
 def rei(regex):
     """
@@ -4344,7 +4344,7 @@ def is_plural(word):
     for rule in plural_recognize_rules:
         if rule.match(word):
             return True
-        return False
+    return False
 
 def is_singular(word):
     if known_singular(word) or known_singular(word.lower()):
@@ -4354,7 +4354,7 @@ def is_singular(word):
     for rule in singular_recognize_rules:
         if rule.match(word):
             return True
-        return not is_plural(word)
+    return not is_plural(word)
 
 def is_past(word):
     if known_past(word) or known_past(word.lower()):
@@ -4362,7 +4362,7 @@ def is_past(word):
     for rule in past_recognize_rules:
         if rule.match(word):
             return True
-        return False
+    return False
 
 def is_pres_part(word):
     if known_pres_part(word) or known_pres_part(word.lower()):
@@ -4370,7 +4370,7 @@ def is_pres_part(word):
     for rule in pres_part_recognize_rules:
         if rule.match(word):
             return True
-        return False
+    return False
 
 def is_past_part(word):
     if known_past_part(word) or known_past_part(word.lower()):
@@ -4378,6 +4378,7 @@ def is_past_part(word):
     for rule in past_part_recognize_rules:
         if rule.match(word):
             return True
-        return False
+    return False
+
 if __name__ == "__main__":
     breakpoint()

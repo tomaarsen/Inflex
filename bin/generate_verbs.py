@@ -339,7 +339,7 @@ def known_pres_part(word):
         generated_code += self.get_recognizer_output("pres_part", None, self.reader.literals["pres_part"]) + "\n\n"
         generated_code += self.get_recognizer_output("past_part", None, self.reader.literals["past_part"]) + "\n"
 
-        generated_code += """\
+        generated_code += """
 if __name__ == "__main__":
     breakpoint()
 """
@@ -394,11 +394,11 @@ def is_{name}(word):
     for rule in {name}_recognize_rules:
         if rule.match(word):
             return True
-        """
+"""
         if name == "singular":
-            output += "return not is_plural(word)"
+            output += "    return not is_plural(word)"
         else:
-            output += "return False"
+            output += "    return False"
         return output
 
 class VerbTestWriter(TestWriter):

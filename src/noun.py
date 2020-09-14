@@ -420,6 +420,7 @@ class Noun(Term):
 
     def classical(self) -> "Term":
         # TODO: Should we also have modern() ?
+        # TODO: Separate classical to a new class, as it has different pluralisation rules
         return Noun(self.term, classical=True)
 
     def unassimilated(self) -> "Term":
