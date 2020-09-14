@@ -29,7 +29,7 @@ class Term(object):
         raise NotImplementedError()
 
     def classical(self) -> "Term":
-        raise NotImplementedError()
+        return self
 
     def unassimilated(self) -> "Term":
         return self.classical()

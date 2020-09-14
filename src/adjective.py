@@ -24,12 +24,6 @@ class Adjective(Term):
 
     def plural(self, person:Optional[int] = 0) -> str:
         raise NotImplementedError()
-
-    def classical(self) -> "Term":
-        raise NotImplementedError()
-
-    def unassimilated(self) -> "Term":
-        return self.classical()
     
     def as_regex(self) -> str:
         raise NotImplementedError()

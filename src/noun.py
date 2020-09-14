@@ -17,6 +17,7 @@ from indefinite_core import (
 class Noun(Term):
     def __init__(self, term: str, classical: Optional[bool] = False):
         # TODO: Trailing and preceding whitespace? Trailing whitespace would break singularisation
+        # TODO: Normalise to lowercase before passing to noun_core functions, possibly preserve capitalisation
         super().__init__(term, classical)
 
         self.noun_inflection = {
@@ -423,11 +424,10 @@ class Noun(Term):
         # TODO: Separate classical to a new class, as it has different pluralisation rules
         return Noun(self.term, classical=True)
 
-    def unassimilated(self) -> "Term":
-        return self.classical()
-
     def as_regex(self) -> str:
-        return "|".join(dict.fromkeys(self.singular(), self.plural(), self.classical().plural()))
+        return "|".join(dict.fromkeys(self.singular(), 
+                                      self.plural(), 
+                                      self.classical().plural()))
 
     """
     Methods exclusively for Noun
