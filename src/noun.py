@@ -9,7 +9,10 @@ from noun_core import (
     convert_to_modern_plural,
     convert_to_singular,
 )
-
+from indefinite_core import (
+    select_indefinite_article,
+    prepend_indefinite_article,
+)
 
 class Noun(Term):
     def __init__(self, term: str, classical: Optional[bool] = False):
@@ -385,12 +388,12 @@ class Noun(Term):
 
         else:
             for case in ["nominative", "objective", "possessive", "reflexive"]:
-                if term.lower() in self.noun_inflection[case]:
-                    return self.noun_inflection[case][term.lower()]["singular"][person]
+                if self.term.lower() in self.noun_inflection[case]:
+                    return self.noun_inflection[case][self.term.lower()]["singular"][person]
             
-            return convert_to_singular(term)
+            return convert_to_singular(self.term)
 
-    def plural(self, person: Optional[int] = None) -> str:
+    def plural(self, person: Optional[int] = 0) -> str:
         # TODO: Check whether person is valid
         match = self._prep_regex.match(self.term)
 
@@ -402,18 +405,18 @@ class Noun(Term):
                 if term.lower() in self.noun_inflection[case]:
                     return prep + self.noun_inflection[case][term.lower()]["plural"][person]
             
-            if self.classical:
+            if self.is_classical:
                 return prep + convert_to_classical_plural(term)
             return prep + convert_to_modern_plural(term)
 
         else:
             for case in ["nominative", "objective", "possessive", "reflexive"]:
-                if term.lower() in self.noun_inflection[case]:
-                    return self.noun_inflection[case][term.lower()]["plural"][person]
+                if self.term.lower() in self.noun_inflection[case]:
+                    return self.noun_inflection[case][self.term.lower()]["plural"][person]
             
-            if self.classical:
-                return convert_to_classical_plural(term)
-            return convert_to_modern_plural(term)
+            if self.is_classical:
+                return convert_to_classical_plural(self.term)
+            return convert_to_modern_plural(self.term)
 
     def classical(self) -> "Term":
         # TODO: Should we also have modern() ?
@@ -423,17 +426,19 @@ class Noun(Term):
         return self.classical()
 
     def as_regex(self) -> str:
-        raise NotImplementedError()
+        return "|".join(dict.fromkeys(self.singular(), self.plural(), self.classical().plural()))
 
     """
     Methods exclusively for Noun
     """
 
     def indef_article(self) -> str:
-        raise NotImplementedError()
+        return select_indefinite_article(self.term)
 
-    def indefinite(self, count: int) -> str:
-        raise NotImplementedError()
+    def indefinite(self, count:Optional[int] = 1) -> str:
+        if count == 1:
+            return prepend_indefinite_article(self.term)
+        return f"{count} {self.plural()}"
 
     def cardinal(self, threshold: int) -> str:
         raise NotImplementedError()
@@ -443,5 +448,5 @@ class Noun(Term):
 
 
 if __name__ == "__main__":
-    n = Noun("about himself")
+    n = Noun("about himself").as_regex()
     breakpoint()

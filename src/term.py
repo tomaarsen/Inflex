@@ -2,10 +2,10 @@
 from typing import Optional
 
 class Term(object):
-    def __init__(self, term: str, classical: bool):
+    def __init__(self, term: str, is_classical: bool):
         super().__init__()
         self.term = term
-        self.classical = classical
+        self.is_classical = is_classical
 
     def is_noun(self) -> bool:
         return False
@@ -22,10 +22,10 @@ class Term(object):
     def is_plural(self) -> bool:
         raise NotImplementedError()
 
-    def singular(self, person:Optional[int] = None) -> str:
+    def singular(self, person:Optional[int] = 0) -> str:
         raise NotImplementedError()
 
-    def plural(self, person:Optional[int] = None) -> str:
+    def plural(self, person:Optional[int] = 0) -> str:
         raise NotImplementedError()
 
     def classical(self) -> "Term":

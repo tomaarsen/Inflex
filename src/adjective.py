@@ -19,10 +19,10 @@ class Adjective(Term):
     def is_plural(self) -> bool:
         raise NotImplementedError()
 
-    def singular(self, person:Optional[int] = None) -> str:
+    def singular(self, person:Optional[int] = 0) -> str:
         raise NotImplementedError()
 
-    def plural(self, person:Optional[int] = None) -> str:
+    def plural(self, person:Optional[int] = 0) -> str:
         raise NotImplementedError()
 
     def classical(self) -> "Term":
