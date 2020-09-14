@@ -424,11 +424,6 @@ class Noun(Term):
         # TODO: Separate classical to a new class, as it has different pluralisation rules
         return Noun(self.term, classical=True)
 
-    def as_regex(self) -> str:
-        return "|".join(dict.fromkeys(self.singular(), 
-                                      self.plural(), 
-                                      self.classical().plural()))
-
     """
     Methods exclusively for Noun
     """

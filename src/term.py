@@ -23,9 +23,11 @@ class Term(object):
         raise NotImplementedError()
 
     def singular(self, person:Optional[int] = 0) -> str:
+        # TODO: Implement bound call on person
         raise NotImplementedError()
 
     def plural(self, person:Optional[int] = 0) -> str:
+        # TODO: Implement bound call on person
         raise NotImplementedError()
 
     def classical(self) -> "Term":
@@ -35,7 +37,9 @@ class Term(object):
         return self.classical()
     
     def as_regex(self) -> str:
-        raise NotImplementedError()
+        return "|".join(dict.fromkeys(self.singular(),
+                                      self.plural(),
+                                      self.classical().plural()))
 
 if __name__ == "__main__":
     breakpoint()
