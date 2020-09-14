@@ -14,7 +14,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 import unittest
 
-from noun import convert_to_singular
+from src.noun_core import convert_to_singular
 
 class TestNounToSingular(unittest.TestCase):
     # test_args has the format [{

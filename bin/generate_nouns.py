@@ -310,18 +310,6 @@ class Reader(object):
         self.words["singular"].add(noun.sing.word)
 
     def build_recursive(self, _from: str, to: str, from_type: str, to_type: str):
-        # TODO: Replace all * in `_from` with (.*?)
-        # Replace all (SING) in `_from` with (.*?)
-        #   Replace connected thing in "to" with "\${is_singular($cap_var) ? \\convert_to_${to_type}($cap_var) : \\$cap_var}"
-        #   Note that cap_var keeps track of the amount of vars, used to make $1, $2, $3 etc
-        #   Also set conditional to "continue if !is_singular($cap_var);"
-        # Replace all (PL) in `_from` with (.*?)
-        #   Replace connected thing in "to" with "\${is_plural($cap_var) ? \\convert_to_${to_type}($cap_var) : \\$cap_var}"
-        #   Also set conditional to "continue if !is_plural($cap_var);"
-        # Replace all (PREP) with "($PREP_PAT)"
-        
-        # TODO: Check whether I should copy or work just on strings and not Word objects
-
         check_conditional = ""
         
         def wrap(input_string: str) -> str:
@@ -343,8 +331,6 @@ class Reader(object):
             # TODO: Write exception
             raise Exception()
 
-        #print(repr(_from))
-        #print(repr(to))
         n = len(from_matches)
         # Iterate over all matches right to left
         for from_match, to_match in zip(from_matches, to_matches):
@@ -369,11 +355,7 @@ class Reader(object):
                 to    = irepl(to_match, to, wrap(f'match.group({n})'))
 
             n -= 1
-        #print()
-        #print(repr(_from))
-        #print(repr(to))
-        #print(repr(conditional))
-        #breakpoint()
+        
         return {
             "from": _from,
             "to": f'lambda match: f"{to}"',
@@ -416,10 +398,8 @@ def rei(regex):
         for key in self.reader.literals:
             generated_code += self.get_convert_rule_output(key, self.reader.patterns[key]) + "\n\n"
         
-        #'''
         generated_code += self.get_recognize_rule_output("plural", self.reader.patterns["singular"]) + "\n\n"
         generated_code += self.get_recognize_rule_output("singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
-        #'''
         
         generated_code += """def known_plural(word):
     return word in modern_plural_of.values() or\\
@@ -432,11 +412,6 @@ def known_singular(word):
         word in classical_plural_of.keys()
 
 """
-        #prep_list = ["about", "above", "across", "after", "among", "around", "athwart", "at", "before", 
-        #    "behind", "below", "beneath", "besides?", "between", "betwixt", "beyond", "but", "by", 
-        #    "during", "except", "for", "from", "into", "in", "near", "off", "of", "onto", "on", "out", 
-        #    "over", "since", "till", "to", "under", "until", "unto", "upon", "with"
-        #]
 
         for key in self.reader.literals:
             generated_code += self.get_converter_output(key, self.reader.patterns[key]) + "\n\n"
@@ -444,7 +419,10 @@ def known_singular(word):
         generated_code += self.get_recognizer_output("plural", "singular") + "\n\n"
         generated_code += self.get_recognizer_output("singular", "plural") + "\n\n"
 
-        #generated_code += "breakpoint()\n"
+        generated_code += """\
+if __name__ == "__main__":
+    breakpoint()
+"""
 
         self.output_code(generated_code)
 
@@ -648,13 +626,14 @@ class NounTestWriter(TestWriter):
 
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"
-    out_fname = "noun"
+    out_fname = "src//noun_core.py"
+    out_import = "src.noun_core"
 
     reader = Reader(in_fname)
     reader.parse_file()
 
-    cwriter = CodeWriter(reader, out_fname + ".py")
+    cwriter = CodeWriter(reader, out_fname)
     cwriter.write_file()
 
-    twriter = NounTestWriter(reader, out_fname)
+    twriter = NounTestWriter(reader, out_import)
     twriter.write_tests()

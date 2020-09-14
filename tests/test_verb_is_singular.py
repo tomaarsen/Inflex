@@ -14,7 +14,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 import unittest
 
-from verb import is_singular
+from src.verb_core import is_singular
 
 class TestVerbIsSingular(unittest.TestCase):
     # test_args has the format [{

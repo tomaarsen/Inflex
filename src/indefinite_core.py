@@ -71,3 +71,6 @@ def select_indefinite_article(word):
 
     # Otherwise, guess "a"
     return "a"
+
+if __name__ == "__main__":
+    breakpoint()
