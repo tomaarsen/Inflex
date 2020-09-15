@@ -162,7 +162,7 @@ class VerbTestWriter(TestWriter):
         self.write_to_plural_test()
 
     def write_is_singular_test(self):
-        test_path = self.test_folder_name + "//test_adjective_is_singular.py"
+        test_path = self.test_folder_name + "//test_adjective_core_is_singular.py"
         test_function = "is_singular"
         test_name_pascal = "AdjectiveIsSingular"
         test_args = [
@@ -181,7 +181,7 @@ class VerbTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_is_plural_test(self):
-        test_path = self.test_folder_name + "//test_adjective_is_plural.py"
+        test_path = self.test_folder_name + "//test_adjective_core_is_plural.py"
         test_function = "is_plural"
         test_name_pascal = "AdjectiveIsSingular"
         test_args = [
@@ -200,7 +200,7 @@ class VerbTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_singular_test(self):
-        test_path = self.test_folder_name + "//test_adjective_to_singular.py"
+        test_path = self.test_folder_name + "//test_adjective_core_to_singular.py"
         test_function = "convert_to_singular"
         test_name_pascal = "AdjectiveToSingular"
         test_args = [
@@ -218,7 +218,7 @@ class VerbTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_plural_test(self):
-        test_path = self.test_folder_name + "//test_adjective_to_plural.py"
+        test_path = self.test_folder_name + "//test_adjective_core_to_plural.py"
         test_function = "convert_to_plural"
         test_name_pascal = "AdjectiveToPlural"
         test_args = [

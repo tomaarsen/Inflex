@@ -544,7 +544,7 @@ class NounTestWriter(TestWriter):
         self.write_to_classical_plural_test()
 
     def write_is_singular_test(self):
-        test_path = self.test_folder_name + "//test_noun_is_singular.py"
+        test_path = self.test_folder_name + "//test_noun_core_is_singular.py"
         test_function = "is_singular"
         test_name_pascal = "NounIsSingular"
         test_args = [
@@ -556,7 +556,7 @@ class NounTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_is_plural_test(self):
-        test_path = self.test_folder_name + "//test_noun_is_plural.py"
+        test_path = self.test_folder_name + "//test_noun_core_is_plural.py"
         test_function = "is_plural"
         test_name_pascal = "NounIsPlural"
         test_args = [
@@ -568,7 +568,7 @@ class NounTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_singular_test(self):
-        test_path = self.test_folder_name + "//test_noun_to_singular.py"
+        test_path = self.test_folder_name + "//test_noun_core_to_singular.py"
         test_function = "convert_to_singular"
         test_name_pascal = "NounToSingular"
         test_args = [
@@ -587,7 +587,7 @@ class NounTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_modern_plural_test(self):
-        test_path = self.test_folder_name + "//test_noun_to_modern_plural.py"
+        test_path = self.test_folder_name + "//test_noun_core_to_modern_plural.py"
         test_function = "convert_to_modern_plural"
         test_name_pascal = "NounToModernPlural"
         test_args = [
@@ -606,7 +606,7 @@ class NounTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_classical_plural_test(self):
-        test_path = self.test_folder_name + "//test_noun_to_classical_plural.py"
+        test_path = self.test_folder_name + "//test_noun_core_to_classical_plural.py"
         test_function = "convert_to_classical_plural"
         test_name_pascal = "NounToClassicalPlural"
         test_args = [

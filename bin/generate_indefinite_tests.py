@@ -258,7 +258,7 @@ class IndefiniteTestWriter(TestWriter):
         self.write_prepend_indefinite_article_test()
 
     def write_prepend_indefinite_article_test(self):
-        test_path = self.test_folder_name + "//test_indefinite_prepend_article.py"
+        test_path = self.test_folder_name + "//test_indefinite_core_prepend_article.py"
         test_function = "prepend_indefinite_article"
         test_name_pascal = "IndefinitePrependArticle"
         test_args = [

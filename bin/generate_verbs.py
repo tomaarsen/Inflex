@@ -435,7 +435,7 @@ class VerbTestWriter(TestWriter):
         Note, only tests whether `is_singular` detects that known singular 
         words are indeed singular
         """
-        test_path = self.test_folder_name + "//test_verb_is_singular.py"
+        test_path = self.test_folder_name + "//test_verb_core_is_singular.py"
         test_function = "is_singular"
         test_name_pascal = "VerbIsSingular"
         test_args = [
@@ -451,7 +451,7 @@ class VerbTestWriter(TestWriter):
         Note, only tests whether `is_plural` detects that known plural 
         words are indeed plural
         """
-        test_path = self.test_folder_name + "//test_verb_is_plural.py"
+        test_path = self.test_folder_name + "//test_verb_core_is_plural.py"
         test_function = "is_plural"
         test_name_pascal = "VerbIsPlural"
         test_args = [
@@ -467,7 +467,7 @@ class VerbTestWriter(TestWriter):
         Note, only tests whether `is_past` detects that known past 
         words are indeed past
         """
-        test_path = self.test_folder_name + "//test_verb_is_past.py"
+        test_path = self.test_folder_name + "//test_verb_core_is_past.py"
         test_function = "is_past"
         test_name_pascal = "VerbIsPast"
         test_args = [
@@ -484,7 +484,7 @@ class VerbTestWriter(TestWriter):
         Note, only tests whether `is_pres_part` detects that known present participle 
         words are indeed present participles
         """
-        test_path = self.test_folder_name + "//test_verb_is_pres_part.py"
+        test_path = self.test_folder_name + "//test_verb_core_is_pres_part.py"
         test_function = "is_pres_part"
         test_name_pascal = "VerbIsPresPart"
         test_args = [
@@ -501,7 +501,7 @@ class VerbTestWriter(TestWriter):
         Note, only tests whether `is_past_part` detects that known past participle 
         words are indeed past participles
         """
-        test_path = self.test_folder_name + "//test_verb_is_past_part.py"
+        test_path = self.test_folder_name + "//test_verb_core_is_past_part.py"
         test_function = "is_past_part"
         test_name_pascal = "VerbIsPastPart"
         test_args = [
@@ -514,7 +514,7 @@ class VerbTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_singular_test(self):
-        test_path = self.test_folder_name + "//test_verb_to_singular.py"
+        test_path = self.test_folder_name + "//test_verb_core_to_singular.py"
         test_function = "convert_to_singular"
         test_name_pascal = "VerbToSingular"
         test_args = [
@@ -533,7 +533,7 @@ class VerbTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_plural_test(self):
-        test_path = self.test_folder_name + "//test_verb_to_plural.py"
+        test_path = self.test_folder_name + "//test_verb_core_to_plural.py"
         test_function = "convert_to_plural"
         test_name_pascal = "VerbToPlural"
         test_args = [
@@ -552,7 +552,7 @@ class VerbTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_past_test(self):
-        test_path = self.test_folder_name + "//test_verb_to_past.py"
+        test_path = self.test_folder_name + "//test_verb_core_to_past.py"
         test_function = "convert_to_past"
         test_name_pascal = "VerbToPast"
         test_args = [
@@ -565,7 +565,7 @@ class VerbTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_pres_part_test(self):
-        test_path = self.test_folder_name + "//test_verb_to_pres_part.py"
+        test_path = self.test_folder_name + "//test_verb_core_to_pres_part.py"
         test_function = "convert_to_pres_part"
         test_name_pascal = "VerbToPresPart"
         test_args = [
@@ -578,7 +578,7 @@ class VerbTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_past_part_test(self):
-        test_path = self.test_folder_name + "//test_verb_to_past_part.py"
+        test_path = self.test_folder_name + "//test_verb_core_to_past_part.py"
         test_function = "convert_to_past_part"
         test_name_pascal = "VerbToPastPart"
         test_args = [
