@@ -156,7 +156,84 @@ class VerbTestWriter(TestWriter):
         """
     
     def write_tests(self):
-        pass
+        self.write_is_singular_test()
+        self.write_is_plural_test()
+        self.write_to_singular_test()
+        self.write_to_plural_test()
+
+    def write_is_singular_test(self):
+        test_path = self.test_folder_name + "//test_adjective_is_singular.py"
+        test_function = "is_singular"
+        test_name_pascal = "AdjectiveIsSingular"
+        test_args = [
+            {
+                "in": sing,
+                "out": True
+            } for plur, sing in self.reader.literals["singular"].items()
+        ]
+        test_args += [
+            {
+                "in": plur,
+                "out": False
+            } for plur, sing in self.reader.literals["singular"].items()
+            if sing != plur
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_is_plural_test(self):
+        test_path = self.test_folder_name + "//test_adjective_is_plural.py"
+        test_function = "is_plural"
+        test_name_pascal = "AdjectiveIsSingular"
+        test_args = [
+            {
+                "in": plur,
+                "out": True
+            } for sing, plur in self.reader.literals["plural"].items()
+        ]
+        test_args += [
+            {
+                "in": sing,
+                "out": False
+            } for sing, plur in self.reader.literals["plural"].items()
+            if sing != plur
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_singular_test(self):
+        test_path = self.test_folder_name + "//test_adjective_to_singular.py"
+        test_function = "convert_to_singular"
+        test_name_pascal = "AdjectiveToSingular"
+        test_args = [
+            {
+                "in": sing,
+                "out": sing
+            } for plur, sing in self.reader.literals["singular"].items()
+        ]
+        test_args += [
+            {
+                "in": plur,
+                "out": sing
+            } for plur, sing in self.reader.literals["singular"].items()
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_to_plural_test(self):
+        test_path = self.test_folder_name + "//test_adjective_to_plural.py"
+        test_function = "convert_to_plural"
+        test_name_pascal = "AdjectiveToPlural"
+        test_args = [
+            {
+                "in": plur,
+                "out": plur
+            } for sing, plur in self.reader.literals["plural"].items()
+        ]
+        test_args += [
+            {
+                "in": sing,
+                "out": plur
+            } for sing, plur in self.reader.literals["plural"].items()
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
 
 if __name__ == "__main__":    
     in_fname = "lei//adjectives.lei"
