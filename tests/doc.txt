@@ -9,7 +9,7 @@ test_noun_to_classical_plural.py
 test_noun_to_modern_plural.py
 test_noun_to_singular.py
 
-Tests for verb_core.py
+Tests for verb_core.py:
 test_verb_is_past.py
 test_verb_is_past_part.py
 test_verb_is_plural.py
@@ -21,8 +21,15 @@ test_verb_to_plural.py
 test_verb_to_pres_part.py
 test_verb_to_singular.py
 
+Tests for adjective_core.py:
+test_adjective_is_plural.py
+test_adjective_is_singular.py
+test_adjective_to_plural.py
+test_adjective_to_singular.py
+
 TODO: Tests for: 
 verb.py,
 noun.py,
 adjective.py
-adjective_core.py
+
+TODO: Additional tests for capitalisations and whitespace
