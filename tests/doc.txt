@@ -1,0 +1,28 @@
+
+Tests for indefinite_core.py:
+test_indefinite_prepend_article.py
+
+Tests for noun_core.py:
+test_noun_is_plural.py
+test_noun_is_singular.py
+test_noun_to_classical_plural.py
+test_noun_to_modern_plural.py
+test_noun_to_singular.py
+
+Tests for verb_core.py
+test_verb_is_past.py
+test_verb_is_past_part.py
+test_verb_is_plural.py
+test_verb_is_pres_part.py
+test_verb_is_singular.py
+test_verb_to_past.py
+test_verb_to_past_part.py
+test_verb_to_plural.py
+test_verb_to_pres_part.py
+test_verb_to_singular.py
+
+TODO: Tests for: 
+verb.py,
+noun.py,
+adjective.py
+adjective_core.py
