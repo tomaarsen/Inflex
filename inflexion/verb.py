@@ -1,8 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import re
 from typing import Optional
-
-# -*- coding: utf-8 -*-
 
 import context
 
