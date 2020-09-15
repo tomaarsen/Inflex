@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200915.184217
+VERSION = 20200915.211823
 
 adj_is_singular = [
     "a",
@@ -77,6 +77,3 @@ def convert_to_singular(word):
     if word.lower() in adj_singular_of:
         return adj_singular_of[word.lower()]
     return word
-
-if __name__ == "__main__":
-    breakpoint()

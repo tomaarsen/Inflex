@@ -5,6 +5,7 @@ class TestWriter(object):
     def __init__(self, import_fname):
         super().__init__()
         self.import_fname = import_fname
+        self.import_folder_name = "inflexion"
         # TODO: Improve paths
         self.test_folder_name = "tests"
         self.test_file_format = """
@@ -16,14 +17,11 @@ class TestWriter(object):
 ## Contains no user-servicable parts!!! ##
 ##########################################
 
-# Temporary imports for hack, will be reworked once this becomes a package!!!
-import sys, os
-sys.path.insert(1, os.path.join(sys.path[0], '..')) 
-# End of hack
-
 import unittest
 
-from {import_fname} import {test_function}
+import context
+
+from {import_folder_name}.{import_fname} import {test_function}
 
 class Test{test_name_pascal}(unittest.TestCase):
     # test_args has the format [{{
@@ -60,7 +58,8 @@ if __name__ == "__main__":
 
     def write_test(self, test_path, test_function, test_name_pascal, test_args):
         with open(test_path, "w+") as f:
-            f.write(self.test_file_format.format(import_fname=self.import_fname,
+            f.write(self.test_file_format.format(import_folder_name=self.import_folder_name,
+                                                 import_fname=self.import_fname,
                                                  test_function=test_function,
                                                  test_name_pascal=test_name_pascal,
                                                  test_args=self._format_test_args(test_args)))

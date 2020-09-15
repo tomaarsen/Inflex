@@ -7,14 +7,11 @@
 ## Contains no user-servicable parts!!! ##
 ##########################################
 
-# Temporary imports for hack, will be reworked once this becomes a package!!!
-import sys, os
-sys.path.insert(1, os.path.join(sys.path[0], '..')) 
-# End of hack
-
 import unittest
 
-from src.verb_core import is_plural
+import context
+
+from inflexion.verb_core import is_plural
 
 class TestVerbIsPlural(unittest.TestCase):
     # test_args has the format [{

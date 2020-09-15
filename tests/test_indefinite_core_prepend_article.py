@@ -7,14 +7,11 @@
 ## Contains no user-servicable parts!!! ##
 ##########################################
 
-# Temporary imports for hack, will be reworked once this becomes a package!!!
-import sys, os
-sys.path.insert(1, os.path.join(sys.path[0], '..')) 
-# End of hack
-
 import unittest
 
-from src.indefinite_core import prepend_indefinite_article
+import context
+
+from inflexion.indefinite_core import prepend_indefinite_article
 
 class TestIndefinitePrependArticle(unittest.TestCase):
     # test_args has the format [{

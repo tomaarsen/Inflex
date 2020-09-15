@@ -37,9 +37,6 @@ class Term(object):
         return self.classical()
     
     def as_regex(self) -> str:
-        return "|".join(dict.fromkeys(self.singular(),
-                                      self.plural(),
-                                      self.classical().plural()))
-
-if __name__ == "__main__":
-    breakpoint()
+        return "|".join(dict.fromkeys((self.singular(),
+                                       self.plural(),
+                                       self.classical().plural())))

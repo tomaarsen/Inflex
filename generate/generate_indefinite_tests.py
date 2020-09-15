@@ -270,6 +270,6 @@ class IndefiniteTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
 if __name__ == "__main__":
-    out_import = "src.indefinite_core"
+    out_import = "indefinite_core"
     twriter = IndefiniteTestWriter(out_import)
     twriter.write_tests()

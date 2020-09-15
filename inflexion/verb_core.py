@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200915.184250
+VERSION = 20200915.211819
 
 def rei(regex):
     """
@@ -4379,6 +4379,3 @@ def is_past_part(word):
         if rule.match(word):
             return True
     return False
-
-if __name__ == "__main__":
-    breakpoint()

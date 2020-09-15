@@ -2,8 +2,12 @@
 import re
 from typing import Optional
 
-from term import Term
-from verb_core import (
+# -*- coding: utf-8 -*-
+
+import context
+
+from inflexion.term import Term
+from inflexion.verb_core import (
     is_plural,
     is_singular,
     #is_present,
@@ -164,7 +168,3 @@ class Verb(Term):
         if count == 1:
             return self.singular()
         return self.plural()
-
-if __name__ == "__main__":
-    v = Verb("send")
-    breakpoint()

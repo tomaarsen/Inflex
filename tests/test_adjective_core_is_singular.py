@@ -7,14 +7,11 @@
 ## Contains no user-servicable parts!!! ##
 ##########################################
 
-# Temporary imports for hack, will be reworked once this becomes a package!!!
-import sys, os
-sys.path.insert(1, os.path.join(sys.path[0], '..')) 
-# End of hack
-
 import unittest
 
-from src.adjective_core import is_singular
+import context
+
+from inflexion.adjective_core import is_singular
 
 class TestAdjectiveIsSingular(unittest.TestCase):
     # test_args has the format [{

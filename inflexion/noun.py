@@ -1,15 +1,17 @@
 import re
 from typing import Optional
 
-from term import Term
-from noun_core import (
+import context
+
+from inflexion.term import Term
+from inflexion.noun_core import (
     is_singular,
     is_plural,
     convert_to_classical_plural,
     convert_to_modern_plural,
     convert_to_singular,
 )
-from indefinite_core import (
+from inflexion.indefinite_core import (
     select_indefinite_article,
     prepend_indefinite_article,
 )
@@ -441,8 +443,3 @@ class Noun(Term):
 
     def ordinal(self, threshold: int) -> str:
         raise NotImplementedError()
-
-
-if __name__ == "__main__":
-    n = Noun("about himself").as_regex()
-    breakpoint()

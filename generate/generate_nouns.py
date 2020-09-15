@@ -419,11 +419,6 @@ def known_singular(word):
         generated_code += self.get_recognizer_output("plural", "singular") + "\n\n"
         generated_code += self.get_recognizer_output("singular", "plural") + "\n\n"
 
-        generated_code += """\
-if __name__ == "__main__":
-    breakpoint()
-"""
-
         self.output_code(generated_code)
 
     def output_code(self, generated_code):
@@ -626,8 +621,8 @@ class NounTestWriter(TestWriter):
 
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"
-    out_fname = "src//noun_core.py"
-    out_import = "src.noun_core"
+    out_fname = "inflexion//noun_core.py"
+    out_import = "noun_core"
 
     reader = Reader(in_fname)
     reader.parse_file()

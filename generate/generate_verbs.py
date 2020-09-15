@@ -339,11 +339,6 @@ def known_pres_part(word):
         generated_code += self.get_recognizer_output("pres_part", None, self.reader.literals["pres_part"]) + "\n\n"
         generated_code += self.get_recognizer_output("past_part", None, self.reader.literals["past_part"]) + "\n"
 
-        generated_code += """
-if __name__ == "__main__":
-    breakpoint()
-"""
-
         self.output_code(generated_code)
 
     def output_code(self, generated_code):
@@ -592,8 +587,8 @@ class VerbTestWriter(TestWriter):
 
 if __name__ == "__main__":    
     in_fname = "lei//verbs.lei"
-    out_fname = "src//verb_core.py"
-    out_import = "src.verb_core"
+    out_fname = "inflexion//verb_core.py"
+    out_import = "verb_core"
     reader = Reader(in_fname)
     reader.parse_file()
     

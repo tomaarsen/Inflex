@@ -2,15 +2,16 @@
 import re
 from typing import Optional
 
-from term import Term
+import context
 
-from adjective_core import (
+from inflexion.term import Term
+from inflexion.adjective_core import (
     is_singular,
     is_plural,
     convert_to_singular,
     convert_to_plural,
 )
-from noun import Noun
+from inflexion.noun import Noun
 
 
 class Adjective(Term):
@@ -87,8 +88,3 @@ class Adjective(Term):
             return self._possessive_inflexion[self.term.lower()]["plural"][person]
         
         return convert_to_plural(self.term)
-
-
-if __name__ == "__main__":
-    a = Adjective("typical")
-    breakpoint()

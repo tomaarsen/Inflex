@@ -133,9 +133,6 @@ def convert_to_singular(word):
     if word.lower() in adj_singular_of:
         return adj_singular_of[word.lower()]
     return word
-
-if __name__ == "__main__":
-    breakpoint()
 '''
         self.output_code(generated_code)
 
@@ -235,10 +232,10 @@ class VerbTestWriter(TestWriter):
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     in_fname = "lei//adjectives.lei"
-    out_fname = "src//adjective_core.py"
-    out_import = "src.adjective_core"
+    out_fname = "inflexion//adjective_core.py"
+    out_import = "adjective_core"
     reader = Reader(in_fname)
     reader.parse_file()
     
