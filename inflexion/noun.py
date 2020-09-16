@@ -373,10 +373,10 @@ class Noun(Term):
         return True
 
     def is_singular(self) -> bool:
-        return is_singular(self.noun)
+        return is_singular(self.term)
 
     def is_plural(self) -> bool:
-        return is_plural(self.noun)
+        return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
         # TODO: Check whether person is valid
@@ -446,3 +446,12 @@ class Noun(Term):
 
     def ordinal(self, threshold: int) -> str:
         raise NotImplementedError()
+
+"""
+if __name__ == "__main__":
+    for n in ["latches", "ladies", "women"]:
+        noun = Noun(n)
+        padding = 28
+        print(f"Noun({repr(n)}).is_plural()".ljust(padding) + f"=> {noun.is_plural()}")
+        print(f"Noun({repr(n)}).plural()".ljust(padding) + f"=> {noun.plural()}")
+"""
