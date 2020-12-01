@@ -428,6 +428,11 @@ class Noun(Term):
             return ClassicalNoun("them")
         return ClassicalNoun(self.singular())
 
+    def as_regex(self) -> re.Pattern:
+        return re.compile("|".join(sorted({self.singular(),
+                                           self.plural(),
+                                           self.classical().plural()}, reverse=True)), flags=re.I)
+
     """
     Methods exclusively for Noun
     """

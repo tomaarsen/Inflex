@@ -79,12 +79,12 @@ class Verb(Term):
             return known
         return self.term
     
-    def as_regex(self) -> str:
-        return "|".join(dict.fromkeys(self.singular(),
-                                      self.plural(),
-                                      self.past(),
-                                      self.past_part(),
-                                      self.classical().pres_part()))
+    def as_regex(self) -> re.Pattern:
+        return re.compile("|".join(sorted({self.singular(),
+                                           self.plural(),
+                                           self.past(),
+                                           self.past_part(),
+                                           self.classical().pres_part()}, reverse=True)), flags=re.I)
 
     """
     Methods exclusively for Verb

@@ -37,7 +37,6 @@ class Term(object):
     def unassimilated(self) -> "Term":
         return self.classical()
     
-    def as_regex(self) -> str:
-        return "|".join(dict.fromkeys((self.singular(),
-                                       self.plural(),
-                                       self.classical().plural())))
+    def as_regex(self) -> re.Pattern:
+        return re.compile("|".join(sorted({self.singular(),
+                                           self.plural()}, reverse=True)), flags=re.I)
