@@ -4,10 +4,9 @@
 from typing import Optional
 
 class Term(object):
-    def __init__(self, term: str, is_classical: bool):
+    def __init__(self, term: str):
         super().__init__()
         self.term = term
-        self.is_classical = is_classical
 
     def is_noun(self) -> bool:
         return False

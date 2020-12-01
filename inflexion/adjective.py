@@ -4,7 +4,7 @@
 import re
 from typing import Optional
 
-import context
+# import context
 
 from inflexion.term import Term
 from inflexion.adjective_core import (
@@ -17,8 +17,8 @@ from inflexion.noun import Noun
 
 
 class Adjective(Term):
-    def __init__(self, term: str, classical: Optional[bool] = False):
-        super().__init__(term, classical)
+    def __init__(self, term: str):
+        super().__init__(term)
 
         self._possessive_regex = re.compile(
             r"\A(.*)'s?\Z", flags=re.IGNORECASE | re.MULTILINE | re.DOTALL

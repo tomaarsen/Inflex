@@ -295,14 +295,20 @@ class Reader(object):
             **{"tag": noun.tag}
         })
 
+    def optionally_add(self, collection, key, word):
+        # if key == "_" or word == "_":
+            # return
+        if key not in collection:
+            collection[key] = word
+
     def add_literals(self, noun):
         if not noun.plur_two.word:
             noun.plur_two = noun.plur_one
 
-        self.literals["modern_plural"][noun.sing.word] = noun.plur_one.word
-        self.literals["classical_plural"][noun.sing.word] = noun.plur_two.word
-        self.literals["singular"][noun.plur_one.word] = noun.sing.word
-        self.literals["singular"][noun.plur_two.word] = noun.sing.word
+        self.optionally_add(self.literals["modern_plural"], noun.sing.word, noun.plur_one.word)
+        self.optionally_add(self.literals["classical_plural"],noun.sing.word, noun.plur_two.word)
+        self.optionally_add(self.literals["singular"],noun.plur_one.word, noun.sing.word)
+        self.optionally_add(self.literals["singular"],noun.plur_two.word, noun.sing.word)
 
     def add_words(self, noun):
         self.words["plural"].add(noun.plur_one.word)

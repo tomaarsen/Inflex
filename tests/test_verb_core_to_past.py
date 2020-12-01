@@ -22,6 +22,7 @@ class TestVerbToPast(unittest.TestCase):
     # }, ...
     # ]
     test_args = [
+        {'in': '_', 'out': 'could'},
         {'in': 'abide', 'out': 'abided'},
         {'in': 'abided', 'out': 'abided'},
         {'in': 'abides', 'out': 'abided'},

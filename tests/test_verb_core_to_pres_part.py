@@ -385,7 +385,7 @@ class TestVerbToPresPart(unittest.TestCase):
         {'in': 'knows', 'out': 'knowing'},
         {'in': 'laid', 'out': 'laying'},
         {'in': 'lain', 'out': 'lying'},
-        {'in': 'lay', 'out': 'lying'},
+        {'in': 'lay', 'out': 'laying'},
         {'in': 'laying', 'out': 'laying'},
         {'in': 'lays', 'out': 'laying'},
         {'in': 'lead', 'out': 'leading'},

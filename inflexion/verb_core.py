@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20200915.211819
+VERSION = 20201201.180239
 
 def rei(regex):
     """
@@ -235,7 +235,7 @@ singular_of = {
     "": "s",
     "abide": "abides",
     "ache": "aches",
-    "are": "am",
+    "are": "is",
     "arise": "arises",
     "ask": "asks",
     "avalanche": "avalanches",
@@ -445,7 +445,7 @@ singular_of = {
 
 past_of = {
     "": "_",
-    "_": "_",
+    "_": "could",
     "abide": "abided",
     "abided": "abided",
     "abides": "abided",
@@ -1601,7 +1601,7 @@ pres_part_of = {
     "knows": "knowing",
     "laid": "laying",
     "lain": "lying",
-    "lay": "lying",
+    "lay": "laying",
     "laying": "laying",
     "lays": "laying",
     "lead": "leading",
@@ -2451,7 +2451,7 @@ past_part_of = {
     "knows": "known",
     "laid": "laid",
     "lain": "lain",
-    "lay": "lain",
+    "lay": "laid",
     "laying": "laid",
     "lays": "laid",
     "lead": "led",
@@ -2555,15 +2555,15 @@ past_part_of = {
     "preset": "preset",
     "presets": "preset",
     "presetting": "preset",
-    "prove": "proved",
-    "proved": "proved",
+    "prove": "proven",
+    "proved": "proven",
     "proven": "proven",
-    "proves": "proved",
+    "proves": "proven",
     "provide": "provided",
     "provided": "provided",
     "provides": "provided",
     "providing": "provided",
-    "proving": "proved",
+    "proving": "proven",
     "psyche": "psyched",
     "psyched": "psyched",
     "psyches": "psyched",

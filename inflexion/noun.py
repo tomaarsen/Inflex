@@ -4,7 +4,8 @@
 import re
 from typing import Optional
 
-import context
+# TODO: Remove needing this
+# import context
 
 from inflexion.term import Term
 from inflexion.noun_core import (
@@ -20,10 +21,10 @@ from inflexion.indefinite_core import (
 )
 
 class Noun(Term):
-    def __init__(self, term: str, classical: Optional[bool] = False):
+    def __init__(self, term: str):
         # TODO: Trailing and preceding whitespace? Trailing whitespace would break singularisation
         # TODO: Normalise to lowercase before passing to noun_core functions, possibly preserve capitalisation
-        super().__init__(term, classical)
+        super().__init__(term)
 
         self.noun_inflection = {
             # CASE          TERM             0TH            1ST             2ND             3RD
@@ -396,7 +397,7 @@ class Noun(Term):
             for case in ["nominative", "objective", "possessive", "reflexive"]:
                 if self.term.lower() in self.noun_inflection[case]:
                     return self.noun_inflection[case][self.term.lower()]["singular"][person]
-            
+
             return convert_to_singular(self.term)
 
     def plural(self, person: Optional[int] = 0) -> str:
@@ -411,8 +412,6 @@ class Noun(Term):
                 if term.lower() in self.noun_inflection[case]:
                     return prep + self.noun_inflection[case][term.lower()]["plural"][person]
             
-            if self.is_classical:
-                return prep + convert_to_classical_plural(term)
             return prep + convert_to_modern_plural(term)
 
         else:
@@ -420,14 +419,14 @@ class Noun(Term):
                 if self.term.lower() in self.noun_inflection[case]:
                     return self.noun_inflection[case][self.term.lower()]["plural"][person]
             
-            if self.is_classical:
-                return convert_to_classical_plural(self.term)
             return convert_to_modern_plural(self.term)
 
     def classical(self) -> "Term":
         # TODO: Should we also have modern() ?
         # TODO: Separate classical to a new class, as it has different pluralisation rules
-        return Noun(self.term, classical=True)
+        if self.term == "them":
+            return ClassicalNoun("them")
+        return ClassicalNoun(self.singular())
 
     """
     Methods exclusively for Noun
@@ -446,6 +445,18 @@ class Noun(Term):
 
     def ordinal(self, threshold: int) -> str:
         raise NotImplementedError()
+
+class ClassicalNoun(Noun):
+    def __init__(self, term) -> None:
+        # TODO: Look at constructor code at https://metacpan.org/source/DCONWAY/Lingua-EN-Inflexion-0.002000/lib/Lingua/EN/Inflexion/Term.pm#L521
+        super().__init__(term)
+    
+    def plural(self, person: Optional[int] = 0) -> str:
+        # TODO: Check whether person is valid
+        return convert_to_classical_plural(self.term)
+
+    def classical(self) -> "Term":
+        return self
 
 """
 if __name__ == "__main__":

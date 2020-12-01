@@ -226,9 +226,15 @@ class Reader(object):
                     verb.replace_hyphens(" ")
                     self.add_literals_and_words(verb)
 
+    def optionally_add(self, collection, key, word):
+        # if key == "_" or word == "_":
+            # return
+        if key not in collection:
+            collection[key] = word
+
     def add_literals_and_words(self, verb):
-        self.literals["plural"][verb.sing.word]   = verb.plur.word
-        self.literals["singular"][verb.plur.word] = verb.sing.word
+        self.optionally_add(self.literals["plural"], verb.sing.word, verb.plur.word)
+        self.optionally_add(self.literals["singular"], verb.plur.word, verb.sing.word)
 
         self.words["singular"].add(verb.sing.word)
         self.words["plural"].add(verb.plur.word)
@@ -236,34 +242,34 @@ class Reader(object):
         if verb.pret.word:
             self.words["past"].add(verb.pret.word)
 
-            self.literals["past"][verb.sing.word] = verb.pret.word
-            self.literals["past"][verb.past.word] = verb.pret.word
-            self.literals["past"][verb.pres.word] = verb.pret.word
-            self.literals["past"][verb.past.word] = verb.pret.word
+            self.optionally_add(self.literals["past"], verb.sing.word, verb.pret.word)
+            self.optionally_add(self.literals["past"], verb.past.word, verb.pret.word)
+            self.optionally_add(self.literals["past"], verb.pres.word, verb.pret.word)
+            self.optionally_add(self.literals["past"], verb.past.word, verb.pret.word)
 
             if verb.pret_plur:
-                self.literals["past"][verb.plur.word] = verb.pret_plur
+                self.optionally_add(self.literals["past"], verb.plur.word, verb.pret_plur)
                 self.words["past"].add(verb.pret_plur)
             else:
-                self.literals["past"][verb.plur.word] = verb.pret.word
+                self.optionally_add(self.literals["past"], verb.plur.word, verb.pret.word)
         
         if verb.pres.word:
             self.words["pres_part"].add(verb.pres.word)
 
-            self.literals["pres_part"][verb.sing.word] = verb.pres.word
-            self.literals["pres_part"][verb.plur.word] = verb.pres.word
-            self.literals["pres_part"][verb.pret.word] = verb.pres.word
-            self.literals["pres_part"][verb.pres.word] = verb.pres.word
-            self.literals["pres_part"][verb.past.word] = verb.pres.word
+            self.optionally_add(self.literals["pres_part"], verb.sing.word, verb.pres.word)
+            self.optionally_add(self.literals["pres_part"], verb.plur.word, verb.pres.word)
+            self.optionally_add(self.literals["pres_part"], verb.pret.word, verb.pres.word)
+            self.optionally_add(self.literals["pres_part"], verb.pres.word, verb.pres.word)
+            self.optionally_add(self.literals["pres_part"], verb.past.word, verb.pres.word)
 
         if verb.past.word:
             self.words["past_part"].add(verb.past.word)
 
-            self.literals["past_part"][verb.sing.word] = verb.past.word
-            self.literals["past_part"][verb.plur.word] = verb.past.word
-            self.literals["past_part"][verb.pret.word] = verb.past.word
-            self.literals["past_part"][verb.pres.word] = verb.past.word
-            self.literals["past_part"][verb.past.word] = verb.past.word
+            self.optionally_add(self.literals["past_part"], verb.sing.word, verb.past.word)
+            self.optionally_add(self.literals["past_part"], verb.plur.word, verb.past.word)
+            self.optionally_add(self.literals["past_part"], verb.pret.word, verb.past.word)
+            self.optionally_add(self.literals["past_part"], verb.pres.word, verb.past.word)
+            self.optionally_add(self.literals["past_part"], verb.past.word, verb.past.word)
 
 class CodeWriter(object):
     def __init__(self, reader, fname):

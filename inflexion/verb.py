@@ -4,13 +4,12 @@
 import re
 from typing import Optional
 
-import context
+# import context
 
 from inflexion.term import Term
 from inflexion.verb_core import (
     is_plural,
     is_singular,
-    #is_present,
     is_past,
     is_pres_part,
     is_past_part,
@@ -22,8 +21,8 @@ from inflexion.verb_core import (
 )
 
 class Verb(Term):
-    def __init__(self, term: str, classical:Optional[bool] = False):
-        super().__init__(term, classical)
+    def __init__(self, term: str):
+        super().__init__(term)
 
         self._term_regexes = {
             re.compile(r"ie\Z"): lambda match: "y",
@@ -104,15 +103,15 @@ class Verb(Term):
         # Problems: "using" -> "usinged"
         root = self.plural()
         known = convert_to_past(self.term)
-        print(f"Known past of term: {known}")
+        # print(f"Known past of term: {known}")
         if known == "_":
             known = convert_to_past(root)
-            print(f"Known past of root: {known}")
+            # print(f"Known past of root: {known}")
 
         # Otherwise use the standard pattern
         if known == "_":
             known = self._stem(root) + "ed"
-            print(f"Standard pattern past: {known}")
+            # print(f"Standard pattern past: {known}")
 
         return known
 
@@ -120,15 +119,15 @@ class Verb(Term):
         # Problems: "using" -> "usinging"
         root = self.plural()
         known = convert_to_pres_part(self.term)
-        print(f"Known pres_part of term: {known}")
+        # print(f"Known pres_part of term: {known}")
         if known == "_":
             known = convert_to_pres_part(root)
-            print(f"Known pres_part of root: {known}")
+            # print(f"Known pres_part of root: {known}")
 
         # Otherwise use the standard pattern
         if known == "_":
             known = self._stem(root) + "ing"
-            print(f"Standard pattern pres_part: {known}")
+            # print(f"Standard pattern pres_part: {known}")
 
         return known
 
@@ -136,33 +135,26 @@ class Verb(Term):
         # Problems: "using" -> "usinged"
         root = self.plural()
         known = convert_to_past_part(self.term)
-        print(f"Known past_part of term: {known}")
+        # print(f"Known past_part of term: {known}")
         if known == "_":
             known = convert_to_past_part(root)
-            print(f"Known past_part of root: {known}")
+            # print(f"Known past_part of root: {known}")
 
         # Otherwise use the standard pattern
         if known == "_":
             known = self._stem(root) + "ed"
-            print(f"Standard pattern past_part: {known}")
+            # print(f"Standard pattern past_part: {known}")
 
         return known
     
-    """
-    def is_present(self) -> str:
-        # TODO: Does not exist in Lingua?
-        #is_present(self.term)
-        raise NotImplementedError()
-    """
-    
     def is_past(self) -> str:
-        is_past(self.term)
+        return is_past(self.term)
 
     def is_pres_part(self) -> str:
-        is_pres_part(self.term)
+        return is_pres_part(self.term)
 
     def is_past_part(self) -> str:
-        is_past_part(self.term)
+        return is_past_part(self.term)
 
     def indefinite(self, count:Optional[int] = 1) -> str:
         if count == 1:
