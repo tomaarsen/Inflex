@@ -57,16 +57,16 @@ class Verb(Term):
             if person == 0:
                 return self.term
             if person == 2 or not self.is_singular():
-                return "are"
+                return self._encase("are")
             if person == 1:
-                return "am"
-            return "is"
+                return self._encase("am")
+            return self._encase("is")
 
         # Third person uses the "notational" singular inflection
         if person == 3 or person == 0:
             known = convert_to_singular(self.term)
             if known != "_":
-                return known
+                return self._encase(known)
             return self.term
 
         # First and second person always use the uninflected (i.e. "notational plural" form)
@@ -76,7 +76,7 @@ class Verb(Term):
         # Problems: "using" -> "using"
         known = convert_to_plural(self.term)
         if known != "_":
-            return known
+            return self._encase(known)
         return self.term
     
     def as_regex(self) -> re.Pattern:
@@ -113,7 +113,7 @@ class Verb(Term):
             known = self._stem(root) + "ed"
             # print(f"Standard pattern past: {known}")
 
-        return known
+        return self._encase(known)
 
     def pres_part(self) -> str:
         # Problems: "using" -> "usinging"
@@ -129,7 +129,7 @@ class Verb(Term):
             known = self._stem(root) + "ing"
             # print(f"Standard pattern pres_part: {known}")
 
-        return known
+        return self._encase(known)
 
     def past_part(self) -> str:
         # Problems: "using" -> "usinged"
@@ -145,7 +145,7 @@ class Verb(Term):
             known = self._stem(root) + "ed"
             # print(f"Standard pattern past_part: {known}")
 
-        return known
+        return self._encase(known)
     
     def is_past(self) -> str:
         return is_past(self.term)

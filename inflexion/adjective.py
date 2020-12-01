@@ -75,9 +75,9 @@ class Adjective(Term):
             return Noun(match.group(1)).singular() + "'s"
         
         if self.term.lower() in self._possessive_inflexion:
-            return self._possessive_inflexion[self.term.lower()]["singular"][person]
+            return self._encase(self._possessive_inflexion[self.term.lower()]["singular"][person])
         
-        return convert_to_singular(self.term)
+        return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
         # Is it possessive form?
@@ -87,6 +87,6 @@ class Adjective(Term):
             return re.sub(r"s's\Z", "s'", n, flags=re.MULTILINE | re.DOTALL)
         
         if self.term.lower() in self._possessive_inflexion:
-            return self._possessive_inflexion[self.term.lower()]["plural"][person]
+            return self._encase(self._possessive_inflexion[self.term.lower()]["plural"][person])
         
-        return convert_to_plural(self.term)
+        return self._encase(convert_to_plural(self.term))

@@ -389,16 +389,15 @@ class Noun(Term):
             
             for case in ["objective", "possessive", "reflexive", "nominative"]:
                 if term.lower() in self.noun_inflection[case]:
-                    return prep + self.noun_inflection[case][term.lower()]["singular"][person]
+                    return self._encase(prep + self.noun_inflection[case][term.lower()]["singular"][person])
             
-            return prep + convert_to_singular(term)
+            return self._encase(prep + convert_to_singular(term))
 
-        else:
-            for case in ["nominative", "objective", "possessive", "reflexive"]:
-                if self.term.lower() in self.noun_inflection[case]:
-                    return self.noun_inflection[case][self.term.lower()]["singular"][person]
+        for case in ["nominative", "objective", "possessive", "reflexive"]:
+            if self.term.lower() in self.noun_inflection[case]:
+                return self._encase(self.noun_inflection[case][self.term.lower()]["singular"][person])
 
-            return convert_to_singular(self.term)
+        return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
         # TODO: Check whether person is valid
@@ -410,16 +409,15 @@ class Noun(Term):
             
             for case in ["objective", "possessive", "reflexive", "nominative"]:
                 if term.lower() in self.noun_inflection[case]:
-                    return prep + self.noun_inflection[case][term.lower()]["plural"][person]
+                    return self._encase(prep + self.noun_inflection[case][term.lower()]["plural"][person])
             
-            return prep + convert_to_modern_plural(term)
+            return self._encase(prep + convert_to_modern_plural(term))
 
-        else:
-            for case in ["nominative", "objective", "possessive", "reflexive"]:
-                if self.term.lower() in self.noun_inflection[case]:
-                    return self.noun_inflection[case][self.term.lower()]["plural"][person]
-            
-            return convert_to_modern_plural(self.term)
+        for case in ["nominative", "objective", "possessive", "reflexive"]:
+            if self.term.lower() in self.noun_inflection[case]:
+                return self._encase(self.noun_inflection[case][self.term.lower()]["plural"][person])
+        
+        return self._encase(convert_to_modern_plural(self.term))
 
     def classical(self) -> "Term":
         # TODO: Should we also have modern() ?
@@ -458,7 +456,7 @@ class ClassicalNoun(Noun):
     
     def plural(self, person: Optional[int] = 0) -> str:
         # TODO: Check whether person is valid
-        return convert_to_classical_plural(self.term)
+        return self._encase(convert_to_classical_plural(self.term))
 
     def classical(self) -> "Term":
         return self

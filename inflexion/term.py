@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from typing import Optional
+from typing import Generator, Optional
 
 class Term(object):
     """
@@ -115,3 +115,55 @@ class Term(object):
         Returns a string representation of the class instance.
         """
         return f"{self.__class__.__name__}({self.term!r})"
+    
+    def _encase(self, target: str) -> str:
+        """
+        Apply casing from `self.term` string onto `target` string.
+        """
+
+        # Special case for 'I'
+        if self.term == "I" or target == "I":
+            return target
+        
+        # Supported casing formats, lower, Title, UPPER
+        casing_formats = {
+            "lower":{
+                "regex": re.compile(r"^[^A-Z]+$"),
+                "transformation": lambda word: word.lower()
+            },
+            "title":{
+                "regex": re.compile(r"^[A-Z][^A-Z]+$"),
+                "transformation": lambda word: word.title()
+            },
+            "upper":{
+                "regex": re.compile(r"^[^a-z]+$"),
+                "transformation": lambda word: word.upper()
+            },
+        }
+        # Regex for finding a word
+        word_regex = re.compile(r"(\S+)")
+
+        # Get list of lambda functions that correspond to the
+        # casing formats for `original`.
+        transformations = []
+        for word in word_regex.findall(self.term):
+            for casing_format in casing_formats.values():
+                if casing_format["regex"].match(word):
+                    transformations.append(casing_format["transformation"])
+                    break
+            else:
+                # If no casing regexes matches
+                transformations.append(lambda word: word)
+        
+        # Generator that gets next transformation until there is
+        # just one transformation left, after which it will 
+        # continuously yield that last transformation
+        def get_transformations(transformations) -> Generator:
+            while True:
+                yield transformations[0]
+                if len(transformations) > 1:
+                    transformations = transformations[1:]
+        
+        # Apply the transformations found in `original` to `target`
+        transformations_gen = get_transformations(transformations)
+        return word_regex.sub(lambda match_obj: next(transformations_gen)(match_obj.group(0)), target)
