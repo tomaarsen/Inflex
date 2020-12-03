@@ -72,7 +72,7 @@ class Adjective(Term):
         # Is it possessive form?
         match = self._possessive_regex.match(self.term)
         if match:
-            return Noun(match.group(1)).singular() + "'s"
+            return self._reapply_whitespace(Noun(match.group(1)).singular() + "'s")
         
         if self.term.lower() in self._possessive_inflexion:
             return self._encase(self._possessive_inflexion[self.term.lower()]["singular"][person])
@@ -84,7 +84,7 @@ class Adjective(Term):
         match = self._possessive_regex.match(self.term)
         if match:
             n = Noun(match.group(1)).plural() + "'s"
-            return re.sub(r"s's\Z", "s'", n, flags=re.MULTILINE | re.DOTALL)
+            return self._reapply_whitespace(re.sub(r"s's\Z", "s'", n, flags=re.MULTILINE | re.DOTALL))
         
         if self.term.lower() in self._possessive_inflexion:
             return self._encase(self._possessive_inflexion[self.term.lower()]["plural"][person])

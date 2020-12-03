@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201201.180958
+VERSION = 20201203.145748
 
 def rei(regex):
     """
@@ -8044,7 +8044,6 @@ singular_convert_rules = {
     },
     rei(r"(.*)staffs$"): {"output": lambda match: f"{match.group(1)}staff"},
     rei(r"(.*)staves$"): {"output": lambda match: f"{match.group(1)}staff"},
-    rei(r"(.*)staves$"): {"output": lambda match: f"{match.group(1)}stave"},
     rei(r"(.*)genera$"): {"output": lambda match: f"{match.group(1)}genus"},
     rei(r"(.*)people$"): {"output": lambda match: f"{match.group(1)}person"},
     rei(r"(.*)persons$"): {"output": lambda match: f"{match.group(1)}person"},
@@ -8152,7 +8151,6 @@ singular_convert_rules = {
     rei(r"(.+)ieux$"): {"output": lambda match: f"{match.group(1)}ieu"},
     rei(r"(.+)nives$"): {"output": lambda match: f"{match.group(1)}nife"},
     rei(r"(.+)oes$"): {"output": lambda match: f"{match.group(1)}oe"},
-    rei(r"(.+)oes$"): {"output": lambda match: f"{match.group(1)}o"},
     rei(r"(.+)quies$"): {"output": lambda match: f"{match.group(1)}quy"},
     rei(r"(.+[aeiou])ys$"): {"output": lambda match: f"{match.group(1)}y"},
     rei(r"(.+)sses$"): {"output": lambda match: f"{match.group(1)}ss"},
@@ -8416,8 +8414,8 @@ def convert_to_modern_plural(word, verbose=False):
     if word.lower() in modern_plural_of:
         if verbose: print(word.lower(), 'in modern_plural_of')
         return modern_plural_of[word.lower()]
-    if known_plural(word) and not known_singular(word):
-        if verbose: print('known_plural(word) and not known_singular(word)')
+    if is_plural(word) and not is_singular(word):
+        if verbose: print('is_plural(word) and not is_singular(word)')
         return word
     for rule in modern_plural_convert_rules:
         match = rule.match(word)
@@ -8438,8 +8436,8 @@ def convert_to_classical_plural(word, verbose=False):
     if word.lower() in classical_plural_of:
         if verbose: print(word.lower(), 'in classical_plural_of')
         return classical_plural_of[word.lower()]
-    if known_plural(word) and not known_singular(word):
-        if verbose: print('known_plural(word) and not known_singular(word)')
+    if is_plural(word) and not is_singular(word):
+        if verbose: print('is_plural(word) and not is_singular(word)')
         return word
     for rule in classical_plural_convert_rules:
         match = rule.match(word)
@@ -8460,8 +8458,8 @@ def convert_to_singular(word, verbose=False):
     if word.lower() in singular_of:
         if verbose: print(word.lower(), 'in singular_of')
         return singular_of[word.lower()]
-    if known_singular(word):
-        if verbose: print('known_singular(word)')
+    if is_singular(word):
+        if verbose: print('is_singular(word)')
         return word
     for rule in singular_convert_rules:
         match = rule.match(word)
@@ -8492,7 +8490,7 @@ def is_plural(word, verbose=False):
             else:
                 if verbose: print(word, 'failed the conditional')
     if verbose: print("Matched no rules")
-    return word.strip().endswith('s')
+    return word.endswith('s')
 
 def is_singular(word, verbose=False):
     if known_singular(word) or known_singular(word.lower()):

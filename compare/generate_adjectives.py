@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import random
 import re
 import json
 from datetime import datetime
@@ -78,8 +79,17 @@ class Reader(object):
                 # TODO: Change exception
                 raise Exception("Unknown input:", line)
 
+def get_cases(words):
+    final_words = words.copy()
+    for word in words:
+        final_words.add(word.title())
+        final_words.add(word.upper())
+        final_words.add(word.lower())
+        final_words.add(''.join(random.choice((str.upper, str.lower))(c) for c in word))
+    return final_words
 
 if __name__ == "__main__":
+    random.seed(0)
     in_fname = "lei//adjectives.lei"
     out_fname = "inflexion//adjective_core.py"
     out_import = "adjective_core"
@@ -88,4 +98,5 @@ if __name__ == "__main__":
 
     with open(f"compare/words/adjectives.txt", "w+") as f:
         words = {*reader.words["plural"], *reader.words["singular"]}
+        words = get_cases(words)
         f.write("\n".join(sorted(word for word in words if word)))

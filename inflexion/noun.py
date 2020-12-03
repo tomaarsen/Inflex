@@ -421,15 +421,15 @@ class Noun(Term):
 
     def classical(self) -> "Term":
         # TODO: Should we also have modern() ?
-        # TODO: Separate classical to a new class, as it has different pluralisation rules
+        # NOTE: This method of creating a Classical noun will repeat getting whitespace etc.
         if self.term == "them":
-            return ClassicalNoun("them")
+            return ClassicalNoun(self.term)
         return ClassicalNoun(self.singular())
 
     def as_regex(self) -> re.Pattern:
-        return re.compile("|".join(sorted({self.singular(),
-                                           self.plural(),
-                                           self.classical().plural()}, reverse=True)), flags=re.I)
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(),
+                                                         self.plural(),
+                                                         self.classical().plural()}), reverse=True)), flags=re.I)
 
     """
     Methods exclusively for Noun
@@ -451,7 +451,7 @@ class Noun(Term):
 
 class ClassicalNoun(Noun):
     def __init__(self, term) -> None:
-        # TODO: Look at constructor code at https://metacpan.org/source/DCONWAY/Lingua-EN-Inflexion-0.002000/lib/Lingua/EN/Inflexion/Term.pm#L521
+        # TODO: Consider that repr(Noun("books").classical()) will output "ClassicalNoun('book')"
         super().__init__(term)
     
     def plural(self, person: Optional[int] = 0) -> str:

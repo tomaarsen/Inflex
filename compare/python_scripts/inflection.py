@@ -33,7 +33,7 @@ for word_type, inf_class in zip(word_types, classes):
 
         f_in = open(f"compare/words/{word_type}.txt")
         for line in f_in.readlines():
-            line = line.strip()
+            line = line.replace("\n", "")
             f_out.write(output(getattr(inf_class(line), func)()))
             f_out_classical.write(output(getattr(inf_class(line).classical(), func)()))
         
@@ -48,7 +48,7 @@ for word_type, inf_class in zip(word_types, classes):
 
             f_in = open(f"compare/words/{word_type}.txt")
             for line in f_in.readlines():
-                line = line.strip()
+                line = line.replace("\n", "")
                 f_out.write(output(getattr(inf_class(line), func)(arg)))
                 f_out_classical.write(output(getattr(inf_class(line).classical(), func)(arg)))
             

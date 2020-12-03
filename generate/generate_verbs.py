@@ -176,43 +176,43 @@ class Reader(object):
                 raise Exception("Unknown input:", line)
             
             if verb.has_gen():
-                self.patterns["plural"].append({
+                self.optionally_add_pattern(self.patterns["plural"], {
                     "is": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                     "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
                     "to": 'lambda match: f"{match.group(1)}' + f'{verb.plur.word}"' 
                 })
-                self.patterns["singular"].append({
+                self.optionally_add_pattern(self.patterns["singular"], {
                     "is": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
                     "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
                     "to": 'lambda match: f"{match.group(1)}' + f'{verb.sing.word}"'
                 })
                 if verb.pret.word != "_":
-                    self.patterns["past"].append({
+                    self.optionally_add_pattern(self.patterns["past"], {
                         "is": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
                         "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
                     })
-                    self.patterns["past"].append({
+                    self.optionally_add_pattern(self.patterns["past"], {
                         "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
                     })
                 if verb.pres.word != "_":
-                    self.patterns["pres_part"].append({
+                    self.optionally_add_pattern(self.patterns["pres_part"], {
                         "is": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
                         "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
                     })
-                    self.patterns["pres_part"].append({
+                    self.optionally_add_pattern(self.patterns["pres_part"], {
                         "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
                     })
                 if verb.past.word != "_":
-                    self.patterns["past_part"].append({
+                    self.optionally_add_pattern(self.patterns["past_part"], {
                         "is": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
                         "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
                     })
-                    self.patterns["past_part"].append({
+                    self.optionally_add_pattern(self.patterns["past_part"], {
                         "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
                     })
@@ -226,15 +226,19 @@ class Reader(object):
                     verb.replace_hyphens(" ")
                     self.add_literals_and_words(verb)
 
-    def optionally_add(self, collection, key, word):
+    def optionally_add_pattern(self, collection, dict_to_add):
+        if dict_to_add["from"] not in (pattern["from"] for pattern in collection):
+            collection.append(dict_to_add)
+
+    def optionally_add_literal(self, collection, key, word):
         # if key == "_" or word == "_":
             # return
         if key not in collection:
             collection[key] = word
 
     def add_literals_and_words(self, verb):
-        self.optionally_add(self.literals["plural"], verb.sing.word, verb.plur.word)
-        self.optionally_add(self.literals["singular"], verb.plur.word, verb.sing.word)
+        self.optionally_add_literal(self.literals["plural"], verb.sing.word, verb.plur.word)
+        self.optionally_add_literal(self.literals["singular"], verb.plur.word, verb.sing.word)
 
         self.words["singular"].add(verb.sing.word)
         self.words["plural"].add(verb.plur.word)
@@ -242,34 +246,34 @@ class Reader(object):
         if verb.pret.word:
             self.words["past"].add(verb.pret.word)
 
-            self.optionally_add(self.literals["past"], verb.sing.word, verb.pret.word)
-            self.optionally_add(self.literals["past"], verb.past.word, verb.pret.word)
-            self.optionally_add(self.literals["past"], verb.pres.word, verb.pret.word)
-            self.optionally_add(self.literals["past"], verb.past.word, verb.pret.word)
+            self.optionally_add_literal(self.literals["past"], verb.sing.word, verb.pret.word)
+            self.optionally_add_literal(self.literals["past"], verb.past.word, verb.pret.word)
+            self.optionally_add_literal(self.literals["past"], verb.pres.word, verb.pret.word)
+            self.optionally_add_literal(self.literals["past"], verb.past.word, verb.pret.word)
 
             if verb.pret_plur:
-                self.optionally_add(self.literals["past"], verb.plur.word, verb.pret_plur)
+                self.optionally_add_literal(self.literals["past"], verb.plur.word, verb.pret_plur)
                 self.words["past"].add(verb.pret_plur)
             else:
-                self.optionally_add(self.literals["past"], verb.plur.word, verb.pret.word)
+                self.optionally_add_literal(self.literals["past"], verb.plur.word, verb.pret.word)
         
         if verb.pres.word:
             self.words["pres_part"].add(verb.pres.word)
 
-            self.optionally_add(self.literals["pres_part"], verb.sing.word, verb.pres.word)
-            self.optionally_add(self.literals["pres_part"], verb.plur.word, verb.pres.word)
-            self.optionally_add(self.literals["pres_part"], verb.pret.word, verb.pres.word)
-            self.optionally_add(self.literals["pres_part"], verb.pres.word, verb.pres.word)
-            self.optionally_add(self.literals["pres_part"], verb.past.word, verb.pres.word)
+            self.optionally_add_literal(self.literals["pres_part"], verb.sing.word, verb.pres.word)
+            self.optionally_add_literal(self.literals["pres_part"], verb.plur.word, verb.pres.word)
+            self.optionally_add_literal(self.literals["pres_part"], verb.pret.word, verb.pres.word)
+            self.optionally_add_literal(self.literals["pres_part"], verb.pres.word, verb.pres.word)
+            self.optionally_add_literal(self.literals["pres_part"], verb.past.word, verb.pres.word)
 
         if verb.past.word:
             self.words["past_part"].add(verb.past.word)
 
-            self.optionally_add(self.literals["past_part"], verb.sing.word, verb.past.word)
-            self.optionally_add(self.literals["past_part"], verb.plur.word, verb.past.word)
-            self.optionally_add(self.literals["past_part"], verb.pret.word, verb.past.word)
-            self.optionally_add(self.literals["past_part"], verb.pres.word, verb.past.word)
-            self.optionally_add(self.literals["past_part"], verb.past.word, verb.past.word)
+            self.optionally_add_literal(self.literals["past_part"], verb.sing.word, verb.past.word)
+            self.optionally_add_literal(self.literals["past_part"], verb.plur.word, verb.past.word)
+            self.optionally_add_literal(self.literals["past_part"], verb.pret.word, verb.past.word)
+            self.optionally_add_literal(self.literals["past_part"], verb.pres.word, verb.past.word)
+            self.optionally_add_literal(self.literals["past_part"], verb.past.word, verb.past.word)
 
 class CodeWriter(object):
     def __init__(self, reader, fname):
@@ -312,18 +316,20 @@ def rei(regex):
         
         generated_code += """\
 def known_plural(word):
-    return word in plural_of.values() or\\
-        word in singular_of.keys() or\\
-        word in past_of.values() or\\
-        word in pres_part_of.values() or\\
-        word in past_part_of.values()
+    lword = word.lower()
+    return lword in plural_of.values() or\\
+        lword in singular_of.keys() or\\
+        lword in past_of.values() or\\
+        lword in pres_part_of.values() or\\
+        lword in past_part_of.values()
 
 def known_singular(word):
-    return word in singular_of.values() or\\
-        word in plural_of.keys() or\\
-        word in past_of.values() or\\
-        word in pres_part_of.values() or\\
-        word in past_part_of.values()
+    lword = word.lower()
+    return lword in singular_of.values() or\\
+        lword in plural_of.keys() or\\
+        lword in past_of.values() or\\
+        lword in pres_part_of.values() or\\
+        lword in past_part_of.values()
 
 def known_past(word):
     return word in past_of.values()
@@ -365,7 +371,7 @@ def convert_to_{name}(word):
         return {name}_of[word]
     if word.lower() in {name}_of:
         return {name}_of[word.lower()]
-    if known_{name}(word):
+    if is_{name}(word):
         return word
     for rule in {name}_convert_rules:
         match = rule.match(word)

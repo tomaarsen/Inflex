@@ -12,7 +12,16 @@ class Term(object):
     """
     def __init__(self, term: str):
         super().__init__()
-        self.term = term
+        # Extract whitespace before and after the term
+        self.start, self.end = re.match(r"(?P<start>^\s*).*?(?P<end>\s*$)", term).groups()
+        # self.spaces = [" "]
+        self.term = term.strip()
+
+        # If there is troublesome double whitespace, find the substrings
+        # between words and normalize them 
+        # if "  " in self.term:
+        self.spaces = re.findall(r"(\s+)", self.term) or [" "]
+        self.term = re.sub(r"\s{2,}", " ", self.term)
 
     def is_noun(self) -> bool:
         """
@@ -107,14 +116,14 @@ class Term(object):
         re.compile('eats|eating|eaten|eat|ate', re.IGNORECASE)
         ```
         """
-        return re.compile("|".join(sorted({self.singular(),
-                                           self.plural()}, reverse=True)), flags=re.I)
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(),
+                                                          self.plural()}), reverse=True)), flags=re.I)
 
     def __repr__(self) -> str:
         """
         Returns a string representation of the class instance.
         """
-        return f"{self.__class__.__name__}({self.term!r})"
+        return f"{self.__class__.__name__}({self._reapply_whitespace(self.term)!r})"
     
     def _encase(self, target: str) -> str:
         """
@@ -126,18 +135,23 @@ class Term(object):
             return target
         
         # Supported casing formats, lower, Title, UPPER
+        # and I, which is upper only if the new word is also I, and otherwise lower.
         casing_formats = {
+            "I": {
+                "regex": re.compile(r"^I$"),
+                "transformation": lambda word: "I" if word.lower() == "i" else word.lower()
+            },
             "lower":{
                 "regex": re.compile(r"^[^A-Z]+$"),
-                "transformation": lambda word: word.lower()
+                "transformation": lambda word: "I" if word.lower() == "i" else word.lower()
             },
             "title":{
                 "regex": re.compile(r"^[A-Z][^A-Z]+$"),
-                "transformation": lambda word: word.title()
+                "transformation": lambda word: "I" if word.lower() == "i" else word[0].upper() + word[1:]
             },
             "upper":{
                 "regex": re.compile(r"^[^a-z]+$"),
-                "transformation": lambda word: word.upper()
+                "transformation": lambda word: "I" if word.lower() == "i" else word.upper()
             },
         }
         # Regex for finding a word
@@ -155,6 +169,10 @@ class Term(object):
                 # If no casing regexes matches
                 transformations.append(lambda word: word)
         
+        # If no words found in term, just return target
+        if not transformations:
+            return target
+
         # Generator that gets next transformation until there is
         # just one transformation left, after which it will 
         # continuously yield that last transformation
@@ -166,4 +184,19 @@ class Term(object):
         
         # Apply the transformations found in `original` to `target`
         transformations_gen = get_transformations(transformations)
-        return word_regex.sub(lambda match_obj: next(transformations_gen)(match_obj.group(0)), target)
+        return self._reapply_whitespace(word_regex.sub(lambda match_obj: next(transformations_gen)(match_obj.group(0)), target))
+
+    def _reapply_whitespace(self, phrase: str):
+        """
+        Reapply whitespace formats before, after and within a phrase,
+        based on `self.start`, `self.end` and `self.spaces`
+        """
+        def get_spaces(spaces: list):
+            while True:
+                yield spaces[0]
+                if len(spaces) > 1:
+                    spaces = spaces[1:]
+
+        spaces_gen = get_spaces(self.spaces)
+
+        return self.start + re.sub(" ", lambda _: next(spaces_gen), phrase.strip()) + self.end

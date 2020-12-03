@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201201.180239
+VERSION = 20201202.194351
 
 def rei(regex):
     """
@@ -3028,7 +3028,6 @@ plural_convert_rules = {
     rei("(.*)yes$"): lambda match: f"{match.group(1)}ye",
     rei("(.*[au])es$"): lambda match: f"{match.group(1)}e",
     rei("(.*[^b])is$"): lambda match: f"{match.group(1)}i",
-    rei("(.*)sses$"): lambda match: f"{match.group(1)}ss",
     rei("(.*)ies$"): lambda match: f"{match.group(1)}y",
     rei("(.*)ys$"): lambda match: f"{match.group(1)}y",
     rei("(.*[^e])es$"): lambda match: f"{match.group(1)}e",
@@ -3131,9 +3130,7 @@ singular_convert_rules = {
     rei("(.*)ye$"): lambda match: f"{match.group(1)}yes",
     rei("(.*[au])e$"): lambda match: f"{match.group(1)}es",
     rei("(.*[^b])i$"): lambda match: f"{match.group(1)}is",
-    rei("(.*)ss$"): lambda match: f"{match.group(1)}sses",
     rei("(.*)y$"): lambda match: f"{match.group(1)}ies",
-    rei("(.*)y$"): lambda match: f"{match.group(1)}ys",
     rei("(.*[^e])e$"): lambda match: f"{match.group(1)}es",
     rei("(.*)er$"): lambda match: f"{match.group(1)}ers",
     rei("(.*[^s])$"): lambda match: f"{match.group(1)}s",
@@ -3291,12 +3288,10 @@ past_convert_rules = {
     rei("(.*)works$"): lambda match: f"{match.group(1)}worked",
     rei("(.*)work$"): lambda match: f"{match.group(1)}worked",
     rei("(.*)n't$"): lambda match: f"{match.group(1)}n't",
-    rei("(.*)n't$"): lambda match: f"{match.group(1)}n't",
     rei("(.*[aeiou])ys$"): lambda match: f"{match.group(1)}yed",
     rei("(.*[aeiou])y$"): lambda match: f"{match.group(1)}yed",
     rei("(.*[aiy])nxes$"): lambda match: f"{match.group(1)}nxed",
     rei("(.*[aiy])nx$"): lambda match: f"{match.group(1)}nxed",
-    rei("(.*)ceps$"): lambda match: f"{match.group(1)}cepsed",
     rei("(.*)ceps$"): lambda match: f"{match.group(1)}cepsed",
     rei("(.*[cs])hes$"): lambda match: f"{match.group(1)}hed",
     rei("(.*[cs])h$"): lambda match: f"{match.group(1)}hed",
@@ -3328,12 +3323,9 @@ past_convert_rules = {
     rei("(.*[au])e$"): lambda match: f"{match.group(1)}ed",
     rei("(.*[^b])is$"): lambda match: f"{match.group(1)}ied",
     rei("(.*[^b])i$"): lambda match: f"{match.group(1)}ied",
-    rei("(.*)sses$"): lambda match: f"{match.group(1)}ssed",
-    rei("(.*)ss$"): lambda match: f"{match.group(1)}ssed",
     rei("(.*)ies$"): lambda match: f"{match.group(1)}ied",
     rei("(.*)y$"): lambda match: f"{match.group(1)}ied",
     rei("(.*)ys$"): lambda match: f"{match.group(1)}yed",
-    rei("(.*)y$"): lambda match: f"{match.group(1)}yed",
     rei("(.*[^e])es$"): lambda match: f"{match.group(1)}ed",
     rei("(.*[^e])e$"): lambda match: f"{match.group(1)}ed",
     rei("(.*)ers$"): lambda match: f"{match.group(1)}ered",
@@ -3496,7 +3488,6 @@ pres_part_convert_rules = {
     rei("(.*[aiy])nxes$"): lambda match: f"{match.group(1)}nxing",
     rei("(.*[aiy])nx$"): lambda match: f"{match.group(1)}nxing",
     rei("(.*)ceps$"): lambda match: f"{match.group(1)}cepsing",
-    rei("(.*)ceps$"): lambda match: f"{match.group(1)}cepsing",
     rei("(.*[cs])hes$"): lambda match: f"{match.group(1)}hing",
     rei("(.*[cs])h$"): lambda match: f"{match.group(1)}hing",
     rei("(.*)oes$"): lambda match: f"{match.group(1)}oeing",
@@ -3527,12 +3518,9 @@ pres_part_convert_rules = {
     rei("(.*[au])e$"): lambda match: f"{match.group(1)}ing",
     rei("(.*[^b])is$"): lambda match: f"{match.group(1)}ing",
     rei("(.*[^b])i$"): lambda match: f"{match.group(1)}ing",
-    rei("(.*)sses$"): lambda match: f"{match.group(1)}ssing",
-    rei("(.*)ss$"): lambda match: f"{match.group(1)}ssing",
     rei("(.*)ies$"): lambda match: f"{match.group(1)}ying",
     rei("(.*)y$"): lambda match: f"{match.group(1)}ying",
     rei("(.*)ys$"): lambda match: f"{match.group(1)}ying",
-    rei("(.*)y$"): lambda match: f"{match.group(1)}ying",
     rei("(.*[^e])es$"): lambda match: f"{match.group(1)}ing",
     rei("(.*[^e])e$"): lambda match: f"{match.group(1)}ing",
     rei("(.*)ers$"): lambda match: f"{match.group(1)}ering",
@@ -3695,7 +3683,6 @@ past_part_convert_rules = {
     rei("(.*[aiy])nxes$"): lambda match: f"{match.group(1)}nxed",
     rei("(.*[aiy])nx$"): lambda match: f"{match.group(1)}nxed",
     rei("(.*)ceps$"): lambda match: f"{match.group(1)}cepsed",
-    rei("(.*)ceps$"): lambda match: f"{match.group(1)}cepsed",
     rei("(.*[cs])hes$"): lambda match: f"{match.group(1)}hed",
     rei("(.*[cs])h$"): lambda match: f"{match.group(1)}hed",
     rei("(.*)oes$"): lambda match: f"{match.group(1)}oed",
@@ -3726,12 +3713,9 @@ past_part_convert_rules = {
     rei("(.*[au])e$"): lambda match: f"{match.group(1)}ed",
     rei("(.*[^b])is$"): lambda match: f"{match.group(1)}ied",
     rei("(.*[^b])i$"): lambda match: f"{match.group(1)}ied",
-    rei("(.*)sses$"): lambda match: f"{match.group(1)}ssed",
-    rei("(.*)ss$"): lambda match: f"{match.group(1)}ssed",
     rei("(.*)ies$"): lambda match: f"{match.group(1)}ied",
     rei("(.*)y$"): lambda match: f"{match.group(1)}ied",
     rei("(.*)ys$"): lambda match: f"{match.group(1)}yed",
-    rei("(.*)y$"): lambda match: f"{match.group(1)}yed",
     rei("(.*[^e])es$"): lambda match: f"{match.group(1)}ed",
     rei("(.*[^e])e$"): lambda match: f"{match.group(1)}ed",
     rei("(.*)ers$"): lambda match: f"{match.group(1)}ered",
@@ -3833,7 +3817,6 @@ plural_recognize_rules = [
     rei("(.+)ye$"),
     rei("(.+[au])e$"),
     rei("(.+[^b])i$"),
-    rei("(.+)ss$"),
     rei("(.+)y$"),
     rei("(.+)y$"),
     rei("(.+[^e])e$"),
@@ -3936,9 +3919,7 @@ singular_recognize_rules = [
     rei("(.+)yes$"),
     rei("(.+[au])es$"),
     rei("(.+[^b])is$"),
-    rei("(.+)sses$"),
     rei("(.+)ies$"),
-    rei("(.+)ys$"),
     rei("(.+[^e])es$"),
     rei("(.+)ers$"),
     rei("(.+[^s])s$"),
@@ -4039,7 +4020,6 @@ past_recognize_rules = [
     rei("(.+)yed$"),
     rei("(.+[au])ed$"),
     rei("(.+[^b])ied$"),
-    rei("(.+)ssed$"),
     rei("(.+)ied$"),
     rei("(.+)yed$"),
     rei("(.+[^e])ed$"),
@@ -4140,7 +4120,6 @@ pres_part_recognize_rules = [
     rei("(.+)yeing$"),
     rei("(.+[au])ing$"),
     rei("(.+[^b])ing$"),
-    rei("(.+)ssing$"),
     rei("(.+)ying$"),
     rei("(.+)ying$"),
     rei("(.+[^e])ing$"),
@@ -4241,7 +4220,6 @@ past_part_recognize_rules = [
     rei("(.+)yed$"),
     rei("(.+[au])ed$"),
     rei("(.+[^b])ied$"),
-    rei("(.+)ssed$"),
     rei("(.+)ied$"),
     rei("(.+)yed$"),
     rei("(.+[^e])ed$"),
@@ -4249,18 +4227,20 @@ past_part_recognize_rules = [
 ]
 
 def known_plural(word):
-    return word in plural_of.values() or\
-        word in singular_of.keys() or\
-        word in past_of.values() or\
-        word in pres_part_of.values() or\
-        word in past_part_of.values()
+    lword = word.lower()
+    return lword in plural_of.values() or\
+        lword in singular_of.keys() or\
+        lword in past_of.values() or\
+        lword in pres_part_of.values() or\
+        lword in past_part_of.values()
 
 def known_singular(word):
-    return word in singular_of.values() or\
-        word in plural_of.keys() or\
-        word in past_of.values() or\
-        word in pres_part_of.values() or\
-        word in past_part_of.values()
+    lword = word.lower()
+    return lword in singular_of.values() or\
+        lword in plural_of.keys() or\
+        lword in past_of.values() or\
+        lword in pres_part_of.values() or\
+        lword in past_part_of.values()
 
 def known_past(word):
     return word in past_of.values()
@@ -4276,7 +4256,7 @@ def convert_to_plural(word):
         return plural_of[word]
     if word.lower() in plural_of:
         return plural_of[word.lower()]
-    if known_plural(word):
+    if is_plural(word):
         return word
     for rule in plural_convert_rules:
         match = rule.match(word)
@@ -4289,7 +4269,7 @@ def convert_to_singular(word):
         return singular_of[word]
     if word.lower() in singular_of:
         return singular_of[word.lower()]
-    if known_singular(word):
+    if is_singular(word):
         return word
     for rule in singular_convert_rules:
         match = rule.match(word)
@@ -4302,7 +4282,7 @@ def convert_to_past(word):
         return past_of[word]
     if word.lower() in past_of:
         return past_of[word.lower()]
-    if known_past(word):
+    if is_past(word):
         return word
     for rule in past_convert_rules:
         match = rule.match(word)
@@ -4315,7 +4295,7 @@ def convert_to_pres_part(word):
         return pres_part_of[word]
     if word.lower() in pres_part_of:
         return pres_part_of[word.lower()]
-    if known_pres_part(word):
+    if is_pres_part(word):
         return word
     for rule in pres_part_convert_rules:
         match = rule.match(word)
@@ -4328,7 +4308,7 @@ def convert_to_past_part(word):
         return past_part_of[word]
     if word.lower() in past_part_of:
         return past_part_of[word.lower()]
-    if known_past_part(word):
+    if is_past_part(word):
         return word
     for rule in past_part_convert_rules:
         match = rule.match(word)

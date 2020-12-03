@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import random
 import re
 import json
 from datetime import datetime
+import string
 from typing import List, Tuple, Optional
 
 """
@@ -160,21 +162,197 @@ class Reader(object):
         types = ["modern_plural", "classical_plural", "singular"]
         # self.patterns = {key:[] for key in types}
         # self.literals = {key:{} for key in types}
-        self.words = {
-            "plural": set(),
-            "singular": set()
-        }
+        self.words = set()
         self.fname = fname
 
     def get_readlines(self) -> List[str]:
         with open(self.fname, "r") as f:
             return f.readlines()
 
+    def gen_string(self, min_length, max_length):
+        return ''.join(random.choice(string.ascii_lowercase) for _ in range(random.randrange(min_length, max_length)))
+
     def parse_file(self):
         """
         Fill `pattern`, `literal` and `words`
         """
 
+        # Add conversions for possessives
+        """
+        self.patterns["modern_plural"].append({
+            "from": r"(.*?)'s?",
+            "to": "lambda match: convert_to_modern_plural(match.group(1)) + '\\'' if convert_to_modern_plural(match.group(1)).endswith('s') else convert_to_modern_plural(match.group(1)) + '\\'s'",
+            "conv_conditional": "lambda match: is_singular(match.group(1))",
+            "tag": ""
+        })
+        self.patterns["classical_plural"].append({
+            "from": r"(.*?)'s?",
+            "to": "lambda match: convert_to_classical_plural(match.group(1)) + '\\'' if convert_to_classical_plural(match.group(1)).endswith('s') else convert_to_classical_plural(match.group(1)) + '\\'s'",
+            "conv_conditional": "lambda match: is_singular(match.group(1))",
+            "tag": ""
+        })
+        self.patterns["singular"].append({
+            "from": r"(.*?)'s?",
+            "to": "lambda match: convert_to_singular(match.group(1)) + '\\'' if convert_to_singular(match.group(1)).endswith('s') else convert_to_singular(match.group(1)) + '\\'s'",
+            "conv_conditional": "lambda match: is_plural(match.group(1))",
+            "tag": ""
+        })
+        """
+
+        lines = self.get_readlines()
+        
+        for line in lines:
+            # Skip empty or comment lines
+            if COMMENT_LINE_PAT.match(line) or BLANK_LINE_PAT.match(line):
+                continue
+            
+            # Extract data
+            match = DATA_PAT.match(line)
+            if match:
+                noun = Noun(match)
+            else:
+                # TODO: Change exception
+                raise Exception("Unknown input:", line)
+            
+            if noun.sing.gen:
+                # If plus
+                prefixes = [self.gen_string(1, 3), self.gen_string(2, 5), self.gen_string(4, 6)]
+                restrict = ""
+                if noun.sing.gen == ".*":
+                    prefixes.append("")
+                if noun.sing.restrict:
+                    if noun.sing.restrict.startswith("[^"):
+                        restrict = random.choice(list(set(string.ascii_lowercase) - set(noun.sing.restrict)))
+                    else:
+                        restrict = random.choice(noun.sing.restrict[1:-1])
+                
+                for prefix in prefixes:
+                    self.words.add(f"{prefix}{restrict}{noun.sing.word}")
+                    self.words.add(f"{prefix}{restrict}{noun.plur_one.word}")
+                    if noun.plur_two.word:# and noun.plur_two.word != "_":
+                        self.words.add(f"{prefix}{restrict}{noun.plur_two.word}")
+
+            elif RECURSE.search(noun.sing.word):
+                # self.add_recurse_patterns(noun)
+
+                # if noun.has_hyphen():
+                    # noun.replace_hyphens(" ")
+                    # self.add_recurse_patterns(noun)
+
+                # TODO: Investigate this setting to 1
+                noun.plur_one.gen = 1
+            
+            if not noun.plur_one.gen:
+                self.add_words(noun)
+
+                if noun.has_hyphen():
+                    noun.replace_hyphens(" ")
+                    self.add_words(noun) 
+
+    def add_recurse_patterns(self, noun):
+        self.optionally_add_pattern(self.patterns["modern_plural"], {
+            **self.build_recursive(_from=noun.sing.word, 
+                                    to=noun.plur_one.word, 
+                                    from_type="singular", 
+                                    to_type="modern_plural"), 
+            **{"tag": noun.tag}
+        })
+        self.optionally_add_pattern(self.patterns["singular"], {
+            **self.build_recursive(_from=noun.plur_one.word, 
+                                    to=noun.sing.word, 
+                                    from_type="modern_plural", 
+                                    to_type="singular"), 
+            **{"tag": noun.tag}
+        })
+
+        if not noun.plur_two.word:
+            noun.plur_two = noun.plur_one
+        
+        self.optionally_add_pattern(self.patterns["classical_plural"], {
+            **self.build_recursive(_from=noun.sing.word, 
+                                    to=noun.plur_two.word, 
+                                    from_type="singular", 
+                                    to_type="classical_plural"), 
+            **{"tag": noun.tag}
+        })
+        self.optionally_add_pattern(self.patterns["singular"], {
+            **self.build_recursive(_from=noun.plur_two.word, 
+                                    to=noun.sing.word, 
+                                    from_type="classical_plural", 
+                                    to_type="singular"), 
+            **{"tag": noun.tag}
+        })
+
+    def optionally_add_pattern(self, collection, dict_to_add):
+        if dict_to_add["from"] not in (pattern["from"] for pattern in collection):
+            collection.append(dict_to_add)
+
+    def optionally_add_literal(self, collection, key, word):
+        # if key == "_" or word == "_":
+            # return
+        if key not in collection:
+            collection[key] = word
+
+    def add_words(self, noun):
+        self.words.add(noun.plur_one.word)
+        self.words.add(noun.plur_two.word)
+        self.words.add(noun.sing.word)
+
+    def build_recursive(self, _from: str, to: str, from_type: str, to_type: str):
+        check_conditional = ""
+        
+        def wrap(input_string: str) -> str:
+            return '{' + str(input_string) + '}'
+        
+        def irepl(match, input_string: str, replace: str) -> str:
+            """
+            Replace using indices from match
+            """
+            return input_string[:match.start()] + replace + input_string[match.end():]
+
+        n = 1
+        # Get list of match objects, right to left, for both _from and to
+        # This way we can use match indices to replace, rather than relying on substitutions
+        # which causes issues with * being both in the input and output
+        from_matches = list(RECURSE_GROUPED.finditer(_from))[::-1]
+        to_matches   = list(RECURSE_GROUPED.finditer(to))[::-1]
+        if len(from_matches) != len(to_matches):
+            # TODO: Write exception
+            raise Exception()
+
+        n = len(from_matches)
+        # Iterate over all matches right to left
+        for from_match, to_match in zip(from_matches, to_matches):
+            if from_match.group("star"):
+                _from = irepl(from_match, _from, r"(.*?)")
+                to    = irepl(to_match, to, wrap(f'match.group({n})'))
+            
+            elif from_match.group("sing"):
+                _from = irepl(from_match, _from, r"(.*?)")
+                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(match.group({n})) if is_singular(match.group({n})) else match.group({n})"))
+                if not check_conditional:
+                    check_conditional = f"lambda match: is_singular(match.group({n}))"
+
+            elif from_match.group("plur"):
+                _from = irepl(from_match, _from, r"(.*?)")
+                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(match.group({n})) if is_plural(match.group({n})) else match.group({n})"))
+                if not check_conditional:
+                    check_conditional = f"lambda match: is_plural(match.group({n}))"
+
+            elif from_match.group("prep"):
+                _from=irepl(from_match, _from, r"(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)")
+                to    = irepl(to_match, to, wrap(f'match.group({n})'))
+
+            n -= 1
+        
+        return {
+            "from": _from,
+            "to": f'lambda match: f"{to}"',
+            "check_conditional": check_conditional
+        }
+
+    """
+    def parse_file(self):
         lines = self.get_readlines()
 
         for line in lines:
@@ -203,9 +381,23 @@ class Reader(object):
         self.words["plural"].add(noun.plur_one.word)
         self.words["plural"].add(noun.plur_two.word)
         self.words["singular"].add(noun.sing.word)
+    """
 
+def get_cases(words):
+    final_words = words.copy()
+    prepositions = ["about", "above", "across", "after", "among", "around", "athwart", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "betwixt", "beyond", "but", "by", "during", "except", "for", "from", "into", "in", "near", "off", "of", "onto", "on", "out", "over", "since", "till", "to", "under", "until", "unto", "upon", "with"]
+    for word in words:
+        if not word:
+            continue
+        final_words.add(word.title())
+        final_words.add(word.upper())
+        final_words.add(word.lower())
+        final_words.add(''.join(random.choice((str.upper, str.lower))(c) for c in word))
+        final_words.add(f"{random.choice(prepositions)} {word}")
+    return final_words
 
 if __name__ == "__main__":
+    random.seed(0)
     in_fname = "lei//nouns.lei"
     out_fname = "inflexion//noun_core.py"
     out_import = "noun_core"
@@ -217,5 +409,5 @@ if __name__ == "__main__":
     words = {'oneselves', 'he', 'mine', 'whosesoever', 'she', 'we', 'these', 'whosoever', 'him', 'theirs', 'me', 'myself', 'this', "one's", 'those', 'herself', 'whom', 'it', 'ours', 'whomever', 'some', 'us', 'whomsoever', 'I', 'oneself', 'yourself', 'that', 'you', 'one', 'yourselves', 'whose', 'yours', 'hers', 'themselves', 'himself', 'her', 'who', 'ourselves', 'his', 'whosever', 'its', 'itself', 'they', 'them', 'whoever'}
 
     with open(f"compare/words/nouns.txt", "w+") as f:
-        words = {*words, *reader.words["plural"], *reader.words["singular"]}
+        words = get_cases(words.union(reader.words))
         f.write("\n".join(sorted(word for word in words if word)))

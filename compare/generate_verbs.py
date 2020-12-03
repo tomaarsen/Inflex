@@ -3,6 +3,8 @@
 
 import re
 import json
+import string
+import random
 from datetime import datetime
 from typing import List, Tuple, Optional
 
@@ -148,20 +150,18 @@ class Verb(object):
 
 class Reader(object):
     def __init__(self, fname: str):
-        types = ["plural", "singular", "past", "pres_part", "past_part"]
-        self.patterns = {key: [] for key in types}
-        self.literals = {key: {} for key in types}
-        self.words = {key: set() for key in types}
+        self.words = set()
         self.fname = fname
 
     def get_readlines(self) -> List[str]:
         with open(self.fname, "r") as f:
             return f.readlines()
 
+    """
     def parse_file(self):
-        """
+        ""
         Fill `pattern`, `literal` and `words`
-        """
+        ""
         lines = self.get_readlines()
 
         for line in lines:
@@ -201,9 +201,87 @@ class Reader(object):
 
         if verb.past.word:
             self.words["past_part"].add(verb.past.word)
+    """
+    def gen_string(self, min_length, max_length):
+        return ''.join(random.choice(string.ascii_lowercase) for _ in range(random.randrange(min_length, max_length)))
 
+    def parse_file(self):
+        """
+        Fill `pattern`, `literal` and `words`
+        """
+        lines = self.get_readlines()
+        
+        for line in lines:
+            # Skip empty or comment lines
+            if COMMENT_LINE_PAT.match(line) or BLANK_LINE_PAT.match(line):
+                continue
+            
+            # Extract data
+            match = DATA_PAT.match(line)
+            if match:
+                verb = Verb(match)
+            else:
+                # TODO: Change exception
+                raise Exception("Unknown input:", line)
+            
+            if verb.has_gen():
+                # If plus
+                prefixes = [self.gen_string(1, 3), self.gen_string(2, 5), self.gen_string(4, 6)]
+                restrict = ""
+                if verb.sing.gen == ".*":
+                    prefixes.append("")
+                if verb.sing.restrict:
+                    if verb.sing.restrict.startswith("[^"):
+                        restrict = random.choice(list(set(string.ascii_lowercase) - set(verb.sing.restrict)))
+                    else:
+                        restrict = random.choice(verb.sing.restrict[1:-1])
+                
+                for prefix in prefixes:
+                    self.words.add(f"{prefix}{restrict}{verb.plur.word}")
+                    self.words.add(f"{prefix}{restrict}{verb.sing.word}")
+                    if verb.pret.word != "_":
+                        self.words.add(f"{prefix}{restrict}{verb.pret.word}")
+                    if verb.pres.word != "_":
+                        self.words.add(f"{prefix}{restrict}{verb.pres.word}")
+                    if verb.past.word != "_":
+                        self.words.add(f"{prefix}{restrict}{verb.past.word}")
+            
+            if not (verb.sing.gen and verb.plur.gen and verb.pret.gen):
+                self.add_words(verb)
+
+                # If there is a hyphen in the singular verb, replace the hyphens
+                # in all verbs, and add those to the literals and words too
+                if "-" in verb.sing.word:
+                    verb.replace_hyphens(" ")
+                    self.add_words(verb)
+
+    def add_words(self, verb):
+        self.words.add(verb.sing.word)
+        self.words.add(verb.plur.word)
+
+        if verb.pret.word:
+            self.words.add(verb.pret.word)
+
+        if verb.pret_plur:
+            self.words.add(verb.pret_plur)
+
+        if verb.pres.word:
+            self.words.add(verb.pres.word)
+
+        if verb.past.word:
+            self.words.add(verb.past.word)
+
+def get_cases(words):
+    final_words = words.copy()
+    for word in words:
+        final_words.add(word.title())
+        final_words.add(word.upper())
+        final_words.add(word.lower())
+        final_words.add(''.join(random.choice((str.upper, str.lower))(c) for c in word))
+    return final_words
 
 if __name__ == "__main__":
+    random.seed(0)
     in_fname = "lei//verbs.lei"
     out_fname = "inflexion//verb_core.py"
     out_import = "verb_core"
@@ -211,6 +289,5 @@ if __name__ == "__main__":
     reader.parse_file()
 
     with open(f"compare/words/verbs.txt", "w+") as f:
-        words = {*reader.words["plural"], *reader.words["singular"], *
-                 reader.words["past"], *reader.words["pres_part"], *reader.words["past_part"]}
+        words = get_cases(reader.words)
         f.write("\n".join(sorted(word for word in words if word and word != "_")))

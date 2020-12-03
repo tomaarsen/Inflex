@@ -208,13 +208,13 @@ class Reader(object):
                 raise Exception("Unknown input:", line)
             
             if noun.sing.gen:
-                self.patterns["modern_plural"].append({ 
+                self.optionally_add_pattern(self.patterns["modern_plural"], { 
                     "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
                     "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_one.word}"', 
                     #"conditional": "lambda match: True",
                     "tag": noun.tag
                 })
-                self.patterns["singular"].append({ 
+                self.optionally_add_pattern(self.patterns["singular"], { 
                     "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
                     "to": 'lambda match: f"{match.group(1)}' + f'{noun.sing.word}"',
                     #"conditional": "lambda match: True",
@@ -222,20 +222,20 @@ class Reader(object):
                 })
 
                 if noun.plur_two.word:
-                    self.patterns["classical_plural"].append({ 
+                    self.optionally_add_pattern(self.patterns["classical_plural"], { 
                         "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
                         "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_two.word}"', 
                         #"conditional": "lambda match: True",
                         "tag": noun.tag 
                     })
-                    self.patterns["singular"].append({ 
+                    self.optionally_add_pattern(self.patterns["singular"], { 
                         "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
                         "to": 'lambda match: f"{match.group(1)}' + f'{noun.sing.word}"', 
                         #"conditional": "lambda match: True",
                         "tag": noun.tag 
                     })
                 else:
-                    self.patterns["classical_plural"].append({ 
+                    self.optionally_add_pattern(self.patterns["classical_plural"], { 
                         "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
                         "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_one.word}"', 
                         #"conditional": "lambda match: True",
@@ -262,14 +262,14 @@ class Reader(object):
                     self.add_words(noun) 
 
     def add_recurse_patterns(self, noun):
-        self.patterns["modern_plural"].append({
+        self.optionally_add_pattern(self.patterns["modern_plural"], {
             **self.build_recursive(_from=noun.sing.word, 
                                     to=noun.plur_one.word, 
                                     from_type="singular", 
                                     to_type="modern_plural"), 
             **{"tag": noun.tag}
         })
-        self.patterns["singular"].append({
+        self.optionally_add_pattern(self.patterns["singular"], {
             **self.build_recursive(_from=noun.plur_one.word, 
                                     to=noun.sing.word, 
                                     from_type="modern_plural", 
@@ -280,14 +280,14 @@ class Reader(object):
         if not noun.plur_two.word:
             noun.plur_two = noun.plur_one
         
-        self.patterns["classical_plural"].append({
+        self.optionally_add_pattern(self.patterns["classical_plural"], {
             **self.build_recursive(_from=noun.sing.word, 
                                     to=noun.plur_two.word, 
                                     from_type="singular", 
                                     to_type="classical_plural"), 
             **{"tag": noun.tag}
         })
-        self.patterns["singular"].append({
+        self.optionally_add_pattern(self.patterns["singular"], {
             **self.build_recursive(_from=noun.plur_two.word, 
                                     to=noun.sing.word, 
                                     from_type="classical_plural", 
@@ -295,7 +295,11 @@ class Reader(object):
             **{"tag": noun.tag}
         })
 
-    def optionally_add(self, collection, key, word):
+    def optionally_add_pattern(self, collection, dict_to_add):
+        if dict_to_add["from"] not in (pattern["from"] for pattern in collection):
+            collection.append(dict_to_add)
+
+    def optionally_add_literal(self, collection, key, word):
         # if key == "_" or word == "_":
             # return
         if key not in collection:
@@ -305,10 +309,10 @@ class Reader(object):
         if not noun.plur_two.word:
             noun.plur_two = noun.plur_one
 
-        self.optionally_add(self.literals["modern_plural"], noun.sing.word, noun.plur_one.word)
-        self.optionally_add(self.literals["classical_plural"],noun.sing.word, noun.plur_two.word)
-        self.optionally_add(self.literals["singular"],noun.plur_one.word, noun.sing.word)
-        self.optionally_add(self.literals["singular"],noun.plur_two.word, noun.sing.word)
+        self.optionally_add_literal(self.literals["modern_plural"], noun.sing.word, noun.plur_one.word)
+        self.optionally_add_literal(self.literals["classical_plural"],noun.sing.word, noun.plur_two.word)
+        self.optionally_add_literal(self.literals["singular"],noun.plur_one.word, noun.sing.word)
+        self.optionally_add_literal(self.literals["singular"],noun.plur_two.word, noun.sing.word)
 
     def add_words(self, noun):
         self.words["plural"].add(noun.plur_one.word)
@@ -454,7 +458,7 @@ def known_singular(word):
 
     def get_converter_output(self, name, replacement_suffixes):
         _type = "plural" if "plural" in name else "singular"
-        _extra_check = " and not known_singular(word)" if _type == "plural" else ""
+        _extra_check = " and not is_singular(word)" if _type == "plural" else ""
 
         output = f"""def convert_to_{name}(word, verbose=False):
     if word in {name}_of:
@@ -463,8 +467,8 @@ def known_singular(word):
     if word.lower() in {name}_of:
         if verbose: print(word.lower(), 'in {name}_of')
         return {name}_of[word.lower()]
-    if known_{_type}(word){_extra_check}:
-        if verbose: print('known_{_type}(word){_extra_check}')
+    if is_{_type}(word){_extra_check}:
+        if verbose: print('is_{_type}(word){_extra_check}')
         return word
     for rule in {name}_convert_rules:
         match = rule.match(word)
@@ -521,7 +525,8 @@ def known_singular(word):
         if name == "singular":
             output += "\n    return not is_plural(word)"
         else:
-            output += "\n    return word.strip().endswith('s')"
+            # TODO: Consider stripping before checking endswith
+            output += "\n    return word.endswith('s')"
         return output
 
 class NounTestWriter(TestWriter):

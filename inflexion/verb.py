@@ -50,12 +50,12 @@ class Verb(Term):
         return is_plural(self.term)
 
     def singular(self, person:Optional[int] = 0) -> str:
-        # TODO: Whitespace and capitalisation
+        # TODO: Ensure valid person
 
         # "To be" is special
-        if self.term in ["is", "am", "are"]:
+        if self.term.lower() in ["is", "am", "are"]:
             if person == 0:
-                return self.term
+                return self._reapply_whitespace(self.term)
             if person == 2 or not self.is_singular():
                 return self._encase("are")
             if person == 1:
@@ -67,7 +67,7 @@ class Verb(Term):
             known = convert_to_singular(self.term)
             if known != "_":
                 return self._encase(known)
-            return self.term
+            return self._reapply_whitespace(self.term)
 
         # First and second person always use the uninflected (i.e. "notational plural" form)
         return self.plural()
@@ -77,14 +77,14 @@ class Verb(Term):
         known = convert_to_plural(self.term)
         if known != "_":
             return self._encase(known)
-        return self.term
+        return self._reapply_whitespace(self.term)
     
     def as_regex(self) -> re.Pattern:
-        return re.compile("|".join(sorted({self.singular(),
-                                           self.plural(),
-                                           self.past(),
-                                           self.past_part(),
-                                           self.classical().pres_part()}, reverse=True)), flags=re.I)
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(),
+                                                          self.plural(),
+                                                          self.past(),
+                                                          self.past_part(),
+                                                          self.classical().pres_part()}), reverse=True)), flags=re.I)
 
     """
     Methods exclusively for Verb
@@ -118,11 +118,11 @@ class Verb(Term):
     def pres_part(self) -> str:
         # Problems: "using" -> "usinging"
         root = self.plural()
-        known = convert_to_pres_part(self.term)
+        # known = convert_to_pres_part(self.term)
         # print(f"Known pres_part of term: {known}")
-        if known == "_":
-            known = convert_to_pres_part(root)
-            # print(f"Known pres_part of root: {known}")
+        # if known == "_":
+        known = convert_to_pres_part(root)
+        # print(f"Known pres_part of root: {known}")
 
         # Otherwise use the standard pattern
         if known == "_":
@@ -134,11 +134,11 @@ class Verb(Term):
     def past_part(self) -> str:
         # Problems: "using" -> "usinged"
         root = self.plural()
-        known = convert_to_past_part(self.term)
+        # known = convert_to_past_part(self.term)
         # print(f"Known past_part of term: {known}")
-        if known == "_":
-            known = convert_to_past_part(root)
-            # print(f"Known past_part of root: {known}")
+        # if known == "_":
+        known = convert_to_past_part(root)
+        # print(f"Known past_part of root: {known}")
 
         # Otherwise use the standard pattern
         if known == "_":
