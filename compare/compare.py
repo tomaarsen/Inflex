@@ -1,9 +1,9 @@
 import glob
 #['compare\\perl_output\\nouns\\classical\\plural.txt']:#
-with open("compare\\words\\verbs.txt") as words_file:
+with open("compare\\words\\nouns.txt") as words_file:
     words = words_file.read().split("\n")
     for perl_file_path in glob.glob("compare\\perl_output\\*\\*\\*.txt"):
-        # if "nouns" in perl_file_path:
+        # if "nouns" not in perl_file_path:
             # continue
         python_file_path = perl_file_path.replace("perl_output", "python_output")
         with open(perl_file_path, "r") as perl_file:

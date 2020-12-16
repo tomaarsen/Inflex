@@ -98,7 +98,7 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
+.env*
 .venv
 env/
 venv/
@@ -130,3 +130,7 @@ dmypy.json
 scripts
 # For now keep folder with several kinds of nouns ignored
 sample_nouns
+# Keep some of the testing separate for now
+celex
+# Ignore some log files used
+logs

@@ -553,7 +553,7 @@ Agvvcraft
 AiDes-de-Camp
 aides-de-camp
 Aides De Camp
-aides-de-camp
+Aides-De-Camp
 Aides De Camp
 Aides-De-Camp
 Ajus
@@ -577,7 +577,7 @@ Albinos
 Albinos
 Ale Wives
 Ale Wives
-ale-wives
+Ale-Wives
 Ale-Wives
 Alfurese
 Algae
@@ -600,7 +600,7 @@ Alti
 Altos
 Alto Relievos
 Alto Relievos
-alto-relievos
+Alto-Relievos
 Alto-Relievos
 altorelievos
 Altorelievos
@@ -700,7 +700,7 @@ Anti Sera
 Anti Serums
 Anti Serums
 Anti-Sera
-anti-serums
+Anti-Serums
 Anti-Serums
 AntiFixes
 Antifixes
@@ -830,7 +830,7 @@ Auspices
 Autos
 Auto De Fes
 Auto De Fes
-auto-de-fes
+Auto-De-Fes
 Auto-De-Fes
 AutoStrADE
 Autobahns
@@ -970,7 +970,7 @@ BEERENAUSLESEN
 BEEVES
 BEAUX ESPRITS
 BEAUX HOMMES
-BEAUX ESPRITS
+BEAUX-ESPRITS
 BELLE EPOQUES
 BELLE EPOQUES
 BELLES EPOQUES
@@ -1288,7 +1288,7 @@ Beerenauslesen
 Beeves
 Beaux Esprits
 Beaux Hommes
-beaux esprits
+Beaux-Esprits
 Belle Epoques
 Belle Epoques
 Belles Epoques
@@ -1419,7 +1419,7 @@ Bravoes
 Bravos
 Break Aways
 Break Aways
-break-aways
+Break-Aways
 Break-Aways
 BreakaWAYs
 Breakaways
@@ -1444,7 +1444,7 @@ Bronchitises
 Bronchi
 Brothers
 Brothers German
-brothers-german
+Brothers-German
 Brothers
 Brothers German
 Brothers-German
@@ -1936,9 +1936,9 @@ COSMOSES
 COSTAE
 COSTAE
 COUPS D'ETAT
-COUPS d'etat
+COUPS D'etat
 COUPS D'ETAT
-COURT-MARTIALS
+COURT MARTIALS
 COURT MARTIALS
 COURT-MARTIALS
 COURT-MARTIALS
@@ -1968,7 +1968,7 @@ corps
 COrpORA
 corpuses
 COurT-marTiALS
-court-martials
+court martials
 coxendices
 CRAFT
 CRAFTS CHILDER
@@ -2016,7 +2016,7 @@ CULS de four
 CULS-DE-FOUR
 CULS-DE-LAMPE
 CULS-DE-SAC
-culs-de-lampe
+CULS-de-lampe
 CULS DE FOUR
 CULS DE LAMPE
 CULS DE SAC
@@ -2190,7 +2190,7 @@ Carmens
 Carmina
 Carp
 Cartes De Visite
-cartes-de-visite
+Cartes-De-Visite
 Cartes De Visite
 Cartes-De-Visite
 Caryatids
@@ -2281,7 +2281,7 @@ Chervontzi
 Chervontzi
 Chevaux
 Chevaux De Bataille
-chevaux-de-bataille
+Chevaux-De-Bataille
 Chevaux
 Chevaux De Bataille
 Chevaux-De-Bataille
@@ -2510,11 +2510,11 @@ Cosmoses
 Cosmoses
 Costae
 Costae
-Coups d'etat
 Coups D'Etat
-Court-martials
+Coups D'Etat
 Court Martials
-court-martials
+Court Martials
+Court-Martials
 Court-Martials
 Courts Martial
 Courts-Martial
@@ -2534,7 +2534,7 @@ CraSpEDa
 Craft
 Crafts Childer
 Crafts Childer
-crafts-childer
+Crafts-Childer
 Crafts-Childer
 Crania
 Craniums
@@ -2573,9 +2573,9 @@ Cubicula
 Culs De Four
 Culs De Lampe
 Culs De Sac
-culs-de-four
-culs-de-lampe
-culs-de-sac
+Culs-De-Four
+Culs-De-Lampe
+Culs-De-Sac
 CulS dE LamPE
 Culs De Four
 Culs De Lampe
@@ -3677,7 +3677,7 @@ Feiseanna
 FelOnES-de-sE
 Felones
 Felos De Se
-felos-de-se
+Felos-De-Se
 Felones
 Felones De Se
 Felones-De-Se
@@ -3731,7 +3731,7 @@ FinGERs EndS
 finger-ends
 Finger Ends
 Finger Ends
-finger-ends
+Finger-Ends
 Finger-Ends
 Fingers Ends
 Fingers-Ends
@@ -3752,7 +3752,7 @@ Flabella
 Flag Staffs
 Flag Staffs
 Flag Staves
-flag-staffs
+Flag-Staffs
 Flag-Staffs
 Flag-Staves
 Flag-stAffs
@@ -3815,7 +3815,7 @@ Fraena
 Fraena
 Franc Archers
 Franc Archers
-franc-archers
+Franc-Archers
 Franc-Archers
 Francs Archers
 Francs-Archers
@@ -4272,7 +4272,7 @@ Gutti
 Gutti
 Guys
 Guys
-Gv-oxen
+Gv-Oxen
 Gv-Oxen
 GyBzSHelves
 GyMnOtI
@@ -4588,7 +4588,7 @@ Hemerae
 Hemi Elytra
 Hemi Elytra
 Hemi-Elytra
-hemi-elytra
+Hemi-Elytra
 Them
 hertz
 Hernias
@@ -5846,7 +5846,7 @@ Linctuses
 Linctuses
 Line Outs
 Line Outs
-line-outs
+Line-Outs
 Line-Outs
 Lineae
 Lineae
@@ -5932,7 +5932,7 @@ LorD-LIEUTenaNts
 Lora
 Lord Lieutenants
 Lord Lieutenants
-lord-lieutenants
+Lord-Lieutenants
 Lord-Lieutenants
 LordS LIeuTEnAnT
 Lords Lieutenant
@@ -6615,11 +6615,11 @@ Men Midwives
 Man Milliners
 Man Milliners
 Men Servants
-men-children
-men-midwives
-man-milliners
+Men-Children
+Men-Midwives
 Man-Milliners
-men-servants
+Man-Milliners
+Men-Servants
 manteaus
 Menchildren
 Mangos
@@ -6815,7 +6815,7 @@ Mezuzoth
 Mezuzoth
 Mezzo Rilievos
 Mezzo Rilievos
-mezzo-rilievos
+Mezzo-Rilievos
 Mezzo-Rilievos
 Mfuses
 Mfuses
@@ -7360,7 +7360,7 @@ Noemata
 Nomismata
 Nomismata
 Nonentia
-nonentia
+Nonentia
 Nonentia
 Normans
 Normans
@@ -7655,7 +7655,7 @@ Onagers
 Onagers
 Onagri
 Some
-theirs
+Theirs
 Oneselves
 Oneselves
 ophiophagi
@@ -8990,7 +8990,7 @@ Porrones
 Porrons
 Puirt A Beul
 Ports De Bras
-puirt-a-beul
+Puirt-A-Beul
 Porticos
 Porticoes
 Porticos
@@ -9367,7 +9367,7 @@ Quinquennia
 Quinquennia
 Quitos
 Quitos
-Qz-oxen
+Qz-Oxen
 Qz-Oxen
 Qz-oxen
 QzGBbasses
@@ -10143,7 +10143,7 @@ SET-OFFS
 SET-OFFS
 SET-OUTS
 SET-OUTS
-set-outs
+SET-outs
 SET-TOS
 SET-TOS
 SET-outS
@@ -11089,11 +11089,11 @@ Set Outs
 Set Outs
 Set Tos
 Set Tos
-set-offs
 Set-Offs
-set-outs
+Set-Offs
 Set-Outs
-set-tos
+Set-Outs
+Set-Tos
 Set-Tos
 Set-oFFs
 Setae
@@ -11206,7 +11206,7 @@ Sinuses
 Sinuses
 SioPV-oxen
 SiopV-OXEN
-Siopv-oxen
+Siopv-Oxen
 Siopv-Oxen
 Siphunculi
 Siphunculi
@@ -11434,7 +11434,7 @@ Staphylococci
 Staphylococci
 Star Fishes
 Star Fishes
-star-fishes
+Star-Fishes
 Star-Fishes
 Startsy
 Startzy
@@ -11620,7 +11620,7 @@ Sulci
 Sulci
 Sum Totals
 Sum Totals
-sum-totals
+Sum-Totals
 Sum-Totals
 SumMA GENerA
 SumMAe
@@ -12425,7 +12425,7 @@ Tetanothra
 Tetanothra
 Tete A Tetes
 Tete A Tetes
-tete-a-tetes
+Tete-A-Tetes
 Tete-A-Tetes
 tetracola
 Tetracola
@@ -13502,7 +13502,7 @@ Wanderjahre
 Wanderjahre
 Wandervogel
 Washers Up
-washers-up
+Washers-Up
 Washers Up
 Washers-Up
 Wclux
@@ -13556,8 +13556,8 @@ womenchildren
 women servants
 Women Children
 Women Servants
-women-children
-women-servants
+Women-Children
+Women-Servants
 Womenchildren
 Women Children
 Women Servants
@@ -13768,8 +13768,8 @@ Ynstaves
 Yoes
 Yo Yos
 Yo Yos
-yo-yos
-yo-yos
+Yo-YOS
+Yo-Yos
 Yo-Yos
 Yoes
 Yoes
@@ -15309,7 +15309,7 @@ at auto de fes
 at axopodia
 at basses
 at beerenauslesen
-at beaux esprits
+at beaux-esprits
 at bflegomena
 at bisons
 at bratwursts
@@ -15665,7 +15665,7 @@ bAsSOs
 bbacilli
 bEEfS
 beerenauslesen
-beaux esprits
+beaux-esprits
 bechuanas
 bElleS EpoQUes
 bEmAS
@@ -16097,7 +16097,7 @@ behind yuon
 behind zoeae
 beaux esprits
 beaux hommes
-beaux esprits
+beaux-esprits
 belle epoques
 belle epoques
 belles epoques
@@ -17693,7 +17693,7 @@ cRedos
 cRiS De COeUR
 cRoWfOoTS
 crustae
-culs-de-four
+culs-De-four
 culs-de-sac
 cULS-De-LAMpe
 cUniCuLI
@@ -17902,7 +17902,7 @@ chassis
 chateaux
 chateaus
 chateaux
-chevaux-de-bataille
+chevaux-DE-bataille
 chertz
 cherubs
 cherubim
@@ -18158,7 +18158,7 @@ costae
 couPS d'eTat
 coups d'etat
 coups d'etat
-court-martials
+court martials
 court martials
 court-martials
 court-martials
@@ -19086,7 +19086,7 @@ fess
 feiseanna
 felones
 felos de se
-felos-de-se
+felos-DE-se
 felos-de-se
 felones
 felones de se
@@ -19808,7 +19808,7 @@ gutti
 guys
 guyS
 guys
-gv-oxen
+gv-Oxen
 gv-OxEn
 gv-oxen
 gv-oxen
@@ -22392,7 +22392,7 @@ off cinclides
 off codices
 off contrafacta
 off coups d'etat
-off court-martials
+off court martials
 off courts martial
 off crustae
 off cystomata
@@ -23267,7 +23267,7 @@ pOLlIcEs
 pOLonESes
 porcini
 pORCini
-puirt-a-beul
+puirt-A-beul
 pox
 pOlItiCoEs
 pOliTicoS
@@ -24910,8 +24910,8 @@ set outs
 set outs
 set tos
 set tos
-set-offs
-set-tos
+set-OFFS
+set-Tos
 set-offs
 set-offs
 set-outs
@@ -25979,7 +25979,7 @@ tetanothra
 tetanothra
 tete a tetes
 tete a tetes
-tete-a-tetes
+tete-A-tetes
 tete-a-tetes
 tete-a-tetes
 tetrAcOlA
@@ -27573,7 +27573,7 @@ wIEioS
 wildebeests
 wMloaves
 wOMen ChIldreN
-women-children
+women-Children
 wRvmcOWs
 wSHeLVEs
 wXDaTa

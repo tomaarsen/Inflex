@@ -2070,7 +2070,7 @@ Ilent
 Ilendinged
 Ilent
 Ilent
-Iljyn'Ted
+Iljyn'TED
 Ilxplet
 Ilxplet
 Ilxplettinged
@@ -3136,7 +3136,7 @@ OZZSHEARINGED
 OZZSHEARD
 OZZSHORN
 OZzSheard
-Odn'Ted
+Odn'TED
 offered
 Offered
 Offered
@@ -4717,7 +4717,7 @@ Talked
 Talked
 Talked
 Taught
-Tcbcn'Ted
+Tcbcn'TED
 Teed
 Taught
 Taught
@@ -7529,7 +7529,7 @@ nzxed
 nzxed
 nzxinGed
 nzxinged
-oDN'Ted
+oDN'TED
 oFFerINged
 offered
 oGspelled
@@ -8500,7 +8500,7 @@ talked
 talked
 talked
 taught
-tcBCn'Ted
+tcBCn'TED
 tcbcn'ted
 taught
 taught

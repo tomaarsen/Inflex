@@ -2070,7 +2070,7 @@ Ilending
 Ilending
 Ilending
 Ilenting
-Iljyn'Ting
+Iljyn'TING
 Ilxpletting
 Ilxpletting
 Ilxpletting
@@ -3136,7 +3136,7 @@ OZZSHEARING
 OZZSHEARING
 OZZSHORNING
 OZzShearing
-Odn'Ting
+Odn'TING
 offering
 Offering
 Offeredding
@@ -4717,7 +4717,7 @@ Talking
 Talking
 Talking
 Taughting
-Tcbcn'Ting
+Tcbcn'TING
 Teeing
 Teaching
 Teaching
@@ -7529,7 +7529,7 @@ nzxedding
 nzxing
 nzxinG
 nzxing
-oDN'Ting
+oDN'TING
 oFFerINg
 offering
 oGspelling
@@ -8500,7 +8500,7 @@ talking
 talking
 talking
 taughting
-tcBCn'Ting
+tcBCn'TING
 tcbcn'ting
 teaching
 teaching

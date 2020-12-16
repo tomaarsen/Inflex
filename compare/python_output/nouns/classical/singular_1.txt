@@ -405,7 +405,7 @@ AUTo
 AUTo-dE-fE
 auslese
 auspex
-auto-de-fe
+auto-DE-fe
 autobahn
 autochthon
 auto de fe
@@ -550,12 +550,12 @@ Agora
 Agrogorod
 Agrogorod
 Agvvcraft
-aide-de-camp
+aide-de-Camp
 AidE-de-cAMP
 Aide De Camp
 Aide-De-Camp
 Aide De Camp
-aide-de-camp
+Aide-De-Camp
 Aju
 Ajus
 AlE-WIfE
@@ -578,7 +578,7 @@ Albino
 Ale Wife
 Ale Wife
 Ale-Wife
-ale-wife
+Ale-Wife
 Alfurese
 Alga
 Alga
@@ -601,7 +601,7 @@ Alto
 Alto Relievo
 Alto Relievo
 Alto-Relievo
-alto-relievo
+Alto-Relievo
 AltorelIEVO
 Altorelievo
 Altorelievo
@@ -699,9 +699,9 @@ Anthodium
 Anti Serum
 Anti Serum
 Anti Serum
-anti-serum
 Anti-Serum
-anti-serum
+Anti-Serum
+Anti-Serum
 antefix
 Antefix
 Antiserum
@@ -815,7 +815,7 @@ Atman
 Atman
 aurora
 AuSLESE
-auto-de-fe
+auto-De-fe
 Aureus
 Aureus
 Aurora
@@ -831,7 +831,7 @@ Auto
 Auto De Fe
 Auto De Fe
 Auto-De-Fe
-auto-de-fe
+Auto-De-Fe
 autostrada
 Autobahn
 Autobahn
@@ -841,7 +841,7 @@ Autochthon
 Autochthon
 Auto
 Auto De Fe
-auto-de-fe
+Auto-De-Fe
 Autostrada
 Autostrada
 Autostrada
@@ -957,7 +957,7 @@ BEAU GESTE
 BEAU geSte
 BEAU
 BEAU
-BEL-ESPRIT
+BEL ESPRIT
 BEAU GESTE
 BEL HOMME
 beau geste
@@ -1276,7 +1276,7 @@ Beau Geste
 Beau Geste
 Beau
 Beau
-Bel-esprit
+Bel Esprit
 Beau Geste
 Bel Homme
 Bechuana
@@ -1420,12 +1420,12 @@ Bravo
 Break Away
 Break Away
 Break-Away
-break-away
+Break-Away
 breakaway
 Breakaway
 Breakaway
 Break Away
-break-away
+Break-Away
 Breakaway
 Bream
 Breech
@@ -1434,7 +1434,7 @@ Bregma
 Bregma
 Brother
 Brother German
-brother-german
+Brother-German
 Brigadier General
 Brigadier General
 Britches
@@ -1447,7 +1447,7 @@ Brother German
 Brother-German
 Brother
 Brother German
-brother-german
+Brother-German
 Bruschetta
 Bruschetta
 Bshoof
@@ -1941,7 +1941,7 @@ COUP D'ETAT
 COURT MARTIAL
 COURT MARTIAL
 COURT-MARTIAL
-COURT MARTIAL
+COURT-MARTIAL
 COURT MARTIAL
 COURT-MARTIAL
 COW
@@ -1967,7 +1967,7 @@ COnoSCENtE
 corps
 corpus
 COrpUS
-court martial
+court-martial
 COurt MARTiaL
 COxEndIx
 CRAFT
@@ -2088,7 +2088,7 @@ calypso
 CaNAlIcuLus
 CaNZOnETTa
 carabiniere
-carte-de-visite
+carte-DE-visite
 carmen
 CaSInO
 castrato
@@ -2192,7 +2192,7 @@ Carp
 Carte De Visite
 Carte-De-Visite
 Carte De Visite
-carte-de-visite
+Carte-De-Visite
 Caryatid
 Caryatid
 Caryatid
@@ -2284,7 +2284,7 @@ Cheval De Bataille
 Cheval-De-Bataille
 Cheval
 Cheval De Bataille
-cheval-de-bataille
+Cheval-De-Bataille
 Chicago
 Chicago
 Child
@@ -2511,13 +2511,13 @@ Cosmos
 Costa
 Costa
 Coup D'Etat
-Coup d'etat
+Coup D'Etat
 Court Martial
 Court Martial
 Court-Martial
-court martial
+Court-Martial
 Court Martial
-court-martial
+Court-Martial
 Cow
 Cow
 Coxendix
@@ -2535,7 +2535,7 @@ Craft
 Crafts Child
 Crafts Child
 Crafts-Child
-crafts-child
+Crafts-Child
 Cranium
 Cranium
 Cranium
@@ -2580,10 +2580,10 @@ cul de lampe
 Cul De Four
 Cul De Lampe
 Cul De Sac
-cul-de-four
-cul-de-lampe
-cul-de-sac
-cul-de-four
+Cul-De-Four
+Cul-De-Lampe
+Cul-De-Sac
+Cul-de-four
 Cultellus
 Cultellus
 Cumulus
@@ -3495,7 +3495,7 @@ FLAG STAFF
 FLAG-STAFF
 FLAG-STAFF
 FLAG-STAFF
-flag-staff
+FLAG-staff
 FLAGELLUM
 FLAGELLUM
 FLAMENCO
@@ -3680,9 +3680,9 @@ Felo De Se
 Felo-De-Se
 Felo
 Felo De Se
-felo-de-se
+Felo-De-Se
 Felo De Se
-felo-de-se
+Felo-De-Se
 Felsenmeer
 Felsenmeer
 femur
@@ -3732,9 +3732,9 @@ FinGeR-ENd
 Finger End
 Finger End
 Finger-End
-finger-end
+Finger-End
 Finger End
-finger-end
+Finger-End
 Fioritura
 Fioritura
 Fish
@@ -3753,9 +3753,9 @@ Flag Staff
 Flag Staff
 Flag Staff
 Flag-Staff
-flag-staff
-flag-staff
-flag-staff
+Flag-Staff
+Flag-Staff
+Flag-staff
 Flagellum
 Flagellum
 Flamenco
@@ -3816,9 +3816,9 @@ Fraenum
 Franc Archer
 Franc Archer
 Franc-Archer
-franc-archer
+Franc-Archer
 Franc Archer
-franc-archer
+Franc-Archer
 Frate
 Frate
 frenum
@@ -4273,7 +4273,7 @@ Guttus
 Guy
 Guy
 Gv-Ox
-Gv-ox
+Gv-Ox
 GyBzSHelf
 gymnotus
 GyRuS
@@ -4587,7 +4587,7 @@ Hemera
 Hemera
 Hemi Elytrum
 Hemi Elytrum
-hemi-elytrum
+Hemi-Elytrum
 Hemi-Elytrum
 Me
 hertz
@@ -5847,14 +5847,14 @@ Linctus
 Line Out
 Line Out
 Line-Out
-line-out
+Line-Out
 Linea
 Linea
 Lineno
 Lineno
 Line Out
-line-out
-line-out
+Line-Out
+Line-out
 Lingo
 Lingo
 Lingula
@@ -5933,10 +5933,10 @@ Lorum
 Lord Lieutenant
 Lord Lieutenant
 Lord-Lieutenant
-lord-lieutenant
+Lord-Lieutenant
 lord lieutenant
 Lord Lieutenant
-lord-lieutenant
+Lord-Lieutenant
 Lorrainese
 Lorum
 Louis
@@ -6203,7 +6203,7 @@ MAN SERVANT
 MAN-CHILD
 MAN-MIDWIFE
 MAN-MILLINER
-man-midwife
+MAN-midwife
 MAN-SERVANT
 MENAGE A QUATRE
 MENAGE A TROIS
@@ -6618,7 +6618,7 @@ Man Servant
 Man-Child
 Man-Midwife
 Man-Milliner
-man-milliner
+Man-Milliner
 Man-Servant
 ManTEAU
 Manchild
@@ -6754,10 +6754,10 @@ Man Midwife
 Man Milliner
 Man Servant
 Man milliner
-man-child
-man-midwife
-man-milliner
-man-servant
+Man-Child
+Man-Midwife
+Man-Milliner
+Man-Servant
 Menage A Quatre
 Menage A Trois
 Menage A Quatre
@@ -6816,7 +6816,7 @@ Mezuza
 Mezzo Rilievo
 Mezzo Rilievo
 Mezzo-Rilievo
-mezzo-rilievo
+Mezzo-Rilievo
 MfUS
 Mfus
 Mfusis
@@ -7185,7 +7185,7 @@ NOMISMA
 NOMiSma
 NON ENS
 NON-ENS
-NON-ENS
+NON ENS
 NORMAN
 NORMANS
 NOUMENON
@@ -7361,7 +7361,7 @@ Nomisma
 Nomisma
 Non Ens
 Non-Ens
-Non-ens
+Non Ens
 Norman
 Norman
 Noumenon
@@ -7655,7 +7655,7 @@ Onager
 Onager
 Onager
 I
-mine
+Mine
 Myself
 Myself
 OpHIOPhAGUS
@@ -9193,12 +9193,12 @@ Pteropus
 PterylA
 Pteryla
 Pteryla
-port-a-beul
+port-A-beul
 PuNTo blaNcO
 Pueblo
 Pueblo
 Port A Beul
-port-a-beul
+Port-A-Beul
 Pul
 Pul
 Pullus
@@ -9368,7 +9368,7 @@ Quinquennium
 Quito
 Quito
 Qz-Ox
-Qz-ox
+Qz-Ox
 Qz-oX
 QzGBbASS
 Qzgbbass
@@ -10146,7 +10146,7 @@ SET-OUT
 SET-OUt
 SET-TO
 SET-TO
-set-out
+SET-out
 SETA
 SETA
 SET OFF
@@ -10984,7 +10984,7 @@ SeRPiGo
 serpigo
 sestiere
 set off
-set-to
+set-To
 SeZEssiON
 Seaquarium
 Seaquarium
@@ -11090,12 +11090,12 @@ Set Out
 Set To
 Set To
 Set-Off
-set-off
+Set-Off
 Set-Out
-set-out
+Set-Out
 Set-To
-set-to
-set-off
+Set-To
+Set-off
 Seta
 Seta
 Set off
@@ -11103,9 +11103,9 @@ Set Off
 Set Out
 Set To
 Set out
-set-off
-set-out
-set-to
+Set-Off
+Set-Out
+Set-To
 sezession
 Sezession
 Sezession
@@ -11205,9 +11205,9 @@ Sinhalese
 Sinus
 Sinus
 SioPV-oX
-SiopV-ox
+SiopV-OX
 Siopv-Ox
-Siopv-ox
+Siopv-Ox
 Siphunculus
 Siphunculus
 Sipunculus
@@ -11434,8 +11434,8 @@ Staphylococcus
 Staphylococcus
 Star Fish
 Star Fish
-star-fish
-star-fish
+Star-Fish
+Star-Fish
 Starets
 Staretz
 Starfish
@@ -11621,7 +11621,7 @@ Sulcus
 Sum Total
 Sum Total
 Sum-Total
-sum-total
+Sum-Total
 summum genus
 summa
 summum bonum
@@ -11635,7 +11635,7 @@ Summum Genus
 Sumo
 Sumo
 Sum Total
-sum-total
+Sum-Total
 Sundanese
 supernova
 Supercilium
@@ -11896,7 +11896,7 @@ TETE A TETE
 TETE A tete
 TETE-A-TETE
 TETE-A-TETE
-tete-a-tete
+TETE-A-tete
 TETRACOLON
 TETRACOLON
 TETRAGRAMMATON
@@ -12426,7 +12426,7 @@ Tetanothrum
 Tete A Tete
 Tete A Tete
 Tete-A-Tete
-tete-a-tete
+Tete-A-Tete
 TetracOlon
 Tetracolon
 Tetracolon
@@ -13504,7 +13504,7 @@ Wandervogel
 Washer Up
 Washer-Up
 Washer Up
-washer-up
+Washer-Up
 Wclux
 I
 Weirdo
@@ -13561,8 +13561,8 @@ Woman-Servant
 Womanchild
 Woman Child
 Woman Servant
-woman-child
-woman-servant
+Woman-Child
+Woman-Servant
 Womanchild
 Wotupox
 Wreath
@@ -13770,7 +13770,7 @@ Yo Yo
 Yo Yo
 Yo-YO
 Yo-Yo
-yo-yo
+Yo-Yo
 Yoe
 Yo
 YokOhAmaNS
@@ -15785,8 +15785,8 @@ beau geste
 beau geste
 beau
 beau
-bel-esprit
-bel-esprit
+bel esprit
+bel esprit
 beau geste
 bel homme
 bechuana
@@ -16999,7 +16999,7 @@ beyond astrocytoma
 beyond aurora
 beyond bandeau
 beyond beau
-beyond bel-esprit
+beyond bel esprit
 beyond bravo
 beyond calypso
 beyond cannabis
@@ -17695,7 +17695,7 @@ crowfoot
 cRusta
 cUL-De-foUR
 cUL-dE-sac
-cul-de-lampe
+cul-De-lampe
 cuniculus
 cUriOsO
 curriculum
@@ -18161,7 +18161,7 @@ coup d'etat
 court martial
 court martial
 court-martial
-court martial
+court-martial
 court martial
 court-martial
 cow
@@ -18214,7 +18214,7 @@ crus
 crus
 crusta
 crusta
-cul-de-sac
+cul-De-sac
 curioso
 cuspis
 cubicULum
@@ -22057,7 +22057,7 @@ nipponese
 njjqey
 njjqey
 noN-eNs
-non-ens
+non ens
 noRmAn
 nouveau riche
 nova
@@ -22075,7 +22075,7 @@ nomisma
 nomisma
 non ens
 non-ens
-non-ens
+non ens
 normaN
 norman
 norman
@@ -23089,7 +23089,7 @@ over moe
 over monsignor
 over mya
 over mycoplasma
-over non-ens
+over non ens
 over nouveau riche
 over osmeterium
 over ozzbuzz
@@ -24490,7 +24490,7 @@ sEneGALesE
 sEpaRATriX
 septemvir
 sequestrum
-set-out
+set-OUT
 set-off
 sforzato
 sforzato
@@ -26840,7 +26840,7 @@ until clitoris
 until consortium
 until corgi
 until cornu
-until court martial
+until court-martial
 until cri de coeur
 until crowfoot
 until cubiculum
@@ -27581,7 +27581,7 @@ wYpcvnife
 wZpcstratum
 waldo
 wandervogel
-washer-up
+washer-UP
 wadi
 wadi
 wadi
