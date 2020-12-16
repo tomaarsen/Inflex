@@ -64,6 +64,7 @@ class Verb(Term):
 
         # Third person uses the "notational" singular inflection
         if person == 3 or person == 0:
+            # known = convert_to_singular(self.term.split(" ")[0]) + "".join(" " + term for term in self.term.split()[1:])
             known = convert_to_singular(self.term)
             if known != "_":
                 return self._encase(known)
@@ -79,7 +80,7 @@ class Verb(Term):
             return self._encase(known)
         return self._reapply_whitespace(self.term)
     
-    def as_regex(self) -> re.Pattern:
+    def as_regex(self) -> "re.Pattern":
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
                                                           self.past(),

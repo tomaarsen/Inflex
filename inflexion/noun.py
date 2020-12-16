@@ -426,7 +426,7 @@ class Noun(Term):
             return ClassicalNoun(self.term)
         return ClassicalNoun(self.singular())
 
-    def as_regex(self) -> re.Pattern:
+    def as_regex(self) -> "re.Pattern":
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                          self.plural(),
                                                          self.classical().plural()}), reverse=True)), flags=re.I)
