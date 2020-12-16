@@ -64,10 +64,10 @@ class Verb(Term):
 
         # Third person uses the "notational" singular inflection
         if person == 3 or person == 0:
-            # known = convert_to_singular(self.term.split(" ")[0]) + "".join(" " + term for term in self.term.split()[1:])
-            known = convert_to_singular(self.term)
+            words = self.term.split()
+            known = convert_to_singular(words[0])
             if known != "_":
-                return self._encase(known)
+                return self._encase(f"{known} {' '.join(words[1:])}")
             return self._reapply_whitespace(self.term)
 
         # First and second person always use the uninflected (i.e. "notational plural" form)
@@ -75,9 +75,10 @@ class Verb(Term):
 
     def plural(self, person:Optional[int] = 0) -> str:
         # Problems: "using" -> "using"
-        known = convert_to_plural(self.term)
+        words = self.term.split()
+        known = convert_to_plural(words[0])
         if known != "_":
-            return self._encase(known)
+            return self._encase(f"{known} {' '.join(words[1:])}")
         return self._reapply_whitespace(self.term)
     
     def as_regex(self) -> "re.Pattern":
@@ -103,48 +104,59 @@ class Verb(Term):
     def past(self) -> str:
         # Problems: "using" -> "usinged"
         root = self.plural()
-        known = convert_to_past(self.term)
+        words = self.term.split()
+        known = convert_to_past(words[0])
         # print(f"Known past of term: {known}")
         if known == "_":
-            known = convert_to_past(root)
+            words = root.split()
+            known = convert_to_past(words[0])
             # print(f"Known past of root: {known}")
 
         # Otherwise use the standard pattern
         if known == "_":
-            known = self._stem(root) + "ed"
+            known = self._stem(words[0]) + "ed"
             # print(f"Standard pattern past: {known}")
+
+        if words[1:]:
+            known += " " + " ".join(words[1:])
 
         return self._encase(known)
 
     def pres_part(self) -> str:
         # Problems: "using" -> "usinging"
         root = self.plural()
+        words = root.split()
         # known = convert_to_pres_part(self.term)
         # print(f"Known pres_part of term: {known}")
         # if known == "_":
-        known = convert_to_pres_part(root)
+        known = convert_to_pres_part(words[0])
         # print(f"Known pres_part of root: {known}")
 
         # Otherwise use the standard pattern
         if known == "_":
-            known = self._stem(root) + "ing"
+            known = self._stem(words[0]) + "ing"
             # print(f"Standard pattern pres_part: {known}")
+        if words[1:]:
+            known += " " + " ".join(words[1:])
 
         return self._encase(known)
 
     def past_part(self) -> str:
         # Problems: "using" -> "usinged"
         root = self.plural()
+        words = root.split()
         # known = convert_to_past_part(self.term)
         # print(f"Known past_part of term: {known}")
         # if known == "_":
-        known = convert_to_past_part(root)
+        known = convert_to_past_part(words[0])
         # print(f"Known past_part of root: {known}")
 
         # Otherwise use the standard pattern
         if known == "_":
-            known = self._stem(root) + "ed"
+            known = self._stem(words[0]) + "ed"
             # print(f"Standard pattern past_part: {known}")
+        if words[1:]:
+            known += " " + " ".join(words[1:])
 
         return self._encase(known)
     
