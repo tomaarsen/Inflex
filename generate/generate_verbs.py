@@ -382,9 +382,9 @@ def convert_to_{name}(word):
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = [\n"
-        for replacement_dict in replacement_suffixes:
-            if "is" in replacement_dict:
-                output += f'    rei("{replacement_dict["is"]}$"),\n'
+        regexes = {replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict}
+        for regex in sorted(regexes, key=lambda x: len(x) - x.find(")")):
+            output += f'    rei("^{regex}$"),\n'
         output += "]"
         return output
 
