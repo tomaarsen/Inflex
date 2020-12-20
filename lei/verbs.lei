@@ -251,10 +251,15 @@
    *alights           *alight           *alighted         *alighting        *alighted
    *allows            *allow            *allowed          *allowing         *allowed
    *appears           *appear           *appeared         *appearing        *appeared
+    biases             bias              biased            biasing           biased 
    *believes          *believe          *believed         *believing        *believed
+    buses              bus               bused             busing            bused
     caddies            caddie            caddied           caddying          caddied
+    caucuses           caucus            caucused          caucusing         caucused
    *calls             *call             *called           *calling          *called
+    canvases           canvas            canvased          canvasing         canvased
     changes            change            changed           changing          changed
+    choruses           chorus            chorused          chorusing         chorused
     claps              clap              clapped           clapping          clapped
    *clothes           *clothe           *clothed          *clothing         *clothed
    *considers         *consider         *considered       *considering      *considered
@@ -262,14 +267,18 @@
    *creates           *create           *created          *creating         *created
     dares              dare              dared             daring            dared
     dies               die               died              dying             died
+    disses             dis               dissed            dissing           dissed 
     dives              dive              dived             diving            dived
     dreams             dream             dreamed           dreaming          dreamed
     expects            expect            expected          expecting         expected
    *fits              *fit              *fitted           *fitting          *fitted
+    focuses            focus             focused           focusing          focused
     follows            follow            followed          following         followed
+    gases              gas               gassed            gassing           gassed
     happens            happen            happened          happening         happened
     helps              help              helped            helping           helped
     hies               hie               hied              hying             hied
+    hocuses            hocus             hocused           hocusing          hocused 
    *includes          *include          *included         *including        *included
     kills              kill              killed            killing           killed
     knits              knit              knitted           knitting          knitted
@@ -313,6 +322,7 @@
     walks              walk              walked            walking           walked
     wants              want              wanted            wanting           wanted
     watches            watch             watched           watching          watched
+    wises              wis               wised             wising            wised
    *works             *work             *worked           *working          *worked
 
 
