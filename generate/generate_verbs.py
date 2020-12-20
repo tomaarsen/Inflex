@@ -231,8 +231,8 @@ class Reader(object):
             collection.append(dict_to_add)
 
     def optionally_add_literal(self, collection, key, word):
-        # if key == "_" or word == "_":
-            # return
+        if key == "_" or word == "_":
+            return
         if key not in collection:
             collection[key] = word
 
