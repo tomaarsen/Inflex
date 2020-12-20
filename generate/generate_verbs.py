@@ -359,7 +359,7 @@ def known_pres_part(word):
 
     def get_convert_rule_output(self, name, replacement_suffixes):
         output = name + "_convert_rules = {\n"
-        for replacement_dict in replacement_suffixes:
+        for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("("), reverse=True):
             output += f'    rei(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
         output += "}"
         return output
