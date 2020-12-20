@@ -360,7 +360,7 @@ def known_pres_part(word):
     def get_convert_rule_output(self, name, replacement_suffixes):
         output = name + "_convert_rules = {\n"
         for replacement_dict in replacement_suffixes:
-            output += f'    rei("{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
+            output += f'    rei(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
         output += "}"
         return output
 
@@ -384,7 +384,7 @@ def convert_to_{name}(word):
         output = name + "_recognize_rules = [\n"
         regexes = {replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict}
         for regex in sorted(regexes, key=lambda x: len(x) - x.find(")")):
-            output += f'    rei("^{regex}$"),\n'
+            output += f'    rei(r"^{regex}$"),\n'
         output += "]"
         return output
 

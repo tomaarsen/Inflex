@@ -439,7 +439,7 @@ def known_singular(word):
         output = name + "_convert_rules = {\n"
         used_lines = []
         for replacement_dict in replacement_suffixes:
-            line = f'    rei(r"{replacement_dict["from"]}$"): '
+            line = f'    rei(r"^{replacement_dict["from"]}$"): '
             # Add a non-empty conditional if it exists
             if "conv_conditional" in replacement_dict and replacement_dict["conv_conditional"]:
                 line += "{\n" + f'        "conditional": {replacement_dict["conv_conditional"]},\n        '
@@ -489,7 +489,7 @@ def known_singular(word):
         for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
             if replacement_dict["tag"] == "nonindicative":
                 continue
-            line = f'    rei(r"{replacement_dict["from"]}$"): '
+            line = f'    rei(r"^{replacement_dict["from"]}$"): '
             # Add a non-empty conditional if it exists
             if "check_conditional" in replacement_dict and replacement_dict["check_conditional"]:
                 line += "{" + f'"conditional": {replacement_dict["check_conditional"]}' + "},\n"
