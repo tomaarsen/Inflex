@@ -486,7 +486,7 @@ def known_singular(word):
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = {\n"
         used_lines = []
-        for replacement_dict in replacement_suffixes:
+        for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
             if replacement_dict["tag"] == "nonindicative":
                 continue
             line = f'    rei(r"{replacement_dict["from"]}$"): '
