@@ -67,7 +67,9 @@ class Verb(Term):
             words = self.term.split()
             known = convert_to_singular(words[0])
             if known != "_":
-                return self._encase(f"{known} {' '.join(words[1:])}")
+                if words[1:]:
+                    known += " " + " ".join(words[1:])
+                return self._encase(known)
             return self._reapply_whitespace(self.term)
 
         # First and second person always use the uninflected (i.e. "notational plural" form)
@@ -78,7 +80,9 @@ class Verb(Term):
         words = self.term.split()
         known = convert_to_plural(words[0])
         if known != "_":
-            return self._encase(f"{known} {' '.join(words[1:])}")
+            if words[1:]:
+                known += " " + " ".join(words[1:])
+            return self._encase(known)
         return self._reapply_whitespace(self.term)
     
     def as_regex(self) -> "re.Pattern":
