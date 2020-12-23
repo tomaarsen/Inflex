@@ -10,18 +10,58 @@ class Term(object):
     and holds some default implementations of methods used across these
     subclasses.
     """
+
+    # Supported casing formats: I, lower, Title, UPPER, Mc
+    # Note that if the passed word is "i", we always output "I"
+    def _transform(func):
+        return lambda word: "I" if word.lower() == "i" else func(word)
+
+    _casing_formats = {
+        "I": {
+            "regex": re.compile(r"^I$"),
+            "transformation": _transform(str.lower)
+        },
+        "Mc": {
+            "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
+            "transformation": _transform(lambda word: "Mc" + word[2:].title() if word.lower().startswith("mc") else word.title())
+        },
+        "lower":{
+            "regex": re.compile(r"^[^A-Z]+$"),
+            "transformation": _transform(str.lower)
+        },
+        "title":{
+            "regex": re.compile(r"^[A-Z][^A-Z]+$"),
+            "transformation": _transform(str.title)
+        },
+        "upper":{
+            "regex": re.compile(r"^[^a-z]+$"),
+            "transformation": _transform(str.upper)
+        },
+    }
+
+    # Regex for finding a word
+    _word_regex = re.compile(r"([^\r\n\t\f\v\-\' ]+)")
+
     def __init__(self, term: str):
         super().__init__()
-        # Extract whitespace before and after the term
-        self.start, self.end = re.match(r"(?P<start>^\s*).*?(?P<end>\s*$)", term).groups()
-        # self.spaces = [" "]
+        # Whitestring strings before and after the terms
+        self.start  = ""
+        self.end    = ""
+        # Default format for the separator between words
+        self.spaces = [" "]
+
         self.term = term.strip()
+        
+        # Extract whitespace before and after the term
+        if term.startswith(" ") or term.endswith(" "):
+            self.start, self.end = re.match(r"(?P<start>^\s*).*?(?P<end>\s*$)", term).groups()
 
         # If there is troublesome double whitespace, find the substrings
         # between words and normalize them 
-        # if "  " in self.term:
-        self.spaces = re.findall(r"([\r\n\t\f\v\- ]+)", self.term) or [" "]
-        self.term = re.sub(r"\s{2,}", " ", re.sub(r"(\s+)", " ", self.term))
+        # NOTE: Assume there are no tabs, newlines, etc. in the input terms
+        if "  " in self.term:
+            self.spaces = re.findall(r"([\r\n\t\f\v\- ]+)", self.term) or [" "]
+            self.term = re.sub(r"\s{2,}", self.term)
 
     def is_noun(self) -> bool:
         """
@@ -168,8 +208,8 @@ class Term(object):
         # Get list of lambda functions that correspond to the
         # casing formats for `original`.
         transformations = []
-        for word in word_regex.findall(self.term):
-            for casing_format in casing_formats.values():
+        for word in Term._word_regex.findall(self.term):
+            for casing_format in Term._casing_formats.values():
                 if casing_format["regex"].match(word):
                     transformations.append(casing_format["transformation"])
                     break
@@ -192,7 +232,7 @@ class Term(object):
         
         # Apply the transformations found in `original` to `target`
         transformations_gen = get_transformations(transformations)
-        return self._reapply_whitespace(word_regex.sub(lambda match_obj: next(transformations_gen)(match_obj.group(0)), target))
+        return self._reapply_whitespace(Term._word_regex.sub(lambda match_obj: next(transformations_gen)(match_obj.group(0)), target))
 
     def _reapply_whitespace(self, phrase: str):
         """
