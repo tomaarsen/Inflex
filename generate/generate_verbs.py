@@ -332,13 +332,13 @@ def known_singular(word):
         lword in past_part_of.values()
 
 def known_past(word):
-    return word in past_of.values()
+    return word.lower() in past_of.values()
 
 def known_past_part(word):
-    return word in past_part_of.values()
+    return word.lower() in past_part_of.values()
 
 def known_pres_part(word):
-    return word in pres_part_of.values()
+    return word.lower() in pres_part_of.values()
 
 """
 
@@ -391,11 +391,11 @@ def convert_to_{name}(word):
     def get_recognizer_output(self, name, compl_name, replacement_suffixes):
         output = f"""\
 def is_{name}(word):
-    if known_{name}(word) or known_{name}(word.lower()):
+    if known_{name}(word):
         return True"""
         if compl_name:
             output += f"""
-    if known_{compl_name}(word) or known_{compl_name}(word.lower()):
+    if known_{compl_name}(word):
         return False"""
         output += f"""
     for rule in {name}_recognize_rules:
