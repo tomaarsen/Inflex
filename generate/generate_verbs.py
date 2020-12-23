@@ -315,30 +315,32 @@ def rei(regex):
             generated_code += self.get_recognize_rule_output(key, self.reader.patterns[key]) + "\n\n"
         
         generated_code += """\
+past_of_values = set(past_of.values())
+pres_part_of_values = set(pres_part_of.values())
+past_part_of_values = set(past_part_of.values())
+
+plural_and_singular = {
+    *past_of_values,
+    *pres_part_of_values,
+    *past_part_of_values,
+}
+
 def known_plural(word):
     lword = word.lower()
-    return lword in plural_of.values() or\\
-        lword in singular_of or\\
-        lword in past_of.values() or\\
-        lword in pres_part_of.values() or\\
-        lword in past_part_of.values()
+    return lword in singular_of or lword in plural_and_singular
 
 def known_singular(word):
     lword = word.lower()
-    return lword in singular_of.values() or\\
-        lword in plural_of or\\
-        lword in past_of.values() or\\
-        lword in pres_part_of.values() or\\
-        lword in past_part_of.values()
+    return lword in plural_of or lword in plural_and_singular
 
 def known_past(word):
-    return word.lower() in past_of.values()
+    return word.lower() in past_of_values()
 
 def known_past_part(word):
-    return word.lower() in past_part_of.values()
+    return word.lower() in past_part_of_values()
 
 def known_pres_part(word):
-    return word.lower() in pres_part_of.values()
+    return word.lower() in pres_part_of_values()
 
 """
 
@@ -369,7 +371,7 @@ def known_pres_part(word):
 def convert_to_{name}(word):
     if word in {name}_of:
         return {name}_of[word]
-    if word.lower() in {name}_of:
+    if not word.islower() and word.lower() in {name}_of:
         return {name}_of[word.lower()]
     """
         if name == "plural":
@@ -385,7 +387,7 @@ def convert_to_{name}(word):
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = [\n"
-        regexes = {replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict}
+        regexes = (replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict)
         for regex in sorted(regexes, key=lambda x: len(x) - x.rfind(")") + x.find("(")):
             output += f'    rei(r"^{regex}$"),\n'
         output += "]"

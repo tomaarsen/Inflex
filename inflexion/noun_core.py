@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201223.161301
+VERSION = 20201223.193909
 
 def rei(regex):
     """
@@ -7904,6 +7904,7 @@ modern_plural_convert_rules = {
     rei(r"^(.*)man$"): {"output": lambda match: f"{match.group(1)}men"},
     rei(r"^(.*)pox$"): {"output": lambda match: f"{match.group(1)}pox"},
     rei(r"^(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) it$"): {"output": lambda match: f"{match.group(1)} them"},
+    rei(r"^(.+)oux$"): {"output": lambda match: f"{match.group(1)}oux"},
     rei(r"^(.+)arf$"): {"output": lambda match: f"{match.group(1)}arves"},
     rei(r"^(.+)eaf$"): {"output": lambda match: f"{match.group(1)}eaves"},
     rei(r"^(.+)eau$"): {"output": lambda match: f"{match.group(1)}eaus"},
@@ -7911,6 +7912,7 @@ modern_plural_convert_rules = {
     rei(r"^(.+)quy$"): {"output": lambda match: f"{match.group(1)}quies"},
     rei(r"^(.+)nse$"): {"output": lambda match: f"{match.group(1)}nses"},
     rei(r"^(.+[^ns])sis$"): {"output": lambda match: f"{match.group(1)}ses"},
+    rei(r"^(.+[aeiou])se$"): {"output": lambda match: f"{match.group(1)}ses"},
     rei(r"^(.+[aeo])lf$"): {"output": lambda match: f"{match.group(1)}lves"},
     rei(r"^(.+[aiy])nx$"): {"output": lambda match: f"{match.group(1)}nxes"},
     rei(r"^(.+)oe$"): {"output": lambda match: f"{match.group(1)}oes"},
@@ -8014,6 +8016,7 @@ classical_plural_convert_rules = {
     rei(r"^(.*)man$"): {"output": lambda match: f"{match.group(1)}men"},
     rei(r"^(.*)pox$"): {"output": lambda match: f"{match.group(1)}pox"},
     rei(r"^(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) it$"): {"output": lambda match: f"{match.group(1)} them"},
+    rei(r"^(.+)oux$"): {"output": lambda match: f"{match.group(1)}oux"},
     rei(r"^(.+)arf$"): {"output": lambda match: f"{match.group(1)}arves"},
     rei(r"^(.+)eaf$"): {"output": lambda match: f"{match.group(1)}eaves"},
     rei(r"^(.+)eau$"): {"output": lambda match: f"{match.group(1)}eaux"},
@@ -8021,6 +8024,7 @@ classical_plural_convert_rules = {
     rei(r"^(.+)quy$"): {"output": lambda match: f"{match.group(1)}quies"},
     rei(r"^(.+)nse$"): {"output": lambda match: f"{match.group(1)}nses"},
     rei(r"^(.+[^ns])sis$"): {"output": lambda match: f"{match.group(1)}ses"},
+    rei(r"^(.+[aeiou])se$"): {"output": lambda match: f"{match.group(1)}ses"},
     rei(r"^(.+[aeo])lf$"): {"output": lambda match: f"{match.group(1)}lves"},
     rei(r"^(.+[aiy])nx$"): {"output": lambda match: f"{match.group(1)}nges"},
     rei(r"^(.+)oe$"): {"output": lambda match: f"{match.group(1)}oes"},
@@ -8157,6 +8161,8 @@ singular_convert_rules = {
     rei(r"^(.*)lux$"): {"output": lambda match: f"{match.group(1)}lux"},
     rei(r"^(.*)men$"): {"output": lambda match: f"{match.group(1)}man"},
     rei(r"^(.*)pox$"): {"output": lambda match: f"{match.group(1)}pox"},
+    rei(r"^(.+[aeiou])ses$"): {"output": lambda match: f"{match.group(1)}se"},
+    rei(r"^(.+)oux$"): {"output": lambda match: f"{match.group(1)}oux"},
     rei(r"^(.+[cs])hes$"): {"output": lambda match: f"{match.group(1)}h"},
     rei(r"^(.+)oes$"): {"output": lambda match: f"{match.group(1)}oe"},
     rei(r"^(.+[^ns])ses$"): {"output": lambda match: f"{match.group(1)}sis"},
@@ -8178,6 +8184,8 @@ plural_recognize_rules = {
     rei(r"^(.*)lux$"): {},
     rei(r"^(.*)men$"): {},
     rei(r"^(.*)pox$"): {},
+    rei(r"^(.+[aeiou])ses$"): {},
+    rei(r"^(.+)oux$"): {},
     rei(r"^(.+[cs])hes$"): {},
     rei(r"^(.+)oes$"): {},
     rei(r"^(.+[^ns])ses$"): {},
@@ -8304,6 +8312,7 @@ singular_recognize_rules = {
     rei(r"^(.+)x$"): {},
     rei(r"^(.+)y$"): {},
     rei(r"^(.+)z$"): {},
+    rei(r"^(.+[aeiou])se$"): {},
     rei(r"^(.+[aeo])lf$"): {},
     rei(r"^(.+[aiy])nx$"): {},
     rei(r"^(.+)oe$"): {},
@@ -8317,6 +8326,7 @@ singular_recognize_rules = {
     rei(r"^(.*)man$"): {},
     rei(r"^(.*)pox$"): {},
     rei(r"^(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) it$"): {},
+    rei(r"^(.+)oux$"): {},
     rei(r"^(.+)arf$"): {},
     rei(r"^(.+)eaf$"): {},
     rei(r"^(.+)eau$"): {},
@@ -8400,20 +8410,22 @@ singular_recognize_rules = {
 }
 
 def known_plural(word):
-    return word in modern_plural_of.values() or\
-        word in classical_plural_of.values() or\
-        word in singular_of
+    # return word in modern_plural_of.values() or\
+        # word in classical_plural_of.values() or\
+        # word in singular_of
+    return word in singular_of
 
 def known_singular(word):
-    return word in singular_of.values() or\
-        word in modern_plural_of or\
-        word in classical_plural_of
+    # return word in singular_of.values()# or\
+        #word in modern_plural_of or\
+        #word in classical_plural_of
+    return word in modern_plural_of
 
 def convert_to_modern_plural(word, verbose=False):
     if word in modern_plural_of:
         if verbose: print(word, 'in modern_plural_of')
         return modern_plural_of[word]
-    if word.lower() in modern_plural_of:
+    if not word.islower() and word.lower() in modern_plural_of:
         if verbose: print(word.lower(), 'in modern_plural_of')
         return modern_plural_of[word.lower()]
     if is_plural(word) and not is_singular(word):
@@ -8435,7 +8447,7 @@ def convert_to_classical_plural(word, verbose=False):
     if word in classical_plural_of:
         if verbose: print(word, 'in classical_plural_of')
         return classical_plural_of[word]
-    if word.lower() in classical_plural_of:
+    if not word.islower() and word.lower() in classical_plural_of:
         if verbose: print(word.lower(), 'in classical_plural_of')
         return classical_plural_of[word.lower()]
     if is_plural(word) and not is_singular(word):
@@ -8457,7 +8469,7 @@ def convert_to_singular(word, verbose=False):
     if word in singular_of:
         if verbose: print(word, 'in singular_of')
         return singular_of[word]
-    if word.lower() in singular_of:
+    if not word.islower() and word.lower() in singular_of:
         if verbose: print(word.lower(), 'in singular_of')
         return singular_of[word.lower()]
     if is_singular(word):
@@ -8476,10 +8488,10 @@ def convert_to_singular(word, verbose=False):
     return word
 
 def is_plural(word, verbose=False):
-    if known_plural(word) or known_plural(word.lower()):
+    if known_plural(word) or (not word.islower() and known_plural(word.lower())):
         if verbose: print('known_plural(word)')
         return True
-    if known_singular(word) or known_singular(word.lower()):
+    if known_singular(word) or (not word.islower() and known_singular(word.lower())):
         if verbose: print('known_singular(word)')
         return False
     for rule in plural_recognize_rules:
@@ -8495,10 +8507,10 @@ def is_plural(word, verbose=False):
     return word.endswith('s')
 
 def is_singular(word, verbose=False):
-    if known_singular(word) or known_singular(word.lower()):
+    if known_singular(word) or (not word.islower() and known_singular(word.lower())):
         if verbose: print('known_singular(word)')
         return True
-    if known_plural(word) or known_plural(word.lower()):
+    if known_plural(word) or (not word.islower() and known_plural(word.lower())):
         if verbose: print('known_plural(word)')
         return False
     for rule in singular_recognize_rules:

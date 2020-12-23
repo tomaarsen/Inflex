@@ -464,7 +464,7 @@ def known_singular(word):
     if word in {name}_of:
         if verbose: print(word, 'in {name}_of')
         return {name}_of[word]
-    if word.lower() in {name}_of:
+    if not word.islower() and word.lower() in {name}_of:
         if verbose: print(word.lower(), 'in {name}_of')
         return {name}_of[word.lower()]
     if is_{_type}(word){_extra_check}:
@@ -504,12 +504,12 @@ def known_singular(word):
 
     def get_recognizer_output(self, name, compl_name):
         output = f"""def is_{name}(word, verbose=False):
-    if known_{name}(word) or known_{name}(word.lower()):
+    if known_{name}(word) or (not word.islower() and known_{name}(word.lower())):
         if verbose: print('known_{name}(word)')
         return True"""
         if compl_name:
             output += f"""
-    if known_{compl_name}(word) or known_{compl_name}(word.lower()):
+    if known_{compl_name}(word) or (not word.islower() and known_{compl_name}(word.lower())):
         if verbose: print('known_{compl_name}(word)')
         return False
     for rule in {name}_recognize_rules:

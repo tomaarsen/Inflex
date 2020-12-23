@@ -2740,7 +2740,8 @@
 
 
 # Standard patterns of inflection for other nouns (in increasing order of generality)...
-
+        -[aeiou]se=>  -[aeiou]ses|
+        -oux      =>  -oux
         -[aeiou]o =>  -[aeiou]os |
         -[aeo]lf  =>             |  -[aeo]lves
         -[aiy]nx  =>  -[aiy]nxes |  -[aiy]nges
