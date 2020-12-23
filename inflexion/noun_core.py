@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201223.151628
+VERSION = 20201223.161301
 
 def rei(regex):
     """
@@ -7918,7 +7918,7 @@ modern_plural_convert_rules = {
     rei(r"^(.+)us$"): {"output": lambda match: f"{match.group(1)}uses"},
     rei(r"^(.+[aeiou])o$"): {"output": lambda match: f"{match.group(1)}os"},
     rei(r"^(.+[cs])h$"): {"output": lambda match: f"{match.group(1)}hes"},
-    rei(r"^(.+)o$"): {"output": lambda match: f"{match.group(1)}oes"},
+    rei(r"^(.+)o$"): {"output": lambda match: f"{match.group(1)}os"},
     rei(r"^(.+[aeiou])y$"): {"output": lambda match: f"{match.group(1)}ys"},
     rei(r"^(.+)x$"): {"output": lambda match: f"{match.group(1)}xes"},
     rei(r"^(.+)y$"): {"output": lambda match: f"{match.group(1)}ies"},
@@ -8028,7 +8028,7 @@ classical_plural_convert_rules = {
     rei(r"^(.+)us$"): {"output": lambda match: f"{match.group(1)}uses"},
     rei(r"^(.+[aeiou])o$"): {"output": lambda match: f"{match.group(1)}os"},
     rei(r"^(.+[cs])h$"): {"output": lambda match: f"{match.group(1)}hes"},
-    rei(r"^(.+)o$"): {"output": lambda match: f"{match.group(1)}oes"},
+    rei(r"^(.+)o$"): {"output": lambda match: f"{match.group(1)}os"},
     rei(r"^(.+[aeiou])y$"): {"output": lambda match: f"{match.group(1)}ys"},
     rei(r"^(.+)x$"): {"output": lambda match: f"{match.group(1)}xes"},
     rei(r"^(.+)y$"): {"output": lambda match: f"{match.group(1)}ies"},
@@ -8165,12 +8165,14 @@ singular_convert_rules = {
     rei(r"^(.+)zoa$"): {"output": lambda match: f"{match.group(1)}zoon"},
     rei(r"^(.+)ses$"): {"output": lambda match: f"{match.group(1)}s"},
     rei(r"^(.+[aeiou])os$"): {"output": lambda match: f"{match.group(1)}o"},
+    rei(r"^(.+)os$"): {"output": lambda match: f"{match.group(1)}o"},
     rei(r"^(.+[aeiou])ys$"): {"output": lambda match: f"{match.group(1)}y"},
     rei(r"^(.+)s$"): {"output": lambda match: f"{match.group(1)}"},
 }
 
 plural_recognize_rules = {
     rei(r"^(.+[aeiou])os$"): {},
+    rei(r"^(.+)os$"): {},
     rei(r"^(.+[aeiou])ys$"): {},
     rei(r"^(.*?)'s?$"): {},
     rei(r"^(.*)lux$"): {},

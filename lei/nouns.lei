@@ -2752,7 +2752,8 @@
         -ieu      =>  -ieus      |  -ieux
         -nife     =>  -nives     |
         -oe       =>  -oes       |
-        -o        =>  -oes       |
+        -o        =>  -os        |
+#        -o        =>  -oes       |
         -quy      =>  -quies     |
         -[aeiou]y =>  -[aeiou]ys |
         -ss       =>  -sses      |
