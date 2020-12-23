@@ -21,21 +21,22 @@ from inflexion.verb_core import (
 )
 
 class Verb(Term):
+
+    _stem_regexes = {
+        re.compile(r"ie\Z"): lambda match: "y",
+        re.compile(r"ue\Z"): lambda match: "u",
+        re.compile(r"([auy])e\Z"): lambda match: match.group(1),
+        re.compile(r"ski\Z"): lambda match: "ski",
+        re.compile(r"[^b]i\Z"): lambda match: "",
+        re.compile(r"([^e])e\Z"): lambda match: match.group(1),
+        re.compile(r".*er\Z"): lambda match: match.group(),
+        re.compile(r"(.[bdghklmnprstz][o]([n]))\Z"): lambda match: match.group(1),
+        re.compile(r"([^aeiou][aeiouy]([bcdlgmnprstv]))\Z"): lambda match: match.group(1) + match.group(2),
+        re.compile(r"e\Z"): lambda match: "",
+    }
+
     def __init__(self, term: str):
         super().__init__(term)
-
-        self._term_regexes = {
-            re.compile(r"ie\Z"): lambda match: "y",
-            re.compile(r"ue\Z"): lambda match: "u",
-            re.compile(r"([auy])e\Z"): lambda match: match.group(1),
-            re.compile(r"ski\Z"): lambda match: "ski",
-            re.compile(r"[^b]i\Z"): lambda match: "",
-            re.compile(r"([^e])e\Z"): lambda match: match.group(1),
-            re.compile(r".*er\Z"): lambda match: match.group(),
-            re.compile(r"(.[bdghklmnprstz][o]([n]))\Z"): lambda match: match.group(1),
-            re.compile(r"([^aeiou][aeiouy]([bcdlgmnprstv]))\Z"): lambda match: match.group(1) + match.group(2),
-            re.compile(r"e\Z"): lambda match: "",
-        }
 
     """
     Override default methods from Term    
@@ -94,10 +95,10 @@ class Verb(Term):
     def _stem(self, term: str) -> str:
         # Utility method that adjusts final consonants when they need to be doubled in inflexions...
         # Apply the first relevant transform...
-        for regex in self._term_regexes:
+        for regex in Verb._stem_regexes:
             match = regex.search(term)
             if match:
-                return regex.sub(self._term_regexes[regex](match), term)
+                return regex.sub(Verb._stem_regexes[regex](match), term)
         return term
 
     def past(self) -> str:
