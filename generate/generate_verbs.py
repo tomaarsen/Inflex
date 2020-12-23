@@ -318,7 +318,7 @@ def rei(regex):
 def known_plural(word):
     lword = word.lower()
     return lword in plural_of.values() or\\
-        lword in singular_of.keys() or\\
+        lword in singular_of or\\
         lword in past_of.values() or\\
         lword in pres_part_of.values() or\\
         lword in past_part_of.values()
@@ -326,7 +326,7 @@ def known_plural(word):
 def known_singular(word):
     lword = word.lower()
     return lword in singular_of.values() or\\
-        lword in plural_of.keys() or\\
+        lword in plural_of or\\
         lword in past_of.values() or\\
         lword in pres_part_of.values() or\\
         lword in past_part_of.values()
