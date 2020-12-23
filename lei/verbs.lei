@@ -42,14 +42,14 @@
     bellyaches         bellyache         bellyached        bellyaching       bellyached
     bends              bend              bent              bending           bent
     bets               bet               bet               betting           bet
-   *bids              *bid              *bade             *bidding          *bidden
-    binds              bind              bound             binding           bound
+   *bids              *bid              *bid              *bidding          *bid
+   *binds             *bind             *bound            *binding          *bound
     bites              bite              bit               biting            bitten
     blitzes            blitz             blitzed           blitzing          blitzed
     bleeds             bleed             bled              bleeding          bled
     blows              blow              blew              blowing           blown
     breaks             break             broke             breaking          broken
-    breeds             breed             bred              breeding          bred
+   *breeds            *breed            *bred             *breeding         *bred
     brings             bring             brought           bringing          brought
     builds             build             built             building          built
     burns              burn              burnt             burning           burnt
@@ -70,7 +70,7 @@
     deals              deal              dealt             dealing           dealt
     digs               dig               dug               digging           dug
     dives              dive              dived             diving            dived
-   *does              *do               *did              *doing            *done
+    does               do                did               doing             done
     douches            douche            douched           douching          douched
     drags              drag              dragged           dragging          dragged
    *draws             *draw             *drew             *drawing          *drawn
@@ -122,7 +122,7 @@
     leaps              leap              leapt             leaping           leapt
     leaves             leave             left              leaving           left
    *lends             *lend             *lent             *lending          *lent
-   *lets              *let              *let              *letting          *let
+    lets               let               let               letting           let
     lies               lie               lay               lying             lain
    *lights            *light            *lit              *lighting         *lit
     loses              lose              lost              losing            lost
@@ -147,12 +147,12 @@
     quizzes            quiz              quizzed           quizzing          quizzed
    *reads             *read             *read             *reading          *read
     rends              rend              rent              rending           rent
-    rides              ride              rode              riding            ridden
+   *rides             *ride             *rode             *riding           *ridden
     rids               rid               rid               ridding           rid
     rings              ring              rang              ringing           rung
     rises              rise              rose              rising            risen
     rives              rive              rived             riving            riven
-    runs               run               ran               running           run
+   *runs              *run              *ran              *running          *run
     saws               saw               sawed             sawing            sawn
    *says              *say              *said             *saying           *said
     seeks              seek              sought            seeking           sought
@@ -251,6 +251,7 @@
    *alights           *alight           *alighted         *alighting        *alighted
    *allows            *allow            *allowed          *allowing         *allowed
    *appears           *appear           *appeared         *appearing        *appeared
+    arcs               arc               arced             arcing            arced
     biases             bias              biased            biasing           biased 
    *believes          *believe          *believed         *believing        *believed
     buses              bus               bused             busing            bused
@@ -300,6 +301,7 @@
     reaches            reach             reached           reaching          reached
     remains            remain            remained          remaining         remained
     remembers          remember          remembered        remembering       remembered
+    rents              rent              rented            renting           rended
     seems              seem              seemed            seeming           seemed
    *serves            *serve            *served           *serving          *served
     skis               ski               skied             skiing            skied
@@ -350,8 +352,10 @@
     -trixes            -trix             -trixed           -trixing          -trixed
     -xes               -x                -xed              -xing             -xed
     -zzes              -zz               -zzed             -zzing            -zzed
+    -[aeiou]zzes       -[aeiou]z         -[aeiou]zzed      -[aeiou]zzing     -[aeiou]zzed
     -zes               -ze               -zed              -zing             -zed
-    -ues               -ue               -ued              -ueing            -ued
+    -zes               -z                -zed              -zing             -zed
+    -ues               -ue               -ued              -uing             -ued
     -is                -i                -ied              -iing             -ied
     -ees               -ee               -eed              -eeing            -eed
     -yes               -ye               -yed              -yeing            -yed
@@ -359,6 +363,7 @@
     -[^b]is            -[^b]i            -[^b]ied          -[^b]ing          -[^b]ied
     -sses              -ss               -ssed             -ssing            -ssed
     -ies               -y                -ied              -ying             -ied
+    -ies               -ie               -ied              -ying             -ied
     -ys                -y                -yed              -ying             -yed
     -[^e]es            -[^e]e            -[^e]ed           -[^e]ing          -[^e]ed
     -ers               -er               -ered             -ering            -ered

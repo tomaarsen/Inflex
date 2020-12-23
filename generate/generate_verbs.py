@@ -55,7 +55,7 @@ class Word(object):
         if not self.gen:
             return
         self.gen = DASH.sub(r".+", self.gen)
-        self.gen = STAR.sub(r".*", self.gen)
+        self.gen = STAR.sub(r"(?:.{2,})?", self.gen)
 
     def expand_cons_vowel(self) -> str:
         """
@@ -178,42 +178,42 @@ class Reader(object):
             if verb.has_gen():
                 self.optionally_add_pattern(self.patterns["plural"], {
                     "is": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
-                    "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
+                    "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
                     "to": 'lambda match: f"{match.group(1)}' + f'{verb.plur.word}"' 
                 })
                 self.optionally_add_pattern(self.patterns["singular"], {
                     "is": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
-                    "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
+                    "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                     "to": 'lambda match: f"{match.group(1)}' + f'{verb.sing.word}"'
                 })
                 if verb.pret.word != "_":
                     self.optionally_add_pattern(self.patterns["past"], {
                         "is": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
-                        "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
+                        "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["past"], {
-                        "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
+                        "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
                     })
                 if verb.pres.word != "_":
                     self.optionally_add_pattern(self.patterns["pres_part"], {
                         "is": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
-                        "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
+                        "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["pres_part"], {
-                        "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
+                        "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
                     })
                 if verb.past.word != "_":
                     self.optionally_add_pattern(self.patterns["past_part"], {
                         "is": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
-                        "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
+                        "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["past_part"], {
-                        "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
+                        "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                         "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
                     })
             
@@ -332,13 +332,13 @@ def known_singular(word):
         lword in past_part_of.values()
 
 def known_past(word):
-    return word in past_of.values()
+    return word.lower() in past_of.values()
 
 def known_past_part(word):
-    return word in past_part_of.values()
+    return word.lower() in past_part_of.values()
 
 def known_pres_part(word):
-    return word in pres_part_of.values()
+    return word.lower() in pres_part_of.values()
 
 """
 
@@ -359,7 +359,7 @@ def known_pres_part(word):
 
     def get_convert_rule_output(self, name, replacement_suffixes):
         output = name + "_convert_rules = {\n"
-        for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("("), reverse=True):
+        for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].rfind(")") + x["from"].find("("), reverse=True):
             output += f'    rei(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
         output += "}"
         return output
@@ -371,19 +371,22 @@ def convert_to_{name}(word):
         return {name}_of[word]
     if word.lower() in {name}_of:
         return {name}_of[word.lower()]
-    if is_{name}(word):
+    """
+        if name == "plural":
+            output += """if known_plural(word):
         return word
-    for rule in {name}_convert_rules:
+    """
+        output += f"""for rule in {name}_convert_rules:
         match = rule.match(word)
         if match:
             return {name}_convert_rules[rule](match)
-    return '_'"""
+    return None"""
         return output
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = [\n"
         regexes = {replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict}
-        for regex in sorted(regexes, key=lambda x: len(x) - x.find(")")):
+        for regex in sorted(regexes, key=lambda x: len(x) - x.rfind(")") + x.find("(")):
             output += f'    rei(r"^{regex}$"),\n'
         output += "]"
         return output
@@ -391,11 +394,11 @@ def convert_to_{name}(word):
     def get_recognizer_output(self, name, compl_name, replacement_suffixes):
         output = f"""\
 def is_{name}(word):
-    if known_{name}(word) or known_{name}(word.lower()):
+    if known_{name}(word):
         return True"""
         if compl_name:
             output += f"""
-    if known_{compl_name}(word) or known_{compl_name}(word.lower()):
+    if known_{compl_name}(word):
         return False"""
         output += f"""
     for rule in {name}_recognize_rules:

@@ -139,6 +139,7 @@ class Term(object):
         def transform(func):
             return lambda word: "I" if word.lower() == "i" else func(word)
 
+        # TODO: Move these regexes to a place where they're only initialized once
         casing_formats = {
             "I": {
                 "regex": re.compile(r"^I$"),
