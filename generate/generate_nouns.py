@@ -414,12 +414,12 @@ def rei(regex):
         generated_code += """def known_plural(word):
     return word in modern_plural_of.values() or\\
         word in classical_plural_of.values() or\\
-        word in singular_of.keys()
+        word in singular_of
 
 def known_singular(word):
     return word in singular_of.values() or\\
-        word in modern_plural_of.keys() or\\
-        word in classical_plural_of.keys()
+        word in modern_plural_of or\\
+        word in classical_plural_of
 
 """
 

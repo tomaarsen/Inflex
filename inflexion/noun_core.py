@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201220.211753
+VERSION = 20201223.151628
 
 def rei(regex):
     """
@@ -8400,12 +8400,12 @@ singular_recognize_rules = {
 def known_plural(word):
     return word in modern_plural_of.values() or\
         word in classical_plural_of.values() or\
-        word in singular_of.keys()
+        word in singular_of
 
 def known_singular(word):
     return word in singular_of.values() or\
-        word in modern_plural_of.keys() or\
-        word in classical_plural_of.keys()
+        word in modern_plural_of or\
+        word in classical_plural_of
 
 def convert_to_modern_plural(word, verbose=False):
     if word in modern_plural_of:
