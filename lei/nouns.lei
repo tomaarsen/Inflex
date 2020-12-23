@@ -348,7 +348,6 @@
 # Units that don't inflect...
 
     *hertz    =>  hertz
-    *lux      =>  lux
     *siemens  =>  siemens
 
 
@@ -490,7 +489,7 @@
 
     *foot       =>  feet
     *goose      =>  geese
-    *louse      =>  lice
+     louse      =>  lice
     *man        =>  men
     manservant  =>  menservants
     *mouse      =>  mice

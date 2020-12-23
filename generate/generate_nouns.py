@@ -412,14 +412,10 @@ def rei(regex):
         generated_code += self.get_recognize_rule_output("singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
         
         generated_code += """def known_plural(word):
-    return word in modern_plural_of.values() or\\
-        word in classical_plural_of.values() or\\
-        word in singular_of
+    return word in singular_of
 
 def known_singular(word):
-    return word in singular_of.values() or\\
-        word in modern_plural_of or\\
-        word in classical_plural_of
+    return word in modern_plural_of
 
 """
 
@@ -485,6 +481,7 @@ def known_singular(word):
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = {\n"
+        """
         used_lines = []
         for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
             if replacement_dict["tag"] == "nonindicative":
@@ -499,6 +496,13 @@ def known_singular(word):
             if line not in used_lines:
                 used_lines.append(line)
                 output += line
+        """
+        non_cond_regexes = [repl_dict["from"] for repl_dict in replacement_suffixes if not ("check_conditional" in repl_dict and repl_dict["check_conditional"]) and repl_dict["tag"] != "nonindicative"]
+        cond_regexes     = [repl_dict for repl_dict in replacement_suffixes if "check_conditional" in repl_dict and repl_dict["check_conditional"] and repl_dict["tag"] != "nonindicative"]
+        large_regex = "|".join(sorted(non_cond_regexes, key=lambda x: len(x) - x.find(")") + x.find("(")))
+        output += f'    rei(r"^(?:{large_regex})$"): {{}},\n'
+        for replacement_dict in sorted(cond_regexes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
+            output += f'    rei(r"^{replacement_dict["from"]}$"): {{"conditional": {replacement_dict["check_conditional"]}}},\n'
         output += "}"
         return output
 

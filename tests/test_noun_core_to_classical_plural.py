@@ -2060,7 +2060,6 @@ class TestNounToClassicalPlural(unittest.TestCase):
         {'in': 'lumina', 'out': 'lumina'},
         {'in': 'lustra', 'out': 'lustra'},
         {'in': 'lustrum', 'out': 'lustra'},
-        {'in': 'lux', 'out': 'lux'},
         {'in': 'lymphangioma', 'out': 'lymphangiomata'},
         {'in': 'lymphangiomata', 'out': 'lymphangiomata'},
         {'in': 'lymphoma', 'out': 'lymphomata'},

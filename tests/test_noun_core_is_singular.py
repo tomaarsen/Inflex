@@ -1153,7 +1153,6 @@ class TestNounIsSingular(unittest.TestCase):
         {'in': 'lumbricus', 'out': True},
         {'in': 'lumen', 'out': True},
         {'in': 'lustrum', 'out': True},
-        {'in': 'lux', 'out': True},
         {'in': 'lymphangioma', 'out': True},
         {'in': 'lymphoma', 'out': True},
         {'in': 'lyssa', 'out': True},

@@ -2309,7 +2309,6 @@ class TestNounToSingular(unittest.TestCase):
         {'in': 'lustra', 'out': 'lustrum'},
         {'in': 'lustrum', 'out': 'lustrum'},
         {'in': 'lustrums', 'out': 'lustrum'},
-        {'in': 'lux', 'out': 'lux'},
         {'in': 'lymphangioma', 'out': 'lymphangioma'},
         {'in': 'lymphangiomata', 'out': 'lymphangioma'},
         {'in': 'lymphoma', 'out': 'lymphoma'},

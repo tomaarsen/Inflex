@@ -2099,7 +2099,6 @@ class TestNounToModernPlural(unittest.TestCase):
         {'in': 'lumens', 'out': 'lumens'},
         {'in': 'lustrum', 'out': 'lustrums'},
         {'in': 'lustrums', 'out': 'lustrums'},
-        {'in': 'lux', 'out': 'lux'},
         {'in': 'lymphangioma', 'out': 'lymphangiomata'},
         {'in': 'lymphangiomata', 'out': 'lymphangiomata'},
         {'in': 'lymphoma', 'out': 'lymphomas'},

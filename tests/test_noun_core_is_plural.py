@@ -1391,7 +1391,6 @@ class TestNounIsPlural(unittest.TestCase):
         {'in': 'lumina', 'out': True},
         {'in': 'lustra', 'out': True},
         {'in': 'lustrums', 'out': True},
-        {'in': 'lux', 'out': True},
         {'in': 'lymphangiomata', 'out': True},
         {'in': 'lymphomas', 'out': True},
         {'in': 'lymphomata', 'out': True},
