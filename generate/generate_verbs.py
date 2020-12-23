@@ -318,7 +318,7 @@ def rei(regex):
 def known_plural(word):
     lword = word.lower()
     return lword in plural_of.values() or\\
-        lword in singular_of.keys() or\\
+        lword in singular_of or\\
         lword in past_of.values() or\\
         lword in pres_part_of.values() or\\
         lword in past_part_of.values()
@@ -326,7 +326,7 @@ def known_plural(word):
 def known_singular(word):
     lword = word.lower()
     return lword in singular_of.values() or\\
-        lword in plural_of.keys() or\\
+        lword in plural_of or\\
         lword in past_of.values() or\\
         lword in pres_part_of.values() or\\
         lword in past_part_of.values()
@@ -359,7 +359,7 @@ def known_pres_part(word):
 
     def get_convert_rule_output(self, name, replacement_suffixes):
         output = name + "_convert_rules = {\n"
-        for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].rfind(")") + x["from"].find("("), reverse=True):
+        for replacement_dict in sorted(sorted(replacement_suffixes, key=lambda x: x["from"]), key=lambda x: len(x["from"]) - x["from"].rfind(")") + x["from"].find("("), reverse=True):
             output += f'    rei(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
         output += "}"
         return output
@@ -385,7 +385,7 @@ def convert_to_{name}(word):
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = [\n"
-        regexes = {replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict}
+        regexes = sorted(replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict)
         for regex in sorted(regexes, key=lambda x: len(x) - x.rfind(")") + x.find("(")):
             output += f'    rei(r"^{regex}$"),\n'
         output += "]"
