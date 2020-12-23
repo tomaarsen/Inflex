@@ -59,8 +59,9 @@ class Term(object):
         # If there is troublesome double whitespace, find the substrings
         # between words and normalize them 
         # NOTE: Assume there are no tabs, newlines, etc. in the input terms
+        if " " in self.term or "-" in self.term:
+            self.spaces = re.findall(r"([\r\n\t\f\v\- ]+)", self.term)
         if "  " in self.term:
-            self.spaces = re.findall(r"([\r\n\t\f\v\- ]+)", self.term) or [" "]
             self.term = re.sub(r"\s{2,}", self.term)
 
     def is_noun(self) -> bool:
@@ -174,37 +175,6 @@ class Term(object):
         if self.term == "I" or target == "I":
             return target
         
-        # Supported casing formats: lower, Title, UPPER
-        # Note that if the passed word is "i", we always output "I"
-        def transform(func):
-            return lambda word: "I" if word.lower() == "i" else func(word)
-
-        # TODO: Move these regexes to a place where they're only initialized once
-        casing_formats = {
-            "I": {
-                "regex": re.compile(r"^I$"),
-                "transformation": transform(str.lower)
-            },
-            "Mc": {
-                "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
-                "transformation": transform(lambda word: "Mc" + word[2:].title() if word.lower().startswith("mc") else word.title())
-            },
-            "lower":{
-                "regex": re.compile(r"^[^A-Z]+$"),
-                "transformation": transform(str.lower)
-            },
-            "title":{
-                "regex": re.compile(r"^[A-Z][^A-Z]+$"),
-                "transformation": transform(str.title)
-            },
-            "upper":{
-                "regex": re.compile(r"^[^a-z]+$"),
-                "transformation": transform(str.upper)
-            },
-        }
-        # Regex for finding a word
-        word_regex = re.compile(r"([^\r\n\t\f\v\-\' ]+)")
-
         # Get list of lambda functions that correspond to the
         # casing formats for `original`.
         transformations = []
