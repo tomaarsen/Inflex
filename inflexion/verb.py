@@ -334,15 +334,17 @@ class Verb(Term):
         
         # Convert the full (sub)term
         known = convert_to_past(term)
+        if known:
+            return self._encase(form.format(known))
 
         # Convert the root of the term
-        if known is None:
-            root, form = self.get_subterm(self.plural())
-            known = convert_to_past(root)
+        root, form = self.get_subterm(self.plural())
+        known = convert_to_past(root)
+        if known:
+            return self._encase(form.format(known))
         
         # Otherwise use the standard pattern on the root
-        if known is None:
-            known = self._stem(root) + "ed"
+        known = self._stem(root) + "ed"
 
         return self._encase(form.format(known))
 
