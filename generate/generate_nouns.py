@@ -454,7 +454,7 @@ def known_singular(word):
 
     def get_converter_output(self, name, replacement_suffixes):
         _type = "plural" if "plural" in name else "singular"
-        _extra_check = " and not is_singular(word)" if _type == "plural" else ""
+        _extra_check = " and not is_singular(word, verbose=verbose)" if _type == "plural" else ""
 
         output = f"""def convert_to_{name}(word, verbose=False):
     if word in {name}_of:
