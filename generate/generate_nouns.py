@@ -47,10 +47,11 @@ DATA_PAT         = re.compile(r"""
     flags=xms)
 RECURSE  = re.compile(r"\(SING\) | \(PREP\)", flags=xms)
 RECURSE_GROUPED = re.compile(r"""
-      (?P<star>  \*        )
-    | (?P<sing>  \(SING\)  )
-    | (?P<plur>  \(PL\)    )
-    | (?P<prep>  \(PREP\)  )
+      (?P<star>   \*        )
+    | (?P<sing>   \(SING\)  )
+    | (?P<plur>   \(PL\)    )
+    | (?P<prep>   \(PREP\)  )
+    | (?P<prepr>  \(PREPR\)  )
 """, flags=xms)
 """
 CONS     = re.compile(r"\(CONS\)", flags=xms)
@@ -362,6 +363,12 @@ class Reader(object):
 
             elif from_match.group("prep"):
                 _from=irepl(from_match, _from, r"(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)")
+                to    = irepl(to_match, to, wrap(f'match.group({n})'))
+
+            elif from_match.group("prepr"):
+                # Relative to prep, prepr(educed) lacks:
+                # out, about, off, in, on, over
+                _from=irepl(from_match, _from, r"(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)")
                 to    = irepl(to_match, to, wrap(f'match.group({n})'))
 
             n -= 1

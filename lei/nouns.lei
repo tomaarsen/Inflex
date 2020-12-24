@@ -1,3 +1,17 @@
+# Compound postfix forms require recursive inflection of the core noun(s)...
+# ['(SING)-general' is non-indicative because it includes the above '-star general' form]
+# PREPR stands for "prepositions reduced", and excludes "out", "about", "off", "in", "on" and "over"
+# It is used because phrases like "show-off" are often pluralised like "show-offs" rather than "shows-off".
+
+   <nonindicative>   (SING)-general   =>  (PL)-general      # E.g. Consul General --> Consuls General
+
+        (PREP) it         =>  (PREP) them
+        son-of-a-(SING)   =>  sons-of-(PL)       # E.g. son-of-a-gun   --> sons-of-guns
+        (SING)-(PREP)-*   =>  (PL)-(PREP)-*      # E.g. mother-in-law  --> mothers-in-law
+        (PREP)-(SING)     =>  (PREP)-(PL)        # E.g. of him         --> of them
+        (SING)-errant     =>  (PL)-errant        # E.g. knight-errant  --> knights-errant
+        (SING)-(PREPR)    =>  (PL)-(PREPR)       # E.g. passer-by      --> passers-by
+
 # Words that inflect singular->plural normally
 # but which are ambiguous when inflected plural->singular...
 # (e.g. "axes"-->"ax" vs "axes"-->"axe" vs "axes"-->"axis")
@@ -2667,19 +2681,6 @@
      lieutenant general  =>   lieutenant generals
      major general       =>   major generals
     -star general        =>  -star generals
-
-
-# Compound postfix forms require recursive inflection of the core noun(s)...
-# ['(SING)-general' is non-indicative because it includes the above '-star general' form]
-
-   <nonindicative>   (SING)-general   =>  (PL)-general      # E.g. Consul General --> Consuls General
-
-        (PREP) it        =>  (PREP) them
-        son-of-a-(SING)  =>  sons-of-(PL)      # E.g. son-of-a-gun   --> sons-of-guns
-        (SING)-(PREP)-*  =>  (PL)-(PREP)-*     # E.g. mother-in-law  --> mothers-in-law
-        (PREP)-(SING)    =>  (PREP)-(PL)       # E.g. of him         --> of them
-        (SING)-errant    =>  (PL)-errant       # E.g. knight-errant  --> knights-errant
-        (SING)-(PREP)    =>  (PL)-(PREP)       # E.g. passer-by      --> passers-by
 
 
 # Pronouns in the nominative...
