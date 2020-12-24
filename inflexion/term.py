@@ -169,6 +169,8 @@ class Term(object):
     def _encase(self, target: str) -> str:
         """
         Apply casing from `self.term` string onto `target` string.
+
+        TODO: Currently "Toms'" -> "Toms'S"
         """
 
         # Special case for 'I'

@@ -175,19 +175,19 @@ class Reader(object):
         # Add conversions for possessives
         self.patterns["modern_plural"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: convert_to_modern_plural(match.group(1)) + '\\'' if convert_to_modern_plural(match.group(1)).endswith('s') else convert_to_modern_plural(match.group(1)) + '\\'s'",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_modern_plural(match.group(1)))",
             "conv_conditional": "lambda match: is_singular(match.group(1))",
             "tag": ""
         })
         self.patterns["classical_plural"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: convert_to_classical_plural(match.group(1)) + '\\'' if convert_to_classical_plural(match.group(1)).endswith('s') else convert_to_classical_plural(match.group(1)) + '\\'s'",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_classical_plural(match.group(1)))",
             "conv_conditional": "lambda match: is_singular(match.group(1))",
             "tag": ""
         })
         self.patterns["singular"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: convert_to_singular(match.group(1)) + '\\'' if convert_to_singular(match.group(1)).endswith('s') else convert_to_singular(match.group(1)) + '\\'s'",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_singular(match.group(1)))",
             "conv_conditional": "lambda match: is_plural(match.group(1))",
             "tag": ""
         })
@@ -434,7 +434,7 @@ def known_singular(word):
     def get_convert_rule_output(self, name, replacement_suffixes):
         output = name + "_convert_rules = {\n"
         used_lines = []
-        for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("("), reverse=True):
+        for replacement_dict in replacement_suffixes:#sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("("), reverse=True):
             line = f'    rei(r"^{replacement_dict["from"]}$"): '
             # Add a non-empty conditional if it exists
             if "conv_conditional" in replacement_dict and replacement_dict["conv_conditional"]:
@@ -497,11 +497,11 @@ def known_singular(word):
                 used_lines.append(line)
                 output += line
         """
-        non_cond_regexes = [repl_dict["from"] for repl_dict in replacement_suffixes if not ("check_conditional" in repl_dict and repl_dict["check_conditional"]) and repl_dict["tag"] != "nonindicative"]
+        non_cond_regexes = {repl_dict["from"] for repl_dict in replacement_suffixes if not ("check_conditional" in repl_dict and repl_dict["check_conditional"]) and repl_dict["tag"] != "nonindicative"}
         cond_regexes     = [repl_dict for repl_dict in replacement_suffixes if "check_conditional" in repl_dict and repl_dict["check_conditional"] and repl_dict["tag"] != "nonindicative"]
         large_regex = "|".join(sorted(non_cond_regexes, key=lambda x: len(x) - x.find(")") + x.find("(")))
         output += f'    rei(r"^(?:{large_regex})$"): {{}},\n'
-        for replacement_dict in sorted(cond_regexes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
+        for replacement_dict in cond_regexes:#sorted(cond_regexes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
             output += f'    rei(r"^{replacement_dict["from"]}$"): {{"conditional": {replacement_dict["check_conditional"]}}},\n'
         output += "}"
         return output
@@ -647,3 +647,11 @@ if __name__ == "__main__":
 
     twriter = NounTestWriter(reader, out_import)
     twriter.write_tests()
+
+# IDEA: Convert 
+# rei(r"^(.+)zzes$"): {"output": lambda match: f"{match.group(1)}z"},
+# into `rei(r"^(.+)zzes$"), lambda pattern, term: pattern.subn(term)`
+# and then return if result is 1
+# (note, limit to 1)
+
+# Alternatively, match group id's to a list of conversions to take. This allows converting the regexes into one massive regex.

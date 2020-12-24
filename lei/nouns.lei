@@ -103,6 +103,7 @@
     yo          =>  yoes
     yoe         =>  yoes
 
+    tax         =>  taxes
 
 # Singular words ending in "-s" with irregular inflexions...
 
@@ -270,7 +271,7 @@
     capo            =>  capos            |  capi
     caryatid        =>  caryatids        |  caryatides
     chervonetz      =>                   |  chervontzi
-    cony            =>  conys            |  conies
+#   cony            =>  conys            |  conies # duplicate
     court-martial   =>  court-martials   |  courts-martial
     curioso         =>  curiosos         |  curiosi
     devoto          =>  devotos          |  devoti
@@ -489,7 +490,7 @@
 
     *foot       =>  feet
     *goose      =>  geese
-     louse      =>  lice
+    louse       =>  lice
     *man        =>  men
     manservant  =>  menservants
     *mouse      =>  mice
@@ -1524,6 +1525,7 @@
     tenuis      =>            |  tenues
     testis      =>            |  testes
     unguis      =>            |  ungues
+   -thesis      =>  theses    |
 
 
 # Latin imports ending in "-us" that classically don't inflect...
@@ -2332,7 +2334,7 @@
         Alfurese      => Alfurese
         Amboinese     => Amboinese
         Americanese   => Americanese
-        Amoyese       => Amoyese
+#        Amoyese       => Amoyese
         Amoyese       => Amoyese
         Andamanese    => Andamanese
         Angolese      => Angolese
@@ -2347,7 +2349,7 @@
         Bernese       => Bernese
         Bhutanese     => Bhutanese
         Bolognese     => Bolognese
-        Borghese      => Borghese
+#        Borghese      => Borghese
         Borghese      => Borghese
         Bostonese     => Bostonese
         Buginese      => Buginese
@@ -2360,21 +2362,21 @@
         Celanese      => Celanese
         Ceylonese     => Ceylonese
         Chinese       => Chinese
-        Congoese      => Congoese
+#        Congoese      => Congoese
         Congoese      => Congoese
         Congolese     => Congolese
         Dongolese     => Dongolese
-        Faroese       => Faroese
+#        Faroese       => Faroese
         Faroese       => Faroese
         Ferrarese     => Ferrarese
-        Foochowese    => Foochowese
+#        Foochowese    => Foochowese
         Foochowese    => Foochowese
         Gabunese      => Gabunese
+#        Genevese      => Genevese
         Genevese      => Genevese
-        Genevese      => Genevese
+#        Genoese       => Genoese
         Genoese       => Genoese
-        Genoese       => Genoese
-        Gilbertese    => Gilbertese
+#        Gilbertese    => Gilbertese
         Gilbertese    => Gilbertese
         Goanese       => Goanese
         Guianese      => Guianese
@@ -2384,7 +2386,7 @@
         Havanese      => Havanese
         Heavenese     => Heavenese
         Hoosierese    => Hoosierese
-        Hottentotese  => Hottentotese
+#        Hottentotese  => Hottentotese
         Hottentotese  => Hottentotese
         Hunanese      => Hunanese
         Indochinese   => Indochinese
@@ -2392,9 +2394,9 @@
         Javanese      => Javanese
         Johnsonese    => Johnsonese
         Kanarese      => Kanarese
+#        Kiplingese    => Kiplingese
         Kiplingese    => Kiplingese
-        Kiplingese    => Kiplingese
-        Kongoese      => Kongoese
+#        Kongoese      => Kongoese
         Kongoese      => Kongoese
         Kongolese     => Kongolese
         Lapponese     => Lapponese
@@ -2402,44 +2404,44 @@
         Leonese       => Leonese
         Londonese     => Londonese
         Lorrainese    => Lorrainese
-        Lucchese      => Lucchese
+#        Lucchese      => Lucchese
         Lucchese      => Lucchese
         Lyonese       => Lyonese
         Macanese      => Macanese
         Macassarese   => Macassarese
         Madurese      => Madurese
         Malabarese    => Malabarese
-        Maltese       => Maltese
+#        Maltese       => Maltese
         Maltese       => Maltese
         Messinese     => Messinese
         Milanese      => Milanese
         Modenese      => Modenese
         Muranese      => Muranese
-        Nankingese    => Nankingese
+#        Nankingese    => Nankingese
         Nankingese    => Nankingese
         Navarrese     => Navarrese
         Nepalese      => Nepalese
-        Niasese       => Niasese
+#        Niasese       => Niasese
         Niasese       => Niasese
         Nicobarese    => Nicobarese
         Nipponese     => Nipponese
         Parmese       => Parmese
+#        Pekingese     => Pekingese
         Pekingese     => Pekingese
-        Pekingese     => Pekingese
+#        Piedmontese   => Piedmontese
         Piedmontese   => Piedmontese
-        Piedmontese   => Piedmontese
-        Pistoiese     => Pistoiese
+#        Pistoiese     => Pistoiese
         Pistoiese     => Pistoiese
         Polonese      => Polonese
-        Portuguese    => Portuguese
+#        Portuguese    => Portuguese
         Portuguese    => Portuguese
         Romagnese     => Romagnese
         Romanese      => Romanese
         Sangirese     => Sangirese
-        Sarawakese    => Sarawakese
+#        Sarawakese    => Sarawakese
         Sarawakese    => Sarawakese
         Senegalese    => Senegalese
-        Shavese       => Shavese
+#        Shavese       => Shavese
         Shavese       => Shavese
         Shawanese     => Shawanese
         Siamese       => Siamese
@@ -2458,12 +2460,12 @@
         Tonkinese     => Tonkinese
         Torinese      => Torinese
         Tyrolese      => Tyrolese
-        Vermontese    => Vermontese
+#        Vermontese    => Vermontese
         Vermontese    => Vermontese
         Veronese      => Veronese
         Viennese      => Viennese
         Vietnamese    => Vietnamese
-        Wenchowese    => Wenchowese
+#        Wenchowese    => Wenchowese
         Wenchowese    => Wenchowese
         Whitmanese    => Whitmanese
         Yengeese      => Yengeese
@@ -2672,7 +2674,7 @@
 
    <nonindicative>   (SING)-general   =>  (PL)-general      # E.g. Consul General --> Consuls General
 
-        (PREP) it        => (PREP) them
+        (PREP) it        =>  (PREP) them
         son-of-a-(SING)  =>  sons-of-(PL)      # E.g. son-of-a-gun   --> sons-of-guns
         (SING)-(PREP)-*  =>  (PL)-(PREP)-*     # E.g. mother-in-law  --> mothers-in-law
         (PREP)-(SING)    =>  (PREP)-(PL)       # E.g. of him         --> of them
@@ -2739,13 +2741,15 @@
 
 
 # Standard patterns of inflection for other nouns (in increasing order of generality)...
-        -[aeiou]se=>  -[aeiou]ses|
-        -oux      =>  -oux
+        
+        -oux      =>  -oux       |
         -[aeiou]o =>  -[aeiou]os |
         -[aeo]lf  =>             |  -[aeo]lves
+        -nge      =>  -nges      |
         -[aiy]nx  =>  -[aiy]nxes |  -[aiy]nges
         -arf      =>             |  -arves
         -ceps     =>  -ceps      |
+        -[^aeoui][aeoui]che => [^aeoui][aeoui]ches |
         -[cs]h    =>  -[cs]hes   |
         -eaf      =>  -eaves     |
         -eau      =>  -eaus      |  -eaux
@@ -2753,16 +2757,15 @@
         -nife     =>  -nives     |
         -oe       =>  -oes       |
         -o        =>  -os        |
-#        -o        =>  -oes       |
         -quy      =>  -quies     |
         -[aeiou]y =>  -[aeiou]ys |
+        -[aeio]se =>  -[aeio]ses |
         -ss       =>  -sses      |
-        -orse     =>  -orses     |
-        -o[au]rse =>  -o[au]rses |
-        -nse      =>             |  -nses
+        -[rnlpw]se=>  -[rnlpw]ses| 
+        -[aeo]use  => -[aeo]uses |
+        -us       =>  -uses      |
         -[^ns]sis =>             |  -[^ns]ses
         -trix     =>  -trixes    |  -trices
-        -us       =>  -uses      |
         -x        =>  -xes       |
         -y        =>  -ies       |
         -z        =>  -zzes      |
