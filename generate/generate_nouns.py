@@ -463,8 +463,8 @@ def known_singular(word):
     if not word.islower() and word.lower() in {name}_of:
         if verbose: print(word.lower(), 'in {name}_of')
         return {name}_of[word.lower()]
-    if is_{_type}(word){_extra_check}:
-        if verbose: print('is_{_type}(word){_extra_check}')
+    if is_{_type}(word, verbose=verbose){_extra_check}:
+        if verbose: print('is_{_type}(word, verbose=verbose){_extra_check}')
         return word
     for rule in {name}_convert_rules:
         match = rule.match(word)
@@ -527,7 +527,7 @@ def known_singular(word):
                 if verbose: print(word, 'failed the conditional')
     if verbose: print("Matched no rules")"""
         if name == "singular":
-            output += "\n    return not is_plural(word)"
+            output += "\n    return not is_plural(word, verbose=verbose)"
         else:
             # TODO: Consider stripping before checking endswith
             output += "\n    return word.endswith('s')"

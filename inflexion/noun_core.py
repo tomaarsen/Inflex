@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201224.181416
+VERSION = 20201224.183052
 
 def rei(regex):
     """
@@ -8232,8 +8232,8 @@ def convert_to_modern_plural(word, verbose=False):
     if not word.islower() and word.lower() in modern_plural_of:
         if verbose: print(word.lower(), 'in modern_plural_of')
         return modern_plural_of[word.lower()]
-    if is_plural(word) and not is_singular(word):
-        if verbose: print('is_plural(word) and not is_singular(word)')
+    if is_plural(word, verbose=verbose) and not is_singular(word):
+        if verbose: print('is_plural(word, verbose=verbose) and not is_singular(word)')
         return word
     for rule in modern_plural_convert_rules:
         match = rule.match(word)
@@ -8254,8 +8254,8 @@ def convert_to_classical_plural(word, verbose=False):
     if not word.islower() and word.lower() in classical_plural_of:
         if verbose: print(word.lower(), 'in classical_plural_of')
         return classical_plural_of[word.lower()]
-    if is_plural(word) and not is_singular(word):
-        if verbose: print('is_plural(word) and not is_singular(word)')
+    if is_plural(word, verbose=verbose) and not is_singular(word):
+        if verbose: print('is_plural(word, verbose=verbose) and not is_singular(word)')
         return word
     for rule in classical_plural_convert_rules:
         match = rule.match(word)
@@ -8276,8 +8276,8 @@ def convert_to_singular(word, verbose=False):
     if not word.islower() and word.lower() in singular_of:
         if verbose: print(word.lower(), 'in singular_of')
         return singular_of[word.lower()]
-    if is_singular(word):
-        if verbose: print('is_singular(word)')
+    if is_singular(word, verbose=verbose):
+        if verbose: print('is_singular(word, verbose=verbose)')
         return word
     for rule in singular_convert_rules:
         match = rule.match(word)
@@ -8327,5 +8327,5 @@ def is_singular(word, verbose=False):
             else:
                 if verbose: print(word, 'failed the conditional')
     if verbose: print("Matched no rules")
-    return not is_plural(word)
+    return not is_plural(word, verbose=verbose)
 
