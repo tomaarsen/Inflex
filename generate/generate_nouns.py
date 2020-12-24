@@ -499,7 +499,7 @@ def known_singular(word):
         """
         non_cond_regexes = {repl_dict["from"] for repl_dict in replacement_suffixes if not ("check_conditional" in repl_dict and repl_dict["check_conditional"]) and repl_dict["tag"] != "nonindicative"}
         cond_regexes     = [repl_dict for repl_dict in replacement_suffixes if "check_conditional" in repl_dict and repl_dict["check_conditional"] and repl_dict["tag"] != "nonindicative"]
-        large_regex = "|".join(sorted(non_cond_regexes, key=lambda x: len(x) - x.find(")") + x.find("(")))
+        large_regex = "|".join(sorted(sorted(non_cond_regexes), key=lambda x: len(x) - x.find(")") + x.find("(")))
         output += f'    rei(r"^(?:{large_regex})$"): {{}},\n'
         for replacement_dict in cond_regexes:#sorted(cond_regexes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
             output += f'    rei(r"^{replacement_dict["from"]}$"): {{"conditional": {replacement_dict["check_conditional"]}}},\n'

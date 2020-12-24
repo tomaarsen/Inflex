@@ -2742,34 +2742,34 @@
 
 # Standard patterns of inflection for other nouns (in increasing order of generality)...
         
-        -oux      =>  -oux       |
-        -[aeiou]o =>  -[aeiou]os |
-        -[aeo]lf  =>             |  -[aeo]lves
-        -nge      =>  -nges      |
-        -[aiy]nx  =>  -[aiy]nxes |  -[aiy]nges
-        -arf      =>             |  -arves
-        -ceps     =>  -ceps      |
-        -[^aeoui][aeoui]che => [^aeoui][aeoui]ches |
-        -[cs]h    =>  -[cs]hes   |
-        -eaf      =>  -eaves     |
-        -eau      =>  -eaus      |  -eaux
-        -ieu      =>  -ieus      |  -ieux
-        -nife     =>  -nives     |
-        -oe       =>  -oes       |
-        -o        =>  -os        |
-        -quy      =>  -quies     |
-        -[aeiou]y =>  -[aeiou]ys |
-        -[aeio]se =>  -[aeio]ses |
-        -ss       =>  -sses      |
-        -[rnlpw]se=>  -[rnlpw]ses| 
-        -[aeo]use  => -[aeo]uses |
-        -us       =>  -uses      |
-        -[^ns]sis =>             |  -[^ns]ses
-        -trix     =>  -trixes    |  -trices
-        -x        =>  -xes       |
-        -y        =>  -ies       |
-        -z        =>  -zzes      |
-        -zoon     =>             |  -zoa
+        -oux                    =>  -oux                        |
+        -[aeiou]o               =>  -[aeiou]os                  |
+        -[aeo]lf                =>                              |  -[aeo]lves
+        -nge                    =>  -nges                       |
+        -[aiy]nx                =>  -[aiy]nxes                  |  -[aiy]nges
+        -arf                    =>                              |  -arves
+        -ceps                   =>  -ceps                       |
+        -[^aeoui][aeoui]che     => [^aeoui][aeoui]ches          |
+        -[cs]h                  =>  -[cs]hes                    |
+        -eaf                    =>  -eaves                      |
+        -eau                    =>  -eaus                       |  -eaux
+        -ieu                    =>  -ieus                       |  -ieux
+        -nife                   =>  -nives                      |
+        -oe                     =>  -oes                        |
+        -o                      =>  -os                         |
+        -quy                    =>  -quies                      |
+        -[aeiou]y               =>  -[aeiou]ys                  |
+        -[aeio]se               =>  -[aeio]ses                  |
+        -ss                     =>  -sses                       |
+        -[rnlpw]se              =>  -[rnlpw]ses                 | 
+        -[aeo]use               => -[aeo]uses                   |
+        -us                     =>  -uses                       |
+        -[^ns]sis               =>                              |  -[^ns]ses
+        -trix                   =>  -trixes                     |  -trices
+        -x                      =>  -xes                        |
+        -y                      =>  -ies                        |
+        -z                      =>  -zzes                       |
+        -zoon                   =>                              |  -zoa
 
 # Very general patterns of inflection whose singular forms are not sufficiently indicative of singularity
 
