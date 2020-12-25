@@ -259,12 +259,10 @@ class Reader(object):
                 self.add_literals(noun)
                 self.add_words(noun)
 
-                """
                 if noun.has_hyphen():
                     noun.replace_hyphens(" ")
                     self.add_literals(noun)
                     self.add_words(noun) 
-                """
 
     def add_recurse_patterns(self, noun):
         self.optionally_add_pattern(self.patterns["modern_plural"], {
