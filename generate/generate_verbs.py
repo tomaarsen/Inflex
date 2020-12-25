@@ -179,42 +179,42 @@ class Reader(object):
                 self.optionally_add_pattern(self.patterns["plural"], {
                     "is": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                     "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
-                    "to": 'lambda match: f"{match.group(1)}' + f'{verb.plur.word}"' 
+                    "to": f'"{verb.plur.word}"'
                 })
                 self.optionally_add_pattern(self.patterns["singular"], {
                     "is": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
                     "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
-                    "to": 'lambda match: f"{match.group(1)}' + f'{verb.sing.word}"'
+                    "to": f'"{verb.sing.word}"'
                 })
                 if verb.pret.word != "_":
                     self.optionally_add_pattern(self.patterns["past"], {
                         "is": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
                         "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
+                        "to": f'"{verb.pret.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["past"], {
                         "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
+                        "to": f'"{verb.pret.word}"'
                     })
                 if verb.pres.word != "_":
                     self.optionally_add_pattern(self.patterns["pres_part"], {
                         "is": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
                         "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
+                        "to": f'"{verb.pres.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["pres_part"], {
                         "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
+                        "to": f'"{verb.pres.word}"'
                     })
                 if verb.past.word != "_":
                     self.optionally_add_pattern(self.patterns["past_part"], {
                         "is": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
                         "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
+                        "to": f'"{verb.past.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["past_part"], {
                         "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
+                        "to": f'"{verb.past.word}"'
                     })
             
             if not (verb.sing.gen and verb.plur.gen and verb.pret.gen):
@@ -360,10 +360,16 @@ def known_pres_part(word):
             f.write(generated_code)
 
     def get_convert_rule_output(self, name, replacement_suffixes):
-        output = name + "_convert_rules = {\n"
+        regexes = []
+        outputs = []
         for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].rfind(")") + x["from"].find("("), reverse=True):
-            output += f'    rei(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
-        output += "}"
+            regexes.append(replacement_dict["from"])
+            outputs.append(replacement_dict["to"])
+
+            # output += f'    rei(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
+        output = f"{name}_convert_rule_regex = rei(r\"^(?:{'|'.join(regexes)})$\")\n\n"
+
+        output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]\n"
         return output
 
     def get_converter_output(self, name, replacement_suffixes):
@@ -378,10 +384,11 @@ def convert_to_{name}(word):
             output += """if known_plural(word):
         return word
     """
-        output += f"""for rule in {name}_convert_rules:
-        match = rule.match(word)
-        if match:
-            return {name}_convert_rules[rule](match)
+        output += f"""match = {name}_convert_rule_regex.match(word)
+    if match:
+        for i, group in enumerate(match.groups()):
+            if group is not None:
+                return group + {name}_convert_outputs[i]
     return None"""
         return output
 
