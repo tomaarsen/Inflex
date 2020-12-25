@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201224.210724
+VERSION = 20201225.013646
 
 def rei(regex):
     """
@@ -905,7 +905,7 @@ modern_plural_of = {
     "halibut": "halibuts",
     "hallux": "halluces",
     "halteridium": "halteridia",
-    "hamadryad": "hamadrayads",
+    "hamadryad": "hamadryads",
     "hamulus": "hamuli",
     "hapax legomenon": "hapax legomenons",
     "hapteron": "haptera",
@@ -5917,8 +5917,8 @@ singular_of = {
     "halibuts": "halibut",
     "halluces": "hallux",
     "halteridia": "halteridium",
-    "hamadrayads": "hamadryad",
     "hamadryades": "hamadryad",
+    "hamadryads": "hamadryad",
     "hamuli": "hamulus",
     "hapax legomena": "hapax legomenon",
     "hapax legomenons": "hapax legomenon",
