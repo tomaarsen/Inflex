@@ -334,13 +334,13 @@ def known_singular(word):
     return lword in plural_of or lword in plural_and_singular
 
 def known_past(word):
-    return word.lower() in past_of_values()
+    return word.lower() in past_of_values
 
 def known_past_part(word):
-    return word.lower() in past_part_of_values()
+    return word.lower() in past_part_of_values
 
 def known_pres_part(word):
-    return word.lower() in pres_part_of_values()
+    return word.lower() in pres_part_of_values
 
 """
 
@@ -387,9 +387,13 @@ def convert_to_{name}(word):
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = [\n"
+        """
         regexes = (replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict)
         for regex in sorted(regexes, key=lambda x: len(x) - x.rfind(")") + x.find("(")):
             output += f'    rei(r"^{regex}$"),\n'
+        """
+        regex = '|'.join(sorted(sorted(replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict), key=lambda x: len(x) - x.rfind(")") + x.find("(")))
+        output += f'    rei(r"^(?:{regex})$"),\n'
         output += "]"
         return output
 
