@@ -296,13 +296,6 @@ import re
 
 VERSION = {version}
 
-def rei(regex):
-    """
-    Return compiled regular expression object with 
-    pattern `regex` and the IGNORECASE flag.
-    """
-    return re.compile(regex, flags=re.I)
-
 '''
 
         for key in self.reader.literals:
@@ -366,10 +359,10 @@ def known_pres_part(word):
             regexes.append(replacement_dict["from"])
             outputs.append(replacement_dict["to"])
 
-            # output += f'    rei(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
-        output = f"{name}_convert_rule_regex = rei(r\"^(?:{'|'.join(regexes)})$\")\n\n"
+            # output += f'    re.compile(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
+        output = f"{name}_convert_rule_regex = re.compile(r\"^(?:{'|'.join(regexes)})$\")\n\n"
 
-        output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]\n"
+        output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]"
         return output
 
     def get_converter_output(self, name, replacement_suffixes):
@@ -384,7 +377,7 @@ def convert_to_{name}(word):
             output += """if known_plural(word):
         return word
     """
-        output += f"""match = {name}_convert_rule_regex.match(word)
+        output += f"""match = {name}_convert_rule_regex.match(word.lower())
     if match:
         for i, group in enumerate(match.groups()):
             if group is not None:
@@ -397,10 +390,10 @@ def convert_to_{name}(word):
         """
         regexes = (replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict)
         for regex in sorted(regexes, key=lambda x: len(x) - x.rfind(")") + x.find("(")):
-            output += f'    rei(r"^{regex}$"),\n'
+            output += f'    re.compile(r"^{regex}$"),\n'
         """
         regex = '|'.join(sorted(sorted(replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict), key=lambda x: len(x) - x.rfind(")") + x.find("(")))
-        output += f'    rei(r"^(?:{regex})$"),\n'
+        output += f'    re.compile(r"^(?:{regex})$"),\n'
         output += "]"
         return output
 
