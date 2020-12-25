@@ -173,6 +173,8 @@ class Reader(object):
         Fill `pattern`, `literal` and `words`
         """
 
+        """
+        # TODO: Add these in the convert functions themselves
         # Add conversions for possessives
         self.patterns["modern_plural"].append({
             "from": r"(.*?)'s?",
@@ -192,6 +194,7 @@ class Reader(object):
             "conv_conditional": "lambda match: is_plural(match.group(1))",
             "tag": ""
         })
+        """
 
         lines = self.get_readlines()
         
@@ -211,13 +214,12 @@ class Reader(object):
             if noun.sing.gen:
                 self.optionally_add_pattern(self.patterns["modern_plural"], { 
                     "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                    "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_one.word}"', 
-                    #"conditional": "lambda match: True",
+                    "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
                     "tag": noun.tag
                 })
                 self.optionally_add_pattern(self.patterns["singular"], { 
                     "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
-                    "to": 'lambda match: f"{match.group(1)}' + f'{noun.sing.word}"',
+                    "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
                     #"conditional": "lambda match: True",
                     "tag": noun.tag 
                 })
@@ -225,20 +227,20 @@ class Reader(object):
                 if noun.plur_two.word:
                     self.optionally_add_pattern(self.patterns["classical_plural"], { 
                         "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                        "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_two.word}"', 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
                         #"conditional": "lambda match: True",
                         "tag": noun.tag 
                     })
                     self.optionally_add_pattern(self.patterns["singular"], { 
                         "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
-                        "to": 'lambda match: f"{match.group(1)}' + f'{noun.sing.word}"', 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"', 
                         #"conditional": "lambda match: True",
                         "tag": noun.tag 
                     })
                 else:
                     self.optionally_add_pattern(self.patterns["classical_plural"], { 
                         "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                        "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_one.word}"', 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
                         #"conditional": "lambda match: True",
                         "tag": noun.tag 
                     })
@@ -257,10 +259,12 @@ class Reader(object):
                 self.add_literals(noun)
                 self.add_words(noun)
 
+                """
                 if noun.has_hyphen():
                     noun.replace_hyphens(" ")
                     self.add_literals(noun)
                     self.add_words(noun) 
+                """
 
     def add_recurse_patterns(self, noun):
         self.optionally_add_pattern(self.patterns["modern_plural"], {
@@ -347,35 +351,35 @@ class Reader(object):
         for from_match, to_match in zip(from_matches, to_matches):
             if from_match.group("star"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f'match.group({n})'))
+                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
             
             elif from_match.group("sing"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(match.group({n})) if is_singular(match.group({n})) else match.group({n})"))
+                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(subterms[{n-1}]) if is_singular(subterms[{n-1}]) else subterms[{n-1}]"))
                 if not check_conditional:
                     check_conditional = f"lambda match: is_singular(match.group({n}))"
 
             elif from_match.group("plur"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(match.group({n})) if is_plural(match.group({n})) else match.group({n})"))
+                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(subterms[{n-1}]) if is_plural(subterms[{n-1}]) else subterms[{n-1}]"))
                 if not check_conditional:
                     check_conditional = f"lambda match: is_plural(match.group({n}))"
 
             elif from_match.group("prep"):
                 _from=irepl(from_match, _from, r"(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)")
-                to    = irepl(to_match, to, wrap(f'match.group({n})'))
+                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
 
             elif from_match.group("prepr"):
                 # Relative to prep, prepr(educed) lacks:
                 # out, about, off, in, on, over
                 _from=irepl(from_match, _from, r"(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)")
-                to    = irepl(to_match, to, wrap(f'match.group({n})'))
+                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
 
             n -= 1
         
         return {
             "from": _from,
-            "to": f'lambda match: f"{to}"',
+            "to": f'lambda subterms: f"{to}"',
             "check_conditional": check_conditional
         }
 
@@ -439,6 +443,7 @@ def known_singular(word):
             f.write(generated_code)
 
     def get_convert_rule_output(self, name, replacement_suffixes):
+        """
         output = name + "_convert_rules = {\n"
         used_lines = []
         for replacement_dict in replacement_suffixes:#sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("("), reverse=True):
@@ -458,31 +463,56 @@ def known_singular(word):
                 output += line
         output += "}"
         return output
+        """
+
+        regexes = []
+        outputs = []
+        slices = []
+        i = 1
+        for index, replacement_dict in enumerate(replacement_suffixes):
+            if replacement_dict["from"] not in regexes:
+                regexes.append(replacement_dict["from"])
+                outputs.append(replacement_dict["to"])
+                # Informal method of finding out how many capture groups there are.
+                # Optionally, use re.compile(replacement_dict["from"]).groups
+                n_captures = re.compile(replacement_dict["from"]).groups
+                for _ in range(n_captures):
+                    slices.append((index ,[i + group_id for group_id in range(n_captures)]))
+                i += n_captures
+
+        output = f"{name}_convert_rule_regex = re.compile(r\"^(?:{'|'.join(regexes)})$\")\n\n"
+        output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]\n"
+        output += f"{name}_convert_slices = [" + ''.join('\n    ' + str(index_list) + ',' for index_list in slices) + "\n]"
+
+        return output
 
     def get_converter_output(self, name, replacement_suffixes):
         _type = "plural" if "plural" in name else "singular"
-        _extra_check = " and not is_singular(word, verbose=verbose)" if _type == "plural" else ""
+        _extra_check = " and not is_singular(word, is_word_plural=True)" if _type == "plural" else ""
 
-        output = f"""def convert_to_{name}(word, verbose=False):
+        output = f"""def convert_to_{name}(word):
     if word in {name}_of:
-        if verbose: print(word, 'in {name}_of')
         return {name}_of[word]
+    
     if not word.islower() and word.lower() in {name}_of:
-        if verbose: print(word.lower(), 'in {name}_of')
         return {name}_of[word.lower()]
-    if is_{_type}(word, verbose=verbose){_extra_check}:
-        if verbose: print('is_{_type}(word, verbose=verbose){_extra_check}')
+    
+    if is_{_type}(word){_extra_check}:
         return word
-    for rule in {name}_convert_rules:
-        match = rule.match(word)
-        if match:
-            if verbose: print(word, 'matched', rule.pattern)
-            # If there is no conditional, or if the condition succeeds
-            if not "conditional" in {name}_convert_rules[rule] or {name}_convert_rules[rule]["conditional"](match):
-                if verbose: print(word, 'passed the conditional, or there was no conditional')
-                return {name}_convert_rules[rule]["output"](match)
-            else:
-                if verbose: print(word, 'failed the conditional')
+    
+    if word.lower().endswith(("'s", "'")):
+        subword = word[:word.rfind("'")]
+        if is_{"singular" if _type == "plural" else "plural"}(subword):
+            subword = convert_to_{name}(subword)
+            return subword + "'" if subword.endswith('s') else subword + "'s"
+        return word
+    
+    match = {name}_convert_rule_regex.match(word)
+    if match:
+        for i, group in enumerate(match.groups()):
+            if group is not None:
+                output_id, slices = {name}_convert_slices[i]
+                return {name}_convert_outputs[output_id]([match.group(index) for index in slices])
     return word"""
         return output
 
@@ -514,30 +544,28 @@ def known_singular(word):
         return output
 
     def get_recognizer_output(self, name, compl_name):
-        output = f"""def is_{name}(word, verbose=False):
+        output = f"""def is_{name}(word{', is_word_plural=None' if name == "singular" else ''}):
     if known_{name}(word) or (not word.islower() and known_{name}(word.lower())):
-        if verbose: print('known_{name}(word)')
-        return True"""
+        return True
+"""
         if compl_name:
             output += f"""
     if known_{compl_name}(word) or (not word.islower() and known_{compl_name}(word.lower())):
-        if verbose: print('known_{compl_name}(word)')
         return False
+
     for rule in {name}_recognize_rules:
         match = rule.match(word)
         if match:
-            if verbose: print(word, 'matched', rule.pattern)
             if not "conditional" in {name}_recognize_rules[rule] or {name}_recognize_rules[rule]["conditional"](match):
-                if verbose: print(word, 'passed the conditional, or there was no conditional')
                 return True
-            else:
-                if verbose: print(word, 'failed the conditional')
-    if verbose: print("Matched no rules")"""
+
+    """
         if name == "singular":
-            output += "\n    return not is_plural(word, verbose=verbose)"
+            output += """if is_word_plural is not None:
+        return not is_word_plural
+    return not is_plural(word)"""
         else:
-            # TODO: Consider stripping before checking endswith
-            output += "\n    return word.endswith('s')"
+            output += "return word.endswith('s')"
         return output
 
 class NounTestWriter(TestWriter):

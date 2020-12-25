@@ -356,8 +356,9 @@ def known_pres_part(word):
         regexes = []
         outputs = []
         for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].rfind(")") + x["from"].find("("), reverse=True):
-            regexes.append(replacement_dict["from"])
-            outputs.append(replacement_dict["to"])
+            if replacement_dict["from"] not in regexes:
+                regexes.append(replacement_dict["from"])
+                outputs.append(replacement_dict["to"])
 
             # output += f'    re.compile(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
         output = f"{name}_convert_rule_regex = re.compile(r\"^(?:{'|'.join(regexes)})$\")\n\n"
