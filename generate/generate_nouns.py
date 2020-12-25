@@ -259,11 +259,6 @@ class Reader(object):
                 self.add_literals(noun)
                 self.add_words(noun)
 
-                if noun.has_hyphen():
-                    noun.replace_hyphens(" ")
-                    self.add_literals(noun)
-                    self.add_words(noun) 
-
     def add_recurse_patterns(self, noun):
         self.optionally_add_pattern(self.patterns["modern_plural"], {
             **self.build_recursive(_from=noun.sing.word, 
@@ -412,7 +407,13 @@ def rei(regex):
 '''
 
         for key in self.reader.literals:
-            generated_code += f"{key}_of = " + json.dumps(reader.literals[key], indent=4, sort_keys=True) + "\n\n" 
+            # For phrases with dashes, also add variants with spaces
+            data = {
+                _phrase_key: _phrase_value
+                for phrase_key, phrase_value in self.reader.literals[key].items()
+                for _phrase_key, _phrase_value in {(phrase_key, phrase_value), (phrase_key.replace("-", " "), phrase_value.replace("-", " "))}
+            }
+            generated_code += f"{key}_of = " + json.dumps(data, indent=4, sort_keys=True) + "\n\n"
         
         for key in self.reader.literals:
             generated_code += self.get_convert_rule_output(key, self.reader.patterns[key]) + "\n\n"

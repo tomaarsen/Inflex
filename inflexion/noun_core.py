@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201225.213433
+VERSION = 20201225.230410
 
 def rei(regex):
     """
@@ -604,7 +604,7 @@ modern_plural_of = {
     "cosmos": "cosmoses",
     "costa": "costae",
     "coup d'etat": "coups d'etat",
-    "court martial": "court-martials",
+    "court martial": "court martials",
     "court-martial": "court-martials",
     "cow": "cows",
     "coxendix": "coxendices",
@@ -5260,7 +5260,7 @@ singular_of = {
     "beau gestes": "beau geste",
     "beaus": "beau",
     "beaux": "beau",
-    "beaux esprits": "bel-esprit",
+    "beaux esprits": "bel esprit",
     "beaux gestes": "beau geste",
     "beaux hommes": "bel homme",
     "bechuana": "bechuana",
@@ -8624,7 +8624,7 @@ def convert_to_classical_plural(word):
     
     if word.lower().endswith(("'s", "'")):
         subword = word[:word.rfind("'")]
-        if is_singular(subword, is_word_plural=False):
+        if is_singular(subword):
             subword = convert_to_classical_plural(subword)
             return subword + "'" if subword.endswith('s') else subword + "'s"
         return word
