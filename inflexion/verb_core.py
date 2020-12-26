@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201225.182355
+VERSION = 20201226.142531
 
 plural_of = {
     "abides": "abide",

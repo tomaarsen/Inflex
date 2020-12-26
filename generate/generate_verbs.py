@@ -196,6 +196,16 @@ class Reader(object):
                         "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                         "to": f'"{verb.pret.word}"'
                     })
+                    """
+                    self.optionally_add_pattern(self.patterns["singular"], {
+                        "from": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
+                        "to": f'"{verb.sing.word}"'
+                    })
+                    self.optionally_add_pattern(self.patterns["plural"], {
+                        "from": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
+                        "to": f'"{verb.plur.word}"'
+                    })
+                    """
                 if verb.pres.word != "_":
                     self.optionally_add_pattern(self.patterns["pres_part"], {
                         "is": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
@@ -206,6 +216,16 @@ class Reader(object):
                         "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                         "to": f'"{verb.pres.word}"'
                     })
+                    """
+                    self.optionally_add_pattern(self.patterns["singular"], {
+                        "from": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
+                        "to": f'"{verb.sing.word}"'
+                    })
+                    self.optionally_add_pattern(self.patterns["plural"], {
+                        "from": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
+                        "to": f'"{verb.plur.word}"'
+                    })
+                    """
                 if verb.past.word != "_":
                     self.optionally_add_pattern(self.patterns["past_part"], {
                         "is": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
@@ -216,6 +236,16 @@ class Reader(object):
                         "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
                         "to": f'"{verb.past.word}"'
                     })
+                    """
+                    self.optionally_add_pattern(self.patterns["singular"], {
+                        "from": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
+                        "to": f'"{verb.sing.word}"'
+                    })
+                    self.optionally_add_pattern(self.patterns["plural"], {
+                        "from": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
+                        "to": f'"{verb.plur.word}"'
+                    })
+                    """
             
             if not (verb.sing.gen and verb.plur.gen and verb.pret.gen):
                 self.add_literals_and_words(verb)
