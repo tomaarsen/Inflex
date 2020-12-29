@@ -55,6 +55,7 @@ class TestVerbToPresPart(unittest.TestCase):
         {'in': 'awakes', 'out': 'awakening'},
         {'in': 'awoke', 'out': 'awakening'},
         {'in': 'awoken', 'out': 'awakening'},
+        {'in': 'be', 'out': 'being'},
         {'in': 'beat', 'out': 'beating'},
         {'in': 'beaten', 'out': 'beating'},
         {'in': 'beating', 'out': 'beating'},

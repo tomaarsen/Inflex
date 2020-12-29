@@ -38,6 +38,7 @@ class TestVerbToSingular(unittest.TestCase):
         {'in': 'avalanches', 'out': 'avalanches'},
         {'in': 'awake', 'out': 'awakes'},
         {'in': 'awakes', 'out': 'awakes'},
+        {'in': 'be', 'out': 'is'},
         {'in': 'beat', 'out': 'beats'},
         {'in': 'beats', 'out': 'beats'},
         {'in': 'become', 'out': 'becomes'},

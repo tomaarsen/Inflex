@@ -30,6 +30,7 @@ class TestVerbIsPlural(unittest.TestCase):
         {'in': 'ask', 'out': True},
         {'in': 'avalanche', 'out': True},
         {'in': 'awake', 'out': True},
+        {'in': 'be', 'out': True},
         {'in': 'beat', 'out': True},
         {'in': 'become', 'out': True},
         {'in': 'beget', 'out': True},

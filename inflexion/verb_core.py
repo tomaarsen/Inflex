@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201226.142531
+VERSION = 20201229.141115
 
 plural_of = {
     "abides": "abide",
@@ -249,6 +249,7 @@ singular_of = {
     "ask": "asks",
     "avalanche": "avalanches",
     "awake": "awakes",
+    "be": "is",
     "beat": "beats",
     "become": "becomes",
     "beget": "begets",
@@ -497,6 +498,7 @@ past_of = {
     "awakening": "awoke",
     "awakes": "awoke",
     "awoken": "awoke",
+    "be": "were",
     "beat": "beat",
     "beaten": "beat",
     "beating": "beat",
@@ -1340,6 +1342,7 @@ pres_part_of = {
     "awakes": "awakening",
     "awoke": "awakening",
     "awoken": "awakening",
+    "be": "being",
     "beat": "beating",
     "beaten": "beating",
     "beating": "beating",
@@ -2237,6 +2240,7 @@ past_part_of = {
     "awakes": "awoken",
     "awoke": "awoken",
     "awoken": "awoken",
+    "be": "been",
     "beat": "beaten",
     "beaten": "beaten",
     "beating": "beaten",

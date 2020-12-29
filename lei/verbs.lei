@@ -7,6 +7,10 @@
     are                are                   were          being             been
     am                 are               was|were          being             been
     was                were              was|were          being             been
+    is                 be                was|were          being             been
+    are                be                    were          being             been
+    am                 be                was|were          being             been
+    was                be                was|were          being             been
 
 
 #_____/ Modal verbs \________________________________________________________________________
