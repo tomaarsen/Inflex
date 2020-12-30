@@ -442,7 +442,7 @@
    *hoof  => hoofs  | hooves
    *knife =>        | knives
    *leaf  =>        | leaves
-   *life  =>        | lives
+    life  =>        | lives
    *loaf  =>        | loaves
    *shelf =>        | shelves
    *thief =>        | thieves
