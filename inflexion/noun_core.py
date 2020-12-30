@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201229.202107
+VERSION = 20201230.162419
 
 def rei(regex):
     """
@@ -369,7 +369,7 @@ modern_plural_of = {
     "ballata": "ballate",
     "ballerina": "ballerinas",
     "ballista": "ballistas",
-    "bandeau": "bandeaux",
+    "bandeau": "bandeaus",
     "bandit": "bandits",
     "barrico": "barricoes",
     "base": "bases",
@@ -377,7 +377,7 @@ modern_plural_of = {
     "basis": "bases",
     "bass": "basses",
     "basso": "bassos",
-    "bateau": "bateaux",
+    "bateau": "bateaus",
     "bath": "baths",
     "bathos": "bathoses",
     "batz": "batzes",
@@ -509,11 +509,11 @@ modern_plural_of = {
     "ceriman": "cerimans",
     "chaeta": "chaetae",
     "chaos": "chaoses",
-    "chapeau": "chapeaux",
+    "chapeau": "chapeaus",
     "chapplis": "chapplies",
     "charisma": "charismas",
     "chassis": "chassis",
-    "chateau": "chateaux",
+    "chateau": "chateaus",
     "che": "ches",
     "cherub": "cherubs",
     "chervonetz": "chervontzi",
@@ -5260,7 +5260,7 @@ singular_of = {
     "beau gestes": "beau geste",
     "beaus": "beau",
     "beaux": "beau",
-    "beaux esprits": "bel-esprit",
+    "beaux esprits": "bel esprit",
     "beaux gestes": "beau geste",
     "beaux hommes": "bel homme",
     "bechuana": "bechuana",
@@ -6484,7 +6484,7 @@ singular_of = {
     "nodi": "nodus",
     "noemata": "noema",
     "nomismata": "nomisma",
-    "nonentia": "non-ens",
+    "nonentia": "non ens",
     "noumena": "noumenon",
     "nouveaux arrives": "nouvel arrive",
     "nouveaux pauvres": "nouveau pauvre",

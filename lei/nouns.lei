@@ -2192,14 +2192,14 @@
 # French imports ending in "-u" that classically inflect to "-ux"...
 
         aboiteau     =>  aboiteaus     |  aboiteaux
-        bandeau      =>                |  bandeaux
-        bateau       =>                |  bateaux
-        beau         =>  beaus         |  beaux
+#       bandeau      =>                |  bandeaux # Duplicates
+#       bateau       =>                |  bateaux
+#       beau         =>  beaus         |  beaux
         bijou        =>                |  bijoux
         bordereau    =>                |  bordereaux
-        bureau       =>  bureaus       |  bureaux
-        chapeau      =>                |  chapeaux
-        chateau      =>                |  chateaux
+#       bureau       =>  bureaus       |  bureaux
+#       chapeau      =>                |  chapeaux
+#       chateau      =>                |  chateaux
         cheval       =>                |  chevaux
         chou         =>                |  choux
         fabliau      =>                |  fabliaux
@@ -2207,11 +2207,11 @@
         jeu          =>                |  jeux
         maquereau    =>                |  maquereaux
         morceau      =>                |  morceaux
-        plateau      =>  plateaus      |  plateaux
-        portmanteau  =>  portmanteaus  |  portmanteaux
-        tableau      =>  tableaus      |  tableaux
-        tonneau      =>  tonneaus      |  tonneaux
-        trousseau    =>  trousseaus    |  trousseaux
+#       plateau      =>  plateaus      |  plateaux
+#       portmanteau  =>  portmanteaus  |  portmanteaux
+#       tableau      =>  tableaus      |  tableaux
+#       tonneau      =>  tonneaus      |  tonneaux
+#       trousseau    =>  trousseaus    |  trousseaux
         trumeau      =>                |  trumeaux
         voeu         =>                |  voeux
 
