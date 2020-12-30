@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201229.141115
+VERSION = 20201230.193345
 
 plural_of = {
     "abides": "abide",
@@ -994,10 +994,10 @@ past_of = {
     "remembering": "remembered",
     "remembers": "remembered",
     "rend": "rent",
-    "rended": "rented",
     "rending": "rent",
     "rends": "rent",
     "rent": "rent",
+    "rented": "rented",
     "renting": "rented",
     "rents": "rented",
     "rid": "rid",
@@ -1862,7 +1862,6 @@ pres_part_of = {
     "remembering": "remembering",
     "remembers": "remembering",
     "rend": "rending",
-    "rended": "renting",
     "rending": "rending",
     "rends": "rending",
     "rent": "rending",
@@ -2760,13 +2759,12 @@ past_part_of = {
     "remembering": "remembered",
     "remembers": "remembered",
     "rend": "rent",
-    "rended": "rended",
     "rending": "rent",
     "rends": "rent",
     "rent": "rent",
-    "rented": "rended",
-    "renting": "rended",
-    "rents": "rended",
+    "rented": "rented",
+    "renting": "rented",
+    "rents": "rented",
     "rid": "rid",
     "ridding": "rid",
     "rids": "rid",

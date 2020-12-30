@@ -575,7 +575,6 @@ class TestVerbToPresPart(unittest.TestCase):
         {'in': 'remembering', 'out': 'remembering'},
         {'in': 'remembers', 'out': 'remembering'},
         {'in': 'rend', 'out': 'rending'},
-        {'in': 'rended', 'out': 'renting'},
         {'in': 'rending', 'out': 'rending'},
         {'in': 'rends', 'out': 'rending'},
         {'in': 'rent', 'out': 'rending'},
