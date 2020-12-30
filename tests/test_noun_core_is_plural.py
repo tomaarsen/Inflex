@@ -702,6 +702,7 @@ class TestNounIsPlural(unittest.TestCase):
         {'in': 'cortices', 'out': True},
         {'in': 'cosmoses', 'out': True},
         {'in': 'costae', 'out': True},
+        {'in': 'court martials', 'out': True},
         {'in': 'court-martials', 'out': True},
         {'in': 'courts martial', 'out': True},
         {'in': 'courts-martial', 'out': True},

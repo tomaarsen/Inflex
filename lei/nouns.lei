@@ -158,7 +158,7 @@
     auto-de-fe             => auto-de-fes      | autos-de-fes
     beau geste             => beau gestes      | beaux gestes
     bel homme              =>                  | beaux hommes
-    bel-esprit             =>                  | beaux esprits
+    bel esprit             =>                  | beaux esprits
     belle epoque           => belle epoques    | belles epoques
     bon mot                => bon mots         | bons mots
     bon vivant             => bon vivants      | bons vivants
@@ -175,7 +175,7 @@
     concerto grosso        =>                  | concerti grossi
     corpus vile            =>                  | corpora vilia
     coup d'etat            =>                  | coups d'etat
-    court martial          => court-martials   | courts martial
+    court martial          => court martials   | courts martial
     crafts-child           =>                  | crafts-childer
     cri de coeur           =>                  | cris de coeur
     cul-de-four            =>                  | culs-de-four

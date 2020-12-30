@@ -427,7 +427,7 @@ def rei(regex):
             data = {
                 _phrase_key: _phrase_value
                 for phrase_key, phrase_value in self.reader.literals[key].items()
-                for _phrase_key, _phrase_value in {(phrase_key, phrase_value), (phrase_key.replace("-", " "), phrase_value.replace("-", " "))}
+                for _phrase_key, _phrase_value in ({(phrase_key, phrase_value), (phrase_key.replace("-", " "), phrase_value.replace("-", " "))} if "-" in phrase_key and "-" in phrase_value else {(phrase_key, phrase_value)})
             }
             generated_code += f"{key}_of = " + json.dumps(data, indent=4, sort_keys=True) + "\n\n"
         

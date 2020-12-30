@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201230.165527
+VERSION = 20201230.171237
 
 def rei(regex):
     """
@@ -388,7 +388,6 @@ modern_plural_of = {
     "beerenauslese": "beerenauslesen",
     "bel esprit": "beaux esprits",
     "bel homme": "beaux hommes",
-    "bel-esprit": "beaux esprits",
     "belle epoque": "belle epoques",
     "bema": "bemas",
     "bersagliere": "bersaglieri",
@@ -1359,7 +1358,6 @@ modern_plural_of = {
     "nodus": "nodi",
     "noema": "noemata",
     "nomisma": "nomismata",
-    "non ens": "nonentia",
     "non-ens": "nonentia",
     "noumenon": "noumena",
     "nouveau pauvre": "nouvelle pauvre",
@@ -2800,7 +2798,6 @@ classical_plural_of = {
     "beerenauslese": "beerenauslesen",
     "bel esprit": "beaux esprits",
     "bel homme": "beaux hommes",
-    "bel-esprit": "beaux esprits",
     "belle epoque": "belles epoques",
     "bema": "bemata",
     "bersagliere": "bersaglieri",
@@ -3771,7 +3768,6 @@ classical_plural_of = {
     "nodus": "nodi",
     "noema": "noemata",
     "nomisma": "nomismata",
-    "non ens": "nonentia",
     "non-ens": "nonentia",
     "noumenon": "noumena",
     "nouveau pauvre": "nouveaux pauvres",
@@ -5536,7 +5532,7 @@ singular_of = {
     "costae": "costa",
     "coups d'etat": "coup d'etat",
     "court martials": "court martial",
-    "court-martials": "court martial",
+    "court-martials": "court-martial",
     "courts martial": "court martial",
     "courts-martial": "court-martial",
     "cows": "cow",
@@ -6484,7 +6480,7 @@ singular_of = {
     "nodi": "nodus",
     "noemata": "noema",
     "nomismata": "nomisma",
-    "nonentia": "non ens",
+    "nonentia": "non-ens",
     "noumena": "noumenon",
     "nouveaux arrives": "nouvel arrive",
     "nouveaux pauvres": "nouveau pauvre",
