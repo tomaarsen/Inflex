@@ -509,7 +509,6 @@ class TestNounIsSingular(unittest.TestCase):
         {'in': 'charisma', 'out': True},
         {'in': 'chassis', 'out': True},
         {'in': 'chateau', 'out': True},
-        {'in': 'che', 'out': True},
         {'in': 'cherub', 'out': True},
         {'in': 'chervonetz', 'out': True},
         {'in': 'cheval', 'out': True},

@@ -603,7 +603,6 @@ class TestNounIsPlural(unittest.TestCase):
         {'in': 'cherubim', 'out': True},
         {'in': 'cherubs', 'out': True},
         {'in': 'chervontzi', 'out': True},
-        {'in': 'ches', 'out': True},
         {'in': 'chevaux', 'out': True},
         {'in': 'chevaux-de-bataille', 'out': True},
         {'in': 'children', 'out': True},

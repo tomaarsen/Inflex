@@ -423,7 +423,6 @@ def rei(regex):
 
         for key in self.reader.literals:
             # For phrases with dashes, also add variants with spaces
-            # TODO: This creates non-determinism if the key contains no spaces/dashes but the output does
             data = {
                 _phrase_key: _phrase_value
                 for phrase_key, phrase_value in self.reader.literals[key].items()

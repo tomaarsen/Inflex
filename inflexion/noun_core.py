@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201230.171237
+VERSION = 20201230.172627
 
 def rei(regex):
     """
@@ -513,7 +513,6 @@ modern_plural_of = {
     "charisma": "charismas",
     "chassis": "chassis",
     "chateau": "chateaus",
-    "che": "ches",
     "cherub": "cherubs",
     "chervonetz": "chervontzi",
     "cheval": "chevaux",
@@ -2923,7 +2922,6 @@ classical_plural_of = {
     "charisma": "charismata",
     "chassis": "chassis",
     "chateau": "chateaux",
-    "che": "ches",
     "cherub": "cherubim",
     "chervonetz": "chervontzi",
     "cheval": "chevaux",
@@ -5430,7 +5428,6 @@ singular_of = {
     "cherubim": "cherub",
     "cherubs": "cherub",
     "chervontzi": "chervonetz",
-    "ches": "che",
     "chevaux": "cheval",
     "chevaux de bataille": "cheval de bataille",
     "chevaux-de-bataille": "cheval-de-bataille",
