@@ -2749,7 +2749,7 @@
         -[aiy]nx                =>  -[aiy]nxes                  |  -[aiy]nges
         -arf                    =>                              |  -arves
         -ceps                   =>  -ceps                       |
-        -[^aeoui][aeoui]che     =>  -[^aeoui][aeoui]ches        |
+        -[^aeoui][aeouiy]che    =>  -[^aeoui][aeouiy]ches       |
         -[cs]h                  =>  -[cs]hes                    |
         -eaf                    =>  -eaves                      |
         -eau                    =>  -eaus                       |  -eaux
