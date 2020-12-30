@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201230.162419
+VERSION = 20201230.165527
 
 def rei(regex):
     """
@@ -1163,7 +1163,7 @@ modern_plural_of = {
     "maecenas": "maecenases",
     "maestro": "maestros",
     "mafiosa": "mafiose",
-    "mafioso": "mafiosi",
+    "mafioso": "mafiosos",
     "magilus": "magili",
     "magma": "magmas",
     "magneto": "magnetos",
@@ -1371,7 +1371,7 @@ modern_plural_of = {
     "nubecula": "nubeculae",
     "nucleolonema": "nucleolonemas",
     "nucleolus": "nucleoluses",
-    "nucleus": "nuclei",
+    "nucleus": "nucleuses",
     "numen": "numina",
     "nuntius": "nuntii",
     "nympha": "nymphae",

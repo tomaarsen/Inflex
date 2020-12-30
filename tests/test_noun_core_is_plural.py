@@ -23,6 +23,7 @@ class TestNounIsPlural(unittest.TestCase):
     # ]
     test_args = [
         {'in': "coups d'etat", 'out': True},
+        {'in': '', 'out': True},
         {'in': 'Achinese', 'out': True},
         {'in': 'Alfurese', 'out': True},
         {'in': 'Amboinese', 'out': True},

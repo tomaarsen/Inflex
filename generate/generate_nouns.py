@@ -135,8 +135,8 @@ class Noun(object):
         self.plur_two.restrict_word()
         # TODO: Check if this can be removed
         # If the first plural does not exist, have both point to the same object
-        if not self.plur_one.word:
-            self.plur_one = self.plur_two
+        # if not self.plur_one.word:
+            # self.plur_one = self.plur_two
 
     def has_hyphen(self):
         return "-" in self.sing.word or "-" in self.plur_one.word or "-" in self.plur_two.word
@@ -212,17 +212,30 @@ class Reader(object):
                 raise Exception("Unknown input:", line)
             
             if noun.sing.gen:
-                self.optionally_add_pattern(self.patterns["modern_plural"], { 
-                    "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                    "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
-                    "tag": noun.tag
-                })
-                self.optionally_add_pattern(self.patterns["singular"], { 
-                    "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
-                    "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
-                    #"conditional": "lambda match: True",
-                    "tag": noun.tag 
-                })
+                if noun.plur_one.word:
+                    self.optionally_add_pattern(self.patterns["modern_plural"], { 
+                        "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
+                        "tag": noun.tag
+                    })
+                    self.optionally_add_pattern(self.patterns["singular"], { 
+                        "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
+                        #"conditional": "lambda match: True",
+                        "tag": noun.tag 
+                    })
+                elif noun.plur_two.word:
+                    self.optionally_add_pattern(self.patterns["modern_plural"], { 
+                        "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
+                        "tag": noun.tag
+                    })
+                    self.optionally_add_pattern(self.patterns["singular"], { 
+                        "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
+                        #"conditional": "lambda match: True",
+                        "tag": noun.tag 
+                    })
 
                 if noun.plur_two.word:
                     self.optionally_add_pattern(self.patterns["classical_plural"], { 
@@ -255,7 +268,7 @@ class Reader(object):
                 # TODO: Investigate this setting to 1
                 noun.plur_one.gen = 1
             
-            if not noun.plur_one.gen:
+            if not noun.plur_one.gen and not noun.plur_two.gen:
                 self.add_literals(noun)
                 self.add_words(noun)
 
@@ -298,9 +311,9 @@ class Reader(object):
             collection.append(dict_to_add)
 
     def optionally_add_literal(self, collection, key, word):
-        if key == "_" or word == "_":
+        if key == "_" or word == "_" or key == "":
             return
-        if key not in collection:
+        if key not in collection or not collection[key]:
             collection[key] = word
 
     def add_literals(self, noun):
@@ -405,9 +418,12 @@ def rei(regex):
     return re.compile(regex, flags=re.I)
 
 '''
+        # If there is no modern plural known, use the classical plural
+        self.reader.literals["modern_plural"] = {key: (value if value else self.reader.literals["classical_plural"][key]) for key, value in self.reader.literals["modern_plural"].items()}
 
         for key in self.reader.literals:
             # For phrases with dashes, also add variants with spaces
+            # TODO: This creates non-determinism if the key contains no spaces/dashes but the output does
             data = {
                 _phrase_key: _phrase_value
                 for phrase_key, phrase_value in self.reader.literals[key].items()
