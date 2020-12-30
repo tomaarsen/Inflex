@@ -62,7 +62,7 @@ class Term(object):
         if " " in self.term or "-" in self.term:
             self.spaces = re.findall(r"([\r\n\t\f\v\- ]+)", self.term)
         if "  " in self.term:
-            self.term = re.sub(r"\s{2,}", self.term)
+            self.term = re.sub(r"\s{2,}", " ", self.term)
 
     def is_noun(self) -> bool:
         """
