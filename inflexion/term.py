@@ -171,6 +171,7 @@ class Term(object):
         Apply casing from `self.term` string onto `target` string.
 
         TODO: Currently "Toms'" -> "Toms'S"
+        TODO: Currently "show--off" -> "show----off"
         """
 
         # Special case for 'I'
