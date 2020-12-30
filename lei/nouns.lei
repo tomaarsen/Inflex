@@ -2759,9 +2759,8 @@
         -o                      =>  -os                         |
         -quy                    =>  -quies                      |
         -[aeiou]y               =>  -[aeiou]ys                  |
-        -[aeio]se               =>  -[aeio]ses                  |
+        -[rnlpwaeio]se          =>  -[rnlpwaeio]ses             |
         -ss                     =>  -sses                       |
-        -[rnlpw]se              =>  -[rnlpw]ses                 | 
         -[aeo]use               => -[aeo]uses                   |
         -us                     =>  -uses                       |
         -[^ns]sis               =>                              |  -[^ns]ses
