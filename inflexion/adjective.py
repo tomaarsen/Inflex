@@ -17,6 +17,12 @@ from inflexion.noun import Noun
 
 
 class Adjective(Term):
+
+    _stem_regexes = {
+        re.compile(r"y\Z"): lambda match: "i",
+        re.compile(r"e\Z"): lambda match: "",
+    }
+
     def __init__(self, term: str):
         super().__init__(term)
 
@@ -90,3 +96,16 @@ class Adjective(Term):
             return self._encase(self._possessive_inflexion[self.term.lower()]["plural"][person])
         
         return self._encase(convert_to_plural(self.term))
+
+    def _stem(self, term: str) -> str:
+        for regex, suffix_func in Adjective._stem_regexes.items():
+            match = regex.search(term)
+            if match:
+                return term[:match.start()] + suffix_func(match)
+
+        return term
+
+    def comparative(self) -> str:
+        # TODO: Good -> best, also good-mannered -> best-mannered, etc.
+
+        return self._stem(self.term) + "er"

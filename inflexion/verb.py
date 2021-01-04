@@ -147,6 +147,7 @@ class Verb(Term):
         # Apply the first relevant transform...
         for regex in Verb._stem_regexes:
             match = regex.search(term)
+            # TODO: Make more efficient by using match start and stop indices
             if match:
                 return regex.sub(Verb._stem_regexes[regex](match), term)
 
