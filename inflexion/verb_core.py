@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20201230.193345
+VERSION = 20210105.012042
 
 plural_of = {
     "abides": "abide",
@@ -4019,6 +4019,8 @@ def convert_to_past(word):
         return past_of[word]
     if not word.islower() and word.lower() in past_of:
         return past_of[word.lower()]
+    if is_past(word):
+        return word
     match = past_convert_rule_regex.match(word.lower())
     if match:
         for i, group in enumerate(match.groups()):
@@ -4031,6 +4033,8 @@ def convert_to_pres_part(word):
         return pres_part_of[word]
     if not word.islower() and word.lower() in pres_part_of:
         return pres_part_of[word.lower()]
+    if is_pres_part(word):
+        return word
     match = pres_part_convert_rule_regex.match(word.lower())
     if match:
         for i, group in enumerate(match.groups()):
@@ -4043,6 +4047,8 @@ def convert_to_past_part(word):
         return past_part_of[word]
     if not word.islower() and word.lower() in past_part_of:
         return past_part_of[word.lower()]
+    if is_past_part(word):
+        return word
     match = past_part_convert_rule_regex.match(word.lower())
     if match:
         for i, group in enumerate(match.groups()):

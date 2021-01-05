@@ -408,6 +408,11 @@ def convert_to_{name}(word):
             output += """if known_plural(word):
         return word
     """
+        elif name != "singular":
+            output += f"""if is_{name}(word):
+        return word
+    """
+
         output += f"""match = {name}_convert_rule_regex.match(word.lower())
     if match:
         for i, group in enumerate(match.groups()):
