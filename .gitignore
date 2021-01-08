@@ -136,3 +136,5 @@ celex
 logs
 # Ignore profiling files
 *.prof
+# Remove comparison files used for checking similarity to Lingua::EN::Inflexion
+compare
