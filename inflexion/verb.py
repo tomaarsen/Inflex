@@ -19,6 +19,11 @@ from inflexion.verb_core import (
     convert_to_past,
     convert_to_pres_part,
     convert_to_past_part,
+    plural_of,
+    singular_of,
+    past_of,
+    pres_part_of,
+    past_part_of,
 )
 
 class Verb(Term):
@@ -85,6 +90,10 @@ class Verb(Term):
         # "To be" is special
         if self.term.lower() in ["is", "am", "are"]:
             if person == 0:
+                # "are" is already singular, e.g. "they are my friend", 
+                # but the expected result is "is", so we opt for that.
+                if self.term.lower() == "are":
+                    return self._encase("is")
                 return self._reapply_whitespace(self.term)
             if person == 2 or not self.is_singular():
                 return self._encase("are")
@@ -94,17 +103,26 @@ class Verb(Term):
 
         # Third person uses the "notational" singular inflection
         if person == 3 or person == 0:
+            # Get first word, last section of that word (if "-" in the word)
             term, form = self.get_subterm(self.term)
+            
+            # If this term is in the list of known cases
+            if term.lower() in singular_of:
+                return self._encase(form.format(singular_of[term.lower()]))
+        
+            # Try splitting off a prefix
             prefix, subterm = self.split_prefix(term)
             if prefix:
                 known = convert_to_singular(subterm)
                 if known:
                     return self._encase(form.format(prefix + known))
 
+            # Otherwise convert the first word, last section
             known = convert_to_singular(term)
             if known:
                 return self._encase(form.format(known))
             
+            # If all else fails, return the term
             return self._reapply_whitespace(self.term)
 
         # First and second person always use the uninflected (i.e. "notational plural" form)
@@ -112,17 +130,25 @@ class Verb(Term):
 
     def plural(self, person:Optional[int] = 0) -> str:
         known = None
+        # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.term)
         
+        # If this term is in the list of known cases
+        if term.lower() in plural_of:
+            return self._encase(form.format(plural_of[term.lower()]))
+
+        # Try splitting off a prefix
         prefix, subterm = self.split_prefix(term)
         known = convert_to_plural(subterm)
         if known:
             return self._encase(form.format(prefix + known))
 
+        # Otherwise convert the first word, last section
         known = convert_to_plural(term)
         if known:
             return self._encase(form.format(known))
 
+        # If all else fails, return the term
         return self._reapply_whitespace(self.term)
     
     def as_regex(self) -> "re.Pattern":
@@ -201,9 +227,20 @@ class Verb(Term):
 
     def past(self) -> str:
         known = None
+        # "To be" is special
+        if self.term.lower() in ["is", "am"]:
+            return "was"
+        if self.term.lower() == "are":
+            return "were"
+        
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.term)
 
+        # If this term is in the list of known cases
+        if term.lower() in past_of:
+            return self._encase(form.format(past_of[term.lower()]))
+
+        # Try splitting off a prefix
         prefix, subterm = self.split_prefix(term)
         if prefix:
             known = convert_to_past(subterm)
@@ -223,8 +260,14 @@ class Verb(Term):
 
     def pres_part(self) -> str:
         known = None
+        # If this term is in the list of known cases
+        if self.term.lower() in pres_part_of:
+            return self._encase(pres_part_of[self.term.lower()])
+
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.plural())
+
+        # Try splitting off a prefix
         prefix, subterm = self.split_prefix(term)
         if prefix:
             known = convert_to_pres_part(subterm)
@@ -242,9 +285,14 @@ class Verb(Term):
 
     def past_part(self) -> str:
         known = None
+        # If this term is in the list of known cases
+        if self.term.lower() in past_part_of:
+            return self._encase(past_part_of[self.term.lower()])
+
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.plural())
-        # Strip prefix if possible
+
+        # Try splitting off a prefix
         prefix, subterm = self.split_prefix(term)
         if prefix:
             known = convert_to_past_part(subterm)
