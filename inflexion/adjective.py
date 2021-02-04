@@ -62,7 +62,7 @@ class Adjective(Term):
                 "plural":   ["our",   "our",   "your",  "their"],
             },
             "their": {
-                "singular": ["its",   "my",    "your",  "its"],
+                "singular": ["their", "my",    "your",  "its"],
                 "plural":   ["their", "our",   "your",  "their"],
             },
         }
