@@ -33,8 +33,11 @@ jobs:
         git clone https://github.com/quadrismegistus/prosodic.git
         cd prosodic
         sed -i 's/with open("README.md", "r") as fh:/with open("README.md", "r", encoding="utf8") as fh:/' setup.py
+        # Install it after fixing
         python setup.py install
+        # Cleanup
         cd ..
+        rm -r prosodic
         # Avoid using requirements.txt for now, due to workaround install
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
