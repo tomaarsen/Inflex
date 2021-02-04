@@ -48,7 +48,7 @@ class Term(object):
         self.start  = ""
         self.end    = ""
         # Default format for the separator between words
-        self.spaces = [" "]
+        self.spaces = None
 
         self.term = term.strip()
         
@@ -205,19 +205,24 @@ class Term(object):
         
         # Apply the transformations found in `original` to `target`
         transformations_gen = get_transformations(transformations)
-        return self._reapply_whitespace(Term._word_regex.sub(lambda match_obj: next(transformations_gen)(match_obj.group(0)), target))
+        # Phrase is target, but with the proper casing from the term applied
+        phrase = Term._word_regex.sub(lambda match_obj: next(transformations_gen)(match_obj.group(0)), target)
+        return self._reapply_whitespace(phrase)
 
     def _reapply_whitespace(self, phrase: str):
         """
         Reapply whitespace formats before, after and within a phrase,
         based on `self.start`, `self.end` and `self.spaces`
         """
-        def get_spaces(spaces: list):
-            while True:
-                yield spaces[0]
-                if len(spaces) > 1:
-                    spaces = spaces[1:]
+        if self.spaces:
+            def get_spaces(spaces: list):
+                while True:
+                    yield spaces[0]
+                    if len(spaces) > 1:
+                        spaces = spaces[1:]
 
-        spaces_gen = get_spaces(self.spaces)
+            spaces_gen = get_spaces(self.spaces)
 
-        return self.start + re.sub("-| ", lambda _: next(spaces_gen), phrase.strip()) + self.end
+            return self.start + re.sub("-| ", lambda _: next(spaces_gen), phrase.strip()) + self.end
+        
+        return self.start + phrase + self.end
