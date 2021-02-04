@@ -9,8 +9,6 @@
 
 import unittest
 
-import context
-
 from inflexion.adjective_core import convert_to_singular
 
 class TestAdjectiveToSingular(unittest.TestCase):

@@ -9,8 +9,6 @@
 
 import unittest
 
-import context
-
 from inflexion.verb_core import is_plural
 
 class TestVerbIsPlural(unittest.TestCase):

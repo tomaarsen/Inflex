@@ -9,8 +9,6 @@
 
 import unittest
 
-import context
-
 from inflexion.indefinite_core import prepend_indefinite_article
 
 class TestIndefinitePrependArticle(unittest.TestCase):

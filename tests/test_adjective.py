@@ -4,8 +4,6 @@
 
 import unittest
 
-import context
-
 from inflexion.adjective import Adjective
 
 class TestAdjectives(unittest.TestCase):

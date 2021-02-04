@@ -9,8 +9,6 @@
 
 import unittest
 
-import context
-
 from inflexion.noun_core import is_singular
 
 class TestNounIsSingular(unittest.TestCase):

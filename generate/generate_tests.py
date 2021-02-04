@@ -19,8 +19,6 @@ class TestWriter(object):
 
 import unittest
 
-import context
-
 from {import_folder_name}.{import_fname} import {test_function}
 
 class Test{test_name_pascal}(unittest.TestCase):

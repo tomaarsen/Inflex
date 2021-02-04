@@ -9,8 +9,6 @@
 
 import unittest
 
-import context
-
 from inflexion.noun_core import convert_to_singular
 
 class TestNounToSingular(unittest.TestCase):
