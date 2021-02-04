@@ -35,6 +35,8 @@ jobs:
         sed -i 's/with open("README.md", "r") as fh:/with open("README.md", "r", encoding="utf8") as fh:/' setup.py
         # Install it after fixing
         python setup.py install
+        # installing from this setup.py doesn't install the requirements, so we have to do it ourselves
+        pip install -r requirements.txt
         # Cleanup
         cd ..
         rm -r prosodic
