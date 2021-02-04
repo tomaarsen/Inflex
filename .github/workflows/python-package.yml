@@ -29,6 +29,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
+        git clone https://github.com/quadrismegistus/prosodic.git
+        cd prosodic
+        sed -i 's/with open("README.md", "r") as fh:/with open("README.md", "r", encoding="utf8") as fh:/' setup.py
+        python setup.py install
+        cd ..
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
