@@ -141,12 +141,12 @@ def convert_to_singular(word):
             f.write(generated_code)
 
 class VerbTestWriter(TestWriter):
-    def __init__(self, reader, out_fname):
-        super().__init__(out_fname)
+    def __init__(self, reader, class_name):
+        super().__init__(class_name)
         self.reader = reader
         """
         For each test case we need the following information to be passed to the format:
-        import_fname:       Equivalent to out_fname, already known as self.import_fname
+        test_class:         Equivalent to class_name, already known as self.test_class
         test_function:      Name of function to test.
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
@@ -198,7 +198,7 @@ class VerbTestWriter(TestWriter):
 
     def write_to_singular_test(self):
         test_path = self.test_folder_name + "//test_adjective_core_to_singular.py"
-        test_function = "convert_to_singular"
+        test_function = "singular"
         test_name_pascal = "AdjectiveToSingular"
         test_args = [
             {
@@ -216,7 +216,7 @@ class VerbTestWriter(TestWriter):
 
     def write_to_plural_test(self):
         test_path = self.test_folder_name + "//test_adjective_core_to_plural.py"
-        test_function = "convert_to_plural"
+        test_function = "plural"
         test_name_pascal = "AdjectiveToPlural"
         test_args = [
             {
@@ -235,12 +235,12 @@ class VerbTestWriter(TestWriter):
 if __name__ == "__main__":
     in_fname = "lei//adjectives.lei"
     out_fname = "inflexion//adjective_core.py"
-    out_import = "adjective_core"
+    class_name = "Adjective"
     reader = Reader(in_fname)
     reader.parse_file()
     
     cwriter = CodeWriter(reader, out_fname)
     cwriter.write_file()
     
-    twriter = VerbTestWriter(reader, out_import)
+    twriter = VerbTestWriter(reader, class_name)
     twriter.write_tests()

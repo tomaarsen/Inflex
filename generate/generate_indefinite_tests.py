@@ -244,11 +244,11 @@ test_data = [
 ]
 
 class IndefiniteTestWriter(TestWriter):
-    def __init__(self, out_fname):
-        super().__init__(out_fname)
+    def __init__(self, class_name):
+        super().__init__(class_name)
         """
         For each test case we need the following information to be passed to the format:
-        import_fname:       Equivalent to out_fname, already known as self.import_fname
+        test_class:         Equivalent to class_name, already known as self.test_class
         test_function:      Name of function to test.
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
@@ -258,9 +258,9 @@ class IndefiniteTestWriter(TestWriter):
         self.write_prepend_indefinite_article_test()
 
     def write_prepend_indefinite_article_test(self):
-        test_path = self.test_folder_name + "//test_indefinite_core_prepend_article.py"
-        test_function = "prepend_indefinite_article"
-        test_name_pascal = "IndefinitePrependArticle"
+        test_path = self.test_folder_name + "//test_noun_indefinite_article.py"
+        test_function = "indefinite"
+        test_name_pascal = "PrependIndefiniteArticle"
         test_args = [
             {
                 "in": word, 
@@ -270,6 +270,6 @@ class IndefiniteTestWriter(TestWriter):
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
 if __name__ == "__main__":
-    out_import = "indefinite_core"
-    twriter = IndefiniteTestWriter(out_import)
+    class_name = "Noun"
+    twriter = IndefiniteTestWriter(class_name)
     twriter.write_tests()

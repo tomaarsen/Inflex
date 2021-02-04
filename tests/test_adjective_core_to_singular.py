@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion.adjective_core import convert_to_singular
+from inflexion import Adjective
 
 class TestAdjectiveToSingular(unittest.TestCase):
     # test_args has the format [{
@@ -32,15 +32,15 @@ class TestAdjectiveToSingular(unittest.TestCase):
         {'in': 'your', 'out': 'your'},
     ]
 
-    def test_convert_to_singular(self):
+    def test_adjective_to_singular(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
                 test_case = {**test_case, **{
-                    "desc": f"convert_to_singular({repr(test_case['in'])}) => {repr(test_case['out'])}",
+                    "desc": f"singular({repr(test_case['in'])}) => {repr(test_case['out'])}",
                     "kwargs": dict()
                 }}
-                self.assertEqual(convert_to_singular(test_case["in"], **test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(Adjective(test_case["in"]).singular(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 
 if __name__ == "__main__":
     unittest.main()

@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion.verb_core import is_past_part
+from inflexion import Verb
 
 class TestVerbIsPastPart(unittest.TestCase):
     # test_args has the format [{
@@ -235,7 +235,7 @@ class TestVerbIsPastPart(unittest.TestCase):
         {'in': 'wrung', 'out': True},
     ]
 
-    def test_is_past_part(self):
+    def test_verb_is_past_part(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
@@ -243,7 +243,7 @@ class TestVerbIsPastPart(unittest.TestCase):
                     "desc": f"is_past_part({repr(test_case['in'])}) => {repr(test_case['out'])}",
                     "kwargs": dict()
                 }}
-                self.assertEqual(is_past_part(test_case["in"], **test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(Verb(test_case["in"]).is_past_part(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 
 if __name__ == "__main__":
     unittest.main()

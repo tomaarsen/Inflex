@@ -583,12 +583,12 @@ def known_singular(word):
         return output
 
 class NounTestWriter(TestWriter):
-    def __init__(self, reader, out_fname):
-        super().__init__(out_fname)
+    def __init__(self, reader, class_name):
+        super().__init__(class_name)
         self.reader = reader
         """
         For each test case we need the following information to be passed to the format:
-        import_fname:       Equivalent to out_fname, already known as self.import_fname
+        test_class:         Equivalent to class_name, already known as self.test_class
         test_function:      Name of function to test.
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
@@ -630,7 +630,7 @@ class NounTestWriter(TestWriter):
 
     def write_to_singular_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_singular.py"
-        test_function = "convert_to_singular"
+        test_function = "singular"
         test_name_pascal = "NounToSingular"
         test_args = [
             {
@@ -651,7 +651,7 @@ class NounTestWriter(TestWriter):
 
     def write_to_modern_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_modern_plural.py"
-        test_function = "convert_to_modern_plural"
+        test_function = "plural"
         test_name_pascal = "NounToModernPlural"
         test_args = [
             {
@@ -671,7 +671,7 @@ class NounTestWriter(TestWriter):
 
     def write_to_classical_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_classical_plural.py"
-        test_function = "convert_to_classical_plural"
+        test_function = "classical().plural"
         test_name_pascal = "NounToClassicalPlural"
         test_args = [
             {
@@ -692,7 +692,7 @@ class NounTestWriter(TestWriter):
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"
     out_fname = "inflexion//noun_core.py"
-    out_import = "noun_core"
+    class_name = "Noun"
 
     reader = Reader(in_fname)
     reader.parse_file()
@@ -700,7 +700,7 @@ if __name__ == "__main__":
     cwriter = CodeWriter(reader, out_fname)
     cwriter.write_file()
 
-    twriter = NounTestWriter(reader, out_import)
+    twriter = NounTestWriter(reader, class_name)
     twriter.write_tests()
 
 # IDEA: Convert 

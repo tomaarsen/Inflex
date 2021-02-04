@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion.verb_core import is_pres_part
+from inflexion import Verb
 
 class TestVerbIsPresPart(unittest.TestCase):
     # test_args has the format [{
@@ -234,7 +234,7 @@ class TestVerbIsPresPart(unittest.TestCase):
         {'in': 'wringing', 'out': True},
     ]
 
-    def test_is_pres_part(self):
+    def test_verb_is_pres_part(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
@@ -242,7 +242,7 @@ class TestVerbIsPresPart(unittest.TestCase):
                     "desc": f"is_pres_part({repr(test_case['in'])}) => {repr(test_case['out'])}",
                     "kwargs": dict()
                 }}
-                self.assertEqual(is_pres_part(test_case["in"], **test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(Verb(test_case["in"]).is_pres_part(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 
 if __name__ == "__main__":
     unittest.main()

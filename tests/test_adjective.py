@@ -270,7 +270,9 @@ class TestAdjectives(unittest.TestCase):
         {'in': 'our',   'out': 'your',  'kwargs': {'person': 2}},
         {'in': 'our',   'out': 'its',   'kwargs': {'person': 3}},
 
-        {'in': 'their', 'out': 'its',   'kwargs': {'person': 0}},
+        # We have opted to stick to "their" as a singular word
+        # so 0th person singular of "their" stays as "their".
+        {'in': 'their', 'out': 'their', 'kwargs': {'person': 0}}, 
         {'in': 'their', 'out': 'my',    'kwargs': {'person': 1}},
         {'in': 'their', 'out': 'your',  'kwargs': {'person': 2}},
         {'in': 'their', 'out': 'its',   'kwargs': {'person': 3}},

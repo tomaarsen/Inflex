@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion.verb_core import is_past
+from inflexion import Verb
 
 class TestVerbIsPast(unittest.TestCase):
     # test_args has the format [{
@@ -239,7 +239,7 @@ class TestVerbIsPast(unittest.TestCase):
         {'in': 'wrung', 'out': True},
     ]
 
-    def test_is_past(self):
+    def test_verb_is_past(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
@@ -247,7 +247,7 @@ class TestVerbIsPast(unittest.TestCase):
                     "desc": f"is_past({repr(test_case['in'])}) => {repr(test_case['out'])}",
                     "kwargs": dict()
                 }}
-                self.assertEqual(is_past(test_case["in"], **test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(Verb(test_case["in"]).is_past(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 
 if __name__ == "__main__":
     unittest.main()

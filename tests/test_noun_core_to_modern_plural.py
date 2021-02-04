@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion.noun_core import convert_to_modern_plural
+from inflexion import Noun
 
 class TestNounToModernPlural(unittest.TestCase):
     # test_args has the format [{
@@ -4489,15 +4489,15 @@ class TestNounToModernPlural(unittest.TestCase):
         {'in': 'zygon', 'out': 'zyga'},
     ]
 
-    def test_convert_to_modern_plural(self):
+    def test_noun_to_modern_plural(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
                 test_case = {**test_case, **{
-                    "desc": f"convert_to_modern_plural({repr(test_case['in'])}) => {repr(test_case['out'])}",
+                    "desc": f"plural({repr(test_case['in'])}) => {repr(test_case['out'])}",
                     "kwargs": dict()
                 }}
-                self.assertEqual(convert_to_modern_plural(test_case["in"], **test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(Noun(test_case["in"]).plural(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 
 if __name__ == "__main__":
     unittest.main()

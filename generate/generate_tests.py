@@ -2,9 +2,9 @@
 import json
 
 class TestWriter(object):
-    def __init__(self, import_fname):
+    def __init__(self, test_class):
         super().__init__()
-        self.import_fname = import_fname
+        self.test_class = test_class
         self.import_folder_name = "inflexion"
         # TODO: Improve paths
         self.test_folder_name = "tests"
@@ -19,7 +19,7 @@ class TestWriter(object):
 
 import unittest
 
-from {import_folder_name}.{import_fname} import {test_function}
+from {import_folder_name} import {test_class}
 
 class Test{test_name_pascal}(unittest.TestCase):
     # test_args has the format [{{
@@ -31,7 +31,7 @@ class Test{test_name_pascal}(unittest.TestCase):
     # ]
     test_args = {test_args}
 
-    def test_{test_function}(self):
+    def test_{test_name_snake}(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
@@ -39,7 +39,7 @@ class Test{test_name_pascal}(unittest.TestCase):
                     "desc": f"{test_function}({{repr(test_case['in'])}}) => {{repr(test_case['out'])}}",
                     "kwargs": dict()
                 }}}}
-                self.assertEqual({test_function}(test_case["in"], **test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual({test_class}(test_case["in"]).{test_function}(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 
 if __name__ == "__main__":
     unittest.main()
@@ -57,7 +57,8 @@ if __name__ == "__main__":
     def write_test(self, test_path, test_function, test_name_pascal, test_args):
         with open(test_path, "w+") as f:
             f.write(self.test_file_format.format(import_folder_name=self.import_folder_name,
-                                                 import_fname=self.import_fname,
+                                                 test_class=self.test_class,
+                                                 test_name_snake="".join([f"_{char.lower()}" if char.isupper() else char for char in test_name_pascal])[1:],
                                                  test_function=test_function,
                                                  test_name_pascal=test_name_pascal,
                                                  test_args=self._format_test_args(test_args)))

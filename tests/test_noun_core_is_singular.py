@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion.noun_core import is_singular
+from inflexion import Noun
 
 class TestNounIsSingular(unittest.TestCase):
     # test_args has the format [{
@@ -2391,7 +2391,7 @@ class TestNounIsSingular(unittest.TestCase):
         {'in': 'zygon', 'out': True},
     ]
 
-    def test_is_singular(self):
+    def test_noun_is_singular(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
@@ -2399,7 +2399,7 @@ class TestNounIsSingular(unittest.TestCase):
                     "desc": f"is_singular({repr(test_case['in'])}) => {repr(test_case['out'])}",
                     "kwargs": dict()
                 }}
-                self.assertEqual(is_singular(test_case["in"], **test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(Noun(test_case["in"]).is_singular(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 
 if __name__ == "__main__":
     unittest.main()

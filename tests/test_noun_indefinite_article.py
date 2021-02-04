@@ -9,9 +9,9 @@
 
 import unittest
 
-from inflexion.indefinite_core import prepend_indefinite_article
+from inflexion import Noun
 
-class TestIndefinitePrependArticle(unittest.TestCase):
+class TestPrependIndefiniteArticle(unittest.TestCase):
     # test_args has the format [{
     #    "in":     ..., # (required)
     #    "out":    ..., # (required)
@@ -265,10 +265,10 @@ class TestIndefinitePrependArticle(unittest.TestCase):
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
                 test_case = {**test_case, **{
-                    "desc": f"prepend_indefinite_article({repr(test_case['in'])}) => {repr(test_case['out'])}",
+                    "desc": f"indefinite({repr(test_case['in'])}) => {repr(test_case['out'])}",
                     "kwargs": dict()
                 }}
-                self.assertEqual(prepend_indefinite_article(test_case["in"], **test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(Noun(test_case["in"]).indefinite(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 
 if __name__ == "__main__":
     unittest.main()

@@ -454,12 +454,12 @@ def is_{name}(word):
         return output
 
 class VerbTestWriter(TestWriter):
-    def __init__(self, reader, out_fname):
-        super().__init__(out_fname)
+    def __init__(self, reader, class_name):
+        super().__init__(class_name)
         self.reader = reader
         """
         For each test case we need the following information to be passed to the format:
-        import_fname:       Equivalent to out_fname, already known as self.import_fname
+        test_class:         Equivalent to class_name, already known as self.test_class
         test_function:      Name of function to test.
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
@@ -569,7 +569,7 @@ class VerbTestWriter(TestWriter):
 
     def write_to_singular_test(self):
         test_path = self.test_folder_name + "//test_verb_core_to_singular.py"
-        test_function = "convert_to_singular"
+        test_function = "singular"
         test_name_pascal = "VerbToSingular"
         test_args = [
             {
@@ -589,7 +589,7 @@ class VerbTestWriter(TestWriter):
 
     def write_to_plural_test(self):
         test_path = self.test_folder_name + "//test_verb_core_to_plural.py"
-        test_function = "convert_to_plural"
+        test_function = "plural"
         test_name_pascal = "VerbToPlural"
         test_args = [
             {
@@ -609,7 +609,7 @@ class VerbTestWriter(TestWriter):
 
     def write_to_past_test(self):
         test_path = self.test_folder_name + "//test_verb_core_to_past.py"
-        test_function = "convert_to_past"
+        test_function = "past"
         test_name_pascal = "VerbToPast"
         test_args = [
             {
@@ -622,7 +622,7 @@ class VerbTestWriter(TestWriter):
 
     def write_to_pres_part_test(self):
         test_path = self.test_folder_name + "//test_verb_core_to_pres_part.py"
-        test_function = "convert_to_pres_part"
+        test_function = "pres_part"
         test_name_pascal = "VerbToPresPart"
         test_args = [
             {
@@ -635,7 +635,7 @@ class VerbTestWriter(TestWriter):
 
     def write_to_past_part_test(self):
         test_path = self.test_folder_name + "//test_verb_core_to_past_part.py"
-        test_function = "convert_to_past_part"
+        test_function = "past_part"
         test_name_pascal = "VerbToPastPart"
         test_args = [
             {
@@ -649,12 +649,12 @@ class VerbTestWriter(TestWriter):
 if __name__ == "__main__":    
     in_fname = "lei//verbs.lei"
     out_fname = "inflexion//verb_core.py"
-    out_import = "verb_core"
+    class_name = "Verb"
     reader = Reader(in_fname)
     reader.parse_file()
     
     cwriter = CodeWriter(reader, out_fname)
     cwriter.write_file()
     
-    twriter = VerbTestWriter(reader, out_import)
+    twriter = VerbTestWriter(reader, class_name)
     twriter.write_tests()
