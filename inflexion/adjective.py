@@ -3,6 +3,7 @@
 
 import re
 from typing import Optional
+import prosodic
 
 # import context
 
@@ -17,6 +18,17 @@ from inflexion.noun import Noun
 
 
 class Adjective(Term):
+
+    _stem_regexes = {
+        re.compile(r"([aiou])y\Z"): lambda match: f"{match.group(1)}y",
+        re.compile(r"ey\Z"): lambda match: "i",
+        re.compile(r"y\Z"): lambda match: "i",
+        re.compile(r"e\Z"): lambda match: "",
+        # re.compile(r"([dbmnt])\Z"): lambda match: match.group(1) * 2,
+    }
+
+    _stem_double_regex = re.compile(r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
+
     def __init__(self, term: str):
         super().__init__(term)
 
@@ -55,6 +67,34 @@ class Adjective(Term):
             },
         }
 
+        self._comparative_conversions = {
+            "good": "better",
+            "well": "better",
+            
+            "bad": "worse",
+            "badly": "worse",
+            "ill": "worse",
+
+            "far": "further",
+            # "little": "less", # Could also be "littler", e.g. "little book" -> "even littler book"
+            "many": "more",
+            "much": "more",
+        }
+
+        self._superlative_conversions = {
+            "good": "best",
+            "well": "best",
+            
+            "bad": "worst",
+            "badly": "worst",
+            "ill": "worst",
+
+            "far": "furthest",
+            # "little": "least", # We opt for littlest
+            "many": "most",
+            "much": "most",
+        }
+
     """
     Override default methods from Term    
     """
@@ -90,3 +130,68 @@ class Adjective(Term):
             return self._encase(self._possessive_inflexion[self.term.lower()]["plural"][person])
         
         return self._encase(convert_to_plural(self.term))
+
+    def is_one_syllable(self, term: str):
+        converted = ''.join("V" if char in "aeiou" else "C" for char in term.lower())
+        while "CC" in converted:
+            converted = converted.replace("CC", "C")
+        return "VCV" not in converted
+
+    def _stem(self, term: str) -> str:
+        # Utility method that adjusts final consonants when they need to be doubled in inflexions...
+        # Apply the first relevant transform...
+        for regex in Adjective._stem_regexes:
+            match = regex.search(term)
+            if match:
+                # Adding `term[match.end():]` is unnecessary for now, but allows for more complex regexes.
+                return term[:match.start()] + Adjective._stem_regexes[regex](match) + term[match.end():]
+
+        # Get a prosodic Word object to find the stress
+        word = prosodic.Word(term)
+        
+        # Duplicate last letter if:
+        if  (
+            len(word.children) == 1                                     # The word is certainly just one syllable, or
+            or (not word.children and self.is_one_syllable(term))       # The word is just one syllable, or
+            or (word.children and word.children[-1].stressed)           # The last syllable is stressed
+            ) and Adjective._stem_double_regex.search(term):            # AND the word ends in (roughly) CVC
+            return term + term[-1]
+
+        return term
+
+    def comparative(self) -> str:
+        if self.term.lower() in self._comparative_conversions:
+            return self._comparative_conversions[self.term.lower()]
+
+        pattern = re.compile(r"-| ")
+        match = pattern.search(self.term)
+        if match:
+            term, remainder = self.term[:match.start()], self.term[match.end():]
+            output_format = f"{{}}{match.group()}{{}}"
+            return output_format.format(Adjective(term).comparative(), remainder)
+
+        return self._stem(self.term) + "er"
+
+    def superlative(self) -> str:
+        """
+        NOTE: "little" or "far" will fail due to having multiple options
+          little (kid)  -> littlest (kid)
+          little (food) -> least (food)
+        and 
+          far -> furthest
+          far -> farthest
+        NOTE: Fails on e.g. "boring" or "famous"
+          We convert these to "boringest" and "famousest".
+          In reality they should be "most boring" and "most famous"
+        """
+        if self.term.lower() in self._superlative_conversions:
+            return self._superlative_conversions[self.term.lower()]
+
+        pattern = re.compile(r"-| ")
+        match = pattern.search(self.term)
+        if match:
+            term, remainder = self.term[:match.start()], self.term[match.end():]
+            output_format = f"{{}}{match.group()}{{}}"
+            return output_format.format(Adjective(term).superlative(), remainder)
+
+        return self._stem(self.term) + "est"

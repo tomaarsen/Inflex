@@ -47,10 +47,11 @@ DATA_PAT         = re.compile(r"""
     flags=xms)
 RECURSE  = re.compile(r"\(SING\) | \(PREP\)", flags=xms)
 RECURSE_GROUPED = re.compile(r"""
-      (?P<star>  \*        )
-    | (?P<sing>  \(SING\)  )
-    | (?P<plur>  \(PL\)    )
-    | (?P<prep>  \(PREP\)  )
+      (?P<star>   \*        )
+    | (?P<sing>   \(SING\)  )
+    | (?P<plur>   \(PL\)    )
+    | (?P<prep>   \(PREP\)  )
+    | (?P<prepr>  \(PREPR\)  )
 """, flags=xms)
 """
 CONS     = re.compile(r"\(CONS\)", flags=xms)
@@ -134,8 +135,8 @@ class Noun(object):
         self.plur_two.restrict_word()
         # TODO: Check if this can be removed
         # If the first plural does not exist, have both point to the same object
-        if not self.plur_one.word:
-            self.plur_one = self.plur_two
+        # if not self.plur_one.word:
+            # self.plur_one = self.plur_two
 
     def has_hyphen(self):
         return "-" in self.sing.word or "-" in self.plur_one.word or "-" in self.plur_two.word
@@ -172,25 +173,28 @@ class Reader(object):
         Fill `pattern`, `literal` and `words`
         """
 
+        """
+        # TODO: Add these in the convert functions themselves
         # Add conversions for possessives
         self.patterns["modern_plural"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: convert_to_modern_plural(match.group(1)) + '\\'' if convert_to_modern_plural(match.group(1)).endswith('s') else convert_to_modern_plural(match.group(1)) + '\\'s'",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_modern_plural(match.group(1)))",
             "conv_conditional": "lambda match: is_singular(match.group(1))",
             "tag": ""
         })
         self.patterns["classical_plural"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: convert_to_classical_plural(match.group(1)) + '\\'' if convert_to_classical_plural(match.group(1)).endswith('s') else convert_to_classical_plural(match.group(1)) + '\\'s'",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_classical_plural(match.group(1)))",
             "conv_conditional": "lambda match: is_singular(match.group(1))",
             "tag": ""
         })
         self.patterns["singular"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: convert_to_singular(match.group(1)) + '\\'' if convert_to_singular(match.group(1)).endswith('s') else convert_to_singular(match.group(1)) + '\\'s'",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_singular(match.group(1)))",
             "conv_conditional": "lambda match: is_plural(match.group(1))",
             "tag": ""
         })
+        """
 
         lines = self.get_readlines()
         
@@ -208,36 +212,48 @@ class Reader(object):
                 raise Exception("Unknown input:", line)
             
             if noun.sing.gen:
-                self.optionally_add_pattern(self.patterns["modern_plural"], { 
-                    "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                    "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_one.word}"', 
-                    #"conditional": "lambda match: True",
-                    "tag": noun.tag
-                })
-                self.optionally_add_pattern(self.patterns["singular"], { 
-                    "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
-                    "to": 'lambda match: f"{match.group(1)}' + f'{noun.sing.word}"',
-                    #"conditional": "lambda match: True",
-                    "tag": noun.tag 
-                })
+                if noun.plur_one.word:
+                    self.optionally_add_pattern(self.patterns["modern_plural"], { 
+                        "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
+                        "tag": noun.tag
+                    })
+                    self.optionally_add_pattern(self.patterns["singular"], { 
+                        "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
+                        #"conditional": "lambda match: True",
+                        "tag": noun.tag 
+                    })
+                elif noun.plur_two.word:
+                    self.optionally_add_pattern(self.patterns["modern_plural"], { 
+                        "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
+                        "tag": noun.tag
+                    })
+                    self.optionally_add_pattern(self.patterns["singular"], { 
+                        "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
+                        #"conditional": "lambda match: True",
+                        "tag": noun.tag 
+                    })
 
                 if noun.plur_two.word:
                     self.optionally_add_pattern(self.patterns["classical_plural"], { 
                         "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                        "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_two.word}"', 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
                         #"conditional": "lambda match: True",
                         "tag": noun.tag 
                     })
                     self.optionally_add_pattern(self.patterns["singular"], { 
                         "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
-                        "to": 'lambda match: f"{match.group(1)}' + f'{noun.sing.word}"', 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"', 
                         #"conditional": "lambda match: True",
                         "tag": noun.tag 
                     })
                 else:
                     self.optionally_add_pattern(self.patterns["classical_plural"], { 
                         "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                        "to": 'lambda match: f"{match.group(1)}' + f'{noun.plur_one.word}"', 
+                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
                         #"conditional": "lambda match: True",
                         "tag": noun.tag 
                     })
@@ -252,14 +268,9 @@ class Reader(object):
                 # TODO: Investigate this setting to 1
                 noun.plur_one.gen = 1
             
-            if not noun.plur_one.gen:
+            if not noun.plur_one.gen and not noun.plur_two.gen:
                 self.add_literals(noun)
                 self.add_words(noun)
-
-                if noun.has_hyphen():
-                    noun.replace_hyphens(" ")
-                    self.add_literals(noun)
-                    self.add_words(noun) 
 
     def add_recurse_patterns(self, noun):
         self.optionally_add_pattern(self.patterns["modern_plural"], {
@@ -300,9 +311,9 @@ class Reader(object):
             collection.append(dict_to_add)
 
     def optionally_add_literal(self, collection, key, word):
-        # if key == "_" or word == "_":
-            # return
-        if key not in collection:
+        if key == "_" or word == "_" or key == "":
+            return
+        if key not in collection or not collection[key]:
             collection[key] = word
 
     def add_literals(self, noun):
@@ -346,29 +357,35 @@ class Reader(object):
         for from_match, to_match in zip(from_matches, to_matches):
             if from_match.group("star"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f'match.group({n})'))
+                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
             
             elif from_match.group("sing"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(match.group({n})) if is_singular(match.group({n})) else match.group({n})"))
+                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(subterms[{n-1}]) if is_singular(subterms[{n-1}]) else subterms[{n-1}]"))
                 if not check_conditional:
                     check_conditional = f"lambda match: is_singular(match.group({n}))"
 
             elif from_match.group("plur"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(match.group({n})) if is_plural(match.group({n})) else match.group({n})"))
+                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(subterms[{n-1}]) if is_plural(subterms[{n-1}]) else subterms[{n-1}]"))
                 if not check_conditional:
                     check_conditional = f"lambda match: is_plural(match.group({n}))"
 
             elif from_match.group("prep"):
                 _from=irepl(from_match, _from, r"(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)")
-                to    = irepl(to_match, to, wrap(f'match.group({n})'))
+                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
+
+            elif from_match.group("prepr"):
+                # Relative to prep, prepr(educed) lacks:
+                # out, about, off, in, on, over
+                _from=irepl(from_match, _from, r"(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)")
+                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
 
             n -= 1
         
         return {
             "from": _from,
-            "to": f'lambda match: f"{to}"',
+            "to": f'lambda subterms: f"{to}"',
             "check_conditional": check_conditional
         }
 
@@ -401,9 +418,17 @@ def rei(regex):
     return re.compile(regex, flags=re.I)
 
 '''
+        # If there is no modern plural known, use the classical plural
+        self.reader.literals["modern_plural"] = {key: (value if value else self.reader.literals["classical_plural"][key]) for key, value in self.reader.literals["modern_plural"].items()}
 
         for key in self.reader.literals:
-            generated_code += f"{key}_of = " + json.dumps(reader.literals[key], indent=4, sort_keys=True) + "\n\n" 
+            # For phrases with dashes, also add variants with spaces
+            data = {
+                _phrase_key: _phrase_value
+                for phrase_key, phrase_value in self.reader.literals[key].items()
+                for _phrase_key, _phrase_value in ({(phrase_key, phrase_value), (phrase_key.replace("-", " "), phrase_value.replace("-", " "))} if "-" in phrase_key and "-" in phrase_value else {(phrase_key, phrase_value)})
+            }
+            generated_code += f"{key}_of = " + json.dumps(data, indent=4, sort_keys=True) + "\n\n"
         
         for key in self.reader.literals:
             generated_code += self.get_convert_rule_output(key, self.reader.patterns[key]) + "\n\n"
@@ -412,14 +437,10 @@ def rei(regex):
         generated_code += self.get_recognize_rule_output("singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
         
         generated_code += """def known_plural(word):
-    return word in modern_plural_of.values() or\\
-        word in classical_plural_of.values() or\\
-        word in singular_of
+    return word in singular_of
 
 def known_singular(word):
-    return word in singular_of.values() or\\
-        word in modern_plural_of or\\
-        word in classical_plural_of
+    return word in modern_plural_of
 
 """
 
@@ -436,9 +457,10 @@ def known_singular(word):
             f.write(generated_code)
 
     def get_convert_rule_output(self, name, replacement_suffixes):
+        """
         output = name + "_convert_rules = {\n"
         used_lines = []
-        for replacement_dict in replacement_suffixes:
+        for replacement_dict in replacement_suffixes:#sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("("), reverse=True):
             line = f'    rei(r"^{replacement_dict["from"]}$"): '
             # Add a non-empty conditional if it exists
             if "conv_conditional" in replacement_dict and replacement_dict["conv_conditional"]:
@@ -455,36 +477,62 @@ def known_singular(word):
                 output += line
         output += "}"
         return output
+        """
+
+        regexes = []
+        outputs = []
+        slices = []
+        i = 1
+        for index, replacement_dict in enumerate(replacement_suffixes):
+            if replacement_dict["from"] not in regexes:
+                regexes.append(replacement_dict["from"])
+                outputs.append(replacement_dict["to"])
+                # Informal method of finding out how many capture groups there are.
+                # Optionally, use re.compile(replacement_dict["from"]).groups
+                n_captures = re.compile(replacement_dict["from"]).groups
+                for _ in range(n_captures):
+                    slices.append((index ,[i + group_id for group_id in range(n_captures)]))
+                i += n_captures
+
+        output = f"{name}_convert_rule_regex = re.compile(r\"^(?:{'|'.join(regexes)})$\")\n\n"
+        output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]\n"
+        output += f"{name}_convert_slices = [" + ''.join('\n    ' + str(index_list) + ',' for index_list in slices) + "\n]"
+
+        return output
 
     def get_converter_output(self, name, replacement_suffixes):
         _type = "plural" if "plural" in name else "singular"
-        _extra_check = " and not is_singular(word)" if _type == "plural" else ""
+        _extra_check = " and not is_singular(word, is_word_plural=True)" if _type == "plural" else ""
 
-        output = f"""def convert_to_{name}(word, verbose=False):
+        output = f"""def convert_to_{name}(word):
     if word in {name}_of:
-        if verbose: print(word, 'in {name}_of')
         return {name}_of[word]
-    if word.lower() in {name}_of:
-        if verbose: print(word.lower(), 'in {name}_of')
+    
+    if not word.islower() and word.lower() in {name}_of:
         return {name}_of[word.lower()]
+    
     if is_{_type}(word){_extra_check}:
-        if verbose: print('is_{_type}(word){_extra_check}')
         return word
-    for rule in {name}_convert_rules:
-        match = rule.match(word)
-        if match:
-            if verbose: print(word, 'matched', rule.pattern)
-            # If there is no conditional, or if the condition succeeds
-            if not "conditional" in {name}_convert_rules[rule] or {name}_convert_rules[rule]["conditional"](match):
-                if verbose: print(word, 'passed the conditional, or there was no conditional')
-                return {name}_convert_rules[rule]["output"](match)
-            else:
-                if verbose: print(word, 'failed the conditional')
+    
+    if word.lower().endswith(("'s", "'")):
+        subword = word[:word.rfind("'")]
+        if is_{"singular" if _type == "plural" else "plural"}(subword):
+            subword = convert_to_{name}(subword)
+            return subword + "'" if subword.endswith('s') else subword + "'s"
+        return word
+    
+    match = {name}_convert_rule_regex.match(word)
+    if match:
+        for i, group in enumerate(match.groups()):
+            if group is not None:
+                output_id, slices = {name}_convert_slices[i]
+                return {name}_convert_outputs[output_id]([match.group(index) for index in slices])
     return word"""
         return output
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = {\n"
+        """
         used_lines = []
         for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
             if replacement_dict["tag"] == "nonindicative":
@@ -499,34 +547,39 @@ def known_singular(word):
             if line not in used_lines:
                 used_lines.append(line)
                 output += line
+        """
+        non_cond_regexes = {repl_dict["from"] for repl_dict in replacement_suffixes if not ("check_conditional" in repl_dict and repl_dict["check_conditional"]) and repl_dict["tag"] != "nonindicative"}
+        cond_regexes     = [repl_dict for repl_dict in replacement_suffixes if "check_conditional" in repl_dict and repl_dict["check_conditional"] and repl_dict["tag"] != "nonindicative"]
+        large_regex = "|".join(sorted(sorted(non_cond_regexes), key=lambda x: len(x) - x.find(")") + x.find("(")))
+        output += f'    rei(r"^(?:{large_regex})$"): {{}},\n'
+        for replacement_dict in cond_regexes:#sorted(cond_regexes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
+            output += f'    rei(r"^{replacement_dict["from"]}$"): {{"conditional": {replacement_dict["check_conditional"]}}},\n'
         output += "}"
         return output
 
     def get_recognizer_output(self, name, compl_name):
-        output = f"""def is_{name}(word, verbose=False):
-    if known_{name}(word) or known_{name}(word.lower()):
-        if verbose: print('known_{name}(word)')
-        return True"""
+        output = f"""def is_{name}(word{', is_word_plural=None' if name == "singular" else ''}):
+    if known_{name}(word) or (not word.islower() and known_{name}(word.lower())):
+        return True
+"""
         if compl_name:
             output += f"""
-    if known_{compl_name}(word) or known_{compl_name}(word.lower()):
-        if verbose: print('known_{compl_name}(word)')
+    if known_{compl_name}(word) or (not word.islower() and known_{compl_name}(word.lower())):
         return False
+
     for rule in {name}_recognize_rules:
         match = rule.match(word)
         if match:
-            if verbose: print(word, 'matched', rule.pattern)
             if not "conditional" in {name}_recognize_rules[rule] or {name}_recognize_rules[rule]["conditional"](match):
-                if verbose: print(word, 'passed the conditional, or there was no conditional')
                 return True
-            else:
-                if verbose: print(word, 'failed the conditional')
-    if verbose: print("Matched no rules")"""
+
+    """
         if name == "singular":
-            output += "\n    return not is_plural(word)"
+            output += """if is_word_plural is not None:
+        return not is_word_plural
+    return not is_plural(word)"""
         else:
-            # TODO: Consider stripping before checking endswith
-            output += "\n    return word.endswith('s')"
+            output += "return word.endswith('s')"
         return output
 
 class NounTestWriter(TestWriter):
@@ -643,3 +696,11 @@ if __name__ == "__main__":
 
     twriter = NounTestWriter(reader, out_import)
     twriter.write_tests()
+
+# IDEA: Convert 
+# rei(r"^(.+)zzes$"): {"output": lambda match: f"{match.group(1)}z"},
+# into `rei(r"^(.+)zzes$"), lambda pattern, term: pattern.subn(term)`
+# and then return if result is 1
+# (note, limit to 1)
+
+# Alternatively, match group id's to a list of conversions to take. This allows converting the regexes into one massive regex.

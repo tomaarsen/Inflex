@@ -55,7 +55,7 @@ class Word(object):
         if not self.gen:
             return
         self.gen = DASH.sub(r".+", self.gen)
-        self.gen = STAR.sub(r".*", self.gen)
+        self.gen = STAR.sub(r"(?:.{2,})?", self.gen)
 
     def expand_cons_vowel(self) -> str:
         """
@@ -178,44 +178,74 @@ class Reader(object):
             if verb.has_gen():
                 self.optionally_add_pattern(self.patterns["plural"], {
                     "is": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
-                    "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
-                    "to": 'lambda match: f"{match.group(1)}' + f'{verb.plur.word}"' 
+                    "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
+                    "to": f'"{verb.plur.word}"'
                 })
                 self.optionally_add_pattern(self.patterns["singular"], {
                     "is": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
-                    "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
-                    "to": 'lambda match: f"{match.group(1)}' + f'{verb.sing.word}"'
+                    "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
+                    "to": f'"{verb.sing.word}"'
                 })
                 if verb.pret.word != "_":
                     self.optionally_add_pattern(self.patterns["past"], {
                         "is": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
-                        "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
+                        "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
+                        "to": f'"{verb.pret.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["past"], {
-                        "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pret.word}"'
+                        "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
+                        "to": f'"{verb.pret.word}"'
                     })
+                    """
+                    self.optionally_add_pattern(self.patterns["singular"], {
+                        "from": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
+                        "to": f'"{verb.sing.word}"'
+                    })
+                    self.optionally_add_pattern(self.patterns["plural"], {
+                        "from": f"({verb.pret.gen}{verb.pret.restrict}){verb.pret.word}",
+                        "to": f'"{verb.plur.word}"'
+                    })
+                    """
                 if verb.pres.word != "_":
                     self.optionally_add_pattern(self.patterns["pres_part"], {
                         "is": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
-                        "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
+                        "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
+                        "to": f'"{verb.pres.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["pres_part"], {
-                        "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.pres.word}"'
+                        "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
+                        "to": f'"{verb.pres.word}"'
                     })
+                    """
+                    self.optionally_add_pattern(self.patterns["singular"], {
+                        "from": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
+                        "to": f'"{verb.sing.word}"'
+                    })
+                    self.optionally_add_pattern(self.patterns["plural"], {
+                        "from": f"({verb.pres.gen}{verb.pres.restrict}){verb.pres.word}",
+                        "to": f'"{verb.plur.word}"'
+                    })
+                    """
                 if verb.past.word != "_":
                     self.optionally_add_pattern(self.patterns["past_part"], {
                         "is": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
-                        "from": f"(.*{verb.sing.restrict}){verb.sing.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
+                        "from": f"({verb.sing.gen}{verb.sing.restrict}){verb.sing.word}",
+                        "to": f'"{verb.past.word}"'
                     })
                     self.optionally_add_pattern(self.patterns["past_part"], {
-                        "from": f"(.*{verb.plur.restrict}){verb.plur.word}",
-                        "to": 'lambda match: f"{match.group(1)}' + f'{verb.past.word}"'
+                        "from": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
+                        "to": f'"{verb.past.word}"'
                     })
+                    """
+                    self.optionally_add_pattern(self.patterns["singular"], {
+                        "from": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
+                        "to": f'"{verb.sing.word}"'
+                    })
+                    self.optionally_add_pattern(self.patterns["plural"], {
+                        "from": f"({verb.past.gen}{verb.past.restrict}){verb.past.word}",
+                        "to": f'"{verb.plur.word}"'
+                    })
+                    """
             
             if not (verb.sing.gen and verb.plur.gen and verb.pret.gen):
                 self.add_literals_and_words(verb)
@@ -231,8 +261,8 @@ class Reader(object):
             collection.append(dict_to_add)
 
     def optionally_add_literal(self, collection, key, word):
-        # if key == "_" or word == "_":
-            # return
+        if key == "_" or word == "_":
+            return
         if key not in collection:
             collection[key] = word
 
@@ -296,13 +326,6 @@ import re
 
 VERSION = {version}
 
-def rei(regex):
-    """
-    Return compiled regular expression object with 
-    pattern `regex` and the IGNORECASE flag.
-    """
-    return re.compile(regex, flags=re.I)
-
 '''
 
         for key in self.reader.literals:
@@ -315,30 +338,32 @@ def rei(regex):
             generated_code += self.get_recognize_rule_output(key, self.reader.patterns[key]) + "\n\n"
         
         generated_code += """\
+past_of_values = set(past_of.values())
+pres_part_of_values = set(pres_part_of.values())
+past_part_of_values = set(past_part_of.values())
+
+plural_and_singular = {
+    *past_of_values,
+    *pres_part_of_values,
+    *past_part_of_values,
+}
+
 def known_plural(word):
     lword = word.lower()
-    return lword in plural_of.values() or\\
-        lword in singular_of or\\
-        lword in past_of.values() or\\
-        lword in pres_part_of.values() or\\
-        lword in past_part_of.values()
+    return lword in singular_of or lword in plural_and_singular
 
 def known_singular(word):
     lword = word.lower()
-    return lword in singular_of.values() or\\
-        lword in plural_of or\\
-        lword in past_of.values() or\\
-        lword in pres_part_of.values() or\\
-        lword in past_part_of.values()
+    return lword in plural_of or lword in plural_and_singular
 
 def known_past(word):
-    return word.lower() in past_of.values()
+    return word.lower() in past_of_values
 
 def known_past_part(word):
-    return word.lower() in past_part_of.values()
+    return word.lower() in past_part_of_values
 
 def known_pres_part(word):
-    return word.lower() in pres_part_of.values()
+    return word.lower() in pres_part_of_values
 
 """
 
@@ -358,10 +383,17 @@ def known_pres_part(word):
             f.write(generated_code)
 
     def get_convert_rule_output(self, name, replacement_suffixes):
-        output = name + "_convert_rules = {\n"
-        for replacement_dict in replacement_suffixes:
-            output += f'    rei(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
-        output += "}"
+        regexes = []
+        outputs = []
+        for replacement_dict in sorted(replacement_suffixes, key=lambda x: len(x["from"]) - x["from"].rfind(")") + x["from"].find("("), reverse=True):
+            if replacement_dict["from"] not in regexes:
+                regexes.append(replacement_dict["from"])
+                outputs.append(replacement_dict["to"])
+
+            # output += f'    re.compile(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
+        output = f"{name}_convert_rule_regex = re.compile(r\"^(?:{'|'.join(regexes)})$\")\n\n"
+
+        output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]"
         return output
 
     def get_converter_output(self, name, replacement_suffixes):
@@ -369,22 +401,35 @@ def known_pres_part(word):
 def convert_to_{name}(word):
     if word in {name}_of:
         return {name}_of[word]
-    if word.lower() in {name}_of:
+    if not word.islower() and word.lower() in {name}_of:
         return {name}_of[word.lower()]
-    if is_{name}(word):
+    """
+        if name == "plural":
+            output += """if known_plural(word):
         return word
-    for rule in {name}_convert_rules:
-        match = rule.match(word)
-        if match:
-            return {name}_convert_rules[rule](match)
-    return '_'"""
+    """
+        elif name != "singular":
+            output += f"""if is_{name}(word):
+        return word
+    """
+
+        output += f"""match = {name}_convert_rule_regex.match(word.lower())
+    if match:
+        for i, group in enumerate(match.groups()):
+            if group is not None:
+                return group + {name}_convert_outputs[i]
+    return None"""
         return output
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
         output = name + "_recognize_rules = [\n"
-        regexes = {replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict}
-        for regex in sorted(regexes, key=lambda x: len(x) - x.find(")")):
-            output += f'    rei(r"^{regex}$"),\n'
+        """
+        regexes = (replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict)
+        for regex in sorted(regexes, key=lambda x: len(x) - x.rfind(")") + x.find("(")):
+            output += f'    re.compile(r"^{regex}$"),\n'
+        """
+        regex = '|'.join(sorted(sorted(replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict), key=lambda x: len(x) - x.rfind(")") + x.find("(")))
+        output += f'    re.compile(r"^(?:{regex})$"),\n'
         output += "]"
         return output
 
