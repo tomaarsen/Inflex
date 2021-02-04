@@ -19,7 +19,7 @@ jobs:
         pip install pylint pylint-exit
     - name: Analysing the code with pylint
       run: |
-        python -m pylint inflexion/verb.py | tee pylint.txt
+        pylint `ls -R|grep .py$|xargs` | tee pylint.txt
     - name: Upload pylint.txt as artifact
       uses: actions/upload-artifact@v2
       with:
