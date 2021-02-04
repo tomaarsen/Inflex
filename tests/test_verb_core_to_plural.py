@@ -20,7 +20,6 @@ class TestVerbToPlural(unittest.TestCase):
     # }, ...
     # ]
     test_args = [
-        {'in': '', 'out': ''},
         {'in': 'abide', 'out': 'abide'},
         {'in': 'abides', 'out': 'abide'},
         {'in': 'ache', 'out': 'ache'},
@@ -306,7 +305,6 @@ class TestVerbToPlural(unittest.TestCase):
         {'in': 'rises', 'out': 'rise'},
         {'in': 'rive', 'out': 'rive'},
         {'in': 'rives', 'out': 'rive'},
-        {'in': 's', 'out': ''},
         {'in': 'saw', 'out': 'saw'},
         {'in': 'saws', 'out': 'saw'},
         {'in': 'seek', 'out': 'seek'},

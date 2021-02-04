@@ -20,7 +20,6 @@ class TestVerbIsPlural(unittest.TestCase):
     # }, ...
     # ]
     test_args = [
-        {'in': '', 'out': True},
         {'in': 'abide', 'out': True},
         {'in': 'ache', 'out': True},
         {'in': 'arc', 'out': True},

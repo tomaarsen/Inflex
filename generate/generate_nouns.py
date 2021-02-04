@@ -611,6 +611,7 @@ class NounTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["singular"]
+              if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -623,6 +624,7 @@ class NounTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["plural"]
+              if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -635,13 +637,15 @@ class NounTestWriter(TestWriter):
                 "in": plur,
                 "out": sing
             } for plur, sing in self.reader.literals["singular"].items()
+              if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": sing,
                 "out": sing
             } for sing in self.reader.literals["singular"].values()
-            if sing not in self.reader.words["plural"]
+              if sing not in self.reader.words["plural"] and sing and sing != "_"
+            
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -654,13 +658,14 @@ class NounTestWriter(TestWriter):
                 "in": sing,
                 "out": plur
             } for sing, plur in self.reader.literals["modern_plural"].items()
+              if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": plur,
                 "out": plur
             } for plur in self.reader.literals["modern_plural"].values()
-            if plur not in self.reader.words["singular"]
+              if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -673,13 +678,14 @@ class NounTestWriter(TestWriter):
                 "in": sing,
                 "out": plur
             } for sing, plur in self.reader.literals["classical_plural"].items()
+              if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": plur,
                 "out": plur
             } for plur in self.reader.literals["classical_plural"].values()
-            if plur not in self.reader.words["singular"]
+            if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 

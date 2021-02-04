@@ -20,7 +20,6 @@ class TestVerbToSingular(unittest.TestCase):
     # }, ...
     # ]
     test_args = [
-        {'in': '', 'out': 's'},
         {'in': 'abide', 'out': 'abides'},
         {'in': 'abides', 'out': 'abides'},
         {'in': 'ache', 'out': 'aches'},

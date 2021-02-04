@@ -495,6 +495,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["singular"]
+              if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -511,6 +512,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["plural"]
+              if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -527,7 +529,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["past"]
-            if word and word != "_"
+              if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -544,7 +546,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["pres_part"]
-            if word and word != "_"
+              if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -561,7 +563,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["past_part"]
-            if word and word != "_"
+              if word and word != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -574,13 +576,14 @@ class VerbTestWriter(TestWriter):
                 "in": plur,
                 "out": sing
             } for plur, sing in self.reader.literals["singular"].items()
+              if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": sing,
                 "out": sing
             } for sing in self.reader.literals["singular"].values()
-            if sing not in self.reader.words["plural"]
+              if sing not in self.reader.words["plural"] and sing and sing != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -593,13 +596,14 @@ class VerbTestWriter(TestWriter):
                 "in": sing,
                 "out": plur
             } for sing, plur in self.reader.literals["plural"].items()
+              if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": plur,
                 "out": plur
             } for plur in self.reader.literals["plural"].values()
-            if plur not in self.reader.words["singular"]
+              if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -612,7 +616,7 @@ class VerbTestWriter(TestWriter):
                 "in": verb,
                 "out": past
             } for verb, past in self.reader.literals["past"].items()
-            if verb and past != "_"
+              if verb and verb != "_" and past and past != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -625,7 +629,7 @@ class VerbTestWriter(TestWriter):
                 "in": verb,
                 "out": pres_part
             } for verb, pres_part in self.reader.literals["pres_part"].items()
-            if verb and pres_part != "_"
+              if verb and verb != "_" and pres_part and pres_part != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -638,7 +642,7 @@ class VerbTestWriter(TestWriter):
                 "in": verb,
                 "out": past_part
             } for verb, past_part in self.reader.literals["past_part"].items()
-            if verb and past_part != "_"
+              if verb and verb != "_" and past_part and past_part != "_"
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
