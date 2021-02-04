@@ -337,7 +337,7 @@ class Noun(Term):
                         "themselves": {
                             "number": "plural",
                             "person": 3,
-                            "singular": ["themselves",  "myself",       "yourself",     "themselves"],
+                            "singular": ["itself",      "myself",       "yourself",     "themselves"],
                             "plural":   ["themselves",  "ourselves",    "yourselves",   "themselves"],
                         },
                         "oneselves": {
