@@ -26,32 +26,33 @@ from inflexion.verb_core import (
     past_part_of,
 )
 
+
 class Verb(Term):
 
     _prefixes = (
-        'counter', 
-        'trans', 
-        'cross', 
-        'inter', 
-        'under', 
-        'fore', 
-        'back', 
+        'counter',
+        'trans',
+        'cross',
+        'inter',
+        'under',
+        'fore',
+        'back',
         'over',
-        # 'post', 
-        'out', 
-        'mis', 
-        'for', 
-        'dis', 
+        # 'post',
+        'out',
+        'mis',
+        'for',
+        'dis',
         'way',
         # 'pre',
         # 'sub',
-        'un', 
-        'in', 
-        # 'be', 
-        'up', 
-        're', 
+        'un',
+        'in',
+        # 'be',
+        'up',
+        're',
         # 'co',
-        #'de',
+        # 'de',
     )
 
     _stem_regexes = {
@@ -61,13 +62,16 @@ class Verb(Term):
         re.compile(r"ski\Z"): lambda match: "ski",
         re.compile(r"([^e])e\Z"): lambda match: match.group(1),
         re.compile(r".*er\Z"): lambda match: match.group(),
-        re.compile(r".{2,}en\Z"): lambda match: match.group(), # Only if long enough {('ken', 'kened', ('kenned',)), ('yen', 'yened', ('yenned',)), ('pen', 'pened', ('penned',))}
-        re.compile(r"(.[bdghklmnprstzy]on)\Z"): lambda match: match.group(1), # TODO: Try adding y
-        re.compile(r"ee\Z"): lambda match: "e", # Turns "ee" to "e"
-        re.compile(r"([^aeo][aeiuo])l\Z"): lambda match: match.group(1) + "ll", # Always duplicate CVl (British English)
+        # Only if long enough {('ken', 'kened', ('kenned',)), ('yen', 'yened', ('yenned',)), ('pen', 'pened', ('penned',))}
+        re.compile(r".{2,}en\Z"): lambda match: match.group(),
+        re.compile(r"(.[bdghklmnprstzy]on)\Z"): lambda match: match.group(1),
+        re.compile(r"ee\Z"): lambda match: "e",  # Turns "ee" to "e"
+        # Always duplicate CVl (British English)
+        re.compile(r"([^aeo][aeiuo])l\Z"): lambda match: match.group(1) + "ll",
     }
 
-    _stem_double_regex = re.compile(r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
+    _stem_double_regex = re.compile(
+        r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
 
     def __init__(self, term: str):
         super().__init__(term)
@@ -75,6 +79,7 @@ class Verb(Term):
     """
     Override default methods from Term    
     """
+
     def is_verb(self) -> bool:
         return True
 
@@ -84,13 +89,13 @@ class Verb(Term):
     def is_plural(self) -> bool:
         return is_plural(self.term)
 
-    def singular(self, person:Optional[int] = 0) -> str:
+    def singular(self, person: Optional[int] = 0) -> str:
         # TODO: Ensure valid person
 
         # "To be" is special
         if self.term.lower() in ["is", "am", "are"]:
             if person == 0:
-                # "are" is already singular, e.g. "they are my friend", 
+                # "are" is already singular, e.g. "they are my friend",
                 # but the expected result is "is", so we opt for that.
                 if self.term.lower() == "are":
                     return self._encase("is")
@@ -105,11 +110,11 @@ class Verb(Term):
         if person == 3 or person == 0:
             # Get first word, last section of that word (if "-" in the word)
             term, form = self.get_subterm(self.term)
-            
+
             # If this term is in the list of known cases
             if term.lower() in singular_of:
                 return self._encase(form.format(singular_of[term.lower()]))
-        
+
             # Try splitting off a prefix
             prefix, subterm = self.split_prefix(term)
             if prefix:
@@ -121,18 +126,18 @@ class Verb(Term):
             known = convert_to_singular(term)
             if known:
                 return self._encase(form.format(known))
-            
+
             # If all else fails, return the term
             return self._reapply_whitespace(self.term)
 
         # First and second person always use the uninflected (i.e. "notational plural" form)
         return self.plural()
 
-    def plural(self, person:Optional[int] = 0) -> str:
+    def plural(self, person: Optional[int] = 0) -> str:
         known = None
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.term)
-        
+
         # If this term is in the list of known cases
         if term.lower() in plural_of:
             return self._encase(form.format(plural_of[term.lower()]))
@@ -150,7 +155,7 @@ class Verb(Term):
 
         # If all else fails, return the term
         return self._reapply_whitespace(self.term)
-    
+
     def as_regex(self) -> "re.Pattern":
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
@@ -163,7 +168,8 @@ class Verb(Term):
     """
 
     def is_one_syllable(self, term: str):
-        converted = ''.join("V" if char in "aeiou" else "C" for char in term.lower())
+        converted = ''.join(
+            "V" if char in "aeiou" else "C" for char in term.lower())
         while "CC" in converted:
             converted = converted.replace("CC", "C")
         return "VCV" not in converted
@@ -183,13 +189,16 @@ class Verb(Term):
 
         # Get a prosodic Word object to find the stress
         word = prosodic.Word(last_word)
-        
+
         # Duplicate last letter if:
-        if  (
-            len(word.children) == 1                                     # The word is certainly just one syllable, or
-            or (not word.children and self.is_one_syllable(last_word))  # The word is just one syllable, or
-            or (word.children and word.children[-1].stressed)           # The last syllable is stressed
-            ) and Verb._stem_double_regex.search(term):                 # AND the word ends in (roughly) CVC
+        if (
+            # The word is certainly just one syllable, or
+            len(word.children) == 1
+            # The word is just one syllable, or
+            or (not word.children and self.is_one_syllable(last_word))
+            # The last syllable is stressed
+            or (word.children and word.children[-1].stressed)
+        ) and Verb._stem_double_regex.search(term):                 # AND the word ends in (roughly) CVC
             return term + term[-1]
 
         return term
@@ -232,7 +241,7 @@ class Verb(Term):
             return "was"
         if self.term.lower() == "are":
             return "were"
-        
+
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.term)
 
@@ -252,7 +261,7 @@ class Verb(Term):
         known = convert_to_past(root)
         if known:
             return self._encase(form.format(known))
-        
+
         # Otherwise use the standard pattern on the root
         known = self._stem(root) + "ed"
 
@@ -273,7 +282,7 @@ class Verb(Term):
             known = convert_to_pres_part(subterm)
             if known:
                 return self._encase(form.format(prefix + known))
-        
+
         # Convert the full (sub)term
         known = convert_to_pres_part(term)
 
@@ -307,7 +316,7 @@ class Verb(Term):
             known = self._stem(term) + "ed"
 
         return self._encase(form.format(known))
-    
+
     def is_past(self) -> str:
         return is_past(self.term)
 
@@ -317,7 +326,7 @@ class Verb(Term):
     def is_past_part(self) -> str:
         return is_past_part(self.term)
 
-    def indefinite(self, count:Optional[int] = 1) -> str:
+    def indefinite(self, count: Optional[int] = 1) -> str:
         if count == 1:
             return self.singular()
         return self.plural()
