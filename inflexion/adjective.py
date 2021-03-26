@@ -137,7 +137,7 @@ class Adjective(Term):
             converted = converted.replace("CC", "C")
         return "VCV" not in converted
 
-    def _stem(self, term: str) -> str:
+    def _stem(self, term: str, word: prosodic.Word) -> str:
         # Utility method that adjusts final consonants when they need to be doubled in inflexions...
         # Apply the first relevant transform...
         for regex in Adjective._stem_regexes:
@@ -147,7 +147,7 @@ class Adjective(Term):
                 return term[:match.start()] + Adjective._stem_regexes[regex](match) + term[match.end():]
 
         # Get a prosodic Word object to find the stress
-        word = prosodic.Word(term)
+        # word = prosodic.Word(term)
         
         # Duplicate last letter if:
         if  (
@@ -159,10 +159,37 @@ class Adjective(Term):
 
         return term
 
+    def get_reduced_word(self) -> prosodic.Word:
+        """
+        If term starts with "un", return the Word without "un", if it is real
+        Otherwise, return the Word with "un", if it is real
+        Otherwise, return the (unknown) Word without "un"
+
+        TODO: Make this function less unintuitive
+        """
+        if self.term.startswith("un"):
+            reduced = prosodic.Word(self.term[2:])
+            if reduced.children:
+                return reduced
+        full = prosodic.Word(self.term)
+        if full.children or not self.term.startswith("un"):
+            return full
+        return reduced
+
     def comparative(self) -> str:
+        """
+        TODO: Remove "un" etc before counting syllables (but note, unique, etc.)
+        TODO: Adjectives that already represent the greatest degree, e.g. perfect, complete, total, empty
+        TODO: Adjectives that cannot be compared due to their meaning, e.g. pregnant, equal, ideal, British
+
+        TODO: e.g. "quiet" is converted to "more quiet" rather than "quieter"
+        """
+
+        # Check for known irregular case
         if self.term.lower() in self._comparative_conversions:
             return self._comparative_conversions[self.term.lower()]
 
+        # If multiple words
         pattern = re.compile(r"-| ")
         match = pattern.search(self.term)
         if match:
@@ -170,7 +197,17 @@ class Adjective(Term):
             output_format = f"{{}}{match.group()}{{}}"
             return output_format.format(Adjective(term).comparative(), remainder)
 
-        return self._stem(self.term) + "er"
+        # Check if we want to prepend "more"
+        # We do so if we have a two-syllable adjective that doesn't end in y, 
+        # or a three+ syllable adjective
+        # TODO: untidy is two syllables, but is really just the one
+        word = self.get_reduced_word()
+        if word:
+            if (len(word.children) == 2 and self.term and not self.term.endswith(("y", "ow", "le", "er"))) or\
+            (len(word.children) > 2):
+                return self._encase(f"more {self.term}")
+
+        return self._stem(self.term, word) + "er"
 
     def superlative(self) -> str:
         """
@@ -194,4 +231,12 @@ class Adjective(Term):
             output_format = f"{{}}{match.group()}{{}}"
             return output_format.format(Adjective(term).superlative(), remainder)
 
-        return self._stem(self.term) + "est"
+        # Check if we want to prepend "more"
+        # We do so if we have a two-syllable adjective that doesn't end in y, 
+        # or a three+ syllable adjective
+        word = prosodic.Word(self.term)
+        if (len(word.children) == 2 and self.term and self.term[-1] != "y") or\
+           (len(word.children) > 2):
+            return self._encase(f"most {self.term}")
+
+        return self._stem(self.term, word) + "est"
