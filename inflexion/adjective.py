@@ -3,10 +3,10 @@
 
 import re
 from typing import Optional
-import prosodic
 
-# import context
 
+
+from inflexion.stress import Stress
 from inflexion.term import Term
 from inflexion.adjective_core import (
     is_singular,
@@ -146,14 +146,14 @@ class Adjective(Term):
                 # Adding `term[match.end():]` is unnecessary for now, but allows for more complex regexes.
                 return term[:match.start()] + Adjective._stem_regexes[regex](match) + term[match.end():]
 
-        # Get a prosodic Word object to find the stress
-        word = prosodic.Word(term)
+        # Get a set of known syllable counts for term
+        syllable_count = Stress.count_syllables(term)
         
         # Duplicate last letter if:
         if  (
-            len(word.children) == 1                                     # The word is certainly just one syllable, or
-            or (not word.children and self.is_one_syllable(term))       # The word is just one syllable, or
-            or (word.children and word.children[-1].stressed)           # The last syllable is stressed
+            1 in syllable_count                                         # The word is certainly just one syllable, or
+            or (not syllable_count and self.is_one_syllable(term))      # The word is just one syllable, or
+            or (Stress.ends_with_stress(term))                          # The last syllable is stressed
             ) and Adjective._stem_double_regex.search(term):            # AND the word ends in (roughly) CVC
             return term + term[-1]
 

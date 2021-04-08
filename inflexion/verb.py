@@ -4,9 +4,7 @@
 import re
 from typing import Optional, Tuple
 
-import prosodic
-# import context
-
+from inflexion.stress import Stress
 from inflexion.term import Term
 from inflexion.verb_core import (
     is_plural,
@@ -187,18 +185,18 @@ class Verb(Term):
         last_word = term.replace("-", " ").split()[-1]
         _, last_word = self.split_prefix(last_word)
 
-        # Get a prosodic Word object to find the stress
-        word = prosodic.Word(last_word)
+        # Get a set of known syllable counts for last_word
+        syllable_count = Stress.count_syllables(last_word)
 
         # Duplicate last letter if:
         if (
             # The word is certainly just one syllable, or
-            len(word.children) == 1
+            1 in syllable_count
             # The word is just one syllable, or
-            or (not word.children and self.is_one_syllable(last_word))
+            or (not syllable_count and self.is_one_syllable(last_word))
             # The last syllable is stressed
-            or (word.children and word.children[-1].stressed)
-        ) and Verb._stem_double_regex.search(term):                 # AND the word ends in (roughly) CVC
+            or (Stress.ends_with_stress(last_word))
+        ) and Verb._stem_double_regex.search(term): # AND the word ends in (roughly) CVC
             return term + term[-1]
 
         return term

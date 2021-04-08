@@ -29,18 +29,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
-        # Workaround install for prosodic, as it opens a file with non-ASCII text without encoding to utf8
-        git clone https://github.com/quadrismegistus/prosodic.git
-        cd prosodic
-        sed -i 's/with open("README.md", "r") as fh:/with open("README.md", "r", encoding="utf8") as fh:/' setup.py
-        # Install it after fixing
-        python setup.py install
-        # installing from this setup.py doesn't install the requirements, so we have to do it ourselves
-        pip install -r requirements.txt
-        # Cleanup
-        cd ..
-        rm -r prosodic
-        # Avoid using requirements.txt for now, due to workaround install
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
