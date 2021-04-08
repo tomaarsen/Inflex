@@ -19,7 +19,7 @@ jobs:
         pip install pylint pylint-exit
     - name: Analysing the code with pylint
       run: |
-        pylint inflexion | tee pylint.txt
+        pylint --ignore-patterns=.*_core.py inflexion | tee pylint.txt
     - name: Upload pylint.txt as artifact
       uses: actions/upload-artifact@v2
       with:
