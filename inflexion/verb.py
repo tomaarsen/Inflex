@@ -196,7 +196,7 @@ class Verb(Term):
             or (not syllable_count and self.is_one_syllable(last_word))
             # The last syllable is stressed
             or (Stress.ends_with_stress(last_word))
-        ) and Verb._stem_double_regex.search(term): # AND the word ends in (roughly) CVC
+        ) and Verb._stem_double_regex.search(term):  # AND the word ends in (roughly) CVC
             return term + term[-1]
 
         return term

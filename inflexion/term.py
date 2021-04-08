@@ -4,6 +4,7 @@
 import re
 from typing import Generator, Optional
 
+
 class Term(object):
     """
     `Term` is the base class of the `Noun`, `Verb`, `Adjective` subclasses,
@@ -25,15 +26,15 @@ class Term(object):
             "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
             "transformation": _transform(lambda word: "Mc" + word[2:].title() if word.lower().startswith("mc") else word.title())
         },
-        "lower":{
+        "lower": {
             "regex": re.compile(r"^[^A-Z]+$"),
             "transformation": _transform(str.lower)
         },
-        "title":{
+        "title": {
             "regex": re.compile(r"^[A-Z][^A-Z]+$"),
             "transformation": _transform(str.title)
         },
-        "upper":{
+        "upper": {
             "regex": re.compile(r"^[^a-z]+$"),
             "transformation": _transform(str.upper)
         },
@@ -42,22 +43,25 @@ class Term(object):
     # Regex for finding a word
     _word_regex = re.compile(r"([^\r\n\t\f\v\-\' ]+)")
 
+    # Regex for extracting whitespace before and after input
+    _whitespace_regex = re.compile(r"(?P<start>^\s*).*?(?P<end>\s*$)")
+
     def __init__(self, term: str):
         super().__init__()
         # Whitestring strings before and after the terms
-        self.start  = ""
-        self.end    = ""
+        self.start = ""
+        self.end = ""
         # Default format for the separator between words
         self.spaces = None
 
         self.term = term.strip()
-        
+
         # Extract whitespace before and after the term
         if term.startswith(" ") or term.endswith(" "):
-            self.start, self.end = re.match(r"(?P<start>^\s*).*?(?P<end>\s*$)", term).groups()
+            self.start, self.end = Term._whitespace_regex(term).groups()
 
         # If there is troublesome double whitespace, find the substrings
-        # between words and normalize them 
+        # between words and normalize them
         # NOTE: Assume there are no tabs, newlines, etc. in the input terms
         if " " in self.term or "-" in self.term:
             self.spaces = re.findall(r"([\r\n\t\f\v\- ]+)", self.term)
@@ -94,7 +98,7 @@ class Term(object):
         """
         raise NotImplementedError()
 
-    def singular(self, person:Optional[int] = 0) -> str:
+    def singular(self, person: Optional[int] = 0) -> str:
         """Returns this object's singular form.
 
         `person` Represents the grammatical "person" (1st, 2nd, 3rd). 
@@ -103,7 +107,7 @@ class Term(object):
         """
         raise NotImplementedError()
 
-    def plural(self, person:Optional[int] = 0) -> str:
+    def plural(self, person: Optional[int] = 0) -> str:
         """Returns this object's singular form.
 
         `person` Represents the grammatical "person" (1st, 2nd, 3rd). 
@@ -143,7 +147,7 @@ class Term(object):
         Identical to `classical()`
         """
         return self.classical()
-    
+
     def as_regex(self) -> "re.Pattern":
         """
         Returns a `re.Pattern` object which case-insensitively matches
@@ -165,7 +169,7 @@ class Term(object):
         Returns a string representation of the class instance.
         """
         return f"{self.__class__.__name__}({self._reapply_whitespace(self.term)!r})"
-    
+
     def _encase(self, target: str) -> str:
         """
         Apply casing from `self.term` string onto `target` string.
@@ -177,7 +181,7 @@ class Term(object):
         # Special case for 'I'
         if self.term == "I" or target == "I":
             return target
-        
+
         # Get list of lambda functions that correspond to the
         # casing formats for `original`.
         transformations = []
@@ -189,24 +193,26 @@ class Term(object):
             else:
                 # If no casing regexes matches
                 transformations.append(lambda word: word)
-        
+
         # If no words found in term, just return target
         if not transformations:
             return target
 
         # Generator that gets next transformation until there is
-        # just one transformation left, after which it will 
+        # just one transformation left, after which it will
         # continuously yield that last transformation
         def get_transformations(transformations) -> Generator:
             while True:
                 yield transformations[0]
                 if len(transformations) > 1:
                     transformations = transformations[1:]
-        
+
         # Apply the transformations found in `original` to `target`
         transformations_gen = get_transformations(transformations)
         # Phrase is target, but with the proper casing from the term applied
-        phrase = Term._word_regex.sub(lambda match_obj: next(transformations_gen)(match_obj.group(0)), target)
+        phrase = Term._word_regex.sub(
+            lambda match_obj: next(transformations_gen)(match_obj.group(0)),
+            target)
         return self._reapply_whitespace(phrase)
 
     def _reapply_whitespace(self, phrase: str):
@@ -224,5 +230,5 @@ class Term(object):
             spaces_gen = get_spaces(self.spaces)
 
             return self.start + re.sub("-| ", lambda _: next(spaces_gen), phrase.strip()) + self.end
-        
+
         return self.start + phrase + self.end

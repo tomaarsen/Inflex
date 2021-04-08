@@ -5,7 +5,6 @@ import re
 from typing import Optional
 
 
-
 from inflexion.stress import Stress
 from inflexion.term import Term
 from inflexion.adjective_core import (
@@ -27,7 +26,8 @@ class Adjective(Term):
         # re.compile(r"([dbmnt])\Z"): lambda match: match.group(1) * 2,
     }
 
-    _stem_double_regex = re.compile(r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
+    _stem_double_regex = re.compile(
+        r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
 
     def __init__(self, term: str):
         super().__init__(term)
@@ -70,7 +70,7 @@ class Adjective(Term):
         self._comparative_conversions = {
             "good": "better",
             "well": "better",
-            
+
             "bad": "worse",
             "badly": "worse",
             "ill": "worse",
@@ -84,7 +84,7 @@ class Adjective(Term):
         self._superlative_conversions = {
             "good": "best",
             "well": "best",
-            
+
             "bad": "worst",
             "badly": "worst",
             "ill": "worst",
@@ -113,10 +113,10 @@ class Adjective(Term):
         match = self._possessive_regex.match(self.term)
         if match:
             return self._reapply_whitespace(Noun(match.group(1)).singular() + "'s")
-        
+
         if self.term.lower() in self._possessive_inflexion:
             return self._encase(self._possessive_inflexion[self.term.lower()]["singular"][person])
-        
+
         return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
@@ -125,14 +125,15 @@ class Adjective(Term):
         if match:
             n = Noun(match.group(1)).plural() + "'s"
             return self._reapply_whitespace(re.sub(r"s's\Z", "s'", n, flags=re.MULTILINE | re.DOTALL))
-        
+
         if self.term.lower() in self._possessive_inflexion:
             return self._encase(self._possessive_inflexion[self.term.lower()]["plural"][person])
-        
+
         return self._encase(convert_to_plural(self.term))
 
     def is_one_syllable(self, term: str):
-        converted = ''.join("V" if char in "aeiou" else "C" for char in term.lower())
+        converted = ''.join(
+            "V" if char in "aeiou" else "C" for char in term.lower())
         while "CC" in converted:
             converted = converted.replace("CC", "C")
         return "VCV" not in converted
@@ -148,13 +149,16 @@ class Adjective(Term):
 
         # Get a set of known syllable counts for term
         syllable_count = Stress.count_syllables(term)
-        
+
         # Duplicate last letter if:
-        if  (
-            1 in syllable_count                                         # The word is certainly just one syllable, or
-            or (not syllable_count and self.is_one_syllable(term))      # The word is just one syllable, or
-            or (Stress.ends_with_stress(term))                          # The last syllable is stressed
-            ) and Adjective._stem_double_regex.search(term):            # AND the word ends in (roughly) CVC
+        if (
+            # The word is certainly just one syllable, or
+            1 in syllable_count
+            # The word is just one syllable, or
+            or (not syllable_count and self.is_one_syllable(term))
+            # The last syllable is stressed
+            or (Stress.ends_with_stress(term))
+        ) and Adjective._stem_double_regex.search(term):            # AND the word ends in (roughly) CVC
             return term + term[-1]
 
         return term
@@ -166,7 +170,8 @@ class Adjective(Term):
         pattern = re.compile(r"-| ")
         match = pattern.search(self.term)
         if match:
-            term, remainder = self.term[:match.start()], self.term[match.end():]
+            term, remainder = self.term[:match.start(
+            )], self.term[match.end():]
             output_format = f"{{}}{match.group()}{{}}"
             return output_format.format(Adjective(term).comparative(), remainder)
 
@@ -190,7 +195,8 @@ class Adjective(Term):
         pattern = re.compile(r"-| ")
         match = pattern.search(self.term)
         if match:
-            term, remainder = self.term[:match.start()], self.term[match.end():]
+            term, remainder = self.term[:match.start(
+            )], self.term[match.end():]
             output_format = f"{{}}{match.group()}{{}}"
             return output_format.format(Adjective(term).superlative(), remainder)
 
