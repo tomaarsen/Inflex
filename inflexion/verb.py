@@ -4,7 +4,7 @@
 import re
 from typing import Optional, Tuple
 
-from inflexion.stress import Stress
+from inflexion.syllable import Syllable
 from inflexion.term import Term
 from inflexion.verb_core import (
     is_plural,
@@ -165,13 +165,6 @@ class Verb(Term):
     Methods exclusively for Verb
     """
 
-    def is_one_syllable(self, term: str):
-        converted = ''.join(
-            "V" if char in "aeiou" else "C" for char in term.lower())
-        while "CC" in converted:
-            converted = converted.replace("CC", "C")
-        return "VCV" not in converted
-
     def _stem(self, term: str) -> str:
         # Utility method that adjusts final consonants when they need to be doubled in inflexions...
         # Apply the first relevant transform...
@@ -186,16 +179,16 @@ class Verb(Term):
         _, last_word = self.split_prefix(last_word)
 
         # Get a set of known syllable counts for last_word
-        syllable_count = Stress.count_syllables(last_word)
+        syllable_count = Syllable.count_syllables(last_word)
 
         # Duplicate last letter if:
         if (
             # The word is certainly just one syllable, or
             1 in syllable_count
             # The word is just one syllable, or
-            or (not syllable_count and self.is_one_syllable(last_word))
+            or (not syllable_count and Syllable.guess_if_one_syllable(last_word))
             # The last syllable is stressed
-            or (Stress.ends_with_stress(last_word))
+            or (Syllable.ends_with_stress(last_word))
         ) and Verb._stem_double_regex.search(term):  # AND the word ends in (roughly) CVC
             return term + term[-1]
 

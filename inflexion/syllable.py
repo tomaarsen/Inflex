@@ -6,7 +6,7 @@ import os
 from typing import Dict, List, Set
 
 
-class Stress:
+class Syllable:
 
     _data = {}
 
@@ -15,17 +15,17 @@ class Stress:
         """
         Lazy load stress data when requested.
         """
-        if Stress._data:
-            return Stress._data
+        if Syllable._data:
+            return Syllable._data
 
         path = os.path.join(os.path.dirname(__file__),
                             "data/cmudict_stress.json")
         with open(path, "r", encoding="utf8") as f:
-            Stress._data = json.load(f)
-        return Stress._data
+            Syllable._data = json.load(f)
+        return Syllable._data
 
     @staticmethod
-    def get_stress(word) -> List[List[float]]:
+    def get_stress(word: str) -> List[List[float]]:
         """
         Return list of list of stress values, e.g.
         [[1, 0, 0.5], [1, 0, 0, 0.5]]
@@ -35,20 +35,20 @@ class Stress:
         The other syllables are unstressed.
         """
         try:
-            return Stress.data()[word]
+            return Syllable.data()[word]
         except KeyError:
             return []
 
     @staticmethod
-    def count_syllables(word) -> Set[int]:
+    def count_syllables(word: str) -> Set[int]:
         """
         Returns the set with valid numbers of syllables in the input word.
         Note that some words have multiple valid syllable counts.
         """
-        return {len(stress) for stress in Stress.get_stress(word)}
+        return {len(stress) for stress in Syllable.get_stress(word)}
 
     @staticmethod
-    def ends_with_stress(word) -> bool:
+    def ends_with_stress(word: str) -> bool:
         """
         Returns True if there is an interpretation of the input word
         that has either primary or secondary stress on the final syllable.
@@ -58,5 +58,19 @@ class Stress:
         TODO: Consider only True when stress is on all interpretations
             NOTE: Tested - and performs marginally better
         """
-        stresses = Stress.get_stress(word)
+        stresses = Syllable.get_stress(word)
         return all(stress[-1] > 0 for stress in stresses if stress)
+
+    @staticmethod
+    def guess_if_one_syllable(word: str) -> bool:
+        """
+        Guess whether the word is one Syllable, by converting letters
+        to either V or C depending on if the letter is a vowel or consonant,
+        respectively. Then, remove double C's and check whether the pattern
+        "VCV" exists. If it does, the word likely has more than one syllable.
+        """
+        converted = ''.join(
+            "V" if char in "aeiou" else "C" for char in word.lower())
+        while "CC" in converted:
+            converted = converted.replace("CC", "C")
+        return "VCV" not in converted
