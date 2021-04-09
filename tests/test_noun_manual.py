@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+import random
 import unittest
 
 from inflexion import Noun
@@ -51,11 +52,41 @@ class TestNouns(unittest.TestCase):
     def test_repr(self):
         noun = Noun("brother")
         self.assertEqual(f"{noun!r}", "Noun('brother')")
-    
+
     def test_classical_repr(self):
         noun = Noun("brother")
         classical = noun.classical()
         self.assertEqual(f"{classical!r}", "Noun('brother').classical()")
+
+    def test_indefinite_plural(self):
+        test_data = [
+            ('universe', 'universes'),
+            ('uniplex', 'uniplexes'),
+            ('height', 'heights'),
+            ('FSM', 'FSMS'),
+            ('use', 'uses'),
+            ('lady in waiting', 'ladies in waiting'),
+            ('octavo', 'octavos'),
+            ('D', 'DS'),
+            ('Q', 'QS'),
+            ('PET', 'PETS'),
+            ('P', 'PS'),
+            ('erratum', 'errata'),
+            ('once-and-future-king', 'once-and-future-kings'),
+            ('Tth', 'Tths'),
+            ('urn', 'urns'),
+            ('DNR', 'DNRS'),
+            ('N', 'NS'),
+            ('FACT', 'FACTS'),
+            ('UNESCO representative', 'UNESCO representatives'),
+            ('Oth', 'Oths')]
+        for sing, plur in test_data:
+            with self.subTest():
+                digit = random.randrange(2, 10)
+                out = Noun(sing).indefinite(count=digit)
+                self.assertEqual(out, f'{digit} {plur}',
+                                 f"Noun({sing!r}).indefinite(count={digit})")
+
 
 if __name__ == "__main__":
     unittest.main()
