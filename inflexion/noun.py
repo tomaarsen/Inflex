@@ -436,19 +436,31 @@ class Noun(Term):
                 if term.lower() in Noun._noun_inflection[case]:
                     return self._encase(prep + Noun._noun_inflection[case][term.lower()]["plural"][person])
 
-            return self._encase(prep + convert_to_modern_plural(term))
+            return self._encase(prep + self._convert_to_plural(term))
 
         for case in ["nominative", "objective", "possessive", "reflexive"]:
             if self.term.lower() in Noun._noun_inflection[case]:
                 return self._encase(Noun._noun_inflection[case][self.term.lower()]["plural"][person])
 
-        return self._encase(convert_to_modern_plural(self.term))
+        return self._encase(self._convert_to_plural(self.term))
+
+    def _convert_to_plural(self, term) -> str:
+        """The convert to plural call used by this class. Is overridden for classical nouns.
+
+        Args:
+            term (term): The input word or collocation.
+
+        Returns:
+            str: The plural form of `term`.
+        """
+        return convert_to_modern_plural(term)
 
     def classical(self) -> "ClassicalNoun":
         if self._classical:
             return self._classical
 
-        if self.term == "them":
+        # "them" is an exception, as "it -> they" and "it -> them" is ambigious
+        if self.term.split()[-1] in ["them", "they"]:
             self._classical = ClassicalNoun(self._encase(self.term), self)
         else:
             self._classical = ClassicalNoun(self.singular(), self)
@@ -500,9 +512,7 @@ class Noun(Term):
 
 
 class ClassicalNoun(Noun):
-    """
-    TODO
-    """
+    """Subclass of noun for detecting and converting to noun forms, with a classical plural."""
 
     def __init__(self, term: str, modern: Noun) -> None:
         """Creates ClassicalNoun instance with detection and conversion methods.
@@ -524,9 +534,9 @@ class ClassicalNoun(Noun):
         # Modern form of this Classical noun
         self._modern = modern
 
-    def plural(self, person: Optional[int] = 0) -> str:
-        self.check_valid_person(person)
-        return self._encase(convert_to_classical_plural(self.term))
+    def _convert_to_plural(self, term) -> str:
+        # Override the call from Noun's plural() to use the classical variant instead.
+        return convert_to_classical_plural(term)
 
     def classical(self) -> "ClassicalNoun":
         return self
