@@ -20,10 +20,12 @@ from inflexion.indefinite_core import (
 
 
 class Noun(Term):
-    """ """
+    """
+    TODO
+    """
 
     _noun_inflection = {
-        # CASE 
+        # CASE
         #   TERM             0TH            1ST             2ND             3RD
         "nominative": {
             "i": {
@@ -367,35 +369,25 @@ class Noun(Term):
     )
 
     def __init__(self, term: str):
-        # TODO: Trailing and preceding whitespace? Trailing whitespace would break singularisation
-        # TODO: Normalise to lowercase before passing to noun_core functions, possibly preserve capitalisation
         super().__init__(term)
 
+        # Cached classical form of this Noun, to be lazily loaded just once.
+        self._classical = None
+
     """
-    Override default methods from Term    
+    Override default methods from Term
     """
 
     def is_noun(self) -> bool:
-        """ """
         return True
 
     def is_singular(self) -> bool:
-        """ """
         return is_singular(self.term)
 
     def is_plural(self) -> bool:
-        """ """
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
-        """
-
-        Args:
-          person: Optional[int]:  (Default value = 0)
-
-        Returns:
-
-        """
         self.check_valid_person(person)
         match = Noun._prep_regex.match(self.term)
 
@@ -416,14 +408,6 @@ class Noun(Term):
         return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
-        """
-
-        Args:
-          person: Optional[int]:  (Default value = 0)
-
-        Returns:
-
-        """
         self.check_valid_person(person)
         match = Noun._prep_regex.match(self.term)
 
@@ -443,92 +427,110 @@ class Noun(Term):
 
         return self._encase(convert_to_modern_plural(self.term))
 
-    def classical(self) -> "Term":
-        """ """
-        # TODO: Cache this
-        # TODO: Should we also have modern() ?
-        # NOTE: This method of creating a Classical noun will repeat getting whitespace etc.
-        # TODO: This might be broken actually ^^.
+    def classical(self) -> "ClassicalNoun":
+        if self._classical:
+            return self._classical
+
         if self.term == "them":
-            return ClassicalNoun(self.term)
-        return ClassicalNoun(self.singular())
+            self._classical = ClassicalNoun(self._encase(self.term), self)
+        else:
+            self._classical = ClassicalNoun(self.singular(), self)
+        return self._classical
 
     def as_regex(self) -> "re.Pattern":
-        """ """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
-                                                          self.classical().plural()}), reverse=True)), flags=re.I)
+                                                          self.classical().plural()
+                                                          }), reverse=True)), flags=re.I)
 
     """
     Methods exclusively for Noun
     """
 
     def indef_article(self) -> str:
-        """ """
+        """Return the correct indefinite article ("a" or "an") for `word`.
+
+        Args:
+            word (str): Input word or collocation.
+
+        Returns:
+            str: Either "a" or "an".
+        """
         return select_indefinite_article(self.term)
 
     def indefinite(self, count: Optional[int] = 1) -> str:
-        """Return the singular if `count` == 1, and the plural otherwise.
+        """Prepend "a" or "an" or the number to the correct form of this Noun.
 
         Examples:
             >>>noun = Noun("book")
             >>>noun.indefinite(count = 1)
-            'book'
+            'a book'
             >>>noun.indefinite(count = 3)
-            'books'
+            '3 books'
+
+        TODO: self.term versus self.singular()
 
         Args:
-            count (Optional[int], optional): The number of objects on which this verb applies. 
+            count (Optional[int], optional): The number of objects on which this verb applies.
                 Defaults to 1.
 
         Returns:
             str: The singular if `count` == 1, and the plural otherwise.
         """
         if count == 1:
-            return prepend_indefinite_article(self.term)
+            return prepend_indefinite_article(self.singular())
         return f"{count} {self.plural()}"
-
-    def cardinal(self, threshold: int) -> str:
-        """
-
-        Args:
-          threshold: int: 
-
-        Returns:
-
-        """
-        raise NotImplementedError()
-
-    def ordinal(self, threshold: int) -> str:
-        """
-
-        Args:
-          threshold: int: 
-
-        Returns:
-
-        """
-        raise NotImplementedError()
 
 
 class ClassicalNoun(Noun):
-    """ """
-    def __init__(self, term) -> None:
-        # TODO: Consider that repr(Noun("books").classical()) will output "ClassicalNoun('book')"
-        super().__init__(term)
+    """
+    TODO
+    """
 
-    def plural(self, person: Optional[int] = 0) -> str:
-        """
+    def __init__(self, term: str, modern: Noun) -> None:
+        """Creates ClassicalNoun instance with detection and conversion methods.
+
+        Note:
+            Capitalisation and whitespace will be preserved between input `term` and
+            output generated via e.g. `singular`.
+
+            The main difference to Noun is that the `plural` method is overridden.
+            Another difference is that this class is generally initialized using the
+            singular form of the Noun. `as_regex()` and `__repr__()` are also overridden.
 
         Args:
-          person: Optional[int]:  (Default value = 0)
-
-        Returns:
-
+            term (str): Input word or collocation.
+            modern (Noun): The Noun object from which `classical()` or `unassimilated` was
+                called to create this object.
         """
+        super().__init__(term)
+        # Modern form of this Classical noun
+        self._modern = modern
+
+    def plural(self, person: Optional[int] = 0) -> str:
         self.check_valid_person(person)
         return self._encase(convert_to_classical_plural(self.term))
 
-    def classical(self) -> "Term":
-        """ """
+    def classical(self) -> "ClassicalNoun":
         return self
+
+    def modern(self) -> "Noun":
+        """Returns the non-classical modern version of this Noun.
+
+        Examples:
+            >>> noun = Noun('cow')
+            >>> noun == noun.classical().modern()
+            True
+
+        Returns:
+            Noun: The Noun object that will pluralize according to modern rules.
+        """
+        return self._modern
+
+    def as_regex(self) -> "re.Pattern":
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(),
+                                                          self.plural(),
+                                                          }), reverse=True)), flags=re.I)
+
+    def __repr__(self) -> str:
+        return f"{self._modern!r}.classical()"

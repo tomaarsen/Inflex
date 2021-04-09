@@ -80,7 +80,7 @@ class Term(object):
     def __init__(self, term: str):
         """Creates class instance with detection and conversion methods.
 
-        Note: 
+        Note:
             Capitalisation and whitespace will be preserved between input `term` and
             output generated via e.g. `singular`.
 
@@ -271,7 +271,7 @@ class Term(object):
         TODO: Currently "show--off" -> "show----off"
 
         Args:
-            target (str): The word or collocation on which to apply the casing 
+            target (str): The word or collocation on which to apply the casing
                 that exists on `self.term`.
 
         Returns:

@@ -99,7 +99,7 @@ class Verb(Term):
         super().__init__(term)
 
     """
-    Override default methods from Term    
+    Override default methods from Term
     """
 
     def is_verb(self) -> bool:
@@ -248,7 +248,7 @@ class Verb(Term):
 
         Returns:
             Tuple[str, str]: The first string is the prefix, the second string is the remainder.
-                If the input does not have a prefix to split, then the first string is empty, 
+                If the input does not have a prefix to split, then the first string is empty,
                 while the second string is the full input `term`.
         """
         if term.startswith(Verb._prefixes):
@@ -259,7 +259,7 @@ class Verb(Term):
 
     def get_subterm(self, term: str) -> Tuple[str, str]:
         """Extract last sub-section (split by '-') of the first word.
-        
+
         Examples:
             >>>self.get_subterm("aaa-bbb ccc")
             ("aaa-{} ccc", "bbb")
@@ -432,7 +432,7 @@ class Verb(Term):
             'fly'
 
         Args:
-            count (Optional[int], optional): The number of objects on which this verb applies. 
+            count (Optional[int], optional): The number of objects on which this verb applies.
                 Defaults to 1.
 
         Returns:

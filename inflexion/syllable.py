@@ -7,13 +7,32 @@ from typing import Dict, List, Set
 
 
 class Syllable:
+    """Class with Syllable information from Carnegie Mellon University's cmudict.txt.
+    This class provides several static methods which can be used to count the
+    number of syllables of an input word. Another purpose is to find out whether
+    the word ends with stress.
+    """
 
     _data = {}
 
     @staticmethod
     def data() -> Dict[str, List[List[float]]]:
-        """
-        Lazy load stress data when requested.
+        """Lazy load syllable and stress data when requested.
+
+        Examples:
+            >>>Stress.data()
+            {
+                "ab": [[1], [1, 1]],
+	            "ababa": [[0, 1, 0], [1, 0, 0]],
+	            "abacha": [[1, 0, 0]],
+                ...
+            }
+
+        Returns:
+            Dict[str, List[List[float]]]: The dictionary key is a regular word, which maps
+                to a list of syllable interpretations. Each interpretation is a list of stress
+                values, where 1 means Primary stress, 0.5 means secondary stress,
+                and 0 is unstressed.
         """
         if Syllable._data:
             return Syllable._data
@@ -26,13 +45,22 @@ class Syllable:
 
     @staticmethod
     def get_stress(word: str) -> List[List[float]]:
-        """
-        Return list of list of stress values, e.g.
-        [[1, 0, 0.5], [1, 0, 0, 0.5]]
-        This shows that a word either has 3 or 4 syllables, 
-        and the first syllable of either interpretation has the primary stress,
-        while the last syllable of either interpretation has the secondary stress.
-        The other syllables are unstressed.
+        """Return a list of syllable interpretations that correspond to stress values, for `word`.
+
+        Examples:
+            >>>Stress.get_stress("abdomen")
+            [[0, 1, 0], [1, 0, 0]]
+            This shows that the word has two interpretations, both with 3 syllables.
+            In the first interpretation, the second syllable has primary stress, while
+            in the second interpretation, the first syllable has primary stress.
+            The other syllables are unstressed.
+
+        Args:
+            word (str): The input word.
+
+        Returns:
+            List[List[float]]: A list of syllable interpretations that correspond to stress values,
+                for `word`.
         """
         try:
             return Syllable.data()[word]
@@ -41,33 +69,50 @@ class Syllable:
 
     @staticmethod
     def count_syllables(word: str) -> Set[int]:
-        """
-        Returns the set with valid numbers of syllables in the input word.
-        Note that some words have multiple valid syllable counts.
+        """Return the set of valid syllable counts of `word`.
+
+        Note:
+            Some words have multiple valid syllable counts, like "abdomen".
+
+        Args:
+            word (str): The input word.
+
+        Returns:
+            Set[int]: The set of valid syllable counts of `word`.
         """
         return {len(stress) for stress in Syllable.get_stress(word)}
 
     @staticmethod
     def ends_with_stress(word: str) -> bool:
-        """
-        Returns True if there is an interpretation of the input word
-        that has either primary or secondary stress on the final syllable.
+        """Returns True if all syllable interpretations of `word` end with stress.
 
-        TODO: Consider only True when primary stress
-            NOTE: Tested - and performs marginally worse
-        TODO: Consider only True when stress is on all interpretations
-            NOTE: Tested - and performs marginally better
+        Note:
+            Either primary or secondary stress is considered stress.
+
+        Args:
+            word (str): The input word.
+
+        Returns:
+            bool: True if all syllable interpretations of `word` end with stress.
+                False otherwise.
         """
         stresses = Syllable.get_stress(word)
         return all(stress[-1] > 0 for stress in stresses if stress)
 
     @staticmethod
     def guess_if_one_syllable(word: str) -> bool:
-        """
-        Guess whether the word is one Syllable, by converting letters
-        to either V or C depending on if the letter is a vowel or consonant,
-        respectively. Then, remove double C's and check whether the pattern
+        """Guess whether the word is just one Syllable.
+
+        Guessing is done by converting letters to either V or C depending on
+        if the letter is a vowel or consonant, respectively.
+        Then, remove double C's and check whether the pattern
         "VCV" exists. If it does, the word likely has more than one syllable.
+
+        Args:
+            word (str): The input word.
+
+        Returns:
+            bool: True if `word` is guessed to be just one syllable.
         """
         converted = ''.join(
             "V" if char in "aeiou" else "C" for char in word.lower())

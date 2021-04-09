@@ -20,7 +20,7 @@ class Adjective(Term):
     """
     Regexes to be tried before applying -er or -est.
     E.g. "pretty" is converted to "pretti" according to these regexes,
-    and then "er" or "est" are appended for comparative and 
+    and then "er" or "est" are appended for comparative and
     superlative respectively.
     This produces "prettier" and "prettiest".
     """
@@ -102,7 +102,7 @@ class Adjective(Term):
         }
 
     """
-    Override default methods from Term    
+    Override default methods from Term
     """
 
     def is_adj(self) -> bool:

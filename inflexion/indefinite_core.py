@@ -48,7 +48,7 @@ def prepend_indefinite_article(word: str) -> str:
 
 
 def select_indefinite_article(word: str) -> str:
-    """Return the correct indefinite article ("a" or "an") for `word`
+    """Return the correct indefinite article ("a" or "an") for `word`.
 
     Args:
         word (str): Input word or collocation.
