@@ -675,7 +675,7 @@ class NounTestWriter(TestWriter):
         test_args = []
 
         preposition_gen = self.preposition_gen()
-        for word in self.reader.words["singular"]:
+        for word in sorted(self.reader.words["singular"]):
             if word and word != "_":
                 test_args.append({
                     "in": word,
@@ -712,7 +712,7 @@ class NounTestWriter(TestWriter):
         test_args = []
 
         preposition_gen = self.preposition_gen()
-        for word in self.reader.words["plural"]:
+        for word in sorted(self.reader.words["plural"]):
             if word and word != "_":
                 test_args.append({
                     "in": word,
