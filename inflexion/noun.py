@@ -464,7 +464,8 @@ class Noun(Term):
             self._classical = ClassicalNoun(self._encase(self.term), self)
         else:
             # TODO: self.singular() versus self.term
-            self._classical = ClassicalNoun(self.term, self)
+            # TODO: Prevent needing to encase and then re-encase
+            self._classical = ClassicalNoun(self._encase(self.term), self)
         return self._classical
 
     def as_regex(self) -> "re.Pattern":

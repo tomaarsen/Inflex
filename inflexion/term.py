@@ -282,7 +282,7 @@ class Term(object):
 
         # Special case for 'I'
         if self.term == "I" or target == "I":
-            return target
+            return self._reapply_whitespace(target)
 
         # Get list of lambda functions that correspond to the
         # casing formats for `original`.
@@ -298,7 +298,7 @@ class Term(object):
 
         # If no words found in term, just return target
         if not transformations:
-            return target
+            return self._reapply_whitespace(target)
 
         # Generator that gets next transformation until there is
         # just one transformation left, after which it will
@@ -329,4 +329,4 @@ class Term(object):
                        phrase.strip(),
                        count=len(self.spaces)) +\
                 self.end
-        return self.start + phrase + self.end
+        return self.start + phrase.strip() + self.end
