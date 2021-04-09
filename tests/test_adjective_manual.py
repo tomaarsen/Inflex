@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -6,8 +5,9 @@ import unittest
 
 from inflexion.adjective import Adjective
 
+
 class TestAdjectives(unittest.TestCase):
-    
+
     adjectives = [
         'defiant',
         'homeless',
@@ -238,7 +238,7 @@ class TestAdjectives(unittest.TestCase):
         'puzzled',
         'zealous'
     ]
-    
+
     test_possessive_to_singular_args = [
         {'in': 'my',    'out': 'my',    'kwargs': {'person': 0}},
         {'in': 'my',    'out': 'my',    'kwargs': {'person': 1}},
@@ -272,7 +272,7 @@ class TestAdjectives(unittest.TestCase):
 
         # We have opted to stick to "their" as a singular word
         # so 0th person singular of "their" stays as "their".
-        {'in': 'their', 'out': 'their', 'kwargs': {'person': 0}}, 
+        {'in': 'their', 'out': 'their', 'kwargs': {'person': 0}},
         {'in': 'their', 'out': 'my',    'kwargs': {'person': 1}},
         {'in': 'their', 'out': 'your',  'kwargs': {'person': 2}},
         {'in': 'their', 'out': 'its',   'kwargs': {'person': 3}},
@@ -350,7 +350,8 @@ class TestAdjectives(unittest.TestCase):
                 }, **test_case}
                 test_case["desc"] = f"Adjective({repr(test_case['in'])}).singular({test_case['kwargs']}) => {repr(test_case['out'])}"
                 adj = Adjective(test_case["in"])
-                self.assertEqual(adj.singular(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(adj.singular(
+                    **test_case["kwargs"]), test_case["out"], test_case["desc"])
 
     def test_possessive_to_plural(self):
         for test_case in self.test_possessive_to_plural_args:
@@ -361,7 +362,8 @@ class TestAdjectives(unittest.TestCase):
                 }, **test_case}
                 test_case["desc"] = f"Adjective({repr(test_case['in'])}).plural({test_case['kwargs']}) => {repr(test_case['out'])}"
                 adj = Adjective(test_case["in"])
-                self.assertEqual(adj.plural(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(adj.plural(
+                    **test_case["kwargs"]), test_case["out"], test_case["desc"])
 
     def test_to_singular(self):
         for adjective in self.adjectives:
@@ -373,7 +375,8 @@ class TestAdjectives(unittest.TestCase):
                     "kwargs": dict()
                 }
                 adj = Adjective(test_case["in"])
-                self.assertEqual(adj.singular(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(adj.singular(
+                    **test_case["kwargs"]), test_case["out"], test_case["desc"])
 
     def test_to_plural(self):
         for adjective in self.adjectives:
@@ -385,7 +388,8 @@ class TestAdjectives(unittest.TestCase):
                     "kwargs": dict()
                 }
                 adj = Adjective(test_case["in"])
-                self.assertEqual(adj.plural(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(adj.plural(
+                    **test_case["kwargs"]), test_case["out"], test_case["desc"])
 
     def test_to_classical_plural(self):
         for adjective in self.adjectives:
@@ -397,7 +401,9 @@ class TestAdjectives(unittest.TestCase):
                     "kwargs": dict()
                 }
                 adj = Adjective(test_case["in"])
-                self.assertEqual(adj.classical().plural(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+                self.assertEqual(adj.classical().plural(
+                    **test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()
