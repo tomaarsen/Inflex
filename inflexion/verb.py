@@ -26,6 +26,7 @@ from inflexion.verb_core import (
 
 
 class Verb(Term):
+    """ """
 
     _prefixes = (
         'counter',
@@ -80,7 +81,7 @@ class Verb(Term):
         re.compile(r"er\Z"): lambda match: match.group(),
         # Words ending with "en" don't duplicate,
         # unless the word is small, e.g. ken -> kenned, pen -> penned, yen -> yenned
-        re.compile(r".{2,}en\Z"): lambda match: match.group(),
+        re.compile(r"..en\Z"): lambda match: match.group(),
         # Words ending with "on" don't duplicate.
         re.compile(r"(.[bdghklmnprstzy]on)\Z"): lambda match: match.group(1),
         # Convert duplicate "ee" into just one "e"
@@ -100,15 +101,26 @@ class Verb(Term):
     """
 
     def is_verb(self) -> bool:
+        """ """
         return True
 
     def is_singular(self) -> bool:
+        """ """
         return is_singular(self.term)
 
     def is_plural(self) -> bool:
+        """ """
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
+        """
+
+        Args:
+          person: Optional[int]:  (Default value = 0)
+
+        Returns:
+
+        """
         self.check_valid_person(person)
 
         # "To be" is special
@@ -153,8 +165,16 @@ class Verb(Term):
         return self.plural()
 
     def plural(self, person: Optional[int] = 0) -> str:
+        """
+
+        Args:
+          person: Optional[int]:  (Default value = 0)
+
+        Returns:
+
+        """
         self.check_valid_person(person)
-        
+
         known = None
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.term)
@@ -178,6 +198,7 @@ class Verb(Term):
         return self._reapply_whitespace(self.term)
 
     def as_regex(self) -> "re.Pattern":
+        """ """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
                                                           self.past(),
@@ -190,13 +211,22 @@ class Verb(Term):
     """
 
     def _stem(self, term: str) -> str:
-        # Utility method that adjusts final consonants when they need to be doubled in inflexions...
-        # Apply the first relevant transform...
+        """
+
+        Args:
+          term: str: 
+
+        Returns:
+
+        """
+        # Utility method that adjusts final consonants when they need to be doubled in inflexions
+        # Apply the first relevant transform
         for regex in Verb._stem_regexes:
             match = regex.search(term)
-            # TODO: Make more efficient by using match start and stop indices
             if match:
-                return regex.sub(Verb._stem_regexes[regex](match), term)
+                # Adding `term[match.end():]` is unnecessary for now,
+                # but allows for more complex regexes.
+                return term[:match.start()] + Verb._stem_regexes[regex](match) + term[match.end():]
 
         # Get the last word from the term, and remove a potential prefix
         last_word = term.replace("-", " ").split()[-1]
@@ -219,11 +249,16 @@ class Verb(Term):
         return term
 
     def split_prefix(self, term: str) -> Tuple[str, str]:
-        """
-        Split the prefix off of the term.
+        """Split the prefix off of the term.
         "unbind"    -> ("un", "bind")
         "mistake"   -> ("mis", "take")
         "reappear"  -> ("re", "appear")
+
+        Args:
+          term: str: 
+
+        Returns:
+
         """
         if term.startswith(Verb._prefixes):
             for prefix in Verb._prefixes:
@@ -232,9 +267,14 @@ class Verb(Term):
         return "", term
 
     def get_subterm(self, term: str) -> Tuple[str, str]:
-        """
-        Extract last sub-section (split by '-') of the first word.
+        """Extract last sub-section (split by '-') of the first word.
         "aaa-bbb ccc" -> ("aaa-{} ccc", "bbb")
+
+        Args:
+          term: str: 
+
+        Returns:
+
         """
         form = "{}"
         if " " in term:
@@ -250,6 +290,7 @@ class Verb(Term):
         return term, form
 
     def past(self) -> str:
+        """ """
         known = None
         # "To be" is special
         if self.term.lower() in ["is", "am"]:
@@ -283,6 +324,7 @@ class Verb(Term):
         return self._encase(form.format(known))
 
     def pres_part(self) -> str:
+        """ """
         known = None
         # If this term is in the list of known cases
         if self.term.lower() in pres_part_of:
@@ -308,6 +350,7 @@ class Verb(Term):
         return self._encase(form.format(known))
 
     def past_part(self) -> str:
+        """ """
         known = None
         # If this term is in the list of known cases
         if self.term.lower() in past_part_of:
@@ -333,15 +376,26 @@ class Verb(Term):
         return self._encase(form.format(known))
 
     def is_past(self) -> str:
+        """ """
         return is_past(self.term)
 
     def is_pres_part(self) -> str:
+        """ """
         return is_pres_part(self.term)
 
     def is_past_part(self) -> str:
+        """ """
         return is_past_part(self.term)
 
     def indefinite(self, count: Optional[int] = 1) -> str:
+        """
+
+        Args:
+          count: Optional[int]:  (Default value = 1)
+
+        Returns:
+
+        """
         if count == 1:
             return self.singular()
         return self.plural()
