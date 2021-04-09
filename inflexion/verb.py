@@ -53,19 +53,40 @@ class Verb(Term):
         # 'de',
     )
 
+    """
+    Regexes to be tried before applying -ed or -ing.
+    E.g. "argue" is converted to "argu" according to these regexes,
+    and then "ing" or "ed" are appended for present participle,
+    and past/past participle respectively.
+    This produces "arguing" and "argued".
+    """
     _stem_regexes = {
+        # Words ending in "fer" always duplicate their consonant,
+        # e.g. "transfer" -> "transferr" (+ "ed" or "ing")
         re.compile(r"fer\Z"): lambda match: "ferr",
+        # Words ending in "c" will have an extra "k" appended before
+        # -ed and -ing. One exception is "arc" -> "arced".
         re.compile(r"c\Z"): lambda match: "ck",
+        # Words ending in "ie" will end in "y" before appending
+        # -ed or -ing.
         re.compile(r"ie\Z"): lambda match: "y",
+        # Words ending with "ski" don't change,
+        # and then immediately have -ed or -ing appended.
         re.compile(r"ski\Z"): lambda match: "ski",
+        # Words ending with "e" prepended by anything other than an "e"
+        # have that "e" stripped. e.g. "argue" -> "argu"
         re.compile(r"([^e])e\Z"): lambda match: match.group(1),
-        re.compile(r".*er\Z"): lambda match: match.group(),
-        # Only if long enough {('ken', 'kened', ('kenned',)), ('yen', 'yened', ('yenned',)), ('pen', 'pened', ('penned',))}
+        # Words ending with "er" don't duplicate.
+        re.compile(r"er\Z"): lambda match: match.group(),
+        # Words ending with "en" don't duplicate,
+        # unless the word is small, e.g. ken -> kenned, pen -> penned, yen -> yenned
         re.compile(r".{2,}en\Z"): lambda match: match.group(),
+        # Words ending with "on" don't duplicate.
         re.compile(r"(.[bdghklmnprstzy]on)\Z"): lambda match: match.group(1),
-        re.compile(r"ee\Z"): lambda match: "e",  # Turns "ee" to "e"
+        # Convert duplicate "ee" into just one "e"
+        re.compile(r"ee\Z"): lambda match: "e",
         # Always duplicate CVl (British English)
-        re.compile(r"([^aeo][aeiuo])l\Z"): lambda match: match.group(1) + "ll",
+        re.compile(r"[^aeo][aeiuo]l\Z"): lambda match: match.group() + "l",
     }
 
     _stem_double_regex = re.compile(
@@ -161,7 +182,8 @@ class Verb(Term):
                                                           self.plural(),
                                                           self.past(),
                                                           self.past_part(),
-                                                          self.classical().pres_part()}), reverse=True)), flags=re.I)
+                                                          self.classical().pres_part()
+                                                          }), reverse=True)), flags=re.I)
 
     """
     Methods exclusively for Verb
