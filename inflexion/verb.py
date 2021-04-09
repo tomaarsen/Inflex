@@ -26,7 +26,9 @@ from inflexion.verb_core import (
 
 
 class Verb(Term):
-    """ """
+    """
+    TODO
+    """
 
     _prefixes = (
         'counter',
@@ -101,26 +103,15 @@ class Verb(Term):
     """
 
     def is_verb(self) -> bool:
-        """ """
         return True
 
     def is_singular(self) -> bool:
-        """ """
         return is_singular(self.term)
 
     def is_plural(self) -> bool:
-        """ """
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
-        """
-
-        Args:
-          person: Optional[int]:  (Default value = 0)
-
-        Returns:
-
-        """
         self.check_valid_person(person)
 
         # "To be" is special
@@ -165,14 +156,6 @@ class Verb(Term):
         return self.plural()
 
     def plural(self, person: Optional[int] = 0) -> str:
-        """
-
-        Args:
-          person: Optional[int]:  (Default value = 0)
-
-        Returns:
-
-        """
         self.check_valid_person(person)
 
         known = None
@@ -198,7 +181,6 @@ class Verb(Term):
         return self._reapply_whitespace(self.term)
 
     def as_regex(self) -> "re.Pattern":
-        """ """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
                                                           self.past(),
@@ -211,13 +193,13 @@ class Verb(Term):
     """
 
     def _stem(self, term: str) -> str:
-        """
+        """Stem `term` so that "-ed"/"-ing" can be appended for past and present participle forms.
 
         Args:
-          term: str: 
+            term (str): The input word to stem.
 
         Returns:
-
+            str: The stemmed version of `term`, ready for appending "-ed" or "-ing".
         """
         # Utility method that adjusts final consonants when they need to be doubled in inflexions
         # Apply the first relevant transform
@@ -249,16 +231,25 @@ class Verb(Term):
         return term
 
     def split_prefix(self, term: str) -> Tuple[str, str]:
-        """Split the prefix off of the term.
-        "unbind"    -> ("un", "bind")
-        "mistake"   -> ("mis", "take")
-        "reappear"  -> ("re", "appear")
+        """Split the prefix from the term.
+
+        Examples:
+            >>>self.split_prefix("unbind")
+            ("un", "bind")
+            >>>self.split_prefix("mistake")
+            ("mis", "take")
+            >>>self.split_prefix("reappear")
+            ("re", "appear")
+            >>>self.split_prefix("use")
+            ("", "use")
 
         Args:
-          term: str: 
+            term (str): The input word to potentially split a prefix from.
 
         Returns:
-
+            Tuple[str, str]: The first string is the prefix, the second string is the remainder.
+                If the input does not have a prefix to split, then the first string is empty, 
+                while the second string is the full input `term`.
         """
         if term.startswith(Verb._prefixes):
             for prefix in Verb._prefixes:
@@ -268,13 +259,17 @@ class Verb(Term):
 
     def get_subterm(self, term: str) -> Tuple[str, str]:
         """Extract last sub-section (split by '-') of the first word.
-        "aaa-bbb ccc" -> ("aaa-{} ccc", "bbb")
+        
+        Examples:
+            >>>self.get_subterm("aaa-bbb ccc")
+            ("aaa-{} ccc", "bbb")
 
         Args:
-          term: str: 
+            term (str): The input word to potentially split the subterm from.
 
         Returns:
-
+            Tuple[str, str]: The first string is the format string, e.g. "aaa-{} ccc", while
+                the second string is the last sub-section, e.g. "bbb".
         """
         form = "{}"
         if " " in term:
@@ -290,7 +285,16 @@ class Verb(Term):
         return term, form
 
     def past(self) -> str:
-        """ """
+        """Returns this Verb's past form.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.past()
+            "flew"
+
+        Returns:
+            str: This Verb's past form.
+        """
         known = None
         # "To be" is special
         if self.term.lower() in ["is", "am"]:
@@ -324,7 +328,16 @@ class Verb(Term):
         return self._encase(form.format(known))
 
     def pres_part(self) -> str:
-        """ """
+        """Returns this Verb's present participle form.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.pres_part()
+            "flying"
+
+        Returns:
+            str: This Verb's present participle form.
+        """
         known = None
         # If this term is in the list of known cases
         if self.term.lower() in pres_part_of:
@@ -350,7 +363,16 @@ class Verb(Term):
         return self._encase(form.format(known))
 
     def past_part(self) -> str:
-        """ """
+        """Returns this Verb's past participle form.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.pres_part()
+            "flown"
+
+        Returns:
+            str: This Verb's past participle form.
+        """
         known = None
         # If this term is in the list of known cases
         if self.term.lower() in past_part_of:
@@ -375,26 +397,46 @@ class Verb(Term):
 
         return self._encase(form.format(known))
 
-    def is_past(self) -> str:
-        """ """
+    def is_past(self) -> bool:
+        """Detect whether this Verb is in past form.
+
+        Returns:
+            bool: True if this Verb is deemed past.
+        """
         return is_past(self.term)
 
-    def is_pres_part(self) -> str:
-        """ """
+    def is_pres_part(self) -> bool:
+        """Detect whether this Verb is in present participle form.
+
+        Returns:
+            bool: True if this Verb is deemed present participle.
+        """
         return is_pres_part(self.term)
 
-    def is_past_part(self) -> str:
-        """ """
+    def is_past_part(self) -> bool:
+        """Detect whether this Verb is in past participle form.
+
+        Returns:
+            bool: True if this Verb is deemed past participle.
+        """
         return is_past_part(self.term)
 
     def indefinite(self, count: Optional[int] = 1) -> str:
-        """
+        """Return the singular if `count` == 1, and the plural otherwise.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.indefinite(count = 1)
+            'flies'
+            >>>verb.indefinite(count = 3)
+            'fly'
 
         Args:
-          count: Optional[int]:  (Default value = 1)
+            count (Optional[int], optional): The number of objects on which this verb applies. 
+                Defaults to 1.
 
         Returns:
-
+            str: The singular if `count` == 1, and the plural otherwise.
         """
         if count == 1:
             return self.singular()

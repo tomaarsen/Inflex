@@ -410,10 +410,14 @@ import re
 
 VERSION = {version}
 
-def rei(regex):
-    """
-    Return compiled regular expression object with 
-    pattern `regex` and the IGNORECASE flag.
+def rei(regex: str) -> re.Pattern:
+    """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
+
+    Args:
+        regex (str): Regular expression pattern.
+
+    Returns:
+        re.Pattern: Compiled version of `regex`, with IGNORECASE flag.
     """
     return re.compile(regex, flags=re.I)
 
@@ -436,13 +440,29 @@ def rei(regex):
         generated_code += self.get_recognize_rule_output("plural", self.reader.patterns["singular"]) + "\n\n"
         generated_code += self.get_recognize_rule_output("singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
         
-        generated_code += """def known_plural(word):
+        generated_code += '''def known_plural(word: str) -> bool:
+    """True if `word` is known to be plural.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is known to be plural.
+    """
     return word in singular_of
 
 def known_singular(word):
+    """True if `word` is known to be singular.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is known to be singular.
+    """
     return word in modern_plural_of
 
-"""
+'''
 
         for key in self.reader.literals:
             generated_code += self.get_converter_output(key, self.reader.patterns[key]) + "\n\n"
@@ -504,7 +524,15 @@ def known_singular(word):
         _type = "plural" if "plural" in name else "singular"
         _extra_check = " and not is_singular(word, is_word_plural=True)" if _type == "plural" else ""
 
-        output = f"""def convert_to_{name}(word):
+        output = f'''def convert_to_{name}(word: str) -> str:
+    """Convert `word` to {name.replace("_", " ")} form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The {name.replace("_", " ")} form of `word`.
+    """
     if word in {name}_of:
         return {name}_of[word]
     
@@ -527,7 +555,7 @@ def known_singular(word):
             if group is not None:
                 output_id, slices = {name}_convert_slices[i]
                 return {name}_convert_outputs[output_id]([match.group(index) for index in slices])
-    return word"""
+    return word'''
         return output
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
@@ -558,10 +586,18 @@ def known_singular(word):
         return output
 
     def get_recognizer_output(self, name, compl_name):
-        output = f"""def is_{name}(word{', is_word_plural=None' if name == "singular" else ''}):
+        output = f'''def is_{name}(word{', is_word_plural=None' if name == "singular" else ''}):
+    """Detect whether `word` is in {name.replace("_", " ")} form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed {name.replace("_", " ")}.
+    """
     if known_{name}(word) or (not word.islower() and known_{name}(word.lower())):
         return True
-"""
+'''
         if compl_name:
             output += f"""
     if known_{compl_name}(word) or (not word.islower() and known_{compl_name}(word.lower())):

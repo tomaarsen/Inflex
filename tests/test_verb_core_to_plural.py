@@ -459,7 +459,7 @@ class TestVerbToPlural(unittest.TestCase):
         {'in': 'wrings', 'out': 'wring'},
     ]
 
-    def test_verb_plural(self):
+    def test_verb_to_plural(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided

@@ -110,24 +110,56 @@ adj_singular_of = {json.dumps(self.reader.literals["singular"], indent=4, sort_k
 
 adj_plural_of = {json.dumps(self.reader.literals["plural"], indent=4, sort_keys=True)}
 
-def is_plural(word):
+def is_plural(word: str) -> bool:
+    """Detect whether `word` is in plural form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        str: True if `word` is deemed plural.
+    """
     return word in adj_is_plural or\\
            word.lower() in adj_is_plural or\\
            (word not in adj_is_singular and word.lower() not in adj_is_singular)
 
-def is_singular(word):
+def is_singular(word: str) -> bool:
+    """Detect whether `word` is in singular form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        str: True if `word` is deemed singular.
+    """
     return word in adj_is_singular or\\
            word.lower() in adj_is_singular or\\
            (word not in adj_is_plural and word.lower() not in adj_is_plural)
 
-def convert_to_plural(word):
+def convert_to_plural(word: str) -> str:
+    """Convert `word` to plural form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        str: The plural form of `word`.
+    """
     if word in adj_plural_of:
         return adj_plural_of[word]
     if word.lower() in adj_plural_of:
         return adj_plural_of[word.lower()]
     return word
 
-def convert_to_singular(word):
+def convert_to_singular(word: str) -> str:
+    """Convert `word` to singular form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        str: The singular form of `word`.
+    """
     if word in adj_singular_of:
         return adj_singular_of[word]
     if word.lower() in adj_singular_of:

@@ -8,12 +8,16 @@
 
 import re
 
-VERSION = 20210204.174636
+VERSION = 20210409.123007
 
-def rei(regex):
-    """
-    Return compiled regular expression object with 
-    pattern `regex` and the IGNORECASE flag.
+def rei(regex: str) -> re.Pattern:
+    """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
+
+    Args:
+        regex (str): Regular expression pattern.
+
+    Returns:
+        re.Pattern: Compiled version of `regex`, with IGNORECASE flag.
     """
     return re.compile(regex, flags=re.I)
 
@@ -8556,13 +8560,37 @@ singular_recognize_rules = {
     rei(r"^(.*?) (above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)$"): {"conditional": lambda match: is_singular(match.group(1))},
 }
 
-def known_plural(word):
+def known_plural(word: str) -> bool:
+    """True if `word` is known to be plural.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is known to be plural.
+    """
     return word in singular_of
 
 def known_singular(word):
+    """True if `word` is known to be singular.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is known to be singular.
+    """
     return word in modern_plural_of
 
-def convert_to_modern_plural(word):
+def convert_to_modern_plural(word: str) -> str:
+    """Convert `word` to modern plural form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The modern plural form of `word`.
+    """
     if word in modern_plural_of:
         return modern_plural_of[word]
     
@@ -8587,7 +8615,15 @@ def convert_to_modern_plural(word):
                 return modern_plural_convert_outputs[output_id]([match.group(index) for index in slices])
     return word
 
-def convert_to_classical_plural(word):
+def convert_to_classical_plural(word: str) -> str:
+    """Convert `word` to classical plural form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The classical plural form of `word`.
+    """
     if word in classical_plural_of:
         return classical_plural_of[word]
     
@@ -8612,7 +8648,15 @@ def convert_to_classical_plural(word):
                 return classical_plural_convert_outputs[output_id]([match.group(index) for index in slices])
     return word
 
-def convert_to_singular(word):
+def convert_to_singular(word: str) -> str:
+    """Convert `word` to singular form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The singular form of `word`.
+    """
     if word in singular_of:
         return singular_of[word]
     
@@ -8638,6 +8682,14 @@ def convert_to_singular(word):
     return word
 
 def is_plural(word):
+    """Detect whether `word` is in plural form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed plural.
+    """
     if known_plural(word) or (not word.islower() and known_plural(word.lower())):
         return True
 
@@ -8653,6 +8705,14 @@ def is_plural(word):
     return word.endswith('s')
 
 def is_singular(word, is_word_plural=None):
+    """Detect whether `word` is in singular form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed singular.
+    """
     if known_singular(word) or (not word.islower() and known_singular(word.lower())):
         return True
 

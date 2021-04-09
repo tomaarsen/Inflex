@@ -35,11 +35,27 @@ INITIAL_Y_AN = re.compile(
     r"\A y (?: b[lor] | cl[ea] | fere | gg | p[ios] | rou | tt)", flags=ix)
 
 
-def prepend_indefinite_article(word):
+def prepend_indefinite_article(word: str) -> str:
+    """Prepend the indefinite article ("a" or "an") to `word`.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        str: `word` prepended by "a" or "an".
+    """
     return f"{select_indefinite_article(word)} {word}"
 
 
-def select_indefinite_article(word):
+def select_indefinite_article(word: str) -> str:
+    """Return the correct indefinite article ("a" or "an") for `word`
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        str: Either "a" or "an".
+    """
     # Handle ordinal forms: Single character followed by "-th" or "th", eg "A-th" -> "an A-th".
     if ORDINAL_A.match(word):
         return "a"

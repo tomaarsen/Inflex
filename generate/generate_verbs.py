@@ -337,7 +337,7 @@ VERSION = {version}
         for key in self.reader.literals:
             generated_code += self.get_recognize_rule_output(key, self.reader.patterns[key]) + "\n\n"
         
-        generated_code += """\
+        generated_code += '''\
 past_of_values = set(past_of.values())
 pres_part_of_values = set(pres_part_of.values())
 past_part_of_values = set(past_part_of.values())
@@ -349,23 +349,63 @@ plural_and_singular = {
 }
 
 def known_plural(word):
+    """True if `word` is known to be plural.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be plural.
+    """
     lword = word.lower()
     return lword in singular_of or lword in plural_and_singular
 
 def known_singular(word):
+    """True if `word` is known to be singular.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be singular.
+    """
     lword = word.lower()
     return lword in plural_of or lword in plural_and_singular
 
 def known_past(word):
+    """True if `word` is known to be past.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be past.
+    """
     return word.lower() in past_of_values
 
 def known_past_part(word):
+    """True if `word` is known to be past participle.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be past participle.
+    """
     return word.lower() in past_part_of_values
 
 def known_pres_part(word):
+    """True if `word` is known to be present participle.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be present participle.
+    """
     return word.lower() in pres_part_of_values
 
-"""
+'''
 
         for key in self.reader.literals:
             generated_code += self.get_converter_output(key, self.reader.patterns[key]) + "\n\n"
@@ -382,6 +422,19 @@ def known_pres_part(word):
         with open(self.fname, "w+") as f:
             f.write(generated_code)
 
+    def normalize_name(self, name: str) -> str:
+        """Convert `name` to a human readable form.
+
+        Args:
+            name (str): Input `name`, e.g. "past_part".
+
+        Returns:
+            str: Human readable form of `name`, e.g. "past participle".
+        """
+        return name.replace("_", " ")\
+                   .replace("pres", "present")\
+                   .replace("part", "participle")
+
     def get_convert_rule_output(self, name, replacement_suffixes):
         regexes = []
         outputs = []
@@ -397,13 +450,21 @@ def known_pres_part(word):
         return output
 
     def get_converter_output(self, name, replacement_suffixes):
-        output = f"""\
+        output = f'''\
 def convert_to_{name}(word):
+    """Convert `word` to {self.normalize_name(name)} form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The {self.normalize_name(name)} form of `word`.
+    """
     if word in {name}_of:
         return {name}_of[word]
     if not word.islower() and word.lower() in {name}_of:
         return {name}_of[word.lower()]
-    """
+    '''
         if name == "plural":
             output += """if known_plural(word):
         return word
@@ -434,10 +495,18 @@ def convert_to_{name}(word):
         return output
 
     def get_recognizer_output(self, name, compl_name, replacement_suffixes):
-        output = f"""\
+        output = f'''\
 def is_{name}(word):
+    """Detect whether `word` is in {self.normalize_name(name)} form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed {self.normalize_name(name)}.
+    """
     if known_{name}(word):
-        return True"""
+        return True'''
         if compl_name:
             output += f"""
     if known_{compl_name}(word):

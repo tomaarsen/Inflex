@@ -1,23 +1,53 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+__all__ = [
+    "Term"
+]
+
 import re
-from typing import Generator, Optional
+from typing import Callable, Generator, List, Optional, TypeVar
 import warnings
+
+T = TypeVar("T")
+
+
+def list_to_generator(input_list: List[T]) -> Generator[T, None, None]:
+    """Yield element from list, repeating the very last element infinitely.
+
+    Args:
+        input_list (List[T]): List of elements.
+
+    Yields:
+        T: Element of `input_list`
+    """
+    while True:
+        yield input_list[0]
+        if len(input_list) > 1:
+            input_list = input_list[1:]
 
 
 class Term(object):
-    """
-    `Term` is the base class of the `Noun`, `Verb`, `Adjective` subclasses,
+    """`Term` is the base class of the `Noun`, `Verb`, `Adjective` subclasses,
     and holds some default implementations of methods used across these
     subclasses.
+
+    Method docstrings from this class are inherited to the subclasses' methods.
     """
+
+    def _transform(func: Callable[[str], str]) -> str:
+        """If `func` is called with "i" or "I", then return "I", otherwise simply call `func`
+
+        Args:
+            func (Callable[[str], str]): Function for converting the casing of an input string.
+
+        Returns:
+            str: Input string converted according to `func`'s casing rules.
+        """
+        return lambda word: "I" if word.lower() == "i" else func(word)
 
     # Supported casing formats: I, lower, Title, UPPER, Mc
     # Note that if the passed word is "i", we always output "I"
-    def _transform(func):
-        return lambda word: "I" if word.lower() == "i" else func(word)
-
     _casing_formats = {
         "I": {
             "regex": re.compile(r"^I$"),
@@ -48,6 +78,15 @@ class Term(object):
     _whitespace_regex = re.compile(r"(?P<start>^\s*).*?(?P<end>\s*$)")
 
     def __init__(self, term: str):
+        """Creates class instance with detection and conversion methods.
+
+        Note: 
+            Capitalisation and whitespace will be preserved between input `term` and
+            output generated via e.g. `singular`.
+
+        Args:
+            term (str): Input word or collocation.
+        """
         super().__init__()
         # Whitestring strings before and after the terms
         self.start = ""
@@ -70,90 +109,123 @@ class Term(object):
             self.term = re.sub(r"\s{2,}", " ", self.term)
 
     def is_noun(self) -> bool:
-        """
-        Returns `True` only if this object is instantiated via Noun(term).
+        """Returns `True` only if this object is instantiated via Noun(term).
+
+        Returns:
+            bool: Returns `True` only if this object is instantiated via Noun(term).
         """
         return False
 
     def is_verb(self) -> bool:
-        """
-        Returns `True` only if this object is instantiated via Verb(term).
+        """Returns `True` only if this object is instantiated via Verb(term).
+
+        Returns:
+            bool: Returns `True` only if this object is instantiated via Verb(term).
         """
         return False
 
     def is_adj(self) -> bool:
-        """
-        Returns `True` only if this object is instantiated via Adjective(term)
+        """Returns `True` only if this object is instantiated via Adjective(term)
+
+        Returns:
+            bool: Returns `True` only if this object is instantiated via Adjective(term).
         """
         return False
 
     def is_singular(self) -> bool:
-        """
-        Returns `True` only if this object represents a term of the singular grammatical number.
+        """Detect whether this object is in singular form.
+
+        Returns:
+            bool: True if this object is deemed singular.
         """
         raise NotImplementedError()
 
     def is_plural(self) -> bool:
-        """
-        Returns `True` only if this object represents a term of the plural grammatical number.
+        """Detect whether this object is in plural form.
+
+        Returns:
+            bool: True if this object is deemed plural.
         """
         raise NotImplementedError()
 
     def singular(self, person: Optional[int] = 0) -> str:
         """Returns this object's singular form.
 
-        `person` Represents the grammatical "person" (1st, 2nd, 3rd). 
-        This option only affects personal and possessive pronouns, 
-        possessive adjectives, and verbs. Defaults to 0.
+        Args:
+            person (Optional[int], optional): Represents the grammatical "person" (1st, 2nd, 3rd).
+                This option only affects personal and possessive pronouns, possessive adjectives,
+                and verbs. Defaults to 0.
+
+        Returns:
+            str: This object's singular form.
         """
         raise NotImplementedError()
 
     def plural(self, person: Optional[int] = 0) -> str:
-        """Returns this object's singular form.
+        """Returns this object's plural form.
 
-        `person` Represents the grammatical "person" (1st, 2nd, 3rd). 
-        This option only affects personal and possessive pronouns, 
-        possessive adjectives, and verbs. Defaults to 0.
+        Args:
+            person (Optional[int], optional): Represents the grammatical "person" (1st, 2nd, 3rd).
+                This option only affects personal and possessive pronouns, possessive adjectives,
+                and verbs. Defaults to 0.
+
+        Returns:
+            str: This object's plural form.
         """
         raise NotImplementedError()
 
     def classical(self) -> "Term":
-        """
-        Returns an object always inflecting in the classical/unassimilated manner.
+        """Returns an object always inflecting in the classical/unassimilated manner.
 
-        For example:
-        ```
-        >>> Noun('cow').plural()
-        'cows'
-        >>> Noun('cow').classical().plural()
-        'kine'
-        ```
+        Examples:
+            ```
+            >>> Noun('cow').plural()
+            'cows'
+            >>> Noun('cow').unassimilated().plural()
+            'kine'
+            ```
 
-        Identical to `unassimilated()`
+        Note:
+            Identical to `unassimilated()`.
+
+        Returns:
+            Term: A Term object, or a subclass thereof.
         """
         return self
 
     def unassimilated(self) -> "Term":
-        """
-        Returns an object always inflecting in the classical/unassimilated manner.
+        """Returns an object always inflecting in the classical/unassimilated manner.
 
-        For example:
-        ```
-        >>> Noun('cow').plural()
-        'cows'
-        >>> Noun('cow').unassimilated().plural()
-        'kine'
-        ```
+        Examples:
+            ```
+            >>> Noun('cow').plural()
+            'cows'
+            >>> Noun('cow').unassimilated().plural()
+            'kine'
+            ```
 
-        Identical to `classical()`
+        Note:
+            Identical to `classical()`.
+
+        Returns:
+            Term: A Term object, or a subclass thereof.
         """
         return self.classical()
 
     def check_valid_person(self, person: int) -> bool:
-        """
-        Return True if `person` is valid, i.e. in [0, 1, 2, 3].
+        """Return True if `person` is valid, i.e. in [0, 1, 2, 3].
+
         Otherwise, return False and output a warning stating that the
         `person` parameter is invalid.
+
+        Args:
+            person (int): Represents the grammatical "person" (1st, 2nd, 3rd).
+
+        Raises:
+            UserWarning: If `person` is invalid, this warning is thrown.
+
+        Returns:
+            bool: True if `person` is valid, i.e. in [0, 1, 2, 3]. False Otherwise.
         """
         if person not in [0, 1, 2, 3]:
             warnings.warn(
@@ -163,33 +235,47 @@ class Term(object):
         return True
 
     def as_regex(self) -> "re.Pattern":
-        """
-        Returns a `re.Pattern` object which case-insensitively matches
-        any inflected form of the word.
+        """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
 
-        For example:
-        ```
-        >>> Noun('cherub').as_regex()
-        re.compile('cherubs|cherubim|cherub', re.IGNORECASE)
-        >>> Verb('eat').as_regex()
-        re.compile('eats|eating|eaten|eat|ate', re.IGNORECASE)
-        ```
+        Returns:
+            re.Pattern: Compiled regex object which case-insensitively matches any inflected form
+                of the word.
+
+        Examples:
+            ```
+            >>> Noun('cherub').as_regex()
+            re.compile('cherubs|cherubim|cherub', re.IGNORECASE)
+            >>> Verb('eat').as_regex()
+            re.compile('eats|eating|eaten|eat|ate', re.IGNORECASE)
+            ```
         """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural()}), reverse=True)), flags=re.I)
 
     def __repr__(self) -> str:
-        """
-        Returns a string representation of the class instance.
+        """Return repr(self)
+
+        Examples:
+            ```
+            >>>noun = Noun("book")
+            >>>f"My noun: {noun!r}"
+            "My noun: Noun('book')"
+            ```
         """
         return f"{self.__class__.__name__}({self._reapply_whitespace(self.term)!r})"
 
     def _encase(self, target: str) -> str:
-        """
-        Apply casing from `self.term` string onto `target` string.
+        """Apply casing from `self.term` string onto `target` string.
 
         TODO: Currently "Toms'" -> "Toms'S"
         TODO: Currently "show--off" -> "show----off"
+
+        Args:
+            target (str): The word or collocation on which to apply the casing 
+                that exists on `self.term`.
+
+        Returns:
+            str: `target`, but encased according to the patterns applied on `self.term`.
         """
 
         # Special case for 'I'
@@ -215,34 +301,25 @@ class Term(object):
         # Generator that gets next transformation until there is
         # just one transformation left, after which it will
         # continuously yield that last transformation
-        def get_transformations(transformations) -> Generator:
-            while True:
-                yield transformations[0]
-                if len(transformations) > 1:
-                    transformations = transformations[1:]
-
         # Apply the transformations found in `original` to `target`
-        transformations_gen = get_transformations(transformations)
+        transformations_gen = list_to_generator(transformations)
         # Phrase is target, but with the proper casing from the term applied
         phrase = Term._word_regex.sub(
             lambda match_obj: next(transformations_gen)(match_obj.group(0)),
             target)
         return self._reapply_whitespace(phrase)
 
-    def _reapply_whitespace(self, phrase: str):
-        """
-        Reapply whitespace formats before, after and within a phrase,
-        based on `self.start`, `self.end` and `self.spaces`
+    def _reapply_whitespace(self, phrase: str) -> str:
+        """Reapply whitespace formats before, after and within a phrase.
+        Based on `self.start`, `self.end` and `self.spaces` which were saved at __init__().
+
+        Args:
+            phrase (str): The word or collocation on which whitespace and hyphens are added.
+
+        Returns:
+            str: `phrase`, but with whitespace before, after and within a phrase.
         """
         if self.spaces:
-            def get_spaces(spaces: list):
-                while True:
-                    yield spaces[0]
-                    if len(spaces) > 1:
-                        spaces = spaces[1:]
-
-            spaces_gen = get_spaces(self.spaces)
-
+            spaces_gen = list_to_generator(self.spaces)
             return self.start + re.sub("-| ", lambda _: next(spaces_gen), phrase.strip()) + self.end
-
         return self.start + phrase + self.end

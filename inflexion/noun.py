@@ -20,6 +20,7 @@ from inflexion.indefinite_core import (
 
 
 class Noun(Term):
+    """ """
 
     _noun_inflection = {
         # CASE 
@@ -375,15 +376,26 @@ class Noun(Term):
     """
 
     def is_noun(self) -> bool:
+        """ """
         return True
 
     def is_singular(self) -> bool:
+        """ """
         return is_singular(self.term)
 
     def is_plural(self) -> bool:
+        """ """
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
+        """
+
+        Args:
+          person: Optional[int]:  (Default value = 0)
+
+        Returns:
+
+        """
         self.check_valid_person(person)
         match = Noun._prep_regex.match(self.term)
 
@@ -404,6 +416,14 @@ class Noun(Term):
         return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
+        """
+
+        Args:
+          person: Optional[int]:  (Default value = 0)
+
+        Returns:
+
+        """
         self.check_valid_person(person)
         match = Noun._prep_regex.match(self.term)
 
@@ -424,6 +444,7 @@ class Noun(Term):
         return self._encase(convert_to_modern_plural(self.term))
 
     def classical(self) -> "Term":
+        """ """
         # TODO: Cache this
         # TODO: Should we also have modern() ?
         # NOTE: This method of creating a Classical noun will repeat getting whitespace etc.
@@ -433,6 +454,7 @@ class Noun(Term):
         return ClassicalNoun(self.singular())
 
     def as_regex(self) -> "re.Pattern":
+        """ """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
                                                           self.classical().plural()}), reverse=True)), flags=re.I)
@@ -442,28 +464,71 @@ class Noun(Term):
     """
 
     def indef_article(self) -> str:
+        """ """
         return select_indefinite_article(self.term)
 
     def indefinite(self, count: Optional[int] = 1) -> str:
+        """Return the singular if `count` == 1, and the plural otherwise.
+
+        Examples:
+            >>>noun = Noun("book")
+            >>>noun.indefinite(count = 1)
+            'book'
+            >>>noun.indefinite(count = 3)
+            'books'
+
+        Args:
+            count (Optional[int], optional): The number of objects on which this verb applies. 
+                Defaults to 1.
+
+        Returns:
+            str: The singular if `count` == 1, and the plural otherwise.
+        """
         if count == 1:
             return prepend_indefinite_article(self.term)
         return f"{count} {self.plural()}"
 
     def cardinal(self, threshold: int) -> str:
+        """
+
+        Args:
+          threshold: int: 
+
+        Returns:
+
+        """
         raise NotImplementedError()
 
     def ordinal(self, threshold: int) -> str:
+        """
+
+        Args:
+          threshold: int: 
+
+        Returns:
+
+        """
         raise NotImplementedError()
 
 
 class ClassicalNoun(Noun):
+    """ """
     def __init__(self, term) -> None:
         # TODO: Consider that repr(Noun("books").classical()) will output "ClassicalNoun('book')"
         super().__init__(term)
 
     def plural(self, person: Optional[int] = 0) -> str:
+        """
+
+        Args:
+          person: Optional[int]:  (Default value = 0)
+
+        Returns:
+
+        """
         self.check_valid_person(person)
         return self._encase(convert_to_classical_plural(self.term))
 
     def classical(self) -> "Term":
+        """ """
         return self

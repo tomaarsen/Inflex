@@ -17,9 +17,15 @@ from inflexion.noun import Noun
 
 
 class Adjective(Term):
-
+    """
+    Regexes to be tried before applying -er or -est.
+    E.g. "pretty" is converted to "pretti" according to these regexes,
+    and then "er" or "est" are appended for comparative and 
+    superlative respectively.
+    This produces "prettier" and "prettiest".
+    """
     _stem_regexes = {
-        re.compile(r"([aiou])y\Z"): lambda match: f"{match.group(1)}y",
+        re.compile(r"[aiou]y\Z"): lambda match: match.group(),
         re.compile(r"ey\Z"): lambda match: "i",
         re.compile(r"y\Z"): lambda match: "i",
         re.compile(r"e\Z"): lambda match: "",
@@ -177,7 +183,7 @@ class Adjective(Term):
         NOTE: "little" or "far" will fail due to having multiple options
           little (kid)  -> littlest (kid)
           little (food) -> least (food)
-        and 
+        and
           far -> furthest
           far -> farthest
         NOTE: Fails on e.g. "boring" or "famous"

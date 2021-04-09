@@ -460,7 +460,7 @@ class TestVerbToSingular(unittest.TestCase):
         {'in': 'wrings', 'out': 'wrings'},
     ]
 
-    def test_verb_singular(self):
+    def test_verb_to_singular(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided

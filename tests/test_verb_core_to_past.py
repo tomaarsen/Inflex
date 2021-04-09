@@ -860,7 +860,7 @@ class TestVerbToPast(unittest.TestCase):
         {'in': 'wrung', 'out': 'wrung'},
     ]
 
-    def test_verb_past(self):
+    def test_verb_to_past(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
