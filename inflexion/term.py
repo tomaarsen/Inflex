@@ -267,7 +267,6 @@ class Term(object):
     def _encase(self, target: str) -> str:
         """Apply casing from `self.term` string onto `target` string.
 
-        TODO: Currently "Toms'" -> "Toms'S"
         TODO: Currently "show--off" -> "show----off"
         TODO: self.term as i-th and target as i-th -> I-th
             : Perhaps don't force capitalize I if followed by a hyphen.
@@ -280,9 +279,15 @@ class Term(object):
             str: `target`, but encased according to the patterns applied on `self.term`.
         """
 
+        # Split off 's
+        suffix = ""
+        if target.endswith("'s"):
+            target = target[:-2]
+            suffix = "'s"
+
         # Special case for 'I'
         if self.term == "I" or target == "I":
-            return self._reapply_whitespace(target)
+            return self._reapply_whitespace(target + suffix)
 
         # Get list of lambda functions that correspond to the
         # casing formats for `original`.
@@ -298,7 +303,7 @@ class Term(object):
 
         # If no words found in term, just return target
         if not transformations:
-            return self._reapply_whitespace(target)
+            return self._reapply_whitespace(target + suffix)
 
         # Generator that gets next transformation until there is
         # just one transformation left, after which it will
@@ -309,7 +314,7 @@ class Term(object):
         phrase = Term._word_regex.sub(
             lambda match_obj: next(transformations_gen)(match_obj.group()),
             target)
-        return self._reapply_whitespace(phrase)
+        return self._reapply_whitespace(phrase + suffix)
 
     def _reapply_whitespace(self, phrase: str) -> str:
         """Reapply whitespace formats before, after and within a phrase.

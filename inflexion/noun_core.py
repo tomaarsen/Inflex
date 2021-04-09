@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20210409.214723
+VERSION = 20210409.224949
 
 def rei(regex: str) -> re.Pattern:
     """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
@@ -8422,7 +8422,7 @@ singular_of = {
     "zygomata": "zygoma"
 }
 
-modern_plural_convert_rule_regex = re.compile(r"^(?:(.*?)-general|(.*?) general|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) it|son-of-a-(.*?)|son of a (.*?)|(.*?)-(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(.*?) (about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(.*?)-errant|(.*?) errant|(.*?)-(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*?) (above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*)staff|(.*)stave|(.*)genus|(.*)person|(.*)hertz|(.*)siemens|(.*)brother|(.*)child|(.*)cow|(.*)mensch|(.*)elf|(.*)hoof|(.*)knife|(.*)leaf|(.*)loaf|(.*)shelf|(.*)thief|(.*)wife|(.*)wolf|(.*)human|(.*)foot|(.*)goose|(.*)man|(.*)mouse|(.*)tooth|(.*)buzz|(.*)fizz|(.*)frizz|(.*)fuzz|(.*)jazz|(.*)proboscis|(.*)bema|(.*)drama|(.*)edema|(.*)lemma|(.*)sarcoma|(.*)stoma|(.*)nova|(.*)umbra|(.*)lumen|(.*)datum|(.*)stratum|(.*)bacillus|(.*)nucleus|(.+)thesis|(.*)hedron|(.*)helion|(.*)legomenon|(.*)phenomenon|(.*)helix|(.*)measles|(.*)pox|(.*)bass|(.*)deer|(.*)fish|(.*)fowl|(.*)sheep|(.*)wildebeest|(.*)craft|(.+)star general|(.+)oux|(.+[aeiou])o|(.+[aeo])lf|(.+)nge|(.+[aiy])nx|(.+)arf|(.+)ceps|(.+[^aeoui][aeouiy])che|(.+[cs])h|(.+)eaf|(.+)eau|(.+)ieu|(.+)nife|(.+)oe|(.+)o|(.+)quy|(.+[aeiou])y|(.+[rnlpwaeio])se|(.+)ss|(.+[aeo])use|(.+)us|(.+[^ns])sis|(.+)trix|(.+)x|(.+)y|(.+)z|(.+)zoon|(.+)s|(.+))$")
+modern_plural_convert_rule_regex = rei(r"^(?:(.*?)-general|(.*?) general|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) it|son-of-a-(.*?)|son of a (.*?)|(.*?)-(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(.*?) (about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(.*?)-errant|(.*?) errant|(.*?)-(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*?) (above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*)staff|(.*)stave|(.*)genus|(.*)person|(.*)hertz|(.*)siemens|(.*)brother|(.*)child|(.*)cow|(.*)mensch|(.*)elf|(.*)hoof|(.*)knife|(.*)leaf|(.*)loaf|(.*)shelf|(.*)thief|(.*)wife|(.*)wolf|(.*)human|(.*)foot|(.*)goose|(.*)man|(.*)mouse|(.*)tooth|(.*)buzz|(.*)fizz|(.*)frizz|(.*)fuzz|(.*)jazz|(.*)proboscis|(.*)bema|(.*)drama|(.*)edema|(.*)lemma|(.*)sarcoma|(.*)stoma|(.*)nova|(.*)umbra|(.*)lumen|(.*)datum|(.*)stratum|(.*)bacillus|(.*)nucleus|(.+)thesis|(.*)hedron|(.*)helion|(.*)legomenon|(.*)phenomenon|(.*)helix|(.*)measles|(.*)pox|(.*)bass|(.*)deer|(.*)fish|(.*)fowl|(.*)sheep|(.*)wildebeest|(.*)craft|(.+)star general|(.+)oux|(.+[aeiou])o|(.+[aeo])lf|(.+)nge|(.+[aiy])nx|(.+)arf|(.+)ceps|(.+[^aeoui][aeouiy])che|(.+[cs])h|(.+)eaf|(.+)eau|(.+)ieu|(.+)nife|(.+)oe|(.+)o|(.+)quy|(.+[aeiou])y|(.+[rnlpwaeio])se|(.+)ss|(.+[aeo])use|(.+)us|(.+[^ns])sis|(.+)trix|(.+)x|(.+)y|(.+)z|(.+)zoon|(.+)s|(.+))$")
 
 modern_plural_convert_outputs = [
     lambda subterms: f"{convert_to_modern_plural(subterms[0]) if is_singular(subterms[0]) else subterms[0]}-general",
@@ -8641,7 +8641,7 @@ modern_plural_convert_slices = [
     (101, [110]),
 ]
 
-classical_plural_convert_rule_regex = re.compile(r"^(?:(.*?)-general|(.*?) general|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) it|son-of-a-(.*?)|son of a (.*?)|(.*?)-(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(.*?) (about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(.*?)-errant|(.*?) errant|(.*?)-(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*?) (above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*)staff|(.*)stave|(.*)genus|(.*)person|(.*)hertz|(.*)siemens|(.*)brother|(.*)child|(.*)cow|(.*)mensch|(.*)elf|(.*)hoof|(.*)knife|(.*)leaf|(.*)loaf|(.*)shelf|(.*)thief|(.*)wife|(.*)wolf|(.*)human|(.*)foot|(.*)goose|(.*)man|(.*)mouse|(.*)tooth|(.*)buzz|(.*)fizz|(.*)frizz|(.*)fuzz|(.*)jazz|(.*)proboscis|(.*)bema|(.*)drama|(.*)edema|(.*)lemma|(.*)sarcoma|(.*)stoma|(.*)nova|(.*)umbra|(.*)lumen|(.*)datum|(.*)stratum|(.*)bacillus|(.*)nucleus|(.+)thesis|(.*)hedron|(.*)helion|(.*)legomenon|(.*)phenomenon|(.*)helix|(.*)measles|(.*)pox|(.*)bass|(.*)deer|(.*)fish|(.*)fowl|(.*)sheep|(.*)wildebeest|(.*)craft|(.+)star general|(.+)oux|(.+[aeiou])o|(.+[aeo])lf|(.+)nge|(.+[aiy])nx|(.+)arf|(.+)ceps|(.+[^aeoui][aeouiy])che|(.+[cs])h|(.+)eaf|(.+)eau|(.+)ieu|(.+)nife|(.+)oe|(.+)o|(.+)quy|(.+[aeiou])y|(.+[rnlpwaeio])se|(.+)ss|(.+[aeo])use|(.+)us|(.+[^ns])sis|(.+)trix|(.+)x|(.+)y|(.+)z|(.+)zoon|(.+)s|(.+))$")
+classical_plural_convert_rule_regex = rei(r"^(?:(.*?)-general|(.*?) general|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) it|son-of-a-(.*?)|son of a (.*?)|(.*?)-(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(.*?) (about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(.*?)-errant|(.*?) errant|(.*?)-(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*?) (above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*)staff|(.*)stave|(.*)genus|(.*)person|(.*)hertz|(.*)siemens|(.*)brother|(.*)child|(.*)cow|(.*)mensch|(.*)elf|(.*)hoof|(.*)knife|(.*)leaf|(.*)loaf|(.*)shelf|(.*)thief|(.*)wife|(.*)wolf|(.*)human|(.*)foot|(.*)goose|(.*)man|(.*)mouse|(.*)tooth|(.*)buzz|(.*)fizz|(.*)frizz|(.*)fuzz|(.*)jazz|(.*)proboscis|(.*)bema|(.*)drama|(.*)edema|(.*)lemma|(.*)sarcoma|(.*)stoma|(.*)nova|(.*)umbra|(.*)lumen|(.*)datum|(.*)stratum|(.*)bacillus|(.*)nucleus|(.+)thesis|(.*)hedron|(.*)helion|(.*)legomenon|(.*)phenomenon|(.*)helix|(.*)measles|(.*)pox|(.*)bass|(.*)deer|(.*)fish|(.*)fowl|(.*)sheep|(.*)wildebeest|(.*)craft|(.+)star general|(.+)oux|(.+[aeiou])o|(.+[aeo])lf|(.+)nge|(.+[aiy])nx|(.+)arf|(.+)ceps|(.+[^aeoui][aeouiy])che|(.+[cs])h|(.+)eaf|(.+)eau|(.+)ieu|(.+)nife|(.+)oe|(.+)o|(.+)quy|(.+[aeiou])y|(.+[rnlpwaeio])se|(.+)ss|(.+[aeo])use|(.+)us|(.+[^ns])sis|(.+)trix|(.+)x|(.+)y|(.+)z|(.+)zoon|(.+)s|(.+))$")
 
 classical_plural_convert_outputs = [
     lambda subterms: f"{convert_to_classical_plural(subterms[0]) if is_singular(subterms[0]) else subterms[0]}-general",
@@ -8860,7 +8860,7 @@ classical_plural_convert_slices = [
     (101, [110]),
 ]
 
-singular_convert_rule_regex = re.compile(r"^(?:(.*?)-general|(.*?) general|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) them|sons-of-(.*?)|sons of (.*?)|(.*?)-(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(.*?) (about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(.*?)-errant|(.*?) errant|(.*?)-(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*?) (above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*)staffs|(.*)staves|(.*)genera|(.*)people|(.*)persons|(.*)hertz|(.*)siemens|(.*)brothers|(.*)brethren|(.*)children|(.*)cows|(.*)kine|(.*)menschen|(.*)elves|(.*)hoofs|(.*)hooves|(.*)knives|(.*)leaves|(.*)loaves|(.*)shelves|(.*)thieves|(.*)wives|(.*)wolves|(.*)humans|(.*)feet|(.*)geese|(.*)men|(.*)mice|(.*)teeth|(.*)buzzes|(.*)fizzes|(.*)frizzes|(.*)fuzzes|(.*)jazzes|(.*)proboscises|(.*)proboscides|(.*)bemas|(.*)bemata|(.*)dramas|(.*)edemas|(.*)edemata|(.*)lemmas|(.*)lemmata|(.*)sarcomas|(.*)sarcomata|(.*)stomas|(.*)stomata|(.*)novas|(.*)novae|(.*)umbras|(.*)umbrae|(.*)lumens|(.*)lumina|(.*)data|(.*)stratums|(.*)strata|(.*)bacilli|(.*)nuclei|(.+)theses|(.*)hedrons|(.*)hedra|(.*)helions|(.*)helia|(.*)legomena|(.*)phenomena|(.*)helices|(.*)measles|(.*)pox|(.*)basses|(.*)bass|(.*)deer|(.*)fish|(.*)fowls|(.*)fowl|(.*)sheep|(.*)wildebeests|(.*)wildebeest|(.*)craft|(.+)star generals|(.+)oux|(.+[aeiou])os|(.+[aeo])lves|(.+)nges|(.+[aiy])nxes|(.+[aiy])nges|(.+)arves|(.+)ceps|(.+[^aeoui][aeouiy])ches|(.+[cs])hes|(.+)eaves|(.+)eaus|(.+)eaux|(.+)ieus|(.+)ieux|(.+)nives|(.+)oes|(.+)os|(.+)quies|(.+[aeiou])ys|(.+[rnlpwaeio])ses|(.+)sses|(.+[aeo])uses|(.+)uses|(.+[^ns])ses|(.+)trixes|(.+)trices|(.+)xes|(.+)ies|(.+)zzes|(.+)zoa|(.+)ses|(.+)s)$")
+singular_convert_rule_regex = rei(r"^(?:(.*?)-general|(.*?) general|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) them|sons-of-(.*?)|sons of (.*?)|(.*?)-(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(.*?) (about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)|(.*?)-errant|(.*?) errant|(.*?)-(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*?) (above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)|(.*)staffs|(.*)staves|(.*)genera|(.*)people|(.*)persons|(.*)hertz|(.*)siemens|(.*)brothers|(.*)brethren|(.*)children|(.*)cows|(.*)kine|(.*)menschen|(.*)elves|(.*)hoofs|(.*)hooves|(.*)knives|(.*)leaves|(.*)loaves|(.*)shelves|(.*)thieves|(.*)wives|(.*)wolves|(.*)humans|(.*)feet|(.*)geese|(.*)men|(.*)mice|(.*)teeth|(.*)buzzes|(.*)fizzes|(.*)frizzes|(.*)fuzzes|(.*)jazzes|(.*)proboscises|(.*)proboscides|(.*)bemas|(.*)bemata|(.*)dramas|(.*)edemas|(.*)edemata|(.*)lemmas|(.*)lemmata|(.*)sarcomas|(.*)sarcomata|(.*)stomas|(.*)stomata|(.*)novas|(.*)novae|(.*)umbras|(.*)umbrae|(.*)lumens|(.*)lumina|(.*)data|(.*)stratums|(.*)strata|(.*)bacilli|(.*)nuclei|(.+)theses|(.*)hedrons|(.*)hedra|(.*)helions|(.*)helia|(.*)legomena|(.*)phenomena|(.*)helices|(.*)measles|(.*)pox|(.*)basses|(.*)bass|(.*)deer|(.*)fish|(.*)fowls|(.*)fowl|(.*)sheep|(.*)wildebeests|(.*)wildebeest|(.*)craft|(.+)star generals|(.+)oux|(.+[aeiou])os|(.+[aeo])lves|(.+)nges|(.+[aiy])nxes|(.+[aiy])nges|(.+)arves|(.+)ceps|(.+[^aeoui][aeouiy])ches|(.+[cs])hes|(.+)eaves|(.+)eaus|(.+)eaux|(.+)ieus|(.+)ieux|(.+)nives|(.+)oes|(.+)os|(.+)quies|(.+[aeiou])ys|(.+[rnlpwaeio])ses|(.+)sses|(.+[aeo])uses|(.+)uses|(.+[^ns])ses|(.+)trixes|(.+)trices|(.+)xes|(.+)ies|(.+)zzes|(.+)zoa|(.+)ses|(.+)s)$")
 
 singular_convert_outputs = [
     lambda subterms: f"{convert_to_singular(subterms[0]) if is_plural(subterms[0]) else subterms[0]}-general",
@@ -9194,22 +9194,22 @@ def convert_to_modern_plural(word: str) -> str:
     Returns:
         str: The modern plural form of `word`.
     """
-    if word in modern_plural_of:
-        return modern_plural_of[word]
-    
-    if not word.islower() and word.lower() in modern_plural_of:
-        return modern_plural_of[word.lower()]
-    
-    if is_plural(word) and not is_singular(word, is_word_plural=True):
-        return word
-    
     if word.lower().endswith(("'s", "'")):
         subword = word[:word.rfind("'")]
         if is_singular(subword):
             subword = convert_to_modern_plural(subword)
-            return subword + "'" if subword.endswith('s') else subword + "'s"
+            return subword + "'" if subword.endswith(('s', 'S')) else subword + "'s"
         return word
-    
+
+    if word in modern_plural_of:
+        return modern_plural_of[word]
+
+    if not word.islower() and word.lower() in modern_plural_of:
+        return modern_plural_of[word.lower()]
+
+    if is_plural(word) and not is_singular(word, is_word_plural=True):
+        return word
+
     match = modern_plural_convert_rule_regex.match(word)
     if match:
         for i, group in enumerate(match.groups()):
@@ -9227,22 +9227,22 @@ def convert_to_classical_plural(word: str) -> str:
     Returns:
         str: The classical plural form of `word`.
     """
-    if word in classical_plural_of:
-        return classical_plural_of[word]
-    
-    if not word.islower() and word.lower() in classical_plural_of:
-        return classical_plural_of[word.lower()]
-    
-    if is_plural(word) and not is_singular(word, is_word_plural=True):
-        return word
-    
     if word.lower().endswith(("'s", "'")):
         subword = word[:word.rfind("'")]
         if is_singular(subword):
             subword = convert_to_classical_plural(subword)
-            return subword + "'" if subword.endswith('s') else subword + "'s"
+            return subword + "'" if subword.endswith(('s', 'S')) else subword + "'s"
         return word
-    
+
+    if word in classical_plural_of:
+        return classical_plural_of[word]
+
+    if not word.islower() and word.lower() in classical_plural_of:
+        return classical_plural_of[word.lower()]
+
+    if is_plural(word) and not is_singular(word, is_word_plural=True):
+        return word
+
     match = classical_plural_convert_rule_regex.match(word)
     if match:
         for i, group in enumerate(match.groups()):
@@ -9260,22 +9260,22 @@ def convert_to_singular(word: str) -> str:
     Returns:
         str: The singular form of `word`.
     """
-    if word in singular_of:
-        return singular_of[word]
-    
-    if not word.islower() and word.lower() in singular_of:
-        return singular_of[word.lower()]
-    
-    if is_singular(word):
-        return word
-    
     if word.lower().endswith(("'s", "'")):
         subword = word[:word.rfind("'")]
         if is_plural(subword):
             subword = convert_to_singular(subword)
-            return subword + "'" if subword.endswith('s') else subword + "'s"
+            return subword + "'" if subword.endswith(('s', 'S')) else subword + "'s"
         return word
-    
+
+    if word in singular_of:
+        return singular_of[word]
+
+    if not word.islower() and word.lower() in singular_of:
+        return singular_of[word.lower()]
+
+    if is_singular(word):
+        return word
+
     match = singular_convert_rule_regex.match(word)
     if match:
         for i, group in enumerate(match.groups()):
@@ -9305,7 +9305,7 @@ def is_plural(word):
             if not "conditional" in plural_recognize_rules[rule] or plural_recognize_rules[rule]["conditional"](match):
                 return True
 
-    return word.endswith('s')
+    return word.endswith(('s', 'S'))
 
 def is_singular(word, is_word_plural=None):
     """Detect whether `word` is in singular form.

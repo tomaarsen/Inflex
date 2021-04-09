@@ -178,19 +178,19 @@ class Reader(object):
         # Add conversions for possessives
         self.patterns["modern_plural"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_modern_plural(match.group(1)))",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith(('s', 'S')) else subword + '\\'s')(convert_to_modern_plural(match.group(1)))",
             "conv_conditional": "lambda match: is_singular(match.group(1))",
             "tag": ""
         })
         self.patterns["classical_plural"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_classical_plural(match.group(1)))",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith(('s', 'S')) else subword + '\\'s')(convert_to_classical_plural(match.group(1)))",
             "conv_conditional": "lambda match: is_singular(match.group(1))",
             "tag": ""
         })
         self.patterns["singular"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_singular(match.group(1)))",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith(('s', 'S')) else subword + '\\'s')(convert_to_singular(match.group(1)))",
             "conv_conditional": "lambda match: is_plural(match.group(1))",
             "tag": ""
         })
@@ -524,7 +524,7 @@ def known_singular(word):
                     slices.append((index ,[i + group_id for group_id in range(n_captures)]))
                 i += n_captures
 
-        output = f"{name}_convert_rule_regex = re.compile(r\"^(?:{'|'.join(regexes)})$\")\n\n"
+        output = f"{name}_convert_rule_regex = rei(r\"^(?:{'|'.join(regexes)})$\")\n\n"
         output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]\n"
         output += f"{name}_convert_slices = [" + ''.join('\n    ' + str(index_list) + ',' for index_list in slices) + "\n]"
 
@@ -543,22 +543,22 @@ def known_singular(word):
     Returns:
         str: The {name.replace("_", " ")} form of `word`.
     """
-    if word in {name}_of:
-        return {name}_of[word]
-    
-    if not word.islower() and word.lower() in {name}_of:
-        return {name}_of[word.lower()]
-    
-    if is_{_type}(word){_extra_check}:
-        return word
-    
     if word.lower().endswith(("'s", "'")):
         subword = word[:word.rfind("'")]
         if is_{"singular" if _type == "plural" else "plural"}(subword):
             subword = convert_to_{name}(subword)
-            return subword + "'" if subword.endswith('s') else subword + "'s"
+            return subword + "'" if subword.endswith(('s', 'S')) else subword + "'s"
         return word
-    
+
+    if word in {name}_of:
+        return {name}_of[word]
+
+    if not word.islower() and word.lower() in {name}_of:
+        return {name}_of[word.lower()]
+
+    if is_{_type}(word){_extra_check}:
+        return word
+
     match = {name}_convert_rule_regex.match(word)
     if match:
         for i, group in enumerate(match.groups()):
@@ -625,7 +625,7 @@ def known_singular(word):
         return not is_word_plural
     return not is_plural(word)"""
         else:
-            output += "return word.endswith('s')"
+            output += "return word.endswith(('s', 'S'))"
         return output
 
 class NounTestWriter(TestWriter):
