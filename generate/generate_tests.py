@@ -21,13 +21,14 @@ import unittest
 
 from {import_folder_name} import {test_class}
 
+
 class Test{test_name_pascal}(unittest.TestCase):
     '''
     test_args has the format [
         {{
             "in":     ..., # (required)
             "out":    ..., # (required)
-            "desc":   ..., # (optional) 
+            "desc":   ..., # (optional)
             "kwargs": ...  # (optional)
         }}, ...
     ]
@@ -43,6 +44,7 @@ class Test{test_name_pascal}(unittest.TestCase):
                     "kwargs": dict()
                 }}}}
                 self.assertEqual({test_class}(test_case["in"]).{test_function}(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -11,13 +11,14 @@ import unittest
 
 from inflexion import Noun
 
+
 class TestNounIsSingular(unittest.TestCase):
     '''
     test_args has the format [
         {
             "in":     ..., # (required)
             "out":    ..., # (required)
-            "desc":   ..., # (optional) 
+            "desc":   ..., # (optional)
             "kwargs": ...  # (optional)
         }, ...
     ]
@@ -14018,6 +14019,7 @@ class TestNounIsSingular(unittest.TestCase):
                     "kwargs": dict()
                 }}
                 self.assertEqual(Noun(test_case["in"]).is_singular(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()

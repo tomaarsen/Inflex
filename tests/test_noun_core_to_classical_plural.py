@@ -11,13 +11,14 @@ import unittest
 
 from inflexion import Noun
 
+
 class TestNounToClassicalPlural(unittest.TestCase):
     '''
     test_args has the format [
         {
             "in":     ..., # (required)
             "out":    ..., # (required)
-            "desc":   ..., # (optional) 
+            "desc":   ..., # (optional)
             "kwargs": ...  # (optional)
         }, ...
     ]
@@ -26106,6 +26107,7 @@ class TestNounToClassicalPlural(unittest.TestCase):
                     "kwargs": dict()
                 }}
                 self.assertEqual(Noun(test_case["in"]).classical().plural(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()
