@@ -49,6 +49,10 @@ class Term(object):
     # Supported casing formats: I, lower, Title, UPPER, Mc
     # Note that if the passed word is "i", we always output "I"
     _casing_formats = {
+        "I": {
+            "regex": re.compile(r"^I$"),
+            "transformation": _transform(str.lower)
+        },
         "lower": {
             "regex": re.compile(r"^[^A-Z]+$"),
             "transformation": _transform(str.lower)
@@ -60,10 +64,6 @@ class Term(object):
         "upper": {
             "regex": re.compile(r"^[^a-z]+$"),
             "transformation": _transform(str.upper)
-        },
-        "I": {
-            "regex": re.compile(r"^I$"),
-            "transformation": _transform(str.lower)
         },
         "Mc": {
             "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
@@ -322,6 +322,11 @@ class Term(object):
             str: `phrase`, but with whitespace before, after and within a phrase.
         """
         if self.spaces:
-            spaces_gen = list_to_generator(self.spaces)
-            return self.start + re.sub("-| ", lambda _: next(spaces_gen), phrase.strip()) + self.end
+            spaces_iter = iter(self.spaces)
+            return self.start +\
+                re.sub("-| ",
+                       lambda _: next(spaces_iter),
+                       phrase.strip(),
+                       count=len(self.spaces)) +\
+                self.end
         return self.start + phrase + self.end
