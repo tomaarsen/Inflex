@@ -95,9 +95,6 @@ class Verb(Term):
     _stem_double_regex = re.compile(
         r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
 
-    def __init__(self, term: str):
-        super().__init__(term)
-
     """
     Override default methods from Term
     """

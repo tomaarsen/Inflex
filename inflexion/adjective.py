@@ -35,71 +35,68 @@ class Adjective(Term):
     _stem_double_regex = re.compile(
         r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
 
-    def __init__(self, term: str):
-        super().__init__(term)
+    _possessive_regex = re.compile(
+        r"\A(.*)'s?\Z", flags=re.IGNORECASE | re.MULTILINE | re.DOTALL
+    )
+    _possessive_inflexion = {
+        # Term           0TH      1ST      2ND      3RD
+        "my": {
+            "singular": ["my",    "my",    "your",  "its"],
+            "plural":   ["our",   "our",   "your",  "their"],
+        },
+        "your": {
+            "singular": ["your",  "my",    "your",  "its"],
+            "plural":   ["your",  "our",   "your",  "their"],
+        },
+        "her": {
+            "singular": ["her",   "my",    "your",  "her"],
+            "plural":   ["their", "our",   "your",  "their"],
+        },
+        "his": {
+            "singular": ["his",   "my",    "your",  "his"],
+            "plural":   ["their", "our",   "your",  "their"],
+        },
+        "its": {
+            "singular": ["its",   "my",    "your",  "its"],
+            "plural":   ["their", "our",   "your",  "their"],
+        },
+        "our": {
+            "singular": ["my",    "my",    "your",  "its"],
+            "plural":   ["our",   "our",   "your",  "their"],
+        },
+        "their": {
+            "singular": ["their", "my",    "your",  "its"],
+            "plural":   ["their", "our",   "your",  "their"],
+        },
+    }
 
-        self._possessive_regex = re.compile(
-            r"\A(.*)'s?\Z", flags=re.IGNORECASE | re.MULTILINE | re.DOTALL
-        )
-        self._possessive_inflexion = {
-            # Term           0TH      1ST      2ND      3RD
-            "my": {
-                "singular": ["my",    "my",    "your",  "its"],
-                "plural":   ["our",   "our",   "your",  "their"],
-            },
-            "your": {
-                "singular": ["your",  "my",    "your",  "its"],
-                "plural":   ["your",  "our",   "your",  "their"],
-            },
-            "her": {
-                "singular": ["her",   "my",    "your",  "her"],
-                "plural":   ["their", "our",   "your",  "their"],
-            },
-            "his": {
-                "singular": ["his",   "my",    "your",  "his"],
-                "plural":   ["their", "our",   "your",  "their"],
-            },
-            "its": {
-                "singular": ["its",   "my",    "your",  "its"],
-                "plural":   ["their", "our",   "your",  "their"],
-            },
-            "our": {
-                "singular": ["my",    "my",    "your",  "its"],
-                "plural":   ["our",   "our",   "your",  "their"],
-            },
-            "their": {
-                "singular": ["their", "my",    "your",  "its"],
-                "plural":   ["their", "our",   "your",  "their"],
-            },
-        }
+    _comparative_conversions = {
+        "good": "better",
+        "well": "better",
 
-        self._comparative_conversions = {
-            "good": "better",
-            "well": "better",
+        "bad": "worse",
+        "badly": "worse",
+        "ill": "worse",
 
-            "bad": "worse",
-            "badly": "worse",
-            "ill": "worse",
+        "far": "further",
+        # "little": "less", # Could also be "littler", e.g. "little book" -> "even littler book"
+        "many": "more",
+        "much": "more",
+    }
 
-            "far": "further",
-            # "little": "less", # Could also be "littler", e.g. "little book" -> "even littler book"
-            "many": "more",
-            "much": "more",
-        }
+    _superlative_conversions = {
+        "good": "best",
+        "well": "best",
 
-        self._superlative_conversions = {
-            "good": "best",
-            "well": "best",
+        "bad": "worst",
+        "badly": "worst",
+        "ill": "worst",
 
-            "bad": "worst",
-            "badly": "worst",
-            "ill": "worst",
-
-            "far": "furthest",
-            # "little": "least", # We opt for littlest
-            "many": "most",
-            "much": "most",
-        }
+        "far": "furthest",
+        # "little": "least", # We opt for littlest
+        "many": "most",
+        "much": "most",
+    }
 
     """
     Override default methods from Term
@@ -140,13 +137,23 @@ class Adjective(Term):
         return self._encase(convert_to_plural(self.term))
 
     def _stem(self, term: str) -> str:
-        # Utility method that adjusts final consonants when they need to be doubled in inflexions...
-        # Apply the first relevant transform...
+        """Stem `term` so that "-er"/"-est" can be appended for comparative/superlative forms.
+
+        Args:
+            term (str): The input word to stem.
+
+        Returns:
+            str: The stemmed version of `term`, ready for appending "-er" or "-est".
+        """
+        # Utility method that adjusts final consonants when they need to be doubled in inflexions.
+        # Apply the first relevant transform.
         for regex in Adjective._stem_regexes:
             match = regex.search(term)
             if match:
-                # Adding `term[match.end():]` is unnecessary for now, but allows for more complex regexes.
-                return term[:match.start()] + Adjective._stem_regexes[regex](match) + term[match.end():]
+                # Adding `term[match.end():]` is unnecessary for now,
+                # but allows for more complex regexes.
+                return term[:match.start()] + Adjective._stem_regexes[regex](match) +\
+                    term[match.end():]
 
         # Get a set of known syllable counts for term
         syllable_count = Syllable.count_syllables(term)
@@ -159,12 +166,35 @@ class Adjective(Term):
             or (not syllable_count and Syllable.guess_if_one_syllable(term))
             # The last syllable is stressed
             or (Syllable.ends_with_stress(term))
-        ) and Adjective._stem_double_regex.search(term):            # AND the word ends in (roughly) CVC
+        ) and Adjective._stem_double_regex.search(term):
+            # AND the word ends in (roughly) CVC
             return term + term[-1]
 
         return term
 
     def comparative(self) -> str:
+        """Returns this Adjective's comparative form.
+
+        Examples:
+            >>>adj = Adjective("pretty")
+            >>>adj.comparative()
+            prettier
+
+        Note:
+            "little" or "far" will fail due to having multiple options:
+            * little (kid)  -> littler (kid)
+            * little (food) -> less (food)
+            and
+            * far -> further
+            * far -> farther
+
+            Fails on e.g. "boring" or "famous"
+            We convert these to "boringer" and "famouser".
+            In reality they should be "more boring" and "more famous"
+
+        Returns:
+            str: This Adjective's comparative form.
+        """
         if self.term.lower() in self._comparative_conversions:
             return self._comparative_conversions[self.term.lower()]
 
@@ -179,16 +209,27 @@ class Adjective(Term):
         return self._stem(self.term) + "er"
 
     def superlative(self) -> str:
-        """
-        NOTE: "little" or "far" will fail due to having multiple options
-          little (kid)  -> littlest (kid)
-          little (food) -> least (food)
-        and
-          far -> furthest
-          far -> farthest
-        NOTE: Fails on e.g. "boring" or "famous"
-          We convert these to "boringest" and "famousest".
-          In reality they should be "most boring" and "most famous"
+        """Returns this Adjective's superlative form.
+
+        Examples:
+            >>>adj = Adjective("pretty")
+            >>>adj.superlative()
+            prettiest
+
+        Note:
+            "little" or "far" will fail due to having multiple options:
+            * little (kid)  -> littlest (kid)
+            * little (food) -> least (food)
+            and
+            * far -> furthest
+            * far -> farthest
+
+            Fails on e.g. "boring" or "famous"
+            We convert these to "boringest" and "famousest".
+            In reality they should be "most boring" and "most famous"
+
+        Returns:
+            str: This Adjective's superlative form.
         """
         if self.term.lower() in self._superlative_conversions:
             return self._superlative_conversions[self.term.lower()]
