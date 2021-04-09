@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20210409.123007
+VERSION = 20210409.164804
 
 def rei(regex: str) -> re.Pattern:
     """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
@@ -8589,7 +8589,7 @@ def convert_to_modern_plural(word: str) -> str:
         word (str): Input word or collocation.
 
     Returns:
-        bool: The modern plural form of `word`.
+        str: The modern plural form of `word`.
     """
     if word in modern_plural_of:
         return modern_plural_of[word]
@@ -8622,7 +8622,7 @@ def convert_to_classical_plural(word: str) -> str:
         word (str): Input word or collocation.
 
     Returns:
-        bool: The classical plural form of `word`.
+        str: The classical plural form of `word`.
     """
     if word in classical_plural_of:
         return classical_plural_of[word]
@@ -8655,7 +8655,7 @@ def convert_to_singular(word: str) -> str:
         word (str): Input word or collocation.
 
     Returns:
-        bool: The singular form of `word`.
+        str: The singular form of `word`.
     """
     if word in singular_of:
         return singular_of[word]

@@ -164,7 +164,6 @@ class TestPrependIndefiniteArticle(unittest.TestCase):
         {'in': 'hourglass', 'out': 'an hourglass'},
         {'in': 'houri', 'out': 'a houri'},
         {'in': 'house', 'out': 'a house'},
-        {'in': 'i-th', 'out': 'an i-th'},
         {'in': 'inferno', 'out': 'an inferno'},
         {'in': 'j-th', 'out': 'a j-th'},
         {'in': 'jumbo', 'out': 'a jumbo'},

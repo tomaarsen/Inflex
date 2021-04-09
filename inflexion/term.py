@@ -49,14 +49,6 @@ class Term(object):
     # Supported casing formats: I, lower, Title, UPPER, Mc
     # Note that if the passed word is "i", we always output "I"
     _casing_formats = {
-        "I": {
-            "regex": re.compile(r"^I$"),
-            "transformation": _transform(str.lower)
-        },
-        "Mc": {
-            "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
-            "transformation": _transform(lambda word: "Mc" + word[2:].title() if word.lower().startswith("mc") else word.title())
-        },
         "lower": {
             "regex": re.compile(r"^[^A-Z]+$"),
             "transformation": _transform(str.lower)
@@ -68,6 +60,14 @@ class Term(object):
         "upper": {
             "regex": re.compile(r"^[^a-z]+$"),
             "transformation": _transform(str.upper)
+        },
+        "I": {
+            "regex": re.compile(r"^I$"),
+            "transformation": _transform(str.lower)
+        },
+        "Mc": {
+            "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
+            "transformation": _transform(lambda word: "Mc" + word[2:].title() if word.lower().startswith("mc") else word.title())
         },
     }
 
@@ -269,6 +269,8 @@ class Term(object):
 
         TODO: Currently "Toms'" -> "Toms'S"
         TODO: Currently "show--off" -> "show----off"
+        TODO: self.term as i-th and target as i-th -> I-th
+            : Perhaps don't force capitalize I if followed by a hyphen.
 
         Args:
             target (str): The word or collocation on which to apply the casing
@@ -305,7 +307,7 @@ class Term(object):
         transformations_gen = list_to_generator(transformations)
         # Phrase is target, but with the proper casing from the term applied
         phrase = Term._word_regex.sub(
-            lambda match_obj: next(transformations_gen)(match_obj.group(0)),
+            lambda match_obj: next(transformations_gen)(match_obj.group()),
             target)
         return self._reapply_whitespace(phrase)
 

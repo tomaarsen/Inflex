@@ -531,7 +531,7 @@ def known_singular(word):
         word (str): Input word or collocation.
 
     Returns:
-        bool: The {name.replace("_", " ")} form of `word`.
+        str: The {name.replace("_", " ")} form of `word`.
     """
     if word in {name}_of:
         return {name}_of[word]

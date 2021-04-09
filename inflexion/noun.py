@@ -356,7 +356,7 @@ class Noun(Term):
     # Regex to detect a preposition
     _prep_regex = re.compile(
         r"""\A ( \s*(?:
-                about   | above   | across  | after  | among   | around   | athwart
+              about   | above   | across  | after  | among   | around   | athwart
             | at      | before  | behind  | below  | beneath | besides?
             | between | betwixt | beyond  | but    | by      | during
             | except  | for     | from    | into   | in      | near     | off
