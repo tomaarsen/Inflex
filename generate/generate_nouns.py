@@ -682,6 +682,10 @@ class NounTestWriter(TestWriter):
                     "out": True
                 })
                 test_args.append({
+                    "in": " " + word + "  ",
+                    "out": True
+                })
+                test_args.append({
                     "in": word.upper(),
                     "out": True
                 })
@@ -693,6 +697,10 @@ class NounTestWriter(TestWriter):
                     prep = next(preposition_gen)
                     test_args.append({
                         "in": f"{prep} {word}",
+                        "out": True
+                    })
+                    test_args.append({
+                        "in": f"  {prep}  {word} ",
                         "out": True
                     })
         self.write_test(test_path, test_function, test_name_pascal, test_args)
@@ -711,6 +719,10 @@ class NounTestWriter(TestWriter):
                     "out": True
                 })
                 test_args.append({
+                    "in": " " + word + "  ",
+                    "out": True
+                })
+                test_args.append({
                     "in": word.upper(),
                     "out": True
                 })
@@ -722,6 +734,10 @@ class NounTestWriter(TestWriter):
                     prep = next(preposition_gen)
                     test_args.append({
                         "in": f"{prep} {word}",
+                        "out": True
+                    })
+                    test_args.append({
+                        "in": f"  {prep}  {word} ",
                         "out": True
                     })
         self.write_test(test_path, test_function, test_name_pascal, test_args)
@@ -755,7 +771,15 @@ class NounTestWriter(TestWriter):
                         "in": f"{prep} {test_arg['in']}",
                         "out": f"{prep} {test_arg['out']}",
                     })
+                    converted_test_args.append({
+                        "in": f"{prep}  {test_arg['in']}",
+                        "out": f"{prep}  {test_arg['out']}",
+                    })
             
+            converted_test_args.append({
+                "in": "  " + test_arg["in"] + " ",
+                "out": "  " + test_arg["out"] + " ",
+            })
             converted_test_args.append({
                 "in": test_arg["in"].title(),
                 "out": test_arg["out"].title(),
@@ -795,9 +819,17 @@ class NounTestWriter(TestWriter):
                         "in": f"{prep} {test_arg['in']}",
                         "out": f"{prep} {test_arg['out']}",
                     })
+                    converted_test_args.append({
+                        "in": f" {prep}  {test_arg['in']}",
+                        "out": f" {prep}  {test_arg['out']}",
+                    })
             
             # Filter for known exceptions that produce broken tests:
             if test_arg["in"] not in self.to_plural_upper_exceptions:
+                converted_test_args.append({
+                    "in": "  " + test_arg["in"] + " ",
+                    "out": "  " + test_arg["out"] + " ",
+                })
                 converted_test_args.append({
                     "in": test_arg["in"].title(),
                     "out": test_arg["out"].title(),
@@ -837,9 +869,17 @@ class NounTestWriter(TestWriter):
                         "in": f"{prep} {test_arg['in']}",
                         "out": f"{prep} {test_arg['out']}",
                     })
+                    converted_test_args.append({
+                        "in": f"{prep}  {test_arg['in']} ",
+                        "out": f"{prep}  {test_arg['out']} ",
+                    })
             
             # Filter for known exceptions that produce broken tests:
             if test_arg["in"] not in self.to_plural_upper_exceptions:
+                converted_test_args.append({
+                    "in": "  " + test_arg["in"] + " ",
+                    "out": "  " + test_arg["out"] + " ",
+                })
                 converted_test_args.append({
                     "in": test_arg["in"].title(),
                     "out": test_arg["out"].title(),
