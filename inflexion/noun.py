@@ -460,10 +460,11 @@ class Noun(Term):
             return self._classical
 
         # "them" is an exception, as "it -> they" and "it -> them" is ambigious
-        if self.term.split()[-1] in ["them", "they"]:
+        if self.term.split()[-1].lower() in ["them", "they"]:
             self._classical = ClassicalNoun(self._encase(self.term), self)
         else:
-            self._classical = ClassicalNoun(self.singular(), self)
+            # TODO: self.singular() versus self.term
+            self._classical = ClassicalNoun(self.term, self)
         return self._classical
 
     def as_regex(self) -> "re.Pattern":

@@ -427,11 +427,21 @@ def rei(regex: str) -> re.Pattern:
 
         for key in self.reader.literals:
             # For phrases with dashes, also add variants with spaces
-            data = {
-                _phrase_key: _phrase_value
-                for phrase_key, phrase_value in self.reader.literals[key].items()
-                for _phrase_key, _phrase_value in ({(phrase_key, phrase_value), (phrase_key.replace("-", " "), phrase_value.replace("-", " "))} if "-" in phrase_key and "-" in phrase_value else {(phrase_key, phrase_value)})
-            }
+            data = {}
+            for phrase_key, phrase_value in self.reader.literals[key].items():
+                data[phrase_key] = phrase_value
+                # if not phrase_key.islower():
+                    # data[phrase_key.lower()] = phrase_value.lower()
+                if "-" in phrase_key and "-" in phrase_value:
+                    data[phrase_key.replace("-", " ")] = phrase_value.replace("-", " ")
+
+            data_to_add = {}
+            for data_key in data:
+                if not data_key.islower():
+                    if data_key.lower() not in data:
+                        data_to_add[data_key.lower()] = data[data_key].lower()
+
+            data = {**data, **data_to_add}
             generated_code += f"{key}_of = " + json.dumps(data, indent=4, sort_keys=True) + "\n\n"
         
         for key in self.reader.literals:
@@ -638,6 +648,13 @@ class NounTestWriter(TestWriter):
         # The number of prepositions that are prepended to each regular test
         self.prep_n = 1
 
+        self.to_plural_upper_exceptions = ["I", 
+            "Jerry", "jerry", "Jerrys", "jerries", 
+            "Auslese", "auslese", 
+            "Mary", "mary", "Marys", "maries", 
+            "Atlas", "atlas", 
+            "Nenets", "nenets", "Nentsi", "nentsi", "nentsy"]
+
     def preposition_gen(self) -> Generator[str, None, None]:
         while True:
             for prep in self.prepositions:
@@ -664,6 +681,14 @@ class NounTestWriter(TestWriter):
                     "in": word,
                     "out": True
                 })
+                test_args.append({
+                    "in": word.upper(),
+                    "out": True
+                })
+                test_args.append({
+                    "in": word.title(),
+                    "out": True
+                })
                 for _ in range(self.prep_n):
                     prep = next(preposition_gen)
                     test_args.append({
@@ -683,6 +708,14 @@ class NounTestWriter(TestWriter):
             if word and word != "_":
                 test_args.append({
                     "in": word,
+                    "out": True
+                })
+                test_args.append({
+                    "in": word.upper(),
+                    "out": True
+                })
+                test_args.append({
+                    "in": word.title(),
                     "out": True
                 })
                 for _ in range(self.prep_n):
@@ -711,18 +744,27 @@ class NounTestWriter(TestWriter):
             } for sing in self.reader.literals["singular"].values()
               if sing not in self.reader.words["plural"] and sing and sing != "_"
         ]
-        preposition_test_args = []
+        converted_test_args = []
         preposition_gen = self.preposition_gen()
         for test_arg in test_args:
             if test_arg["in"] not in ["them"]:
-                preposition_test_args.append(test_arg)
+                converted_test_args.append(test_arg)
                 for _ in range(self.prep_n):
                     prep = next(preposition_gen)
-                    preposition_test_args.append({
+                    converted_test_args.append({
                         "in": f"{prep} {test_arg['in']}",
                         "out": f"{prep} {test_arg['out']}",
                     })
-        self.write_test(test_path, test_function, test_name_pascal, preposition_test_args)
+            
+            converted_test_args.append({
+                "in": test_arg["in"].title(),
+                "out": test_arg["out"].title(),
+            })
+            converted_test_args.append({
+                "in": test_arg["in"].upper(),
+                "out": test_arg["out"].upper(),
+            })
+        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
     def write_to_modern_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_modern_plural.py"
@@ -742,18 +784,29 @@ class NounTestWriter(TestWriter):
             } for plur in self.reader.literals["modern_plural"].values()
               if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
-        preposition_test_args = []
+        converted_test_args = []
         preposition_gen = self.preposition_gen()
         for test_arg in test_args:
             if test_arg["in"] not in ["it"]:
-                preposition_test_args.append(test_arg)
+                converted_test_args.append(test_arg)
                 for _ in range(self.prep_n):
                     prep = next(preposition_gen)
-                    preposition_test_args.append({
+                    converted_test_args.append({
                         "in": f"{prep} {test_arg['in']}",
                         "out": f"{prep} {test_arg['out']}",
                     })
-        self.write_test(test_path, test_function, test_name_pascal, preposition_test_args)
+            
+            # Filter for known exceptions that produce broken tests:
+            if test_arg["in"] not in self.to_plural_upper_exceptions:
+                converted_test_args.append({
+                    "in": test_arg["in"].title(),
+                    "out": test_arg["out"].title(),
+                })
+                converted_test_args.append({
+                    "in": test_arg["in"].upper(),
+                    "out": test_arg["out"].upper(),
+                })
+        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
     def write_to_classical_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_classical_plural.py"
@@ -773,18 +826,29 @@ class NounTestWriter(TestWriter):
             } for plur in self.reader.literals["classical_plural"].values()
             if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
-        preposition_test_args = []
+        converted_test_args = []
         preposition_gen = self.preposition_gen()
         for test_arg in test_args:
             if test_arg["in"] not in ["it"]:
-                preposition_test_args.append(test_arg)
+                converted_test_args.append(test_arg)
                 for _ in range(self.prep_n):
                     prep = next(preposition_gen)
-                    preposition_test_args.append({
+                    converted_test_args.append({
                         "in": f"{prep} {test_arg['in']}",
                         "out": f"{prep} {test_arg['out']}",
                     })
-        self.write_test(test_path, test_function, test_name_pascal, preposition_test_args)
+            
+            # Filter for known exceptions that produce broken tests:
+            if test_arg["in"] not in self.to_plural_upper_exceptions:
+                converted_test_args.append({
+                    "in": test_arg["in"].title(),
+                    "out": test_arg["out"].title(),
+                })
+                converted_test_args.append({
+                    "in": test_arg["in"].upper(),
+                    "out": test_arg["out"].upper(),
+                })
+        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"
