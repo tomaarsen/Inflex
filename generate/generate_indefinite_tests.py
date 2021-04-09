@@ -284,15 +284,28 @@ class IndefiniteTestWriter(TestWriter):
 
     def write_tests(self):
         self.write_prepend_indefinite_article_test()
+        self.write_select_indefinite_article_test()
 
     def write_prepend_indefinite_article_test(self):
-        test_path = self.test_folder_name + "//test_noun_indefinite_article.py"
+        test_path = self.test_folder_name + "//test_noun_indefinite.py"
         test_function = "indefinite"
         test_name_pascal = "PrependIndefiniteArticle"
         test_args = [
             {
                 "in": word, 
                 "out": f"{article} {word}"
+            } for article, word in test_data
+        ]
+        self.write_test(test_path, test_function, test_name_pascal, test_args)
+
+    def write_select_indefinite_article_test(self):
+        test_path = self.test_folder_name + "//test_noun_indef_article.py"
+        test_function = "indef_article"
+        test_name_pascal = "SelectIndefiniteArticle"
+        test_args = [
+            {
+                "in": word, 
+                "out": article
             } for article, word in test_data
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)

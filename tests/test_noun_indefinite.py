@@ -12,13 +12,16 @@ import unittest
 from inflexion import Noun
 
 class TestPrependIndefiniteArticle(unittest.TestCase):
-    # test_args has the format [{
-    #    "in":     ..., # (required)
-    #    "out":    ..., # (required)
-    #    "desc":   ..., # (optional) 
-    #    "kwargs": ...  # (optional)
-    # }, ...
-    # ]
+    '''
+    test_args has the format [
+        {
+            "in":     ..., # (required)
+            "out":    ..., # (required)
+            "desc":   ..., # (optional) 
+            "kwargs": ...  # (optional)
+        }, ...
+    ]
+    '''
     test_args = [
         {'in': 'A', 'out': 'an A'},
         {'in': 'A.B.C', 'out': 'an A.B.C'},
