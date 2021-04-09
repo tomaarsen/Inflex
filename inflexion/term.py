@@ -82,7 +82,7 @@ class Term(object):
 
         Note:
             Capitalisation and whitespace will be preserved between input `term` and
-            output generated via e.g. `singular`.
+            generated output.
 
         Args:
             term (str): Input word or collocation.

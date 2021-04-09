@@ -26,9 +26,7 @@ from inflexion.verb_core import (
 
 
 class Verb(Term):
-    """
-    TODO
-    """
+    """Class for detecting and converting to verb forms."""
 
     _prefixes = (
         'counter',
@@ -98,6 +96,32 @@ class Verb(Term):
     """
     Override default methods from Term
     """
+
+    def __init__(self, term: str):
+        """Creates a Verb instance with detection and conversion methods.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.singular()
+            'flies'
+            >>>verb.past()
+            'flew'
+            >>>verb.past_part()
+            'flying'
+            >>>verb.pres_part()
+            'flown'
+            
+            >>>verb.is_plural()
+            True
+
+        Note:
+            Capitalisation and whitespace will be preserved between input `term` and
+            generated output.
+
+        Args:
+            term (str): Input word or collocation.
+        """
+        super().__init__(term)
 
     def is_verb(self) -> bool:
         return True

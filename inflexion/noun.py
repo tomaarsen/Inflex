@@ -20,9 +20,7 @@ from inflexion.indefinite_core import (
 
 
 class Noun(Term):
-    """
-    TODO
-    """
+    """Class for detecting and converting to noun forms."""
 
     _noun_inflection = {
         # CASE
@@ -369,6 +367,25 @@ class Noun(Term):
     )
 
     def __init__(self, term: str):
+        """Creates a Noun instance with detection and conversion methods.
+
+        Examples:
+            >>>noun = Noun("brother")
+            >>>noun.plural()
+            'brothers'
+            >>>noun.classical().plural()
+            'brethren'
+
+            >>>noun.is_singular()
+            True
+
+        Note:
+            Capitalisation and whitespace will be preserved between input `term` and
+            generated output.
+
+        Args:
+            term (str): Input word or collocation.
+        """
         super().__init__(term)
 
         # Cached classical form of this Noun, to be lazily loaded just once.

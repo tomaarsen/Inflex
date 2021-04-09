@@ -17,6 +17,8 @@ from inflexion.noun import Noun
 
 
 class Adjective(Term):
+    """Class for detecting and converting to adjective forms."""
+
     """
     Regexes to be tried before applying -er or -est.
     E.g. "pretty" is converted to "pretti" according to these regexes,
@@ -101,6 +103,29 @@ class Adjective(Term):
     """
     Override default methods from Term
     """
+
+    def __init__(self, term: str):
+        """Creates an Adjective instance with detection and conversion methods.
+
+        Examples:
+            >>>adj = Adjective("my")
+            >>>adj.plural()
+            'our'
+
+            >>>adj = Adjective("pretty")
+            >>>adj.comparative()
+            'prettier'
+            >>>adj.superlative()
+            'prettiest'
+
+        Note:
+            Capitalisation and whitespace will be preserved between input `term` and
+            generated output.
+
+        Args:
+            term (str): Input word or collocation.
+        """
+        super().__init__(term)
 
     def is_adj(self) -> bool:
         return True
