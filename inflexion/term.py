@@ -98,7 +98,7 @@ class Term(object):
 
         # Extract whitespace before and after the term
         if term.startswith(" ") or term.endswith(" "):
-            self.start, self.end = Term._whitespace_regex(term).groups()
+            self.start, self.end = Term._whitespace_regex.match(term).groups()
 
         # If there is troublesome double whitespace, find the substrings
         # between words and normalize them
