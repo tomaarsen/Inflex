@@ -22,13 +22,16 @@ import unittest
 from {import_folder_name} import {test_class}
 
 class Test{test_name_pascal}(unittest.TestCase):
-    # test_args has the format [{{
-    #    "in":     ..., # (required)
-    #    "out":    ..., # (required)
-    #    "desc":   ..., # (optional) 
-    #    "kwargs": ...  # (optional)
-    # }}, ...
-    # ]
+    '''
+    test_args has the format [
+        {{
+            "in":     ..., # (required)
+            "out":    ..., # (required)
+            "desc":   ..., # (optional) 
+            "kwargs": ...  # (optional)
+        }}, ...
+    ]
+    '''
     test_args = {test_args}
 
     def test_{test_name_snake}(self):

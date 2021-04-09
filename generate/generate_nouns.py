@@ -3,7 +3,7 @@
 
 import re, json
 from datetime import datetime
-from typing import List, Tuple, Optional
+from typing import Generator, List, Tuple, Optional
 
 from generate_tests import TestWriter
 
@@ -629,7 +629,20 @@ class NounTestWriter(TestWriter):
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
         """
-    
+        self.prepositions = [
+            "about", "above", "across", "after", "among", "around", "athwart", "at", "before", 
+            "behind", "below", "beneath", "beside", "besides", "between", "betwixt", "beyond", 
+            "but", "by", "during", "except", "for", "from", "into", "in", "near", "off", "of", 
+            "onto", "on", "out", "over", "since", "till", "to", "under", "until", "unto", 
+            "upon", "with"]
+        # The number of prepositions that are prepended to each regular test
+        self.prep_n = 1
+
+    def preposition_gen(self) -> Generator[str, None, None]:
+        while True:
+            for prep in self.prepositions:
+                yield prep
+
     def write_tests(self):
         self.write_is_singular_test()
         self.write_is_plural_test()
@@ -642,26 +655,42 @@ class NounTestWriter(TestWriter):
         test_path = self.test_folder_name + "//test_noun_core_is_singular.py"
         test_function = "is_singular"
         test_name_pascal = "NounIsSingular"
-        test_args = [
-            {
-                "in": word,
-                "out": True
-            } for word in self.reader.words["singular"]
-              if word and word != "_"
-        ]
+        test_args = []
+
+        preposition_gen = self.preposition_gen()
+        for word in self.reader.words["singular"]:
+            if word and word != "_":
+                test_args.append({
+                    "in": word,
+                    "out": True
+                })
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    test_args.append({
+                        "in": f"{prep} {word}",
+                        "out": True
+                    })
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_is_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_is_plural.py"
         test_function = "is_plural"
         test_name_pascal = "NounIsPlural"
-        test_args = [
-            {
-                "in": word,
-                "out": True
-            } for word in self.reader.words["plural"]
-              if word and word != "_"
-        ]
+        test_args = []
+
+        preposition_gen = self.preposition_gen()
+        for word in self.reader.words["plural"]:
+            if word and word != "_":
+                test_args.append({
+                    "in": word,
+                    "out": True
+                })
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    test_args.append({
+                        "in": f"{prep} {word}",
+                        "out": True
+                    })
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_singular_test(self):
@@ -681,9 +710,19 @@ class NounTestWriter(TestWriter):
                 "out": sing
             } for sing in self.reader.literals["singular"].values()
               if sing not in self.reader.words["plural"] and sing and sing != "_"
-            
         ]
-        self.write_test(test_path, test_function, test_name_pascal, test_args)
+        preposition_test_args = []
+        preposition_gen = self.preposition_gen()
+        for test_arg in test_args:
+            if test_arg["in"] not in ["them"]:
+                preposition_test_args.append(test_arg)
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    preposition_test_args.append({
+                        "in": f"{prep} {test_arg['in']}",
+                        "out": f"{prep} {test_arg['out']}",
+                    })
+        self.write_test(test_path, test_function, test_name_pascal, preposition_test_args)
 
     def write_to_modern_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_modern_plural.py"
@@ -703,7 +742,18 @@ class NounTestWriter(TestWriter):
             } for plur in self.reader.literals["modern_plural"].values()
               if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
-        self.write_test(test_path, test_function, test_name_pascal, test_args)
+        preposition_test_args = []
+        preposition_gen = self.preposition_gen()
+        for test_arg in test_args:
+            if test_arg["in"] not in ["it"]:
+                preposition_test_args.append(test_arg)
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    preposition_test_args.append({
+                        "in": f"{prep} {test_arg['in']}",
+                        "out": f"{prep} {test_arg['out']}",
+                    })
+        self.write_test(test_path, test_function, test_name_pascal, preposition_test_args)
 
     def write_to_classical_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_classical_plural.py"
@@ -723,7 +773,18 @@ class NounTestWriter(TestWriter):
             } for plur in self.reader.literals["classical_plural"].values()
             if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
-        self.write_test(test_path, test_function, test_name_pascal, test_args)
+        preposition_test_args = []
+        preposition_gen = self.preposition_gen()
+        for test_arg in test_args:
+            if test_arg["in"] not in ["it"]:
+                preposition_test_args.append(test_arg)
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    preposition_test_args.append({
+                        "in": f"{prep} {test_arg['in']}",
+                        "out": f"{prep} {test_arg['out']}",
+                    })
+        self.write_test(test_path, test_function, test_name_pascal, preposition_test_args)
 
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"

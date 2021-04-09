@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20210409.164804
+VERSION = 20210409.191357
 
 def rei(regex: str) -> re.Pattern:
     """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
