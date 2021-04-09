@@ -109,6 +109,7 @@ class Adjective(Term):
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
+        self.check_valid_person(person)
         # Is it possessive form?
         match = self._possessive_regex.match(self.term)
         if match:
@@ -120,6 +121,7 @@ class Adjective(Term):
         return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
+        self.check_valid_person(person)
         # Is it possessive form?
         match = self._possessive_regex.match(self.term)
         if match:

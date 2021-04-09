@@ -3,6 +3,7 @@
 
 import re
 from typing import Generator, Optional
+import warnings
 
 
 class Term(object):
@@ -147,6 +148,19 @@ class Term(object):
         Identical to `classical()`
         """
         return self.classical()
+
+    def check_valid_person(self, person: int) -> bool:
+        """
+        Return True if `person` is valid, i.e. in [0, 1, 2, 3].
+        Otherwise, return False and output a warning stating that the
+        `person` parameter is invalid.
+        """
+        if person not in [0, 1, 2, 3]:
+            warnings.warn(
+                "Invalid `person` parameter supplied. Valid values include 0, 1, 2, and 3.",
+                stacklevel=2)
+            return False
+        return True
 
     def as_regex(self) -> "re.Pattern":
         """
