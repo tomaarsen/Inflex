@@ -182,12 +182,10 @@ class Term(object):
         """Returns an object always inflecting in the classical/unassimilated manner.
 
         Examples:
-            ```
             >>> Noun('cow').plural()
             'cows'
             >>> Noun('cow').unassimilated().plural()
             'kine'
-            ```
 
         Note:
             Identical to `unassimilated()`.
@@ -201,12 +199,10 @@ class Term(object):
         """Returns an object always inflecting in the classical/unassimilated manner.
 
         Examples:
-            ```
             >>> Noun('cow').plural()
             'cows'
             >>> Noun('cow').unassimilated().plural()
             'kine'
-            ```
 
         Note:
             Identical to `classical()`.
@@ -246,12 +242,10 @@ class Term(object):
                 of the word.
 
         Examples:
-            ```
             >>> Noun('cherub').as_regex()
             re.compile('cherubs|cherubim|cherub', re.IGNORECASE)
             >>> Verb('eat').as_regex()
             re.compile('eats|eating|eaten|eat|ate', re.IGNORECASE)
-            ```
         """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural()}), reverse=True)), flags=re.I)
@@ -260,11 +254,9 @@ class Term(object):
         """Return repr(self)
 
         Examples:
-            ```
             >>>noun = Noun("book")
             >>>f"My noun: {noun!r}"
             "My noun: Noun('book')"
-            ```
         """
         return f"{self.__class__.__name__}({self._reapply_whitespace(self.term)!r})"
 
