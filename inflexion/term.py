@@ -69,6 +69,10 @@ class Term(object):
             "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
             "transformation": _transform(lambda word: "Mc" + word[2:].title() if word.lower().startswith("mc") else word.title())
         },
+        "AbbreviationPlural": {
+            "regex": re.compile(r"^[A-Z]+s$"),
+            "transformation": _transform(lambda word: word[:-1].upper() + word[-1] if word.endswith(("s", "S")) else word.upper())
+        }
     }
 
     # Regex for finding a word
@@ -270,6 +274,8 @@ class Term(object):
         TODO: Currently "show--off" -> "show----off"
         TODO: self.term as i-th and target as i-th -> I-th
             : Perhaps don't force capitalize I if followed by a hyphen.
+        TODO: Let self.term as ABC and target as ABCs convert to ABCs rather than ABCS
+            : Also consider that some Noun tests may be broken
 
         Args:
             target (str): The word or collocation on which to apply the casing
