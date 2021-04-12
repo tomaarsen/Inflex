@@ -11,14 +11,18 @@ import unittest
 
 from inflexion import Adjective
 
+
 class TestAdjectiveToPlural(unittest.TestCase):
-    # test_args has the format [{
-    #    "in":     ..., # (required)
-    #    "out":    ..., # (required)
-    #    "desc":   ..., # (optional) 
-    #    "kwargs": ...  # (optional)
-    # }, ...
-    # ]
+    '''
+    test_args has the format [
+        {
+            "in":     ..., # (required)
+            "out":    ..., # (required)
+            "desc":   ..., # (optional)
+            "kwargs": ...  # (optional)
+        }, ...
+    ]
+    '''
     test_args = [
         {'in': 'a', 'out': 'some'},
         {'in': 'an', 'out': 'some'},
@@ -45,6 +49,7 @@ class TestAdjectiveToPlural(unittest.TestCase):
                     "kwargs": dict()
                 }}
                 self.assertEqual(Adjective(test_case["in"]).plural(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()

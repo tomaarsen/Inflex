@@ -11,49 +11,61 @@ import unittest
 
 from inflexion import Noun
 
+
 class TestPrependIndefiniteArticle(unittest.TestCase):
-    # test_args has the format [{
-    #    "in":     ..., # (required)
-    #    "out":    ..., # (required)
-    #    "desc":   ..., # (optional) 
-    #    "kwargs": ...  # (optional)
-    # }, ...
-    # ]
+    '''
+    test_args has the format [
+        {
+            "in":     ..., # (required)
+            "out":    ..., # (required)
+            "desc":   ..., # (optional)
+            "kwargs": ...  # (optional)
+        }, ...
+    ]
+    '''
     test_args = [
+        {'in': 'A', 'out': 'an A'},
         {'in': 'A.B.C', 'out': 'an A.B.C'},
         {'in': 'AGE', 'out': 'an AGE'},
         {'in': 'AI', 'out': 'an AI'},
         {'in': 'Ath', 'out': 'an Ath'},
+        {'in': 'B', 'out': 'a B'},
         {'in': 'B.L.T. sandwich', 'out': 'a B.L.T. sandwich'},
         {'in': 'BLANK', 'out': 'a BLANK'},
         {'in': 'BMW', 'out': 'a BMW'},
         {'in': 'Bth', 'out': 'a Bth'},
         {'in': 'Burmese restaurant', 'out': 'a Burmese restaurant'},
+        {'in': 'C', 'out': 'a C'},
         {'in': 'C.O.', 'out': 'a C.O.'},
         {'in': 'CAPITAL', 'out': 'a CAPITAL'},
         {'in': 'CCD', 'out': 'a CCD'},
         {'in': 'COLON', 'out': 'a COLON'},
         {'in': 'Cth', 'out': 'a Cth'},
+        {'in': 'D', 'out': 'a D'},
         {'in': 'D.S.M.', 'out': 'a D.S.M.'},
         {'in': 'DINNER', 'out': 'a DINNER'},
         {'in': 'DNR', 'out': 'a DNR'},
         {'in': 'Dth', 'out': 'a Dth'},
+        {'in': 'E', 'out': 'an E'},
         {'in': 'E.K.G.', 'out': 'an E.K.G.'},
         {'in': 'ECG', 'out': 'an ECG'},
         {'in': 'EGG', 'out': 'an EGG'},
         {'in': 'Eth', 'out': 'an Eth'},
         {'in': 'Euler number', 'out': 'an Euler number'},
+        {'in': 'F', 'out': 'an F'},
         {'in': 'F.A.Q.', 'out': 'an F.A.Q.'},
         {'in': 'F.B.I. agent', 'out': 'an F.B.I. agent'},
         {'in': 'FACT', 'out': 'a FACT'},
         {'in': 'FAQ', 'out': 'a FAQ'},
         {'in': 'FSM', 'out': 'an FSM'},
         {'in': 'Fth', 'out': 'an Fth'},
+        {'in': 'G', 'out': 'a G'},
         {'in': 'G-string', 'out': 'a G-string'},
         {'in': 'GOD', 'out': 'a GOD'},
         {'in': 'GSM phone', 'out': 'a GSM phone'},
         {'in': 'Governor General', 'out': 'a Governor General'},
         {'in': 'Gth', 'out': 'a Gth'},
+        {'in': 'H', 'out': 'an H'},
         {'in': 'H-Bomb', 'out': 'an H-Bomb'},
         {'in': 'H.A.L. 9000', 'out': 'an H.A.L. 9000'},
         {'in': 'H.M.S Ark Royal', 'out': 'an H.M.S Ark Royal'},
@@ -61,67 +73,85 @@ class TestPrependIndefiniteArticle(unittest.TestCase):
         {'in': 'HSL colour space', 'out': 'an HSL colour space'},
         {'in': 'Hough transform', 'out': 'a Hough transform'},
         {'in': 'Hth', 'out': 'an Hth'},
+        {'in': 'I', 'out': 'an I'},
         {'in': 'I.O.U.', 'out': 'an I.O.U.'},
         {'in': 'IDEA', 'out': 'an IDEA'},
         {'in': 'IQ', 'out': 'an IQ'},
         {'in': 'Inspector General', 'out': 'an Inspector General'},
         {'in': 'Ith', 'out': 'an Ith'},
+        {'in': 'J', 'out': 'a J'},
         {'in': 'Jth', 'out': 'a Jth'},
+        {'in': 'K', 'out': 'a K'},
         {'in': 'Kth', 'out': 'a Kth'},
+        {'in': 'L', 'out': 'an L'},
         {'in': 'L.E.D.', 'out': 'an L.E.D.'},
         {'in': 'LCD', 'out': 'an LCD'},
         {'in': 'LED', 'out': 'a LED'},
         {'in': 'Lth', 'out': 'an Lth'},
+        {'in': 'M', 'out': 'an M'},
         {'in': 'M.I.A.', 'out': 'an M.I.A.'},
         {'in': 'MIASMA', 'out': 'a MIASMA'},
         {'in': 'MTV channel', 'out': 'an MTV channel'},
         {'in': 'Major General', 'out': 'a Major General'},
         {'in': 'Mth', 'out': 'an Mth'},
+        {'in': 'N', 'out': 'an N'},
         {'in': 'N.C.O.', 'out': 'an N.C.O.'},
         {'in': 'NATO country', 'out': 'a NATO country'},
         {'in': 'NCO', 'out': 'an NCO'},
         {'in': 'Nth', 'out': 'an Nth'},
+        {'in': 'O', 'out': 'an O'},
         {'in': 'O.K.', 'out': 'an O.K.'},
         {'in': 'OK', 'out': 'an OK'},
         {'in': 'OLE', 'out': 'an OLE'},
         {'in': 'Oth', 'out': 'an Oth'},
+        {'in': 'P', 'out': 'a P'},
         {'in': 'P.E.T. scan', 'out': 'a P.E.T. scan'},
         {'in': 'PET', 'out': 'a PET'},
         {'in': 'Ph.D.', 'out': 'a Ph.D.'},
         {'in': 'Pth', 'out': 'a Pth'},
+        {'in': 'Q', 'out': 'a Q'},
         {'in': 'Qth', 'out': 'a Qth'},
+        {'in': 'R', 'out': 'an R'},
         {'in': 'R.S.V.P.', 'out': 'an R.S.V.P.'},
         {'in': 'REST', 'out': 'a REST'},
         {'in': 'RSVP', 'out': 'an RSVP'},
         {'in': 'Rth', 'out': 'an Rth'},
+        {'in': 'S', 'out': 'an S'},
         {'in': 'S.O.S.', 'out': 'an S.O.S.'},
         {'in': 'SST', 'out': 'an SST'},
         {'in': 'SUM', 'out': 'a SUM'},
         {'in': 'Sth', 'out': 'an Sth'},
+        {'in': 'T', 'out': 'a T'},
         {'in': 'T.N.T. bomb', 'out': 'a T.N.T. bomb'},
         {'in': 'TENT', 'out': 'a TENT'},
         {'in': 'TNT bomb', 'out': 'a TNT bomb'},
         {'in': 'Tth', 'out': 'a Tth'},
+        {'in': 'U', 'out': 'a U'},
         {'in': 'U-boat', 'out': 'a U-boat'},
         {'in': 'U.F.O.', 'out': 'a U.F.O.'},
         {'in': 'UFO', 'out': 'a UFO'},
         {'in': 'UK citizen', 'out': 'a UK citizen'},
         {'in': 'UNESCO representative', 'out': 'a UNESCO representative'},
         {'in': 'Uth', 'out': 'a Uth'},
+        {'in': 'V', 'out': 'a V'},
         {'in': 'V.I.P.', 'out': 'a V.I.P.'},
         {'in': 'VIPER', 'out': 'a VIPER'},
         {'in': 'Vth', 'out': 'a Vth'},
+        {'in': 'W', 'out': 'a W'},
         {'in': 'Wth', 'out': 'a Wth'},
+        {'in': 'X', 'out': 'an X'},
         {'in': 'X-ray', 'out': 'an X-ray'},
         {'in': 'X.O.', 'out': 'an X.O.'},
         {'in': 'XY chromosome', 'out': 'an XY chromosome'},
         {'in': 'XYLAPHONE', 'out': 'a XYLAPHONE'},
         {'in': 'Xth', 'out': 'an Xth'},
+        {'in': 'Y', 'out': 'a Y'},
         {'in': 'Y-shaped pipe', 'out': 'a Y-shaped pipe'},
         {'in': 'Y.Z. plane', 'out': 'a Y.Z. plane'},
         {'in': 'YBLENT eye', 'out': 'an YBLENT eye'},
         {'in': 'YMCA', 'out': 'a YMCA'},
         {'in': 'Yth', 'out': 'a Yth'},
+        {'in': 'Z', 'out': 'a Z'},
         {'in': 'Zth', 'out': 'a Zth'},
         {'in': 'a-th', 'out': 'an a-th'},
         {'in': 'agendum', 'out': 'an agendum'},
@@ -164,7 +194,6 @@ class TestPrependIndefiniteArticle(unittest.TestCase):
         {'in': 'hourglass', 'out': 'an hourglass'},
         {'in': 'houri', 'out': 'a houri'},
         {'in': 'house', 'out': 'a house'},
-        {'in': 'i-th', 'out': 'an i-th'},
         {'in': 'inferno', 'out': 'an inferno'},
         {'in': 'j-th', 'out': 'a j-th'},
         {'in': 'jumbo', 'out': 'a jumbo'},
@@ -269,6 +298,7 @@ class TestPrependIndefiniteArticle(unittest.TestCase):
                     "kwargs": dict()
                 }}
                 self.assertEqual(Noun(test_case["in"]).indefinite(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()

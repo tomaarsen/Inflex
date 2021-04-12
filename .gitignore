@@ -135,6 +135,8 @@ celex
 # Ignore some log files used
 logs
 # Ignore profiling files
-*.prof
+profiling
 # Remove comparison files used for checking similarity to Lingua::EN::Inflexion
 compare
+# Demo file for quick testing
+demo.py

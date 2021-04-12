@@ -3,7 +3,7 @@
 
 import re, json
 from datetime import datetime
-from typing import List, Tuple, Optional
+from typing import Generator, List, Tuple, Optional
 
 from generate_tests import TestWriter
 
@@ -178,19 +178,19 @@ class Reader(object):
         # Add conversions for possessives
         self.patterns["modern_plural"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_modern_plural(match.group(1)))",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith(('s', 'S')) else subword + '\\'s')(convert_to_modern_plural(match.group(1)))",
             "conv_conditional": "lambda match: is_singular(match.group(1))",
             "tag": ""
         })
         self.patterns["classical_plural"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_classical_plural(match.group(1)))",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith(('s', 'S')) else subword + '\\'s')(convert_to_classical_plural(match.group(1)))",
             "conv_conditional": "lambda match: is_singular(match.group(1))",
             "tag": ""
         })
         self.patterns["singular"].append({
             "from": r"(.*?)'s?",
-            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith('s') else subword + '\\'s')(convert_to_singular(match.group(1)))",
+            "to": "lambda match: (lambda subword: subword + '\\'' if subword.endswith(('s', 'S')) else subword + '\\'s')(convert_to_singular(match.group(1)))",
             "conv_conditional": "lambda match: is_plural(match.group(1))",
             "tag": ""
         })
@@ -410,10 +410,14 @@ import re
 
 VERSION = {version}
 
-def rei(regex):
-    """
-    Return compiled regular expression object with 
-    pattern `regex` and the IGNORECASE flag.
+def rei(regex: str) -> re.Pattern:
+    """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
+
+    Args:
+        regex (str): Regular expression pattern.
+
+    Returns:
+        re.Pattern: Compiled version of `regex`, with IGNORECASE flag.
     """
     return re.compile(regex, flags=re.I)
 
@@ -423,11 +427,21 @@ def rei(regex):
 
         for key in self.reader.literals:
             # For phrases with dashes, also add variants with spaces
-            data = {
-                _phrase_key: _phrase_value
-                for phrase_key, phrase_value in self.reader.literals[key].items()
-                for _phrase_key, _phrase_value in ({(phrase_key, phrase_value), (phrase_key.replace("-", " "), phrase_value.replace("-", " "))} if "-" in phrase_key and "-" in phrase_value else {(phrase_key, phrase_value)})
-            }
+            data = {}
+            for phrase_key, phrase_value in self.reader.literals[key].items():
+                data[phrase_key] = phrase_value
+                # if not phrase_key.islower():
+                    # data[phrase_key.lower()] = phrase_value.lower()
+                if "-" in phrase_key and "-" in phrase_value:
+                    data[phrase_key.replace("-", " ")] = phrase_value.replace("-", " ")
+
+            data_to_add = {}
+            for data_key in data:
+                if not data_key.islower():
+                    if data_key.lower() not in data:
+                        data_to_add[data_key.lower()] = data[data_key].lower()
+
+            data = {**data, **data_to_add}
             generated_code += f"{key}_of = " + json.dumps(data, indent=4, sort_keys=True) + "\n\n"
         
         for key in self.reader.literals:
@@ -436,13 +450,29 @@ def rei(regex):
         generated_code += self.get_recognize_rule_output("plural", self.reader.patterns["singular"]) + "\n\n"
         generated_code += self.get_recognize_rule_output("singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
         
-        generated_code += """def known_plural(word):
+        generated_code += '''def known_plural(word: str) -> bool:
+    """True if `word` is known to be plural.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is known to be plural.
+    """
     return word in singular_of
 
 def known_singular(word):
+    """True if `word` is known to be singular.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is known to be singular.
+    """
     return word in modern_plural_of
 
-"""
+'''
 
         for key in self.reader.literals:
             generated_code += self.get_converter_output(key, self.reader.patterns[key]) + "\n\n"
@@ -494,7 +524,7 @@ def known_singular(word):
                     slices.append((index ,[i + group_id for group_id in range(n_captures)]))
                 i += n_captures
 
-        output = f"{name}_convert_rule_regex = re.compile(r\"^(?:{'|'.join(regexes)})$\")\n\n"
+        output = f"{name}_convert_rule_regex = rei(r\"^(?:{'|'.join(regexes)})$\")\n\n"
         output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]\n"
         output += f"{name}_convert_slices = [" + ''.join('\n    ' + str(index_list) + ',' for index_list in slices) + "\n]"
 
@@ -504,30 +534,38 @@ def known_singular(word):
         _type = "plural" if "plural" in name else "singular"
         _extra_check = " and not is_singular(word, is_word_plural=True)" if _type == "plural" else ""
 
-        output = f"""def convert_to_{name}(word):
-    if word in {name}_of:
-        return {name}_of[word]
-    
-    if not word.islower() and word.lower() in {name}_of:
-        return {name}_of[word.lower()]
-    
-    if is_{_type}(word){_extra_check}:
-        return word
-    
+        output = f'''def convert_to_{name}(word: str) -> str:
+    """Convert `word` to {name.replace("_", " ")} form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        str: The {name.replace("_", " ")} form of `word`.
+    """
     if word.lower().endswith(("'s", "'")):
         subword = word[:word.rfind("'")]
         if is_{"singular" if _type == "plural" else "plural"}(subword):
             subword = convert_to_{name}(subword)
-            return subword + "'" if subword.endswith('s') else subword + "'s"
+            return subword + "'" if subword.endswith(('s', 'S')) else subword + "'s"
         return word
-    
+
+    if word in {name}_of:
+        return {name}_of[word]
+
+    if not word.islower() and word.lower() in {name}_of:
+        return {name}_of[word.lower()]
+
+    if is_{_type}(word){_extra_check}:
+        return word
+
     match = {name}_convert_rule_regex.match(word)
     if match:
         for i, group in enumerate(match.groups()):
             if group is not None:
                 output_id, slices = {name}_convert_slices[i]
                 return {name}_convert_outputs[output_id]([match.group(index) for index in slices])
-    return word"""
+    return word'''
         return output
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
@@ -558,10 +596,18 @@ def known_singular(word):
         return output
 
     def get_recognizer_output(self, name, compl_name):
-        output = f"""def is_{name}(word{', is_word_plural=None' if name == "singular" else ''}):
+        output = f'''def is_{name}(word{', is_word_plural=None' if name == "singular" else ''}):
+    """Detect whether `word` is in {name.replace("_", " ")} form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed {name.replace("_", " ")}.
+    """
     if known_{name}(word) or (not word.islower() and known_{name}(word.lower())):
         return True
-"""
+'''
         if compl_name:
             output += f"""
     if known_{compl_name}(word) or (not word.islower() and known_{compl_name}(word.lower())):
@@ -579,7 +625,7 @@ def known_singular(word):
         return not is_word_plural
     return not is_plural(word)"""
         else:
-            output += "return word.endswith('s')"
+            output += "return word.endswith(('s', 'S'))"
         return output
 
 class NounTestWriter(TestWriter):
@@ -593,7 +639,27 @@ class NounTestWriter(TestWriter):
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
         """
-    
+        self.prepositions = [
+            "about", "above", "across", "after", "among", "around", "athwart", "at", "before", 
+            "behind", "below", "beneath", "beside", "besides", "between", "betwixt", "beyond", 
+            "but", "by", "during", "except", "for", "from", "into", "in", "near", "off", "of", 
+            "onto", "on", "out", "over", "since", "till", "to", "under", "until", "unto", 
+            "upon", "with"]
+        # The number of prepositions that are prepended to each regular test
+        self.prep_n = 1
+
+        self.to_plural_upper_exceptions = ["I", 
+            "Jerry", "jerry", "Jerrys", "jerries", 
+            "Auslese", "auslese", 
+            "Mary", "mary", "Marys", "maries", 
+            "Atlas", "atlas", 
+            "Nenets", "nenets", "Nentsi", "nentsi", "nentsy"]
+
+    def preposition_gen(self) -> Generator[str, None, None]:
+        while True:
+            for prep in self.prepositions:
+                yield prep
+
     def write_tests(self):
         self.write_is_singular_test()
         self.write_is_plural_test()
@@ -606,26 +672,74 @@ class NounTestWriter(TestWriter):
         test_path = self.test_folder_name + "//test_noun_core_is_singular.py"
         test_function = "is_singular"
         test_name_pascal = "NounIsSingular"
-        test_args = [
-            {
-                "in": word,
-                "out": True
-            } for word in self.reader.words["singular"]
-              if word and word != "_"
-        ]
+        test_args = []
+
+        preposition_gen = self.preposition_gen()
+        for word in sorted(self.reader.words["singular"]):
+            if word and word != "_":
+                test_args.append({
+                    "in": word,
+                    "out": True
+                })
+                test_args.append({
+                    "in": " " + word + "  ",
+                    "out": True
+                })
+                test_args.append({
+                    "in": word.upper(),
+                    "out": True
+                })
+                test_args.append({
+                    "in": word.title(),
+                    "out": True
+                })
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    test_args.append({
+                        "in": f"{prep} {word}",
+                        "out": True
+                    })
+                    test_args.append({
+                        "in": f"  {prep}  {word} ",
+                        "out": True
+                    })
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_is_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_is_plural.py"
         test_function = "is_plural"
         test_name_pascal = "NounIsPlural"
-        test_args = [
-            {
-                "in": word,
-                "out": True
-            } for word in self.reader.words["plural"]
-              if word and word != "_"
-        ]
+        test_args = []
+
+        preposition_gen = self.preposition_gen()
+        for word in sorted(self.reader.words["plural"]):
+            if word and word != "_":
+                test_args.append({
+                    "in": word,
+                    "out": True
+                })
+                test_args.append({
+                    "in": " " + word + "  ",
+                    "out": True
+                })
+                test_args.append({
+                    "in": word.upper(),
+                    "out": True
+                })
+                test_args.append({
+                    "in": word.title(),
+                    "out": True
+                })
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    test_args.append({
+                        "in": f"{prep} {word}",
+                        "out": True
+                    })
+                    test_args.append({
+                        "in": f"  {prep}  {word} ",
+                        "out": True
+                    })
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_singular_test(self):
@@ -645,9 +759,36 @@ class NounTestWriter(TestWriter):
                 "out": sing
             } for sing in self.reader.literals["singular"].values()
               if sing not in self.reader.words["plural"] and sing and sing != "_"
-            
         ]
-        self.write_test(test_path, test_function, test_name_pascal, test_args)
+        converted_test_args = []
+        preposition_gen = self.preposition_gen()
+        for test_arg in test_args:
+            if test_arg["in"] not in ["them"]:
+                converted_test_args.append(test_arg)
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    converted_test_args.append({
+                        "in": f"{prep} {test_arg['in']}",
+                        "out": f"{prep} {test_arg['out']}",
+                    })
+                    converted_test_args.append({
+                        "in": f"{prep}  {test_arg['in']}",
+                        "out": f"{prep}  {test_arg['out']}",
+                    })
+            
+            converted_test_args.append({
+                "in": "  " + test_arg["in"] + " ",
+                "out": "  " + test_arg["out"] + " ",
+            })
+            converted_test_args.append({
+                "in": test_arg["in"].title(),
+                "out": test_arg["out"].title(),
+            })
+            converted_test_args.append({
+                "in": test_arg["in"].upper(),
+                "out": test_arg["out"].upper(),
+            })
+        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
     def write_to_modern_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_modern_plural.py"
@@ -667,7 +808,37 @@ class NounTestWriter(TestWriter):
             } for plur in self.reader.literals["modern_plural"].values()
               if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
-        self.write_test(test_path, test_function, test_name_pascal, test_args)
+        converted_test_args = []
+        preposition_gen = self.preposition_gen()
+        for test_arg in test_args:
+            if test_arg["in"] not in ["it"]:
+                converted_test_args.append(test_arg)
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    converted_test_args.append({
+                        "in": f"{prep} {test_arg['in']}",
+                        "out": f"{prep} {test_arg['out']}",
+                    })
+                    converted_test_args.append({
+                        "in": f" {prep}  {test_arg['in']}",
+                        "out": f" {prep}  {test_arg['out']}",
+                    })
+            
+            # Filter for known exceptions that produce broken tests:
+            if test_arg["in"] not in self.to_plural_upper_exceptions:
+                converted_test_args.append({
+                    "in": "  " + test_arg["in"] + " ",
+                    "out": "  " + test_arg["out"] + " ",
+                })
+                converted_test_args.append({
+                    "in": test_arg["in"].title(),
+                    "out": test_arg["out"].title(),
+                })
+                converted_test_args.append({
+                    "in": test_arg["in"].upper(),
+                    "out": test_arg["out"].upper(),
+                })
+        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
     def write_to_classical_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_classical_plural.py"
@@ -687,7 +858,37 @@ class NounTestWriter(TestWriter):
             } for plur in self.reader.literals["classical_plural"].values()
             if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
-        self.write_test(test_path, test_function, test_name_pascal, test_args)
+        converted_test_args = []
+        preposition_gen = self.preposition_gen()
+        for test_arg in test_args:
+            if test_arg["in"] not in ["it"]:
+                converted_test_args.append(test_arg)
+                for _ in range(self.prep_n):
+                    prep = next(preposition_gen)
+                    converted_test_args.append({
+                        "in": f"{prep} {test_arg['in']}",
+                        "out": f"{prep} {test_arg['out']}",
+                    })
+                    converted_test_args.append({
+                        "in": f"{prep}  {test_arg['in']} ",
+                        "out": f"{prep}  {test_arg['out']} ",
+                    })
+            
+            # Filter for known exceptions that produce broken tests:
+            if test_arg["in"] not in self.to_plural_upper_exceptions:
+                converted_test_args.append({
+                    "in": "  " + test_arg["in"] + " ",
+                    "out": "  " + test_arg["out"] + " ",
+                })
+                converted_test_args.append({
+                    "in": test_arg["in"].title(),
+                    "out": test_arg["out"].title(),
+                })
+                converted_test_args.append({
+                    "in": test_arg["in"].upper(),
+                    "out": test_arg["out"].upper(),
+                })
+        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"

@@ -11,14 +11,18 @@ import unittest
 
 from inflexion import Verb
 
+
 class TestVerbToPresPart(unittest.TestCase):
-    # test_args has the format [{
-    #    "in":     ..., # (required)
-    #    "out":    ..., # (required)
-    #    "desc":   ..., # (optional) 
-    #    "kwargs": ...  # (optional)
-    # }, ...
-    # ]
+    '''
+    test_args has the format [
+        {
+            "in":     ..., # (required)
+            "out":    ..., # (required)
+            "desc":   ..., # (optional)
+            "kwargs": ...  # (optional)
+        }, ...
+    ]
+    '''
     test_args = [
         {'in': 'abide', 'out': 'abiding'},
         {'in': 'abided', 'out': 'abiding'},
@@ -916,7 +920,7 @@ class TestVerbToPresPart(unittest.TestCase):
         {'in': 'wrung', 'out': 'wringing'},
     ]
 
-    def test_verb_pres_part(self):
+    def test_verb_to_pres_part(self):
         for test_case in self.test_args:
             with self.subTest():
                 # Expand test_case with default cases, if optional keys are not provided
@@ -925,6 +929,7 @@ class TestVerbToPresPart(unittest.TestCase):
                     "kwargs": dict()
                 }}
                 self.assertEqual(Verb(test_case["in"]).pres_part(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()

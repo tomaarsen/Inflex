@@ -11,14 +11,18 @@ import unittest
 
 from inflexion import Verb
 
+
 class TestVerbIsSingular(unittest.TestCase):
-    # test_args has the format [{
-    #    "in":     ..., # (required)
-    #    "out":    ..., # (required)
-    #    "desc":   ..., # (optional) 
-    #    "kwargs": ...  # (optional)
-    # }, ...
-    # ]
+    '''
+    test_args has the format [
+        {
+            "in":     ..., # (required)
+            "out":    ..., # (required)
+            "desc":   ..., # (optional)
+            "kwargs": ...  # (optional)
+        }, ...
+    ]
+    '''
     test_args = [
         {'in': 'abides', 'out': True},
         {'in': 'aches', 'out': True},
@@ -254,6 +258,7 @@ class TestVerbIsSingular(unittest.TestCase):
                     "kwargs": dict()
                 }}
                 self.assertEqual(Verb(test_case["in"]).is_singular(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()

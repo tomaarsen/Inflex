@@ -11,14 +11,18 @@ import unittest
 
 from inflexion import Verb
 
+
 class TestVerbIsPast(unittest.TestCase):
-    # test_args has the format [{
-    #    "in":     ..., # (required)
-    #    "out":    ..., # (required)
-    #    "desc":   ..., # (optional) 
-    #    "kwargs": ...  # (optional)
-    # }, ...
-    # ]
+    '''
+    test_args has the format [
+        {
+            "in":     ..., # (required)
+            "out":    ..., # (required)
+            "desc":   ..., # (optional)
+            "kwargs": ...  # (optional)
+        }, ...
+    ]
+    '''
     test_args = [
         {'in': 'abided', 'out': True},
         {'in': 'ached', 'out': True},
@@ -248,6 +252,7 @@ class TestVerbIsPast(unittest.TestCase):
                     "kwargs": dict()
                 }}
                 self.assertEqual(Verb(test_case["in"]).is_past(**test_case["kwargs"]), test_case["out"], test_case["desc"])
+
 
 if __name__ == "__main__":
     unittest.main()

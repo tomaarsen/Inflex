@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20210204.170956
+VERSION = 20210409.231459
 
 plural_of = {
     "abides": "abide",
@@ -3972,23 +3972,71 @@ plural_and_singular = {
 }
 
 def known_plural(word):
+    """True if `word` is known to be plural.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be plural.
+    """
     lword = word.lower()
     return lword in singular_of or lword in plural_and_singular
 
 def known_singular(word):
+    """True if `word` is known to be singular.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be singular.
+    """
     lword = word.lower()
     return lword in plural_of or lword in plural_and_singular
 
 def known_past(word):
+    """True if `word` is known to be past.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be past.
+    """
     return word.lower() in past_of_values
 
 def known_past_part(word):
+    """True if `word` is known to be past participle.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be past participle.
+    """
     return word.lower() in past_part_of_values
 
 def known_pres_part(word):
+    """True if `word` is known to be present participle.
+
+    Args:
+        word (str): Input word.
+
+    Returns:
+        bool: True if `word` is known to be present participle.
+    """
     return word.lower() in pres_part_of_values
 
 def convert_to_plural(word):
+    """Convert `word` to plural form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The plural form of `word`.
+    """
     if word in plural_of:
         return plural_of[word]
     if not word.islower() and word.lower() in plural_of:
@@ -4003,6 +4051,14 @@ def convert_to_plural(word):
     return None
 
 def convert_to_singular(word):
+    """Convert `word` to singular form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The singular form of `word`.
+    """
     if word in singular_of:
         return singular_of[word]
     if not word.islower() and word.lower() in singular_of:
@@ -4015,6 +4071,14 @@ def convert_to_singular(word):
     return None
 
 def convert_to_past(word):
+    """Convert `word` to past form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The past form of `word`.
+    """
     if word in past_of:
         return past_of[word]
     if not word.islower() and word.lower() in past_of:
@@ -4029,6 +4093,14 @@ def convert_to_past(word):
     return None
 
 def convert_to_pres_part(word):
+    """Convert `word` to present participle form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The present participle form of `word`.
+    """
     if word in pres_part_of:
         return pres_part_of[word]
     if not word.islower() and word.lower() in pres_part_of:
@@ -4043,6 +4115,14 @@ def convert_to_pres_part(word):
     return None
 
 def convert_to_past_part(word):
+    """Convert `word` to past participle form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: The past participle form of `word`.
+    """
     if word in past_part_of:
         return past_part_of[word]
     if not word.islower() and word.lower() in past_part_of:
@@ -4057,6 +4137,14 @@ def convert_to_past_part(word):
     return None
 
 def is_plural(word):
+    """Detect whether `word` is in plural form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed plural.
+    """
     if known_plural(word):
         return True
     if known_singular(word):
@@ -4067,6 +4155,14 @@ def is_plural(word):
     return False
 
 def is_singular(word):
+    """Detect whether `word` is in singular form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed singular.
+    """
     if known_singular(word):
         return True
     if known_plural(word):
@@ -4077,6 +4173,14 @@ def is_singular(word):
     return not is_plural(word)
 
 def is_past(word):
+    """Detect whether `word` is in past form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed past.
+    """
     if known_past(word):
         return True
     for rule in past_recognize_rules:
@@ -4085,6 +4189,14 @@ def is_past(word):
     return False
 
 def is_pres_part(word):
+    """Detect whether `word` is in present participle form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed present participle.
+    """
     if known_pres_part(word):
         return True
     for rule in pres_part_recognize_rules:
@@ -4093,6 +4205,14 @@ def is_pres_part(word):
     return False
 
 def is_past_part(word):
+    """Detect whether `word` is in past participle form.
+
+    Args:
+        word (str): Input word or collocation.
+
+    Returns:
+        bool: True if `word` is deemed past participle.
+    """
     if known_past_part(word):
         return True
     for rule in past_part_recognize_rules:

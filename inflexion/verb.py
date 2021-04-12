@@ -4,9 +4,7 @@
 import re
 from typing import Optional, Tuple
 
-import prosodic
-# import context
-
+from inflexion.syllable import Syllable
 from inflexion.term import Term
 from inflexion.verb_core import (
     is_plural,
@@ -26,55 +24,105 @@ from inflexion.verb_core import (
     past_part_of,
 )
 
+
 class Verb(Term):
+    """Class for detecting and converting to verb forms."""
 
     _prefixes = (
-        'counter', 
-        'trans', 
-        'cross', 
-        'inter', 
-        'under', 
-        'fore', 
-        'back', 
+        'counter',
+        'trans',
+        'cross',
+        'inter',
+        'under',
+        'fore',
+        'back',
         'over',
-        # 'post', 
-        'out', 
-        'mis', 
-        'for', 
-        'dis', 
+        # 'post',
+        'out',
+        'mis',
+        'for',
+        'dis',
         'way',
         # 'pre',
         # 'sub',
-        'un', 
-        'in', 
-        # 'be', 
-        'up', 
-        're', 
+        'un',
+        'in',
+        # 'be',
+        'up',
+        're',
         # 'co',
-        #'de',
+        # 'de',
     )
 
+    """
+    Regexes to be tried before applying -ed or -ing.
+    E.g. "argue" is converted to "argu" according to these regexes,
+    and then "ing" or "ed" are appended for present participle,
+    and past/past participle respectively.
+    This produces "arguing" and "argued".
+    """
     _stem_regexes = {
+        # Words ending in "fer" always duplicate their consonant,
+        # e.g. "transfer" -> "transferr" (+ "ed" or "ing")
         re.compile(r"fer\Z"): lambda match: "ferr",
+        # Words ending in "c" will have an extra "k" appended before
+        # -ed and -ing. One exception is "arc" -> "arced".
         re.compile(r"c\Z"): lambda match: "ck",
+        # Words ending in "ie" will end in "y" before appending
+        # -ed or -ing.
         re.compile(r"ie\Z"): lambda match: "y",
+        # Words ending with "ski" don't change,
+        # and then immediately have -ed or -ing appended.
         re.compile(r"ski\Z"): lambda match: "ski",
+        # Words ending with "e" prepended by anything other than an "e"
+        # have that "e" stripped. e.g. "argue" -> "argu"
         re.compile(r"([^e])e\Z"): lambda match: match.group(1),
-        re.compile(r".*er\Z"): lambda match: match.group(),
-        re.compile(r".{2,}en\Z"): lambda match: match.group(), # Only if long enough {('ken', 'kened', ('kenned',)), ('yen', 'yened', ('yenned',)), ('pen', 'pened', ('penned',))}
-        re.compile(r"(.[bdghklmnprstzy]on)\Z"): lambda match: match.group(1), # TODO: Try adding y
-        re.compile(r"ee\Z"): lambda match: "e", # Turns "ee" to "e"
-        re.compile(r"([^aeo][aeiuo])l\Z"): lambda match: match.group(1) + "ll", # Always duplicate CVl (British English)
+        # Words ending with "er" don't duplicate.
+        re.compile(r"er\Z"): lambda match: match.group(),
+        # Words ending with "en" don't duplicate,
+        # unless the word is small, e.g. ken -> kenned, pen -> penned, yen -> yenned
+        re.compile(r"..en\Z"): lambda match: match.group(),
+        # Words ending with "on" don't duplicate.
+        re.compile(r"(.[bdghklmnprstzy]on)\Z"): lambda match: match.group(1),
+        # Convert duplicate "ee" into just one "e"
+        re.compile(r"ee\Z"): lambda match: "e",
+        # Always duplicate CVl (British English)
+        re.compile(r"[^aeo][aeiuo]l\Z"): lambda match: match.group() + "l",
     }
 
-    _stem_double_regex = re.compile(r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
+    _stem_double_regex = re.compile(
+        r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
+
+    """
+    Override default methods from Term
+    """
 
     def __init__(self, term: str):
+        """Creates a Verb instance with detection and conversion methods.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.singular()
+            'flies'
+            >>>verb.past()
+            'flew'
+            >>>verb.past_part()
+            'flying'
+            >>>verb.pres_part()
+            'flown'
+            
+            >>>verb.is_plural()
+            True
+
+        Note:
+            Capitalisation and whitespace will be preserved between input `term` and
+            generated output.
+
+        Args:
+            term (str): Input word or collocation.
+        """
         super().__init__(term)
 
-    """
-    Override default methods from Term    
-    """
     def is_verb(self) -> bool:
         return True
 
@@ -84,13 +132,13 @@ class Verb(Term):
     def is_plural(self) -> bool:
         return is_plural(self.term)
 
-    def singular(self, person:Optional[int] = 0) -> str:
-        # TODO: Ensure valid person
+    def singular(self, person: Optional[int] = 0) -> str:
+        self.check_valid_person(person)
 
         # "To be" is special
         if self.term.lower() in ["is", "am", "are"]:
             if person == 0:
-                # "are" is already singular, e.g. "they are my friend", 
+                # "are" is already singular, e.g. "they are my friend",
                 # but the expected result is "is", so we opt for that.
                 if self.term.lower() == "are":
                     return self._encase("is")
@@ -105,11 +153,11 @@ class Verb(Term):
         if person == 3 or person == 0:
             # Get first word, last section of that word (if "-" in the word)
             term, form = self.get_subterm(self.term)
-            
+
             # If this term is in the list of known cases
             if term.lower() in singular_of:
                 return self._encase(form.format(singular_of[term.lower()]))
-        
+
             # Try splitting off a prefix
             prefix, subterm = self.split_prefix(term)
             if prefix:
@@ -121,18 +169,20 @@ class Verb(Term):
             known = convert_to_singular(term)
             if known:
                 return self._encase(form.format(known))
-            
+
             # If all else fails, return the term
             return self._reapply_whitespace(self.term)
 
         # First and second person always use the uninflected (i.e. "notational plural" form)
         return self.plural()
 
-    def plural(self, person:Optional[int] = 0) -> str:
+    def plural(self, person: Optional[int] = 0) -> str:
+        self.check_valid_person(person)
+
         known = None
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.term)
-        
+
         # If this term is in the list of known cases
         if term.lower() in plural_of:
             return self._encase(form.format(plural_of[term.lower()]))
@@ -150,56 +200,77 @@ class Verb(Term):
 
         # If all else fails, return the term
         return self._reapply_whitespace(self.term)
-    
+
     def as_regex(self) -> "re.Pattern":
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
                                                           self.past(),
                                                           self.past_part(),
-                                                          self.classical().pres_part()}), reverse=True)), flags=re.I)
+                                                          self.classical().pres_part()
+                                                          }), reverse=True)), flags=re.I)
 
     """
     Methods exclusively for Verb
     """
 
-    def is_one_syllable(self, term: str):
-        converted = ''.join("V" if char in "aeiou" else "C" for char in term.lower())
-        while "CC" in converted:
-            converted = converted.replace("CC", "C")
-        return "VCV" not in converted
-
     def _stem(self, term: str) -> str:
-        # Utility method that adjusts final consonants when they need to be doubled in inflexions...
-        # Apply the first relevant transform...
+        """Stem `term` so that "-ed"/"-ing" can be appended for past and present participle forms.
+
+        Args:
+            term (str): The input word to stem.
+
+        Returns:
+            str: The stemmed version of `term`, ready for appending "-ed" or "-ing".
+        """
+        # Utility method that adjusts final consonants when they need to be doubled in inflexions
+        # Apply the first relevant transform
         for regex in Verb._stem_regexes:
             match = regex.search(term)
-            # TODO: Make more efficient by using match start and stop indices
             if match:
-                return regex.sub(Verb._stem_regexes[regex](match), term)
+                # Adding `term[match.end():]` is unnecessary for now,
+                # but allows for more complex regexes.
+                return term[:match.start()] + Verb._stem_regexes[regex](match) + term[match.end():]
 
         # Get the last word from the term, and remove a potential prefix
         last_word = term.replace("-", " ").split()[-1]
         _, last_word = self.split_prefix(last_word)
 
-        # Get a prosodic Word object to find the stress
-        word = prosodic.Word(last_word)
-        
+        # Get a set of known syllable counts for last_word
+        syllable_count = Syllable.count_syllables(last_word)
+
         # Duplicate last letter if:
-        if  (
-            len(word.children) == 1                                     # The word is certainly just one syllable, or
-            or (not word.children and self.is_one_syllable(last_word))  # The word is just one syllable, or
-            or (word.children and word.children[-1].stressed)           # The last syllable is stressed
-            ) and Verb._stem_double_regex.search(term):                 # AND the word ends in (roughly) CVC
+        if (
+            # The word is certainly just one syllable, or
+            1 in syllable_count
+            # The word is just one syllable, or
+            or (not syllable_count and Syllable.guess_if_one_syllable(last_word))
+            # The last syllable is stressed
+            or (Syllable.ends_with_stress(last_word))
+        ) and Verb._stem_double_regex.search(term):  # AND the word ends in (roughly) CVC
             return term + term[-1]
 
         return term
 
     def split_prefix(self, term: str) -> Tuple[str, str]:
-        """
-        Split the prefix off of the term.
-        "unbind"    -> ("un", "bind")
-        "mistake"   -> ("mis", "take")
-        "reappear"  -> ("re", "appear")
+        """Split the prefix from the term.
+
+        Examples:
+            >>>self.split_prefix("unbind")
+            ("un", "bind")
+            >>>self.split_prefix("mistake")
+            ("mis", "take")
+            >>>self.split_prefix("reappear")
+            ("re", "appear")
+            >>>self.split_prefix("use")
+            ("", "use")
+
+        Args:
+            term (str): The input word to potentially split a prefix from.
+
+        Returns:
+            Tuple[str, str]: The first string is the prefix, the second string is the remainder.
+                If the input does not have a prefix to split, then the first string is empty,
+                while the second string is the full input `term`.
         """
         if term.startswith(Verb._prefixes):
             for prefix in Verb._prefixes:
@@ -208,9 +279,18 @@ class Verb(Term):
         return "", term
 
     def get_subterm(self, term: str) -> Tuple[str, str]:
-        """
-        Extract last sub-section (split by '-') of the first word.
-        "aaa-bbb ccc" -> ("aaa-{} ccc", "bbb")
+        """Extract last sub-section (split by '-') of the first word.
+
+        Examples:
+            >>>self.get_subterm("aaa-bbb ccc")
+            ("aaa-{} ccc", "bbb")
+
+        Args:
+            term (str): The input word to potentially split the subterm from.
+
+        Returns:
+            Tuple[str, str]: The first string is the format string, e.g. "aaa-{} ccc", while
+                the second string is the last sub-section, e.g. "bbb".
         """
         form = "{}"
         if " " in term:
@@ -226,13 +306,23 @@ class Verb(Term):
         return term, form
 
     def past(self) -> str:
+        """Returns this Verb's past form.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.past()
+            "flew"
+
+        Returns:
+            str: This Verb's past form.
+        """
         known = None
         # "To be" is special
         if self.term.lower() in ["is", "am"]:
             return "was"
         if self.term.lower() == "are":
             return "were"
-        
+
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.term)
 
@@ -252,13 +342,23 @@ class Verb(Term):
         known = convert_to_past(root)
         if known:
             return self._encase(form.format(known))
-        
+
         # Otherwise use the standard pattern on the root
         known = self._stem(root) + "ed"
 
         return self._encase(form.format(known))
 
     def pres_part(self) -> str:
+        """Returns this Verb's present participle form.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.pres_part()
+            "flying"
+
+        Returns:
+            str: This Verb's present participle form.
+        """
         known = None
         # If this term is in the list of known cases
         if self.term.lower() in pres_part_of:
@@ -273,7 +373,7 @@ class Verb(Term):
             known = convert_to_pres_part(subterm)
             if known:
                 return self._encase(form.format(prefix + known))
-        
+
         # Convert the full (sub)term
         known = convert_to_pres_part(term)
 
@@ -284,6 +384,16 @@ class Verb(Term):
         return self._encase(form.format(known))
 
     def past_part(self) -> str:
+        """Returns this Verb's past participle form.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.pres_part()
+            "flown"
+
+        Returns:
+            str: This Verb's past participle form.
+        """
         known = None
         # If this term is in the list of known cases
         if self.term.lower() in past_part_of:
@@ -307,17 +417,48 @@ class Verb(Term):
             known = self._stem(term) + "ed"
 
         return self._encase(form.format(known))
-    
-    def is_past(self) -> str:
+
+    def is_past(self) -> bool:
+        """Detect whether this Verb is in past form.
+
+        Returns:
+            bool: True if this Verb is deemed past.
+        """
         return is_past(self.term)
 
-    def is_pres_part(self) -> str:
+    def is_pres_part(self) -> bool:
+        """Detect whether this Verb is in present participle form.
+
+        Returns:
+            bool: True if this Verb is deemed present participle.
+        """
         return is_pres_part(self.term)
 
-    def is_past_part(self) -> str:
+    def is_past_part(self) -> bool:
+        """Detect whether this Verb is in past participle form.
+
+        Returns:
+            bool: True if this Verb is deemed past participle.
+        """
         return is_past_part(self.term)
 
-    def indefinite(self, count:Optional[int] = 1) -> str:
+    def indefinite(self, count: Optional[int] = 1) -> str:
+        """Return the singular if `count` == 1, and the plural otherwise.
+
+        Examples:
+            >>>verb = Verb("fly")
+            >>>verb.indefinite(count = 1)
+            'flies'
+            >>>verb.indefinite(count = 3)
+            'fly'
+
+        Args:
+            count (Optional[int], optional): The number of objects on which this verb applies.
+                Defaults to 1.
+
+        Returns:
+            str: The singular if `count` == 1, and the plural otherwise.
+        """
         if count == 1:
             return self.singular()
         return self.plural()
