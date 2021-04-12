@@ -92,11 +92,11 @@ class TestNouns(unittest.TestCase):
             ("Tom's", "Toms'"),
             ("book's", "books'"),
             ("brother's", "brothers'"),
-            
+
             ("about Tom's", "about Toms'"),
             ("beneath book's", "beneath books'"),
             ("at brother's", "at brothers'"),
-            
+
             ("  Tom's", "  Toms'"),
             (" book's ", " books' "),
             ("  brother's ", "  brothers' "),
@@ -104,30 +104,34 @@ class TestNouns(unittest.TestCase):
         for sing, plur in test_data:
             with self.subTest():
                 out = Noun(sing).plural()
-                self.assertEqual(out, plur, f"Noun({sing!r}).plural()")
-            
+                self.assertEqual(out, plur,
+                                 f"Noun({sing!r}).plural()")
+
             with self.subTest():
                 out = Noun(plur).plural()
-                self.assertEqual(out, plur, f"Noun({plur!r}).plural()")
-            
+                self.assertEqual(out, plur,
+                                 f"Noun({plur!r}).plural()")
+
             with self.subTest():
                 out = Noun(sing).singular()
-                self.assertEqual(out, sing, f"Noun({sing!r}).singular()")
-            
+                self.assertEqual(out, sing,
+                                 f"Noun({sing!r}).singular()")
+
             with self.subTest():
                 out = Noun(plur).singular()
-                self.assertEqual(out, sing, f"Noun({plur!r}).singular()")
-    
+                self.assertEqual(out, sing,
+                                 f"Noun({plur!r}).singular()")
+
     def test_possessive_classical(self):
         test_data = [
             ("Tom's", "Toms'"),
             ("book's", "books'"),
             ("brother's", "brethren's"),
-            
+
             ("about Tom's", "about Toms'"),
             ("beneath book's", "beneath books'"),
             ("at brother's", "at brethren's"),
-            
+
             ("  Tom's", "  Toms'"),
             (" book's ", " books' "),
             ("  brother's ", "  brethren's "),
@@ -135,19 +139,24 @@ class TestNouns(unittest.TestCase):
         for sing, plur in test_data:
             with self.subTest():
                 out = Noun(sing).classical().plural()
-                self.assertEqual(out, plur, f"Noun({sing!r}).classical().plural()")
-            
+                self.assertEqual(out, plur,
+                                 f"Noun({sing!r}).classical().plural()")
+
             with self.subTest():
                 out = Noun(plur).classical().plural()
-                self.assertEqual(out, plur, f"Noun({plur!r}).classical().plural()")
-            
+                self.assertEqual(out, plur,
+                                 f"Noun({plur!r}).classical().plural()")
+
             with self.subTest():
                 out = Noun(sing).classical().singular()
-                self.assertEqual(out, sing, f"Noun({sing!r}).classical().singular()")
-            
+                self.assertEqual(out, sing,
+                                 f"Noun({sing!r}).classical().singular()")
+
             with self.subTest():
                 out = Noun(plur).classical().singular()
-                self.assertEqual(out, sing, f"Noun({plur!r}).classical().singular()")
+                self.assertEqual(out, sing,
+                                 f"Noun({plur!r}).classical().singular()")
+
 
 if __name__ == "__main__":
     unittest.main()
