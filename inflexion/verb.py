@@ -133,7 +133,7 @@ class Verb(Term):
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
-        self.check_valid_person(person)
+        self._check_valid_person(person)
 
         # "To be" is special
         if self.term.lower() in ["is", "am", "are"]:
@@ -177,7 +177,7 @@ class Verb(Term):
         return self.plural()
 
     def plural(self, person: Optional[int] = 0) -> str:
-        self.check_valid_person(person)
+        self._check_valid_person(person)
 
         known = None
         # Get first word, last section of that word (if "-" in the word)

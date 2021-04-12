@@ -405,7 +405,7 @@ class Noun(Term):
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
-        self.check_valid_person(person)
+        self._check_valid_person(person)
         match = Noun._prep_regex.match(self.term)
 
         if match:
@@ -425,7 +425,7 @@ class Noun(Term):
         return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
-        self.check_valid_person(person)
+        self._check_valid_person(person)
         match = Noun._prep_regex.match(self.term)
 
         if match:

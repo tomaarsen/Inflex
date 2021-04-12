@@ -75,29 +75,37 @@ class Adjective(Term):
     _comparative_conversions = {
         "good": "better",
         "well": "better",
+        "best": "better",
 
         "bad": "worse",
         "badly": "worse",
         "ill": "worse",
+        "worst": "worse",
 
         "far": "further",
+        "furthest": "further",
         # "little": "less", # Could also be "littler", e.g. "little book" -> "even littler book"
         "many": "more",
         "much": "more",
+        "most": "more",
     }
 
     _superlative_conversions = {
         "good": "best",
         "well": "best",
+        "better": "best",
 
         "bad": "worst",
         "badly": "worst",
         "ill": "worst",
+        "worse": "worst",
 
         "far": "furthest",
+        "further": "furthest",
         # "little": "least", # We opt for littlest
         "many": "most",
         "much": "most",
+        "more": "most",
     }
 
     """
@@ -137,7 +145,7 @@ class Adjective(Term):
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
-        self.check_valid_person(person)
+        self._check_valid_person(person)
         # Is it possessive form?
         match = self._possessive_regex.match(self.term)
         if match:
@@ -149,7 +157,7 @@ class Adjective(Term):
         return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
-        self.check_valid_person(person)
+        self._check_valid_person(person)
         # Is it possessive form?
         match = self._possessive_regex.match(self.term)
         if match:
@@ -197,24 +205,37 @@ class Adjective(Term):
 
         return term
 
-    def get_reduced_word(self) -> prosodic.Word:
-        """
-        If term starts with "un", return the Word without "un", if it is real
-        Otherwise, return the Word with "un", if it is real
-        Otherwise, return the (unknown) Word without "un"
+    def _prepend_more_most(self, word: str) -> bool:
+        """Specify whether "more" or "most" should be prepended before `word` for comp/super.
 
-        TODO: Make this function less unintuitive
-        """
-        if self.term.startswith("un"):
-            reduced = prosodic.Word(self.term[2:])
-            if reduced.children:
-                return reduced
-        full = prosodic.Word(self.term)
-        if full.children or not self.term.startswith("un"):
-            return full
-        return reduced
+        Args:
+            word (str): Input word or collocation.
 
-    def comparative(self) -> str:
+        TODO: Move comparative and superlative into one method which is then called by both.
+        TODO: Mine wiktionary for tests
+
+        Returns:
+            bool: True if the system believes that "more" or "most" should be prepended to 
+                `word` when converting it to comparative or superlative, respectively.
+                Based on the deemed syllable count of `word`
+        """
+        syllable_counts = Syllable.count_reduced_syllables(word)
+        if not syllable_counts:
+            return False
+
+        if max(syllable_counts) > 2:
+            return True
+
+        if (2 in syllable_counts and
+            word and
+            # Removing "er" and "le" improves accuracy
+                    not word.endswith(("y", "ow", "le", "er"))
+            ):
+            return True
+
+        return False
+
+    def comparative(self, only_suffix: bool = False) -> str:
         """Returns this Adjective's comparative form.
 
         Examples:
@@ -234,34 +255,44 @@ class Adjective(Term):
             We convert these to "boringer" and "famouser".
             In reality they should be "more boring" and "more famous"
 
+        TODO: Adjectives that already represent the greatest degree, e.g. perfect, complete, total, empty
+        TODO: Adjectives that cannot be compared due to their meaning, e.g. pregnant, equal, ideal, British
+        TODO: e.g. "quiet" is converted to "more quiet" rather than "quieter"
+
+        TODO: Often should change the second word in "dog-friendly" type collocations.
+        TODO: If abbreviation (all caps), then always prepend more
+
         Returns:
             str: This Adjective's comparative form.
         """
+        if self.term.lower() in self._comparative_conversions.values():
+            return self._encase(self.term)
+
         if self.term.lower() in self._comparative_conversions:
-            return self._comparative_conversions[self.term.lower()]
+            return self._encase(self._comparative_conversions[self.term.lower()])
 
         # If multiple words
         pattern = re.compile(r"-| ")
         match = pattern.search(self.term)
         if match:
-            term, remainder = self.term[:match.start(
-            )], self.term[match.end():]
-            output_format = f"{{}}{match.group()}{{}}"
-            return output_format.format(Adjective(term).comparative(), remainder)
+            term = self.term[:match.start()]
+            remainder = self.term[match.end():]
+            # If the form is e.g. "high and mighty",
+            # then we want to convert both before and after the "and"
+            if remainder.startswith("and "):
+                output_format = f"{{}}{match.group()}and {{}}"
+                remainder = Adjective(remainder[4:]).comparative(only_suffix)
+            else:
+                output_format = f"{{}}{match.group()}{{}}"
 
-        # Check if we want to prepend "more"
-        # We do so if we have a two-syllable adjective that doesn't end in y, 
-        # or a three+ syllable adjective
-        # TODO: untidy is two syllables, but is really just the one
-        word = self.get_reduced_word()
-        if word:
-            if (len(word.children) == 2 and self.term and not self.term.endswith(("y", "ow", "le", "er"))) or\
-            (len(word.children) > 2):
-                return self._encase(f"more {self.term}")
+            return output_format.format(Adjective(term).comparative(only_suffix), remainder)
 
-        return self._stem(self.term, word) + "er"
+        if not only_suffix and (self.term.isupper() or self._prepend_more_most(self.term)):
+            return f"more {self._encase(self.term)}"
 
-    def superlative(self) -> str:
+        return self._encase(self._stem(self.term) + "er")
+
+    def superlative(self, only_suffix: bool = False) -> str:
         """Returns this Adjective's superlative form.
 
         Examples:
@@ -281,18 +312,43 @@ class Adjective(Term):
             We convert these to "boringest" and "famousest".
             In reality they should be "most boring" and "most famous"
 
+        TODO: 'yest_vs_iest': [['plaguy', 'plaguyest', ['plaguiest']],
+                              ['cliquy', 'cliquyest', ['cliquiest']],
+                              ['heauy', 'heauyest', ['heauiest']]],
+        TODO:  'est_vs_most': [['left', 'leftest', ['most left', 'leftmost']],
+                              ['outer', 'outerest', ['outermost']],
+                              ['inner', 'innerest', ['innermost']],
+                              ['upper', 'upperest', ['uppermost']],
+                              ['nether', 'netherest', ['nethermost']],
+                              ['hind', 'hindest', ['hindmost']]],
+        TODO: Adverbs (slowly, carefully, easily, -ly) have more/most
+        TODO: More/most for title case, e.g. more American
+
         Returns:
             str: This Adjective's superlative form.
         """
+        if self.term.lower() in self._superlative_conversions.values():
+            return self._encase(self.term)
+
         if self.term.lower() in self._superlative_conversions:
-            return self._superlative_conversions[self.term.lower()]
+            return self._encase(self._superlative_conversions[self.term.lower()])
 
         pattern = re.compile(r"-| ")
         match = pattern.search(self.term)
         if match:
-            term, remainder = self.term[:match.start(
-            )], self.term[match.end():]
-            output_format = f"{{}}{match.group()}{{}}"
-            return output_format.format(Adjective(term).superlative(), remainder)
+            term = self.term[:match.start()]
+            remainder = self.term[match.end():]
+            # If the form is e.g. "high and mighty",
+            # then we want to convert both before and after the "and"
+            if remainder.startswith("and "):
+                output_format = f"{{}}{match.group()}and {{}}"
+                remainder = Adjective(remainder[4:]).superlative(only_suffix)
+            else:
+                output_format = f"{{}}{match.group()}{{}}"
 
-        return self._stem(self.term) + "est"
+            return output_format.format(Adjective(term).superlative(only_suffix), remainder)
+
+        if not only_suffix and (self.term.isupper() or self._prepend_more_most(self.term)):
+            return f"most {self._encase(self.term)}"
+
+        return self._encase(self._stem(self.term) + "est")

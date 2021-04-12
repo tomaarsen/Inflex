@@ -212,7 +212,7 @@ class Term(object):
         """
         return self.classical()
 
-    def check_valid_person(self, person: int) -> bool:
+    def _check_valid_person(self, person: int) -> bool:
         """Return True if `person` is valid, i.e. in [0, 1, 2, 3].
 
         Otherwise, return False and output a warning stating that the
