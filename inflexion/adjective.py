@@ -228,8 +228,7 @@ class Adjective(Term):
 
         if (2 in syllable_counts and
             word and
-            # Removing "er" and "le" improves accuracy
-                    not word.endswith(("y", "ow", "le", "er"))
+            not word.endswith(("y", "ow", "le", "er"))
             ):
             return True
 

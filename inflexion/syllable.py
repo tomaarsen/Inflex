@@ -3,6 +3,7 @@
 
 import json
 import os
+import re
 from typing import Dict, List, Set
 
 
@@ -23,8 +24,8 @@ class Syllable:
             >>>Stress.data()
             {
                 "ab": [[1], [1, 1]],
-	            "ababa": [[0, 1, 0], [1, 0, 0]],
-	            "abacha": [[1, 0, 0]],
+                "ababa": [[0, 1, 0], [1, 0, 0]],
+                "abacha": [[1, 0, 0]],
                 ...
             }
 
@@ -83,6 +84,26 @@ class Syllable:
         return {len(stress) for stress in Syllable.get_stress(word)}
 
     @staticmethod
+    def count_reduced_syllables(word: str) -> Set[int]:
+        """Return the set of valid syllable counts of `word`, with "un" removed from the start.
+
+        Args:
+            word (str): The input word.
+
+        Returns:
+            Set[int]: The set of valid syllable counts of `word`, but optionally with "un" removed
+            from the start of `word`.
+        """
+        if word.startswith("un"):
+            syllables = Syllable.count_syllables(word[2:])
+            if syllables:
+                return syllables
+        syllables = Syllable.count_syllables(word)
+        if syllables:
+            return syllables
+        return {Syllable.guess_count_syllables(word)}
+
+    @staticmethod
     def ends_with_stress(word: str) -> bool:
         """Returns True if all syllable interpretations of `word` end with stress.
 
@@ -103,19 +124,32 @@ class Syllable:
     def guess_if_one_syllable(word: str) -> bool:
         """Guess whether the word is just one Syllable.
 
-        Guessing is done by converting letters to either V or C depending on
-        if the letter is a vowel or consonant, respectively.
-        Then, remove double C's and check whether the pattern
-        "VCV" exists. If it does, the word likely has more than one syllable.
-
         Args:
             word (str): The input word.
 
         Returns:
             bool: True if `word` is guessed to be just one syllable.
         """
-        converted = ''.join(
-            "V" if char in "aeiou" else "C" for char in word.lower())
-        while "CC" in converted:
-            converted = converted.replace("CC", "C")
-        return "VCV" not in converted
+        return Syllable.guess_count_syllables(word) == 1
+
+    @staticmethod
+    def guess_count_syllables(word: str) -> int:
+        """Guess the number of Syllables in `word` using the number of vowel groups.
+
+        Adapted from the pattern.en module.
+
+        Args:
+            word (str): The input word.
+
+        Returns:
+            bool: The guessed number of Syllables in `word`
+        """
+        # Remove trailing "e"
+        while word.endswith("e"):
+            word = word[:-1]
+        # Convert to "CVCC"
+        vc = "".join('V' if char in 'aeiouy' else 'C' for char in word)
+        # Remove duplicate V's
+        while "VV" in vc:
+            vc = vc.replace("VV", "V")
+        return vc.count("V")
