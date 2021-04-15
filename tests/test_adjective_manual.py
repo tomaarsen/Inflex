@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import re
 import unittest
 
 from inflexion.adjective import Adjective
@@ -340,6 +341,23 @@ class TestAdjectives(unittest.TestCase):
         {"in": "woman's", "out": "women's"},
         {"in": "women's", "out": "women's"},
     ]
+
+    def test_is_adj(self):
+        adj = Adjective("our")
+        self.assertFalse(adj.is_verb())
+        self.assertFalse(adj.is_noun())
+        self.assertTrue(adj.is_adj())
+
+    def test_as_regex(self):
+        adj = Adjective("our")
+        pattern = adj.as_regex()
+        self.assertEqual(pattern, re.compile("our|my", re.IGNORECASE),
+                         "Check whether as_regex produces a compiled regex object correctly.")
+
+    def test_classical(self):
+        adj = Adjective("our")
+        self.assertEqual(adj, adj.classical(),
+                         "Check whether Adjective(...) = Adjective(...).classical()")
 
     def test_possessive_to_singular(self):
         for test_case in self.test_possessive_to_singular_args:
