@@ -213,50 +213,53 @@ class Reader(object):
             
             if noun.sing.gen:
                 if noun.plur_one.word:
-                    self.optionally_add_pattern(self.patterns["modern_plural"], { 
-                        "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
-                        "tag": noun.tag
-                    })
-                    self.optionally_add_pattern(self.patterns["singular"], { 
-                        "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
-                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
-                        #"conditional": "lambda match: True",
-                        "tag": noun.tag 
-                    })
+                    if noun.tag != "plur_to_sing":
+                        self.optionally_add_pattern(self.patterns["modern_plural"], { 
+                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
+                            "tag": noun.tag
+                        })
+                    if noun.tag != "sing_to_plur":
+                        self.optionally_add_pattern(self.patterns["singular"], { 
+                            "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
+                            "tag": noun.tag
+                        })
                 elif noun.plur_two.word:
-                    self.optionally_add_pattern(self.patterns["modern_plural"], { 
-                        "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
-                        "tag": noun.tag
-                    })
-                    self.optionally_add_pattern(self.patterns["singular"], { 
-                        "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
-                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
-                        #"conditional": "lambda match: True",
-                        "tag": noun.tag 
-                    })
+                    if noun.tag != "plur_to_sing":
+                        self.optionally_add_pattern(self.patterns["modern_plural"], { 
+                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
+                            "tag": noun.tag
+                        })
+                    if noun.tag != "sing_to_plur":
+                        self.optionally_add_pattern(self.patterns["singular"], { 
+                            "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
+                            "tag": noun.tag 
+                        })
 
                 if noun.plur_two.word:
-                    self.optionally_add_pattern(self.patterns["classical_plural"], { 
-                        "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
-                        #"conditional": "lambda match: True",
-                        "tag": noun.tag 
-                    })
-                    self.optionally_add_pattern(self.patterns["singular"], { 
-                        "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
-                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"', 
-                        #"conditional": "lambda match: True",
-                        "tag": noun.tag 
-                    })
+                    if noun.tag != "plur_to_sing":
+                        self.optionally_add_pattern(self.patterns["classical_plural"], { 
+                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
+                            "tag": noun.tag
+                        })
+                    if noun.tag != "sing_to_plur":
+                        self.optionally_add_pattern(self.patterns["singular"], { 
+                            "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
+                            "tag": noun.tag 
+                        })
                 else:
-                    self.optionally_add_pattern(self.patterns["classical_plural"], { 
-                        "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                        "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
-                        #"conditional": "lambda match: True",
-                        "tag": noun.tag 
-                    })
+                    if noun.tag != "plur_to_sing":
+                        self.optionally_add_pattern(self.patterns["classical_plural"], { 
+                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
+                            #"conditional": "lambda match: True",
+                            "tag": noun.tag 
+                        })
 
             elif RECURSE.search(noun.sing.word):
                 self.add_recurse_patterns(noun)
