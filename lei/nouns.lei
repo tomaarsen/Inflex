@@ -2767,7 +2767,8 @@
         -trix                   =>  -trixes                     |  -trices
         -x                      =>  -xes                        |
         -y                      =>  -ies                        |
-        -z                      =>  -zzes                       |
+        -[^z]z                  =>  -[^z]zzes                   |
+        -zz                     =>  -zzes                       |
         -zoon                   =>                              |  -zoa
 
 # Very general patterns of inflection whose singular forms are not sufficiently indicative of singularity
