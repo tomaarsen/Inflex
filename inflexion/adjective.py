@@ -88,6 +88,8 @@ class Adjective(Term):
         "many": "more",
         "much": "more",
         "most": "more",
+
+        "least": "lesser",
     }
 
     _superlative_conversions = {
@@ -106,6 +108,9 @@ class Adjective(Term):
         "many": "most",
         "much": "most",
         "more": "most",
+
+        "less": "least",
+        "lesser": "least",
     }
 
     """
