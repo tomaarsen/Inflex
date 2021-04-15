@@ -181,6 +181,7 @@
     cul-de-four            =>                  | culs-de-four
     cul-de-lampe           =>                  | culs-de-lampe
     cul-de-sac             =>                  | culs-de-sac
+    curriculum vitae       => curricula vitae  | 
     editio princeps        =>                  | editiones principes
     ens rationis           =>                  | entia rationis
     ens reale              =>                  | entia realia
@@ -2771,6 +2772,7 @@
         <sing_to_plur>  -[^aeiouy]z             =>  -[^aeiouy]zes               |
                         -z                      =>  -zzes                       |
                         -zoon                   =>                              |  -zoa
+        <plur_to_sing>  -a                      =>  -ae                         |
 
 # Very general patterns of inflection whose singular forms are not sufficiently indicative of singularity
 
