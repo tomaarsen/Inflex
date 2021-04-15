@@ -787,10 +787,6 @@ class NounTestWriter(TestWriter):
                 "in": test_arg["in"].title(),
                 "out": test_arg["out"].title(),
             })
-            converted_test_args.append({
-                "in": test_arg["in"].upper(),
-                "out": test_arg["out"].upper(),
-            })
         self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
     def write_to_modern_plural_test(self):
@@ -837,10 +833,6 @@ class NounTestWriter(TestWriter):
                     "in": test_arg["in"].title(),
                     "out": test_arg["out"].title(),
                 })
-                converted_test_args.append({
-                    "in": test_arg["in"].upper(),
-                    "out": test_arg["out"].upper(),
-                })
         self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
     def write_to_classical_plural_test(self):
@@ -886,10 +878,6 @@ class NounTestWriter(TestWriter):
                 converted_test_args.append({
                     "in": test_arg["in"].title(),
                     "out": test_arg["out"].title(),
-                })
-                converted_test_args.append({
-                    "in": test_arg["in"].upper(),
-                    "out": test_arg["out"].upper(),
                 })
         self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
