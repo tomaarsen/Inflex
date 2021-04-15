@@ -62,17 +62,13 @@ class Term(object):
             "transformation": _transform(str.title)
         },
         "upper": {
-            "regex": re.compile(r"^[^a-z]+$"),
-            "transformation": _transform(str.upper)
+            "regex": re.compile(r"^[A-Z]+s?$"),
+            "transformation": _transform(lambda word: word[:-1].upper() + word[-1] if word.endswith(("s", "S")) else word.upper())
         },
         "Mc": {
             "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
             "transformation": _transform(lambda word: "Mc" + word[2:].title() if word.lower().startswith("mc") else word.title())
         },
-        "AbbreviationPlural": {
-            "regex": re.compile(r"^[A-Z]+s$"),
-            "transformation": _transform(lambda word: word[:-1].upper() + word[-1] if word.endswith(("s", "S")) else word.upper())
-        }
     }
 
     # Regex for finding a word
