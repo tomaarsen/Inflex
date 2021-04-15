@@ -147,7 +147,7 @@ def convert_to_plural(word: str) -> str:
     """
     if word in adj_plural_of:
         return adj_plural_of[word]
-    if word.lower() in adj_plural_of:
+    if not word.islower() and word.lower() in adj_plural_of:
         return adj_plural_of[word.lower()]
     return word
 
@@ -162,7 +162,7 @@ def convert_to_singular(word: str) -> str:
     """
     if word in adj_singular_of:
         return adj_singular_of[word]
-    if word.lower() in adj_singular_of:
+    if not word.islower() and word.lower() in adj_singular_of:
         return adj_singular_of[word.lower()]
     return word
 '''
