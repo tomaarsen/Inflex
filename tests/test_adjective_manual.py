@@ -625,7 +625,19 @@ class TestAdjectives(unittest.TestCase):
         ["wise", "wiser", "wisest"],
         ["worldly", "worldlier", "worldliest"],
         ["worthy", "worthier", "worthiest"],
-        ["young", "younger", "youngest"]
+        ["young", "younger", "youngest"],
+
+        ["major league", "more major league", "most major league"],
+        ["pure and simple", "purer and simpler", "purest and simplest"],
+        ["quick and dirty", "quicker and dirtier", "quickest and dirtiest"],
+        ["high and mighty", "higher and mightier", "highest and mightiest"],
+        ["lean and mean", "leaner and meaner", "leanest and meanest"],
+        ["short and sweet", "shorter and sweeter", "shortest and sweetest"],
+        ["neat and tidy", "neater and tidier", "neatest and tidiest"],
+        ["cutting edge", "more cutting edge", "most cutting edge"],
+        ["future proof", "more future proof", "most future proof"],
+        ["morbidly obese", "more morbidly obese", "most morbidly obese"],
+        ["good for someone", "better for someone", "best for someone"],
     ]
 
     def test_to_comparative(self):
@@ -648,6 +660,44 @@ class TestAdjectives(unittest.TestCase):
                     "in": adjective,
                     "out": superlative,
                     "desc": f"Adjective({repr(adjective)}).superlative() => {repr(superlative)}",
+                    "kwargs": dict()
+                }
+                adj = Adjective(test_case["in"])
+                self.assertEqual(adj.superlative(**test_case["kwargs"]), test_case["out"],
+                                 test_case["desc"])
+
+    def test_from_comp_to_comp(self):
+        comparative_exceptions = [
+            "better",
+            "worse",
+            "further",
+            "more"
+        ]
+        for comparative in comparative_exceptions:
+            with self.subTest():
+                test_case = {
+                    "in": comparative,
+                    "out": comparative,
+                    "desc": f"Adjective({repr(comparative)}).comparative() => {repr(comparative)}",
+                    "kwargs": dict()
+                }
+                adj = Adjective(test_case["in"])
+                self.assertEqual(adj.comparative(**test_case["kwargs"]), test_case["out"],
+                                 test_case["desc"])
+
+    def test_from_super_to_super(self):
+        superlative_exceptions = [
+            "best",
+            "worst",
+            "furthest",
+            "most"
+        ]
+        for superlative in superlative_exceptions:
+            with self.subTest():
+                test_case = {
+                    "in": superlative,
+                    "out": superlative,
+                    "desc": f"Adjective({repr(superlative)}).superlative() => {repr(superlative)}",
                     "kwargs": dict()
                 }
                 adj = Adjective(test_case["in"])
