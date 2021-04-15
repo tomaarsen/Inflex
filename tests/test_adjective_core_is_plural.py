@@ -24,6 +24,20 @@ class TestAdjectiveIsSingular(unittest.TestCase):
     ]
     '''
     test_args = [
+        {'in': 'A', 'out': False},
+        {'in': 'An', 'out': False},
+        {'in': 'Her', 'out': False},
+        {'in': 'His', 'out': False},
+        {'in': 'Its', 'out': False},
+        {'in': 'My', 'out': False},
+        {'in': 'Our', 'out': True},
+        {'in': 'Some', 'out': True},
+        {'in': 'That', 'out': False},
+        {'in': 'Their', 'out': True},
+        {'in': 'These', 'out': True},
+        {'in': 'This', 'out': False},
+        {'in': 'Those', 'out': True},
+        {'in': 'Your', 'out': True},
         {'in': 'a', 'out': False},
         {'in': 'an', 'out': False},
         {'in': 'her', 'out': False},

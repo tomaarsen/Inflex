@@ -24,6 +24,19 @@ class TestAdjectiveToPlural(unittest.TestCase):
     ]
     '''
     test_args = [
+        {'in': 'An', 'out': 'Some'},
+        {'in': 'Her', 'out': 'Their'},
+        {'in': 'His', 'out': 'Their'},
+        {'in': 'Its', 'out': 'Their'},
+        {'in': 'My', 'out': 'Our'},
+        {'in': 'Our', 'out': 'Our'},
+        {'in': 'Some', 'out': 'Some'},
+        {'in': 'That', 'out': 'Those'},
+        {'in': 'Their', 'out': 'Their'},
+        {'in': 'These', 'out': 'These'},
+        {'in': 'This', 'out': 'These'},
+        {'in': 'Those', 'out': 'Those'},
+        {'in': 'Your', 'out': 'Your'},
         {'in': 'a', 'out': 'some'},
         {'in': 'an', 'out': 'some'},
         {'in': 'her', 'out': 'their'},

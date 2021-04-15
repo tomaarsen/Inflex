@@ -207,6 +207,12 @@ class VerbTestWriter(TestWriter):
             } for plur, sing in self.reader.literals["singular"].items()
             if sing != plur
         ]
+        test_args += [
+            {
+                "in": args["in"].title(),
+                "out": args["out"]
+            } for args in test_args
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_is_plural_test(self):
@@ -226,6 +232,12 @@ class VerbTestWriter(TestWriter):
             } for sing, plur in self.reader.literals["plural"].items()
             if sing != plur
         ]
+        test_args += [
+            {
+                "in": args["in"].title(),
+                "out": args["out"]
+            } for args in test_args
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_singular_test(self):
@@ -244,6 +256,13 @@ class VerbTestWriter(TestWriter):
                 "out": sing
             } for plur, sing in self.reader.literals["singular"].items()
         ]
+        test_args += [
+            {
+                "in": args["in"].title(),
+                "out": args["out"].title()
+            } for args in test_args
+            if len(args["in"]) > 1
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_plural_test(self):
@@ -261,6 +280,13 @@ class VerbTestWriter(TestWriter):
                 "in": sing,
                 "out": plur
             } for sing, plur in self.reader.literals["plural"].items()
+        ]
+        test_args += [
+            {
+                "in": args["in"].title(),
+                "out": args["out"].title()
+            } for args in test_args
+            if len(args["in"]) > 1
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
