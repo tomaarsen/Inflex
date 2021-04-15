@@ -2764,7 +2764,7 @@
                         -[aeo]use               => -[aeo]uses                   |
                         -us                     =>  -uses                       |
                         -[^ns]sis               =>                              |  -[^ns]ses
-                        -trix                   =>  -trixes                     | -trices
+                        -trix                   =>  -trices                     | 
                         -x                      =>  -xes                        |
                         -y                      =>  -ies                        |
         <sing_to_plur>  -[^aeiouy]z             =>  -[^aeiouy]zes               |
