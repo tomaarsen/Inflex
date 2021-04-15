@@ -2768,8 +2768,7 @@
                         -x                      =>  -xes                        |
                         -y                      =>  -ies                        |
         <sing_to_plur>  -[^aeiouy]z             =>  -[^aeiouy]zes               |
-        <sing_to_plur>  -z                      =>  -zzes                       |
-        <plur_to_sing>  -z                      =>  -zzes                       |
+                        -z                      =>  -zzes                       |
                         -zoon                   =>                              |  -zoa
 
 # Very general patterns of inflection whose singular forms are not sufficiently indicative of singularity
