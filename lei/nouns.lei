@@ -2762,6 +2762,7 @@
                         -[rnlpwaeio]se          =>  -[rnlpwaeio]ses             |
                         -ss                     =>  -sses                       |
                         -[aeo]use               => -[aeo]uses                   |
+        <sing_to_plur>  -um                     =>  -ums                        |  -a
                         -us                     =>  -uses                       |
                         -[^ns]sis               =>                              |  -[^ns]ses
                         -trix                   =>  -trices                     | 
