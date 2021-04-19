@@ -11,6 +11,6 @@ source =
 [report]
 show_missing = true
 precision = 2
-exclude_lines = 
+exclude_lines =
     raise NotImplementedError
     pragma: no cover

@@ -199,8 +199,10 @@ class Adjective(Term):
         # Is it possessive form?
         match = self._possessive_regex.match(self.term)
         if match:
-            n = Noun(match.group(1)).plural() + "'s"
-            return self._reapply_whitespace(re.sub(r"s's\Z", "s'", n, flags=re.MULTILINE | re.DOTALL))
+            noun = Noun(match.group(1)).plural() + "'s"
+            return self._reapply_whitespace(re.sub(r"s's\Z", "s'",
+                                                   noun,
+                                                   flags=re.MULTILINE | re.DOTALL))
 
         if self.term.lower() in self._possessive_inflexion:
             return self._encase(self._possessive_inflexion[self.term.lower()]["plural"][person])
@@ -253,7 +255,7 @@ class Adjective(Term):
         TODO: Mine wiktionary for tests
 
         Returns:
-            bool: True if the system believes that "more" or "most" should be prepended to 
+            bool: True if the system believes that "more" or "most" should be prepended to
                 `word` when converting it to comparative or superlative, respectively.
                 Based on the deemed syllable count of `word`
         """
@@ -265,8 +267,8 @@ class Adjective(Term):
             return True
 
         if (2 in syllable_counts and
-            word and
-            not word.endswith(("y", "ow", "le", "er"))
+                word and
+                not word.endswith(("y", "ow", "le", "er"))
             ):
             return True
 
@@ -292,8 +294,10 @@ class Adjective(Term):
             We convert these to "boringer" and "famouser".
             In reality they should be "more boring" and "more famous"
 
-        TODO: Adjectives that already represent the greatest degree, e.g. perfect, complete, total, empty
-        TODO: Adjectives that cannot be compared due to their meaning, e.g. pregnant, equal, ideal, British
+        TODO: Adjectives that already represent the greatest degree,
+              e.g. perfect, complete, total, empty
+        TODO: Adjectives that cannot be compared due to their meaning,
+              e.g. pregnant, equal, ideal, British
         TODO: e.g. "quiet" is converted to "more quiet" rather than "quieter"
 
         TODO: Often should change the second word in "dog-friendly" type collocations.

@@ -206,7 +206,7 @@ class Term(object):
         Returns:
             Term: A Term object, or a subclass thereof.
         """
-        return self.classical() # pragma: no cover
+        return self.classical()  # pragma: no cover
 
     def _check_valid_person(self, person: int) -> bool:
         """Return True if `person` is valid, i.e. in [0, 1, 2, 3].

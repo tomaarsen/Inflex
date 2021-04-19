@@ -51,7 +51,7 @@ class Syllable:
         Examples:
             >>> Stress.get_stress("abdomen")
             [[0, 1, 0], [1, 0, 0]]
-            
+
             This shows that the word has two interpretations, both with 3 syllables.
             In the first interpretation, the second syllable has primary stress, while
             in the second interpretation, the first syllable has primary stress.

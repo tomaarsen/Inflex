@@ -63,7 +63,7 @@ test_data = [
     ("a",  "g-th"),
     ("an", "h-th"),
     # ("an", "i-th"),
-    # # i-th is converted to I-th. This is Failing - but not a critical issue, 
+    # # i-th is converted to I-th. This is Failing - but not a critical issue,
     # so I removed this test.
     ("a",  "j-th"),
     ("a",  "k-th"),
@@ -292,7 +292,7 @@ class IndefiniteTestWriter(TestWriter):
         test_name_pascal = "PrependIndefiniteArticle"
         test_args = [
             {
-                "in": word, 
+                "in": word,
                 "out": f"{article} {word}"
             } for article, word in test_data
         ]
@@ -304,7 +304,7 @@ class IndefiniteTestWriter(TestWriter):
         test_name_pascal = "SelectIndefiniteArticle"
         test_args = [
             {
-                "in": word, 
+                "in": word,
                 "out": article
             } for article, word in test_data
         ]

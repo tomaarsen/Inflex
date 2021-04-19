@@ -148,7 +148,7 @@
 
 
 # Compound words (mostly imported) that inflect irregularly (for English)...
- 
+
     agent provocateur      =>                  | agents provocateurs
     aide-de-camp           =>                  | aides-de-camp
     ale-wife               => ale-wives        |
@@ -181,7 +181,7 @@
     cul-de-four            =>                  | culs-de-four
     cul-de-lampe           =>                  | culs-de-lampe
     cul-de-sac             =>                  | culs-de-sac
-    curriculum vitae       => curricula vitae  | 
+    curriculum vitae       => curricula vitae  |
     editio princeps        =>                  | editiones principes
     ens rationis           =>                  | entia rationis
     ens reale              =>                  | entia realia
@@ -2742,7 +2742,7 @@
 
 
 # Standard patterns of inflection for other nouns (in increasing order of generality)...
-        
+       
                         -oux                    =>  -oux                        |
                         -[aeiou]o               =>  -[aeiou]os                  |
                         -[aeo]lf                =>                              |  -[aeo]lves
@@ -2766,7 +2766,7 @@
         <sing_to_plur>  -um                     =>  -ums                        |  -a
                         -us                     =>  -uses                       |
                         -[^ns]sis               =>                              |  -[^ns]ses
-                        -trix                   =>  -trices                     | 
+                        -trix                   =>  -trices                     |
                         -x                      =>  -xes                        |
                         -y                      =>  -ies                        |
         <sing_to_plur>  -[^aeiouy]z             =>  -[^aeiouy]zes               |

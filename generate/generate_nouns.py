@@ -43,7 +43,7 @@ DATA_PAT         = re.compile(r"""
     {WS}                         # ...trailing whitespace
     (?:{COMMENT_PAT})?               # Optional trailing comment
     \Z                          # ...trailing whitespace
-""".format(WS=WS.pattern, COMMENT_PAT=COMMENT_PAT.pattern), 
+""".format(WS=WS.pattern, COMMENT_PAT=COMMENT_PAT.pattern),
     flags=xms)
 RECURSE  = re.compile(r"\(SING\) | \(PREP\)", flags=xms)
 RECURSE_GROUPED = re.compile(r"""
@@ -140,7 +140,7 @@ class Noun(object):
 
     def has_hyphen(self):
         return "-" in self.sing.word or "-" in self.plur_one.word or "-" in self.plur_two.word
-    
+   
     def replace_hyphens(self, repl: str):
         self.sing.word = self.sing.word.replace("-", repl)
         self.plur_one.word = self.plur_one.word.replace("-", repl)
@@ -148,9 +148,9 @@ class Noun(object):
 
     def __str__(self) -> str:
         #return (f"<{self.tag}> " if self.tag else "") + f"{self.sing}: {self.plur_one} | "
-        return "{: <14} : {: <20} => {: <20} | {: <20}".format(self.tag or "", 
-                                                              str(self.sing), 
-                                                              str(self.plur_one) if self.plur_one.word else "", 
+        return "{: <14} : {: <20} => {: <20} | {: <20}".format(self.tag or "",
+                                                              str(self.sing),
+                                                              str(self.plur_one) if self.plur_one.word else "",
                                                               str(self.plur_two) if self.plur_two.word else "")
 
 class Reader(object):
@@ -165,7 +165,7 @@ class Reader(object):
         self.fname    = fname
 
     def get_readlines(self) -> List[str]:
-        with open(self.fname, "r") as f: 
+        with open(self.fname, "r") as f:
             return f.readlines()
 
     def parse_file(self):
@@ -197,12 +197,12 @@ class Reader(object):
         """
 
         lines = self.get_readlines()
-        
+       
         for line in lines:
             # Skip empty or comment lines
             if COMMENT_LINE_PAT.match(line) or BLANK_LINE_PAT.match(line):
                 continue
-            
+           
             # Extract data
             match = DATA_PAT.match(line)
             if match:
@@ -210,55 +210,55 @@ class Reader(object):
             else:
                 # TODO: Change exception
                 raise Exception("Unknown input:", line)
-            
+           
             if noun.sing.gen:
                 if noun.plur_one.word:
                     if noun.tag != "plur_to_sing":
-                        self.optionally_add_pattern(self.patterns["modern_plural"], { 
-                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
+                        self.optionally_add_pattern(self.patterns["modern_plural"], {
+                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}",
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"',
                             "tag": noun.tag
                         })
                     if noun.tag != "sing_to_plur":
-                        self.optionally_add_pattern(self.patterns["singular"], { 
-                            "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}", 
+                        self.optionally_add_pattern(self.patterns["singular"], {
+                            "from": f"({noun.sing.gen}{noun.plur_one.restrict}){noun.plur_one.word}",
                             "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
                             "tag": noun.tag
                         })
                 elif noun.plur_two.word:
                     if noun.tag != "plur_to_sing":
-                        self.optionally_add_pattern(self.patterns["modern_plural"], { 
-                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
+                        self.optionally_add_pattern(self.patterns["modern_plural"], {
+                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}",
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"',
                             "tag": noun.tag
                         })
                     if noun.tag != "sing_to_plur":
-                        self.optionally_add_pattern(self.patterns["singular"], { 
-                            "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
+                        self.optionally_add_pattern(self.patterns["singular"], {
+                            "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}",
                             "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
-                            "tag": noun.tag 
+                            "tag": noun.tag
                         })
 
                 if noun.plur_two.word:
                     if noun.tag != "plur_to_sing":
-                        self.optionally_add_pattern(self.patterns["classical_plural"], { 
-                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"', 
+                        self.optionally_add_pattern(self.patterns["classical_plural"], {
+                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}",
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_two.word}"',
                             "tag": noun.tag
                         })
                     if noun.tag != "sing_to_plur":
-                        self.optionally_add_pattern(self.patterns["singular"], { 
-                            "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}", 
+                        self.optionally_add_pattern(self.patterns["singular"], {
+                            "from": f"({noun.sing.gen}{noun.plur_two.restrict}){noun.plur_two.word}",
                             "to": f'lambda subterms: f"{{subterms[0]}}{noun.sing.word}"',
-                            "tag": noun.tag 
+                            "tag": noun.tag
                         })
                 else:
                     if noun.tag != "plur_to_sing":
-                        self.optionally_add_pattern(self.patterns["classical_plural"], { 
-                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}", 
-                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"', 
+                        self.optionally_add_pattern(self.patterns["classical_plural"], {
+                            "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}",
+                            "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"',
                             #"conditional": "lambda match: True",
-                            "tag": noun.tag 
+                            "tag": noun.tag
                         })
 
             elif RECURSE.search(noun.sing.word):
@@ -270,42 +270,42 @@ class Reader(object):
 
                 # TODO: Investigate this setting to 1
                 noun.plur_one.gen = 1
-            
+           
             if not noun.plur_one.gen and not noun.plur_two.gen:
                 self.add_literals(noun)
                 self.add_words(noun)
 
     def add_recurse_patterns(self, noun):
         self.optionally_add_pattern(self.patterns["modern_plural"], {
-            **self.build_recursive(_from=noun.sing.word, 
-                                    to=noun.plur_one.word, 
-                                    from_type="singular", 
-                                    to_type="modern_plural"), 
+            **self.build_recursive(_from=noun.sing.word,
+                                    to=noun.plur_one.word,
+                                    from_type="singular",
+                                    to_type="modern_plural"),
             **{"tag": noun.tag}
         })
         self.optionally_add_pattern(self.patterns["singular"], {
-            **self.build_recursive(_from=noun.plur_one.word, 
-                                    to=noun.sing.word, 
-                                    from_type="modern_plural", 
-                                    to_type="singular"), 
+            **self.build_recursive(_from=noun.plur_one.word,
+                                    to=noun.sing.word,
+                                    from_type="modern_plural",
+                                    to_type="singular"),
             **{"tag": noun.tag}
         })
 
         if not noun.plur_two.word:
             noun.plur_two = noun.plur_one
-        
+       
         self.optionally_add_pattern(self.patterns["classical_plural"], {
-            **self.build_recursive(_from=noun.sing.word, 
-                                    to=noun.plur_two.word, 
-                                    from_type="singular", 
-                                    to_type="classical_plural"), 
+            **self.build_recursive(_from=noun.sing.word,
+                                    to=noun.plur_two.word,
+                                    from_type="singular",
+                                    to_type="classical_plural"),
             **{"tag": noun.tag}
         })
         self.optionally_add_pattern(self.patterns["singular"], {
-            **self.build_recursive(_from=noun.plur_two.word, 
-                                    to=noun.sing.word, 
-                                    from_type="classical_plural", 
-                                    to_type="singular"), 
+            **self.build_recursive(_from=noun.plur_two.word,
+                                    to=noun.sing.word,
+                                    from_type="classical_plural",
+                                    to_type="singular"),
             **{"tag": noun.tag}
         })
 
@@ -335,10 +335,10 @@ class Reader(object):
 
     def build_recursive(self, _from: str, to: str, from_type: str, to_type: str):
         check_conditional = ""
-        
+       
         def wrap(input_string: str) -> str:
             return '{' + str(input_string) + '}'
-        
+       
         def irepl(match, input_string: str, replace: str) -> str:
             """
             Replace using indices from match
@@ -361,7 +361,7 @@ class Reader(object):
             if from_match.group("star"):
                 _from = irepl(from_match, _from, r"(.*?)")
                 to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
-            
+           
             elif from_match.group("sing"):
                 _from = irepl(from_match, _from, r"(.*?)")
                 to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(subterms[{n-1}]) if is_singular(subterms[{n-1}]) else subterms[{n-1}]"))
@@ -385,7 +385,7 @@ class Reader(object):
                 to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
 
             n -= 1
-        
+       
         return {
             "from": _from,
             "to": f'lambda subterms: f"{to}"',
@@ -397,7 +397,7 @@ class CodeWriter(object):
         super().__init__()
         self.reader = reader
         self.fname = fname
-    
+   
     def write_file(self):
         version = datetime.strftime(datetime.now(), '%Y%m%d.%H%M%S')
         generated_code = f'''\
@@ -446,13 +446,13 @@ def rei(regex: str) -> re.Pattern:
 
             data = {**data, **data_to_add}
             generated_code += f"{key}_of = " + json.dumps(data, indent=4, sort_keys=True) + "\n\n"
-        
+       
         for key in self.reader.literals:
             generated_code += self.get_convert_rule_output(key, self.reader.patterns[key]) + "\n\n"
-        
+       
         generated_code += self.get_recognize_rule_output("plural", self.reader.patterns["singular"]) + "\n\n"
         generated_code += self.get_recognize_rule_output("singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
-        
+       
         generated_code += '''def known_plural(word: str) -> bool:
     """True if `word` is known to be plural.
 
@@ -643,19 +643,19 @@ class NounTestWriter(TestWriter):
         test_name_pascal:   Name of the test in Pascal Case
         """
         self.prepositions = [
-            "about", "above", "across", "after", "among", "around", "athwart", "at", "before", 
-            "behind", "below", "beneath", "beside", "besides", "between", "betwixt", "beyond", 
-            "but", "by", "during", "except", "for", "from", "into", "in", "near", "off", "of", 
-            "onto", "on", "out", "over", "since", "till", "to", "under", "until", "unto", 
+            "about", "above", "across", "after", "among", "around", "athwart", "at", "before",
+            "behind", "below", "beneath", "beside", "besides", "between", "betwixt", "beyond",
+            "but", "by", "during", "except", "for", "from", "into", "in", "near", "off", "of",
+            "onto", "on", "out", "over", "since", "till", "to", "under", "until", "unto",
             "upon", "with"]
         # The number of prepositions that are prepended to each regular test
         self.prep_n = 1
 
-        self.to_plural_upper_exceptions = ["I", 
-            "Jerry", "jerry", "Jerrys", "jerries", 
-            "Auslese", "auslese", 
-            "Mary", "mary", "Marys", "maries", 
-            "Atlas", "atlas", 
+        self.to_plural_upper_exceptions = ["I",
+            "Jerry", "jerry", "Jerrys", "jerries",
+            "Auslese", "auslese",
+            "Mary", "mary", "Marys", "maries",
+            "Atlas", "atlas",
             "Nenets", "nenets", "Nentsi", "nentsi", "nentsy"]
 
     def preposition_gen(self) -> Generator[str, None, None]:
@@ -778,7 +778,7 @@ class NounTestWriter(TestWriter):
                         "in": f"{prep}  {test_arg['in']}",
                         "out": f"{prep}  {test_arg['out']}",
                     })
-            
+           
             converted_test_args.append({
                 "in": "  " + test_arg["in"] + " ",
                 "out": "  " + test_arg["out"] + " ",
@@ -822,7 +822,7 @@ class NounTestWriter(TestWriter):
                         "in": f" {prep}  {test_arg['in']}",
                         "out": f" {prep}  {test_arg['out']}",
                     })
-            
+           
             # Filter for known exceptions that produce broken tests:
             if test_arg["in"] not in self.to_plural_upper_exceptions:
                 converted_test_args.append({
@@ -868,7 +868,7 @@ class NounTestWriter(TestWriter):
                         "in": f"{prep}  {test_arg['in']} ",
                         "out": f"{prep}  {test_arg['out']} ",
                     })
-            
+           
             # Filter for known exceptions that produce broken tests:
             if test_arg["in"] not in self.to_plural_upper_exceptions:
                 converted_test_args.append({
@@ -881,7 +881,7 @@ class NounTestWriter(TestWriter):
                 })
         self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
 
-if __name__ == "__main__":    
+if __name__ == "__main__":   
     in_fname = "lei//nouns.lei"
     out_fname = "inflex//noun_core.py"
     class_name = "Noun"
@@ -895,7 +895,7 @@ if __name__ == "__main__":
     twriter = NounTestWriter(reader, class_name)
     twriter.write_tests()
 
-# IDEA: Convert 
+# IDEA: Convert
 # rei(r"^(.+)zzes$"): {"output": lambda match: f"{match.group(1)}z"},
 # into `rei(r"^(.+)zzes$"), lambda pattern, term: pattern.subn(term)`
 # and then return if result is 1

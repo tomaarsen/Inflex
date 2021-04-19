@@ -31,7 +31,7 @@ DATA_PAT         = re.compile(r"""
         {WS}
         (?:{COMMENT_PAT})?          # Optional trailing comment
     \Z
-""".format(WS=WS.pattern, WORD_SEQ=WORD_SEQ.pattern, COMMENT_PAT=COMMENT_PAT.pattern), 
+""".format(WS=WS.pattern, WORD_SEQ=WORD_SEQ.pattern, COMMENT_PAT=COMMENT_PAT.pattern),
     flags=xms)
 CONS     = re.compile(r"\(CONS\)", flags=xms)
 VOWEL    = re.compile(r"\(VOWEL\)", flags=xms)
@@ -89,7 +89,7 @@ class Verb(object):
         super().__init__()
         """
         Extract line information.
-        
+       
         sing -> Singular
         plur -> Plural
         pret -> Preterite
@@ -112,7 +112,7 @@ class Verb(object):
                 self.pret_plur = w.split()
 
         """
-        For each word: 
+        For each word:
         - Replace (CONS), (VOWEL) and (VOWELS) macros: "(VOWEL)ys" -> "[aeiou]ys"
         - Replace - and * with the proper regex variant: "-ys" -> ".+ys"
         - Split up word (e.g. "[aeiou]ys") into restriction (e.g. "[aeiou]") and remainder (e.g. "ys")
@@ -153,7 +153,7 @@ class Reader(object):
         self.fname    = fname
 
     def get_readlines(self) -> List[str]:
-        with open(self.fname, "r") as f: 
+        with open(self.fname, "r") as f:
             return f.readlines()
 
     def parse_file(self):
@@ -161,12 +161,12 @@ class Reader(object):
         Fill `pattern`, `literal` and `words`
         """
         lines = self.get_readlines()
-        
+       
         for line in lines:
             # Skip empty or comment lines
             if COMMENT_LINE_PAT.match(line) or BLANK_LINE_PAT.match(line):
                 continue
-            
+           
             # Extract data
             match = DATA_PAT.match(line)
             if match:
@@ -174,7 +174,7 @@ class Reader(object):
             else:
                 # TODO: Change exception
                 raise Exception("Unknown input:", line)
-            
+           
             if verb.has_gen():
                 self.optionally_add_pattern(self.patterns["plural"], {
                     "is": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
@@ -246,7 +246,7 @@ class Reader(object):
                         "to": f'"{verb.plur.word}"'
                     })
                     """
-            
+           
             if not (verb.sing.gen and verb.plur.gen and verb.pret.gen):
                 self.add_literals_and_words(verb)
 
@@ -272,7 +272,7 @@ class Reader(object):
 
         self.words["singular"].add(verb.sing.word)
         self.words["plural"].add(verb.plur.word)
-    
+   
         if verb.pret.word:
             self.words["past"].add(verb.pret.word)
 
@@ -286,7 +286,7 @@ class Reader(object):
                 self.words["past"].add(verb.pret_plur)
             else:
                 self.optionally_add_literal(self.literals["past"], verb.plur.word, verb.pret.word)
-        
+       
         if verb.pres.word:
             self.words["pres_part"].add(verb.pres.word)
 
@@ -310,7 +310,7 @@ class CodeWriter(object):
         super().__init__()
         self.reader = reader
         self.fname = fname
-    
+   
     def write_file(self):
         version = datetime.strftime(datetime.now(), '%Y%m%d.%H%M%S')
         generated_code = f'''\
@@ -329,14 +329,14 @@ VERSION = {version}
 '''
 
         for key in self.reader.literals:
-            generated_code += f"{key}_of = " + json.dumps(reader.literals[key], indent=4, sort_keys=True) + "\n\n" 
-        
+            generated_code += f"{key}_of = " + json.dumps(reader.literals[key], indent=4, sort_keys=True) + "\n\n"
+       
         for key in self.reader.literals:
             generated_code += self.get_convert_rule_output(key, self.reader.patterns[key]) + "\n\n"
-        
+       
         for key in self.reader.literals:
             generated_code += self.get_recognize_rule_output(key, self.reader.patterns[key]) + "\n\n"
-        
+       
         generated_code += '''\
 past_of_values = set(past_of.values())
 pres_part_of_values = set(pres_part_of.values())
@@ -531,12 +531,12 @@ class VerbTestWriter(TestWriter):
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
         """
-    
+   
     def write_tests(self):
         # Ignore "am", "is" and "are" for these tests
         self.reader.words["plural"] -= {"am", "is", "are"}
         self.reader.words["singular"] -= {"am", "is", "are"}
-        
+       
         self.write_is_singular_test()
         self.write_is_plural_test()
         self.write_is_past_test()
@@ -551,7 +551,7 @@ class VerbTestWriter(TestWriter):
 
     def write_is_singular_test(self):
         """
-        Note, only tests whether `is_singular` detects that known singular 
+        Note, only tests whether `is_singular` detects that known singular
         words are indeed singular
         """
         test_path = self.test_folder_name + "//test_verb_core_is_singular.py"
@@ -574,7 +574,7 @@ class VerbTestWriter(TestWriter):
 
     def write_is_plural_test(self):
         """
-        Note, only tests whether `is_plural` detects that known plural 
+        Note, only tests whether `is_plural` detects that known plural
         words are indeed plural
         """
         test_path = self.test_folder_name + "//test_verb_core_is_plural.py"
@@ -597,7 +597,7 @@ class VerbTestWriter(TestWriter):
 
     def write_is_past_test(self):
         """
-        Note, only tests whether `is_past` detects that known past 
+        Note, only tests whether `is_past` detects that known past
         words are indeed past
         """
         test_path = self.test_folder_name + "//test_verb_core_is_past.py"
@@ -620,7 +620,7 @@ class VerbTestWriter(TestWriter):
 
     def write_is_pres_part_test(self):
         """
-        Note, only tests whether `is_pres_part` detects that known present participle 
+        Note, only tests whether `is_pres_part` detects that known present participle
         words are indeed present participles
         """
         test_path = self.test_folder_name + "//test_verb_core_is_pres_part.py"
@@ -643,7 +643,7 @@ class VerbTestWriter(TestWriter):
 
     def write_is_past_part_test(self):
         """
-        Note, only tests whether `is_past_part` detects that known past participle 
+        Note, only tests whether `is_past_part` detects that known past participle
         words are indeed past participles
         """
         test_path = self.test_folder_name + "//test_verb_core_is_past_part.py"
@@ -773,15 +773,15 @@ class VerbTestWriter(TestWriter):
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
-if __name__ == "__main__":    
+if __name__ == "__main__":   
     in_fname = "lei//verbs.lei"
     out_fname = "inflex//verb_core.py"
     class_name = "Verb"
     reader = Reader(in_fname)
     reader.parse_file()
-    
+   
     cwriter = CodeWriter(reader, out_fname)
     cwriter.write_file()
-    
+   
     twriter = VerbTestWriter(reader, class_name)
     twriter.write_tests()
