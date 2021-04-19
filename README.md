@@ -7,6 +7,11 @@ This README is a stub, and is yet to be written.
 
 ---
 
+## Install
+```
+pip install inflex
+```
+
 ## Sample Usage
 ```python
 from inflex import Noun, Verb, Adjective
