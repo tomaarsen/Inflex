@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20210419.133659
+VERSION = 20210419.171916
 
 plural_of = {
     "abides": "abide",
@@ -3941,25 +3941,15 @@ past_part_convert_outputs = [
     "ed",
 ]
 
-plural_recognize_rules = [
-    re.compile(r"^(?:(.+[^s])|(.+)i|(.+)x|(.+)y|(.+)y|(.+[^b])i|(.+[^e])e|(.+[aeiou])y|(.+[aeiou])z|(.+[au])e|(.+[cs])h|(.+)ee|(.+)er|(.+)ic|(.+)oe|(.+)ss|(.+)ue|(.+)ye|(.+)ze|(.+)zz|(.+[aiy])nx|((?:.{2,})?)add|((?:.{2,})?)bid|((?:.{2,})?)buy|((?:.{2,})?)cut|((?:.{2,})?)fit|((?:.{2,})?)mow|((?:.{2,})?)pay|((?:.{2,})?)run|((?:.{2,})?)say|((?:.{2,})?)see|((?:.{2,})?)set|((?:.{2,})?)sew|((?:.{2,})?)try|((?:.{2,})?)use|((?:.{2,})?)wed|((?:.{2,})?)wet|(.+)eau|(.+)ieu|(.+)n't|((?:.{2,})?)bear|((?:.{2,})?)bind|((?:.{2,})?)call|((?:.{2,})?)cast|((?:.{2,})?)clad|((?:.{2,})?)draw|((?:.{2,})?)feed|((?:.{2,})?)grow|((?:.{2,})?)hang|((?:.{2,})?)hear|((?:.{2,})?)hide|((?:.{2,})?)knit|((?:.{2,})?)lend|((?:.{2,})?)make|((?:.{2,})?)melt|((?:.{2,})?)open|((?:.{2,})?)play|((?:.{2,})?)read|((?:.{2,})?)ride|((?:.{2,})?)sell|((?:.{2,})?)send|((?:.{2,})?)shut|((?:.{2,})?)spin|((?:.{2,})?)take|((?:.{2,})?)tell|((?:.{2,})?)turn|((?:.{2,})?)wind|((?:.{2,})?)work|(.+)ceps|(.+)trix|((?:.{2,})?)allow|((?:.{2,})?)breed|((?:.{2,})?)input|((?:.{2,})?)light|((?:.{2,})?)offer|((?:.{2,})?)serve|((?:.{2,})?)shear|((?:.{2,})?)shine|((?:.{2,})?)shoot|((?:.{2,})?)sleep|((?:.{2,})?)sling|((?:.{2,})?)smell|((?:.{2,})?)spell|((?:.{2,})?)spill|((?:.{2,})?)split|((?:.{2,})?)start|((?:.{2,})?)stick|((?:.{2,})?)teach|((?:.{2,})?)think|((?:.{2,})?)throw|((?:.{2,})?)weave|((?:.{2,})?)write|((?:.{2,})?)alight|((?:.{2,})?)appear|((?:.{2,})?)clothe|((?:.{2,})?)create|((?:.{2,})?)freeze|((?:.{2,})?)spread|((?:.{2,})?)strike|((?:.{2,})?)string|((?:.{2,})?)believe|((?:.{2,})?)include|((?:.{2,})?)consider)$"),
-]
+plural_recognize_rule = re.compile(r"^(?:(.+[^s])|(.+)i|(.+)x|(.+)y|(.+)y|(.+[^b])i|(.+[^e])e|(.+[aeiou])y|(.+[aeiou])z|(.+[au])e|(.+[cs])h|(.+)ee|(.+)er|(.+)ic|(.+)oe|(.+)ss|(.+)ue|(.+)ye|(.+)ze|(.+)zz|(.+[aiy])nx|((?:.{2,})?)add|((?:.{2,})?)bid|((?:.{2,})?)buy|((?:.{2,})?)cut|((?:.{2,})?)fit|((?:.{2,})?)mow|((?:.{2,})?)pay|((?:.{2,})?)run|((?:.{2,})?)say|((?:.{2,})?)see|((?:.{2,})?)set|((?:.{2,})?)sew|((?:.{2,})?)try|((?:.{2,})?)use|((?:.{2,})?)wed|((?:.{2,})?)wet|(.+)eau|(.+)ieu|(.+)n't|((?:.{2,})?)bear|((?:.{2,})?)bind|((?:.{2,})?)call|((?:.{2,})?)cast|((?:.{2,})?)clad|((?:.{2,})?)draw|((?:.{2,})?)feed|((?:.{2,})?)grow|((?:.{2,})?)hang|((?:.{2,})?)hear|((?:.{2,})?)hide|((?:.{2,})?)knit|((?:.{2,})?)lend|((?:.{2,})?)make|((?:.{2,})?)melt|((?:.{2,})?)open|((?:.{2,})?)play|((?:.{2,})?)read|((?:.{2,})?)ride|((?:.{2,})?)sell|((?:.{2,})?)send|((?:.{2,})?)shut|((?:.{2,})?)spin|((?:.{2,})?)take|((?:.{2,})?)tell|((?:.{2,})?)turn|((?:.{2,})?)wind|((?:.{2,})?)work|(.+)ceps|(.+)trix|((?:.{2,})?)allow|((?:.{2,})?)breed|((?:.{2,})?)input|((?:.{2,})?)light|((?:.{2,})?)offer|((?:.{2,})?)serve|((?:.{2,})?)shear|((?:.{2,})?)shine|((?:.{2,})?)shoot|((?:.{2,})?)sleep|((?:.{2,})?)sling|((?:.{2,})?)smell|((?:.{2,})?)spell|((?:.{2,})?)spill|((?:.{2,})?)split|((?:.{2,})?)start|((?:.{2,})?)stick|((?:.{2,})?)teach|((?:.{2,})?)think|((?:.{2,})?)throw|((?:.{2,})?)weave|((?:.{2,})?)write|((?:.{2,})?)alight|((?:.{2,})?)appear|((?:.{2,})?)clothe|((?:.{2,})?)create|((?:.{2,})?)freeze|((?:.{2,})?)spread|((?:.{2,})?)strike|((?:.{2,})?)string|((?:.{2,})?)believe|((?:.{2,})?)include|((?:.{2,})?)consider)$")
 
-singular_recognize_rules = [
-    re.compile(r"^(?:(.+[^s])s|(.+)is|(.+[^b])is|(.+[^e])es|(.+[aeiou])ys|(.+[au])es|(.+)ees|(.+)ers|(.+)ics|(.+)ies|(.+)ies|(.+)n't|(.+)oes|(.+)ues|(.+)xes|(.+)yes|(.+)zes|(.+)zes|(.+[cs])hes|((?:.{2,})?)adds|((?:.{2,})?)bids|((?:.{2,})?)buys|((?:.{2,})?)cuts|((?:.{2,})?)fits|((?:.{2,})?)mows|((?:.{2,})?)pays|((?:.{2,})?)runs|((?:.{2,})?)says|((?:.{2,})?)sees|((?:.{2,})?)sets|((?:.{2,})?)sews|((?:.{2,})?)uses|((?:.{2,})?)weds|((?:.{2,})?)wets|(.+)ceps|(.+)eaus|(.+)ieus|(.+)sses|(.+)zzes|(.+[aeiou])zzes|(.+[aiy])nxes|((?:.{2,})?)bears|((?:.{2,})?)binds|((?:.{2,})?)calls|((?:.{2,})?)casts|((?:.{2,})?)clads|((?:.{2,})?)draws|((?:.{2,})?)feeds|((?:.{2,})?)grows|((?:.{2,})?)hangs|((?:.{2,})?)hears|((?:.{2,})?)hides|((?:.{2,})?)knits|((?:.{2,})?)lends|((?:.{2,})?)makes|((?:.{2,})?)melts|((?:.{2,})?)opens|((?:.{2,})?)plays|((?:.{2,})?)reads|((?:.{2,})?)rides|((?:.{2,})?)sells|((?:.{2,})?)sends|((?:.{2,})?)shuts|((?:.{2,})?)spins|((?:.{2,})?)takes|((?:.{2,})?)tells|((?:.{2,})?)tries|((?:.{2,})?)turns|((?:.{2,})?)winds|((?:.{2,})?)works|((?:.{2,})?)allows|((?:.{2,})?)breeds|((?:.{2,})?)inputs|((?:.{2,})?)lights|((?:.{2,})?)offers|((?:.{2,})?)serves|((?:.{2,})?)shears|((?:.{2,})?)shines|((?:.{2,})?)shoots|((?:.{2,})?)sleeps|((?:.{2,})?)slings|((?:.{2,})?)smells|((?:.{2,})?)spells|((?:.{2,})?)spills|((?:.{2,})?)splits|((?:.{2,})?)starts|((?:.{2,})?)sticks|((?:.{2,})?)thinks|((?:.{2,})?)throws|((?:.{2,})?)weaves|((?:.{2,})?)writes|(.+)trixes|((?:.{2,})?)alights|((?:.{2,})?)appears|((?:.{2,})?)clothes|((?:.{2,})?)creates|((?:.{2,})?)freezes|((?:.{2,})?)spreads|((?:.{2,})?)strikes|((?:.{2,})?)strings|((?:.{2,})?)teaches|((?:.{2,})?)believes|((?:.{2,})?)includes|((?:.{2,})?)considers)$"),
-]
+singular_recognize_rule = re.compile(r"^(?:(.+[^s])s|(.+)is|(.+[^b])is|(.+[^e])es|(.+[aeiou])ys|(.+[au])es|(.+)ees|(.+)ers|(.+)ics|(.+)ies|(.+)ies|(.+)n't|(.+)oes|(.+)ues|(.+)xes|(.+)yes|(.+)zes|(.+)zes|(.+[cs])hes|((?:.{2,})?)adds|((?:.{2,})?)bids|((?:.{2,})?)buys|((?:.{2,})?)cuts|((?:.{2,})?)fits|((?:.{2,})?)mows|((?:.{2,})?)pays|((?:.{2,})?)runs|((?:.{2,})?)says|((?:.{2,})?)sees|((?:.{2,})?)sets|((?:.{2,})?)sews|((?:.{2,})?)uses|((?:.{2,})?)weds|((?:.{2,})?)wets|(.+)ceps|(.+)eaus|(.+)ieus|(.+)sses|(.+)zzes|(.+[aeiou])zzes|(.+[aiy])nxes|((?:.{2,})?)bears|((?:.{2,})?)binds|((?:.{2,})?)calls|((?:.{2,})?)casts|((?:.{2,})?)clads|((?:.{2,})?)draws|((?:.{2,})?)feeds|((?:.{2,})?)grows|((?:.{2,})?)hangs|((?:.{2,})?)hears|((?:.{2,})?)hides|((?:.{2,})?)knits|((?:.{2,})?)lends|((?:.{2,})?)makes|((?:.{2,})?)melts|((?:.{2,})?)opens|((?:.{2,})?)plays|((?:.{2,})?)reads|((?:.{2,})?)rides|((?:.{2,})?)sells|((?:.{2,})?)sends|((?:.{2,})?)shuts|((?:.{2,})?)spins|((?:.{2,})?)takes|((?:.{2,})?)tells|((?:.{2,})?)tries|((?:.{2,})?)turns|((?:.{2,})?)winds|((?:.{2,})?)works|((?:.{2,})?)allows|((?:.{2,})?)breeds|((?:.{2,})?)inputs|((?:.{2,})?)lights|((?:.{2,})?)offers|((?:.{2,})?)serves|((?:.{2,})?)shears|((?:.{2,})?)shines|((?:.{2,})?)shoots|((?:.{2,})?)sleeps|((?:.{2,})?)slings|((?:.{2,})?)smells|((?:.{2,})?)spells|((?:.{2,})?)spills|((?:.{2,})?)splits|((?:.{2,})?)starts|((?:.{2,})?)sticks|((?:.{2,})?)thinks|((?:.{2,})?)throws|((?:.{2,})?)weaves|((?:.{2,})?)writes|(.+)trixes|((?:.{2,})?)alights|((?:.{2,})?)appears|((?:.{2,})?)clothes|((?:.{2,})?)creates|((?:.{2,})?)freezes|((?:.{2,})?)spreads|((?:.{2,})?)strikes|((?:.{2,})?)strings|((?:.{2,})?)teaches|((?:.{2,})?)believes|((?:.{2,})?)includes|((?:.{2,})?)considers)$")
 
-past_recognize_rules = [
-    re.compile(r"^(?:(.+[^e])ed|(.+[au])ed|((?:.{2,})?)bid|((?:.{2,})?)cut|((?:.{2,})?)fed|((?:.{2,})?)hid|((?:.{2,})?)lit|((?:.{2,})?)ran|((?:.{2,})?)saw|((?:.{2,})?)set|((?:.{2,})?)wed|((?:.{2,})?)wet|(.+)eed|(.+)ied|(.+)ied|(.+)n't|(.+)oed|(.+)ued|(.+)xed|(.+)yed|(.+)yed|(.+)zed|(.+[^b])ied|(.+[aeiou])yed|(.+[cs])hed|((?:.{2,})?)bore|((?:.{2,})?)bred|((?:.{2,})?)cast|((?:.{2,})?)clad|((?:.{2,})?)drew|((?:.{2,})?)grew|((?:.{2,})?)hung|((?:.{2,})?)lent|((?:.{2,})?)made|((?:.{2,})?)paid|((?:.{2,})?)read|((?:.{2,})?)rode|((?:.{2,})?)said|((?:.{2,})?)sent|((?:.{2,})?)shot|((?:.{2,})?)shut|((?:.{2,})?)sold|((?:.{2,})?)spun|((?:.{2,})?)told|((?:.{2,})?)took|((?:.{2,})?)used|((?:.{2,})?)wove|(.+)ered|(.+)ssed|(.+)zzed|(.+[aeiou])zzed|(.+[aiy])nxed|((?:.{2,})?)added|((?:.{2,})?)bound|((?:.{2,})?)froze|((?:.{2,})?)heard|((?:.{2,})?)input|((?:.{2,})?)mowed|((?:.{2,})?)sewed|((?:.{2,})?)shone|((?:.{2,})?)slept|((?:.{2,})?)slung|((?:.{2,})?)split|((?:.{2,})?)stuck|((?:.{2,})?)threw|((?:.{2,})?)tried|((?:.{2,})?)wound|((?:.{2,})?)wrote|(.+)eaued|(.+)icked|(.+)ieued|((?:.{2,})?)bought|((?:.{2,})?)called|((?:.{2,})?)fitted|((?:.{2,})?)melted|((?:.{2,})?)opened|((?:.{2,})?)played|((?:.{2,})?)served|((?:.{2,})?)spread|((?:.{2,})?)struck|((?:.{2,})?)strung|((?:.{2,})?)taught|((?:.{2,})?)turned|((?:.{2,})?)worked|(.+)cepsed|(.+)trixed|((?:.{2,})?)allowed|((?:.{2,})?)clothed|((?:.{2,})?)created|((?:.{2,})?)knitted|((?:.{2,})?)offered|((?:.{2,})?)sheared|((?:.{2,})?)smelled|((?:.{2,})?)spelled|((?:.{2,})?)spilled|((?:.{2,})?)started|((?:.{2,})?)thought|((?:.{2,})?)alighted|((?:.{2,})?)appeared|((?:.{2,})?)believed|((?:.{2,})?)included|((?:.{2,})?)considered)$"),
-]
+past_recognize_rule = re.compile(r"^(?:(.+[^e])ed|(.+[au])ed|((?:.{2,})?)bid|((?:.{2,})?)cut|((?:.{2,})?)fed|((?:.{2,})?)hid|((?:.{2,})?)lit|((?:.{2,})?)ran|((?:.{2,})?)saw|((?:.{2,})?)set|((?:.{2,})?)wed|((?:.{2,})?)wet|(.+)eed|(.+)ied|(.+)ied|(.+)n't|(.+)oed|(.+)ued|(.+)xed|(.+)yed|(.+)yed|(.+)zed|(.+[^b])ied|(.+[aeiou])yed|(.+[cs])hed|((?:.{2,})?)bore|((?:.{2,})?)bred|((?:.{2,})?)cast|((?:.{2,})?)clad|((?:.{2,})?)drew|((?:.{2,})?)grew|((?:.{2,})?)hung|((?:.{2,})?)lent|((?:.{2,})?)made|((?:.{2,})?)paid|((?:.{2,})?)read|((?:.{2,})?)rode|((?:.{2,})?)said|((?:.{2,})?)sent|((?:.{2,})?)shot|((?:.{2,})?)shut|((?:.{2,})?)sold|((?:.{2,})?)spun|((?:.{2,})?)told|((?:.{2,})?)took|((?:.{2,})?)used|((?:.{2,})?)wove|(.+)ered|(.+)ssed|(.+)zzed|(.+[aeiou])zzed|(.+[aiy])nxed|((?:.{2,})?)added|((?:.{2,})?)bound|((?:.{2,})?)froze|((?:.{2,})?)heard|((?:.{2,})?)input|((?:.{2,})?)mowed|((?:.{2,})?)sewed|((?:.{2,})?)shone|((?:.{2,})?)slept|((?:.{2,})?)slung|((?:.{2,})?)split|((?:.{2,})?)stuck|((?:.{2,})?)threw|((?:.{2,})?)tried|((?:.{2,})?)wound|((?:.{2,})?)wrote|(.+)eaued|(.+)icked|(.+)ieued|((?:.{2,})?)bought|((?:.{2,})?)called|((?:.{2,})?)fitted|((?:.{2,})?)melted|((?:.{2,})?)opened|((?:.{2,})?)played|((?:.{2,})?)served|((?:.{2,})?)spread|((?:.{2,})?)struck|((?:.{2,})?)strung|((?:.{2,})?)taught|((?:.{2,})?)turned|((?:.{2,})?)worked|(.+)cepsed|(.+)trixed|((?:.{2,})?)allowed|((?:.{2,})?)clothed|((?:.{2,})?)created|((?:.{2,})?)knitted|((?:.{2,})?)offered|((?:.{2,})?)sheared|((?:.{2,})?)smelled|((?:.{2,})?)spelled|((?:.{2,})?)spilled|((?:.{2,})?)started|((?:.{2,})?)thought|((?:.{2,})?)alighted|((?:.{2,})?)appeared|((?:.{2,})?)believed|((?:.{2,})?)included|((?:.{2,})?)considered)$")
 
-pres_part_recognize_rules = [
-    re.compile(r"^(?:(.+[^b])ing|(.+[^e])ing|(.+[au])ing|(.+)iing|(.+)uing|(.+)xing|(.+)ying|(.+)ying|(.+)zing|(.+[aeiou])ying|(.+[cs])hing|((?:.{2,})?)using|(.+)eeing|(.+)ering|(.+)oeing|(.+)ssing|(.+)yeing|(.+)zzing|(.+[aeiou])zzing|(.+[aiy])nxing|((?:.{2,})?)adding|((?:.{2,})?)buying|((?:.{2,})?)hiding|((?:.{2,})?)making|((?:.{2,})?)mowing|((?:.{2,})?)paying|((?:.{2,})?)riding|((?:.{2,})?)saying|((?:.{2,})?)seeing|((?:.{2,})?)sewing|((?:.{2,})?)taking|((?:.{2,})?)trying|(.+)eauing|(.+)icking|(.+)ieuing|((?:.{2,})?)bearing|((?:.{2,})?)bidding|((?:.{2,})?)binding|((?:.{2,})?)calling|((?:.{2,})?)casting|((?:.{2,})?)cutting|((?:.{2,})?)drawing|((?:.{2,})?)feeding|((?:.{2,})?)fitting|((?:.{2,})?)growing|((?:.{2,})?)hanging|((?:.{2,})?)hearing|((?:.{2,})?)lending|((?:.{2,})?)melting|((?:.{2,})?)opening|((?:.{2,})?)playing|((?:.{2,})?)reading|((?:.{2,})?)running|((?:.{2,})?)selling|((?:.{2,})?)sending|((?:.{2,})?)serving|((?:.{2,})?)setting|((?:.{2,})?)shining|((?:.{2,})?)telling|((?:.{2,})?)turning|((?:.{2,})?)weaving|((?:.{2,})?)wedding|((?:.{2,})?)wetting|((?:.{2,})?)winding|((?:.{2,})?)working|((?:.{2,})?)writing|(.+)cepsing|(.+)trixing|((?:.{2,})?)allowing|((?:.{2,})?)breeding|((?:.{2,})?)cladding|((?:.{2,})?)clothing|((?:.{2,})?)creating|((?:.{2,})?)freezing|((?:.{2,})?)knitting|((?:.{2,})?)lighting|((?:.{2,})?)offering|((?:.{2,})?)shearing|((?:.{2,})?)shooting|((?:.{2,})?)shutting|((?:.{2,})?)sleeping|((?:.{2,})?)slinging|((?:.{2,})?)smelling|((?:.{2,})?)spelling|((?:.{2,})?)spilling|((?:.{2,})?)spinning|((?:.{2,})?)starting|((?:.{2,})?)sticking|((?:.{2,})?)striking|((?:.{2,})?)teaching|((?:.{2,})?)thinking|((?:.{2,})?)throwing|((?:.{2,})?)alighting|((?:.{2,})?)appearing|((?:.{2,})?)believing|((?:.{2,})?)including|((?:.{2,})?)inputting|((?:.{2,})?)splitting|((?:.{2,})?)spreading|((?:.{2,})?)stringing|((?:.{2,})?)considering)$"),
-]
+pres_part_recognize_rule = re.compile(r"^(?:(.+[^b])ing|(.+[^e])ing|(.+[au])ing|(.+)iing|(.+)uing|(.+)xing|(.+)ying|(.+)ying|(.+)zing|(.+[aeiou])ying|(.+[cs])hing|((?:.{2,})?)using|(.+)eeing|(.+)ering|(.+)oeing|(.+)ssing|(.+)yeing|(.+)zzing|(.+[aeiou])zzing|(.+[aiy])nxing|((?:.{2,})?)adding|((?:.{2,})?)buying|((?:.{2,})?)hiding|((?:.{2,})?)making|((?:.{2,})?)mowing|((?:.{2,})?)paying|((?:.{2,})?)riding|((?:.{2,})?)saying|((?:.{2,})?)seeing|((?:.{2,})?)sewing|((?:.{2,})?)taking|((?:.{2,})?)trying|(.+)eauing|(.+)icking|(.+)ieuing|((?:.{2,})?)bearing|((?:.{2,})?)bidding|((?:.{2,})?)binding|((?:.{2,})?)calling|((?:.{2,})?)casting|((?:.{2,})?)cutting|((?:.{2,})?)drawing|((?:.{2,})?)feeding|((?:.{2,})?)fitting|((?:.{2,})?)growing|((?:.{2,})?)hanging|((?:.{2,})?)hearing|((?:.{2,})?)lending|((?:.{2,})?)melting|((?:.{2,})?)opening|((?:.{2,})?)playing|((?:.{2,})?)reading|((?:.{2,})?)running|((?:.{2,})?)selling|((?:.{2,})?)sending|((?:.{2,})?)serving|((?:.{2,})?)setting|((?:.{2,})?)shining|((?:.{2,})?)telling|((?:.{2,})?)turning|((?:.{2,})?)weaving|((?:.{2,})?)wedding|((?:.{2,})?)wetting|((?:.{2,})?)winding|((?:.{2,})?)working|((?:.{2,})?)writing|(.+)cepsing|(.+)trixing|((?:.{2,})?)allowing|((?:.{2,})?)breeding|((?:.{2,})?)cladding|((?:.{2,})?)clothing|((?:.{2,})?)creating|((?:.{2,})?)freezing|((?:.{2,})?)knitting|((?:.{2,})?)lighting|((?:.{2,})?)offering|((?:.{2,})?)shearing|((?:.{2,})?)shooting|((?:.{2,})?)shutting|((?:.{2,})?)sleeping|((?:.{2,})?)slinging|((?:.{2,})?)smelling|((?:.{2,})?)spelling|((?:.{2,})?)spilling|((?:.{2,})?)spinning|((?:.{2,})?)starting|((?:.{2,})?)sticking|((?:.{2,})?)striking|((?:.{2,})?)teaching|((?:.{2,})?)thinking|((?:.{2,})?)throwing|((?:.{2,})?)alighting|((?:.{2,})?)appearing|((?:.{2,})?)believing|((?:.{2,})?)including|((?:.{2,})?)inputting|((?:.{2,})?)splitting|((?:.{2,})?)spreading|((?:.{2,})?)stringing|((?:.{2,})?)considering)$")
 
-past_part_recognize_rules = [
-    re.compile(r"^(?:(.+[^e])ed|(.+[au])ed|((?:.{2,})?)bid|((?:.{2,})?)cut|((?:.{2,})?)fed|((?:.{2,})?)lit|((?:.{2,})?)run|((?:.{2,})?)set|((?:.{2,})?)wed|(.+)eed|(.+)ied|(.+)ied|(.+)oed|(.+)ued|(.+)xed|(.+)yed|(.+)yed|(.+)zed|(.+[^b])ied|(.+[aeiou])yed|(.+[cs])hed|((?:.{2,})?)bred|((?:.{2,})?)cast|((?:.{2,})?)clad|((?:.{2,})?)hung|((?:.{2,})?)lent|((?:.{2,})?)made|((?:.{2,})?)mown|((?:.{2,})?)paid|((?:.{2,})?)read|((?:.{2,})?)said|((?:.{2,})?)seen|((?:.{2,})?)sent|((?:.{2,})?)sewn|((?:.{2,})?)shot|((?:.{2,})?)shut|((?:.{2,})?)sold|((?:.{2,})?)spun|((?:.{2,})?)told|((?:.{2,})?)used|(.+)ered|(.+)ssed|(.+)zzed|(.+[aeiou])zzed|(.+[aiy])nxed|((?:.{2,})?)added|((?:.{2,})?)borne|((?:.{2,})?)bound|((?:.{2,})?)drawn|((?:.{2,})?)grown|((?:.{2,})?)heard|((?:.{2,})?)input|((?:.{2,})?)shone|((?:.{2,})?)shorn|((?:.{2,})?)slept|((?:.{2,})?)slung|((?:.{2,})?)split|((?:.{2,})?)stuck|((?:.{2,})?)taken|((?:.{2,})?)tried|((?:.{2,})?)wound|((?:.{2,})?)woven|(.+)eaued|(.+)icked|(.+)ieued|((?:.{2,})?)bought|((?:.{2,})?)called|((?:.{2,})?)fitted|((?:.{2,})?)frozen|((?:.{2,})?)hidden|((?:.{2,})?)melted|((?:.{2,})?)opened|((?:.{2,})?)played|((?:.{2,})?)ridden|((?:.{2,})?)served|((?:.{2,})?)spread|((?:.{2,})?)struck|((?:.{2,})?)strung|((?:.{2,})?)taught|((?:.{2,})?)thrown|((?:.{2,})?)turned|((?:.{2,})?)wetted|((?:.{2,})?)worked|(.+)cepsed|(.+)trixed|((?:.{2,})?)allowed|((?:.{2,})?)clothed|((?:.{2,})?)created|((?:.{2,})?)knitted|((?:.{2,})?)offered|((?:.{2,})?)smelled|((?:.{2,})?)spelled|((?:.{2,})?)spilled|((?:.{2,})?)started|((?:.{2,})?)thought|((?:.{2,})?)written|((?:.{2,})?)alighted|((?:.{2,})?)appeared|((?:.{2,})?)believed|((?:.{2,})?)included|((?:.{2,})?)considered)$"),
-]
+past_part_recognize_rule = re.compile(r"^(?:(.+[^e])ed|(.+[au])ed|((?:.{2,})?)bid|((?:.{2,})?)cut|((?:.{2,})?)fed|((?:.{2,})?)lit|((?:.{2,})?)run|((?:.{2,})?)set|((?:.{2,})?)wed|(.+)eed|(.+)ied|(.+)ied|(.+)oed|(.+)ued|(.+)xed|(.+)yed|(.+)yed|(.+)zed|(.+[^b])ied|(.+[aeiou])yed|(.+[cs])hed|((?:.{2,})?)bred|((?:.{2,})?)cast|((?:.{2,})?)clad|((?:.{2,})?)hung|((?:.{2,})?)lent|((?:.{2,})?)made|((?:.{2,})?)mown|((?:.{2,})?)paid|((?:.{2,})?)read|((?:.{2,})?)said|((?:.{2,})?)seen|((?:.{2,})?)sent|((?:.{2,})?)sewn|((?:.{2,})?)shot|((?:.{2,})?)shut|((?:.{2,})?)sold|((?:.{2,})?)spun|((?:.{2,})?)told|((?:.{2,})?)used|(.+)ered|(.+)ssed|(.+)zzed|(.+[aeiou])zzed|(.+[aiy])nxed|((?:.{2,})?)added|((?:.{2,})?)borne|((?:.{2,})?)bound|((?:.{2,})?)drawn|((?:.{2,})?)grown|((?:.{2,})?)heard|((?:.{2,})?)input|((?:.{2,})?)shone|((?:.{2,})?)shorn|((?:.{2,})?)slept|((?:.{2,})?)slung|((?:.{2,})?)split|((?:.{2,})?)stuck|((?:.{2,})?)taken|((?:.{2,})?)tried|((?:.{2,})?)wound|((?:.{2,})?)woven|(.+)eaued|(.+)icked|(.+)ieued|((?:.{2,})?)bought|((?:.{2,})?)called|((?:.{2,})?)fitted|((?:.{2,})?)frozen|((?:.{2,})?)hidden|((?:.{2,})?)melted|((?:.{2,})?)opened|((?:.{2,})?)played|((?:.{2,})?)ridden|((?:.{2,})?)served|((?:.{2,})?)spread|((?:.{2,})?)struck|((?:.{2,})?)strung|((?:.{2,})?)taught|((?:.{2,})?)thrown|((?:.{2,})?)turned|((?:.{2,})?)wetted|((?:.{2,})?)worked|(.+)cepsed|(.+)trixed|((?:.{2,})?)allowed|((?:.{2,})?)clothed|((?:.{2,})?)created|((?:.{2,})?)knitted|((?:.{2,})?)offered|((?:.{2,})?)smelled|((?:.{2,})?)spelled|((?:.{2,})?)spilled|((?:.{2,})?)started|((?:.{2,})?)thought|((?:.{2,})?)written|((?:.{2,})?)alighted|((?:.{2,})?)appeared|((?:.{2,})?)believed|((?:.{2,})?)included|((?:.{2,})?)considered)$")
 
 past_of_values = set(past_of.values())
 pres_part_of_values = set(pres_part_of.values())
@@ -4136,7 +4126,7 @@ def convert_to_past_part(word):
                 return group + past_part_convert_outputs[i]
     return None
 
-def is_plural(word):
+def is_plural(word: str):
     """Detect whether `word` is in plural form.
 
     Args:
@@ -4149,12 +4139,11 @@ def is_plural(word):
         return True
     if known_singular(word):
         return False
-    for rule in plural_recognize_rules:
-        if rule.match(word):
-            return True
+    if plural_recognize_rule.match(word):
+        return True
     return False
 
-def is_singular(word):
+def is_singular(word: str):
     """Detect whether `word` is in singular form.
 
     Args:
@@ -4167,12 +4156,11 @@ def is_singular(word):
         return True
     if known_plural(word):
         return False
-    for rule in singular_recognize_rules:
-        if rule.match(word):
-            return True
+    if singular_recognize_rule.match(word):
+        return True
     return not is_plural(word)
 
-def is_past(word):
+def is_past(word: str):
     """Detect whether `word` is in past form.
 
     Args:
@@ -4183,12 +4171,11 @@ def is_past(word):
     """
     if known_past(word):
         return True
-    for rule in past_recognize_rules:
-        if rule.match(word):
-            return True
+    if past_recognize_rule.match(word):
+        return True
     return False
 
-def is_pres_part(word):
+def is_pres_part(word: str):
     """Detect whether `word` is in present participle form.
 
     Args:
@@ -4199,12 +4186,11 @@ def is_pres_part(word):
     """
     if known_pres_part(word):
         return True
-    for rule in pres_part_recognize_rules:
-        if rule.match(word):
-            return True
+    if pres_part_recognize_rule.match(word):
+        return True
     return False
 
-def is_past_part(word):
+def is_past_part(word: str):
     """Detect whether `word` is in past participle form.
 
     Args:
@@ -4215,7 +4201,6 @@ def is_past_part(word):
     """
     if known_past_part(word):
         return True
-    for rule in past_part_recognize_rules:
-        if rule.match(word):
-            return True
+    if past_part_recognize_rule.match(word):
+        return True
     return False

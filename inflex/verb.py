@@ -110,7 +110,7 @@ class Verb(Term):
             'flying'
             >>>verb.pres_part()
             'flown'
-            
+
             >>>verb.is_plural()
             True
 
@@ -127,10 +127,16 @@ class Verb(Term):
         return True
 
     def is_singular(self) -> bool:
-        return is_singular(self.term)
+        # Get first word, last section of that word (if "-" in the word)
+        term, _ = self.get_subterm(self.term)
+
+        return is_singular(term)
 
     def is_plural(self) -> bool:
-        return is_plural(self.term)
+        # Get first word, last section of that word (if "-" in the word)
+        term, _ = self.get_subterm(self.term)
+
+        return is_plural(term)
 
     def singular(self, person: Optional[int] = 0) -> str:
         self._check_valid_person(person)
@@ -155,6 +161,7 @@ class Verb(Term):
             term, form = self.get_subterm(self.term)
 
             # If this term is in the list of known cases
+            # TODO: This partially overlaps with `known = convert_to_singular(term)` from below
             if term.lower() in singular_of:
                 return self._encase(form.format(singular_of[term.lower()]))
 
@@ -184,6 +191,7 @@ class Verb(Term):
         term, form = self.get_subterm(self.term)
 
         # If this term is in the list of known cases
+        # TODO: This partially overlaps with `known = convert_to_plural(term)` from below
         if term.lower() in plural_of:
             return self._encase(form.format(plural_of[term.lower()]))
 
@@ -206,7 +214,7 @@ class Verb(Term):
                                                           self.plural(),
                                                           self.past(),
                                                           self.past_part(),
-                                                          self.classical().pres_part()
+                                                          self.pres_part()
                                                           }), reverse=True)), flags=re.I)
 
     """
@@ -319,9 +327,9 @@ class Verb(Term):
         known = None
         # "To be" is special
         if self.term.lower() in ["is", "am"]:
-            return "was"
+            return self._encase("was")
         if self.term.lower() == "are":
-            return "were"
+            return self._encase("were")
 
         # Get first word, last section of that word (if "-" in the word)
         term, form = self.get_subterm(self.term)
@@ -424,7 +432,10 @@ class Verb(Term):
         Returns:
             bool: True if this Verb is deemed past.
         """
-        return is_past(self.term)
+        # Get first word, last section of that word (if "-" in the word)
+        term, _ = self.get_subterm(self.term)
+
+        return is_past(term)
 
     def is_pres_part(self) -> bool:
         """Detect whether this Verb is in present participle form.
@@ -432,7 +443,10 @@ class Verb(Term):
         Returns:
             bool: True if this Verb is deemed present participle.
         """
-        return is_pres_part(self.term)
+        # Get first word, last section of that word (if "-" in the word)
+        term, _ = self.get_subterm(self.term)
+
+        return is_pres_part(term)
 
     def is_past_part(self) -> bool:
         """Detect whether this Verb is in past participle form.
@@ -440,7 +454,10 @@ class Verb(Term):
         Returns:
             bool: True if this Verb is deemed past participle.
         """
-        return is_past_part(self.term)
+        # Get first word, last section of that word (if "-" in the word)
+        term, _ = self.get_subterm(self.term)
+
+        return is_past_part(term)
 
     def indefinite(self, count: Optional[int] = 1) -> str:
         """Return the singular if `count` == 1, and the plural otherwise.

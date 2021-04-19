@@ -359,6 +359,25 @@ class TestAdjectives(unittest.TestCase):
         self.assertEqual(adj, adj.classical(),
                          "Check whether Adjective(...) = Adjective(...).classical()")
 
+    def test_plural_wrong_person(self):
+        with self.assertRaises(ValueError):
+            Adjective("our").plural(5)
+        with self.assertRaises(ValueError):
+            Adjective("our").plural("hello")
+        with self.assertRaises(ValueError):
+            Adjective("our").plural("first")
+
+    def test_singular_wrong_person(self):
+        with self.assertRaises(ValueError):
+            Adjective("our").singular(5)
+        with self.assertRaises(ValueError):
+            Adjective("our").singular("hello")
+        with self.assertRaises(ValueError):
+            Adjective("our").singular("first")
+
+    def test_empty(self):
+        self.assertEqual(Adjective("").plural(), "", "Adjective('').plural() => ''")
+
     def test_possessive_to_singular(self):
         for test_case in self.test_possessive_to_singular_args:
             with self.subTest():
@@ -638,6 +657,15 @@ class TestAdjectives(unittest.TestCase):
         ["future proof", "more future proof", "most future proof"],
         ["morbidly obese", "more morbidly obese", "most morbidly obese"],
         ["good for someone", "better for someone", "best for someone"],
+
+        ["unfit", "unfitter", "unfittest"],
+        ["unlikely", "unlikelier", "unlikeliest"],
+        ["unkind", "unkinder", "unkindest"],
+        ["unpopular", "more unpopular", "most unpopular"],
+        ["unsafe", "unsafer", "unsafest"],
+        ["untasty", "untastier", "untastiest"],
+        ["unwealthy", "unwealthier", "unwealthiest"],
+        ["unworldly", "unworldlier", "unworldliest"],
     ]
 
     def test_to_comparative(self):

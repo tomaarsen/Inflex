@@ -157,6 +157,24 @@ class TestNouns(unittest.TestCase):
                 self.assertEqual(out, sing,
                                  f"Noun({plur!r}).classical().singular()")
 
+    def test_plural_wrong_person(self):
+        with self.assertRaises(ValueError):
+            Noun("brother").plural(5)
+        with self.assertRaises(ValueError):
+            Noun("brother").plural("hello")
+        with self.assertRaises(ValueError):
+            Noun("brother").plural("first")
+
+    def test_singular_wrong_person(self):
+        with self.assertRaises(ValueError):
+            Noun("brother").singular(5)
+        with self.assertRaises(ValueError):
+            Noun("brother").singular("hello")
+        with self.assertRaises(ValueError):
+            Noun("brother").singular("first")
+
+    def test_empty(self):
+        self.assertEqual(Noun("").plural(), "", "Noun('').plural() => ''")
 
 if __name__ == "__main__":
     unittest.main()

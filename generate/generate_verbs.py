@@ -483,20 +483,19 @@ def convert_to_{name}(word):
         return output
 
     def get_recognize_rule_output(self, name, replacement_suffixes):
-        output = name + "_recognize_rules = [\n"
+        output = name + "_recognize_rule = "
         """
         regexes = (replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict)
         for regex in sorted(regexes, key=lambda x: len(x) - x.rfind(")") + x.find("(")):
             output += f'    re.compile(r"^{regex}$"),\n'
         """
         regex = '|'.join(sorted(sorted(replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict), key=lambda x: len(x) - x.rfind(")") + x.find("(")))
-        output += f'    re.compile(r"^(?:{regex})$"),\n'
-        output += "]"
+        output += f're.compile(r"^(?:{regex})$")'
         return output
 
     def get_recognizer_output(self, name, compl_name, replacement_suffixes):
         output = f'''\
-def is_{name}(word):
+def is_{name}(word: str):
     """Detect whether `word` is in {self.normalize_name(name)} form.
 
     Args:
@@ -512,9 +511,8 @@ def is_{name}(word):
     if known_{compl_name}(word):
         return False"""
         output += f"""
-    for rule in {name}_recognize_rules:
-        if rule.match(word):
-            return True
+    if {name}_recognize_rule.match(word):
+        return True
 """
         if name == "singular":
             output += "    return not is_plural(word)"
@@ -566,6 +564,12 @@ class VerbTestWriter(TestWriter):
             } for word in self.reader.words["singular"]
               if word and word != "_"
         ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"]
+            } for data in test_args
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_is_plural_test(self):
@@ -582,6 +586,12 @@ class VerbTestWriter(TestWriter):
                 "out": True
             } for word in self.reader.words["plural"]
               if word and word != "_"
+        ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"]
+            } for data in test_args
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -600,6 +610,12 @@ class VerbTestWriter(TestWriter):
             } for word in self.reader.words["past"]
               if word and word != "_"
         ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"]
+            } for data in test_args
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_is_pres_part_test(self):
@@ -617,6 +633,12 @@ class VerbTestWriter(TestWriter):
             } for word in self.reader.words["pres_part"]
               if word and word != "_"
         ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"]
+            } for data in test_args
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_is_past_part_test(self):
@@ -633,6 +655,12 @@ class VerbTestWriter(TestWriter):
                 "out": True
             } for word in self.reader.words["past_part"]
               if word and word != "_"
+        ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"]
+            } for data in test_args
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -654,6 +682,12 @@ class VerbTestWriter(TestWriter):
             } for sing in self.reader.literals["singular"].values()
               if sing not in self.reader.words["plural"] and sing and sing != "_"
         ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"].title()
+            } for data in test_args
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_plural_test(self):
@@ -674,6 +708,12 @@ class VerbTestWriter(TestWriter):
             } for plur in self.reader.literals["plural"].values()
               if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"].title()
+            } for data in test_args
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_past_test(self):
@@ -686,6 +726,12 @@ class VerbTestWriter(TestWriter):
                 "out": past
             } for verb, past in self.reader.literals["past"].items()
               if verb and verb != "_" and past and past != "_"
+        ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"].title()
+            } for data in test_args
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
@@ -700,6 +746,12 @@ class VerbTestWriter(TestWriter):
             } for verb, pres_part in self.reader.literals["pres_part"].items()
               if verb and verb != "_" and pres_part and pres_part != "_"
         ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"].title()
+            } for data in test_args
+        ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
     def write_to_past_part_test(self):
@@ -712,6 +764,12 @@ class VerbTestWriter(TestWriter):
                 "out": past_part
             } for verb, past_part in self.reader.literals["past_part"].items()
               if verb and verb != "_" and past_part and past_part != "_"
+        ]
+        test_args += [
+            {
+                "in": data["in"].title(),
+                "out": data["out"].title()
+            } for data in test_args
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
