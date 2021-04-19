@@ -883,7 +883,7 @@ class NounTestWriter(TestWriter):
 
 if __name__ == "__main__":    
     in_fname = "lei//nouns.lei"
-    out_fname = "inflexion//noun_core.py"
+    out_fname = "inflex//noun_core.py"
     class_name = "Noun"
 
     reader = Reader(in_fname)

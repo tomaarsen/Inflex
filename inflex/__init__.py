@@ -1,7 +1,7 @@
 """
 Import the Noun, Verb and Adjective classes from the relevant files,
 allowing for:
->>> from inflexion import Noun
+>>> from inflex import Noun
 """
 __all__ = [
     "Noun",
@@ -9,6 +9,6 @@ __all__ = [
     "Adjective",
 ]
 
-from inflexion.noun import Noun
-from inflexion.verb import Verb
-from inflexion.adjective import Adjective
+from inflex.noun import Noun
+from inflex.verb import Verb
+from inflex.adjective import Adjective

@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion import Noun
+from inflex import Noun
 
 
 class TestNounIsPlural(unittest.TestCase):

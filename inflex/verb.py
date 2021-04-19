@@ -4,9 +4,9 @@
 import re
 from typing import Optional, Tuple
 
-from inflexion.syllable import Syllable
-from inflexion.term import Term
-from inflexion.verb_core import (
+from inflex.syllable import Syllable
+from inflex.term import Term
+from inflex.verb_core import (
     is_plural,
     is_singular,
     is_past,

@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion import Adjective
+from inflex import Adjective
 
 
 class TestAdjectiveIsSingular(unittest.TestCase):

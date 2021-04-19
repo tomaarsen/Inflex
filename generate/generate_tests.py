@@ -5,7 +5,7 @@ class TestWriter(object):
     def __init__(self, test_class):
         super().__init__()
         self.test_class = test_class
-        self.import_folder_name = "inflexion"
+        self.import_folder_name = "inflex"
         # TODO: Improve paths
         self.test_folder_name = "tests"
         self.test_file_format = """

@@ -1,4 +1,4 @@
-# Inflection
+# Inflex
  Natural Language Inflection in English
 
 ---
@@ -9,7 +9,7 @@ This README is a stub, and is yet to be written.
 
 ## Sample Usage
 ```python
-from inflexion import Noun, Verb, Adjective
+from inflex import Noun, Verb, Adjective
 
 # Converting Nouns
 Noun("book").plural()   # Produces "books"

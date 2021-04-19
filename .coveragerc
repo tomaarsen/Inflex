@@ -1,12 +1,12 @@
 [paths]
 source =
-    inflexion
+    inflex
 
 [run]
 branch = true
 parallel = true
 source =
-    inflexion
+    inflex
 
 [report]
 show_missing = true

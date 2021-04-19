@@ -5,15 +5,15 @@ import re
 from typing import Optional, Tuple
 
 
-from inflexion.term import Term
-from inflexion.noun_core import (
+from inflex.term import Term
+from inflex.noun_core import (
     is_singular,
     is_plural,
     convert_to_classical_plural,
     convert_to_modern_plural,
     convert_to_singular,
 )
-from inflexion.indefinite_core import (
+from inflex.indefinite_core import (
     select_indefinite_article,
     prepend_indefinite_article,
 )

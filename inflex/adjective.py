@@ -5,15 +5,15 @@ import re
 from typing import Optional
 
 
-from inflexion.syllable import Syllable
-from inflexion.term import Term
-from inflexion.adjective_core import (
+from inflex.syllable import Syllable
+from inflex.term import Term
+from inflex.adjective_core import (
     is_singular,
     is_plural,
     convert_to_singular,
     convert_to_plural,
 )
-from inflexion.noun import Noun
+from inflex.noun import Noun
 
 
 class Adjective(Term):

@@ -8,7 +8,7 @@
 
 import re
 
-VERSION = 20210415.220120
+VERSION = 20210419.133654
 
 adj_is_singular = [
     "a",

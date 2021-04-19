@@ -292,7 +292,7 @@ class VerbTestWriter(TestWriter):
 
 if __name__ == "__main__":
     in_fname = "lei//adjectives.lei"
-    out_fname = "inflexion//adjective_core.py"
+    out_fname = "inflex//adjective_core.py"
     class_name = "Adjective"
     reader = Reader(in_fname)
     reader.parse_file()

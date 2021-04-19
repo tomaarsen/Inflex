@@ -4,7 +4,7 @@
 import re
 import unittest
 
-from inflexion.adjective import Adjective
+from inflex import Adjective
 
 
 class TestAdjectives(unittest.TestCase):

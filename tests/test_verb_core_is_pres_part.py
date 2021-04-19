@@ -9,7 +9,7 @@
 
 import unittest
 
-from inflexion import Verb
+from inflex import Verb
 
 
 class TestVerbIsPresPart(unittest.TestCase):

@@ -5,7 +5,7 @@ import re
 import random
 import unittest
 
-from inflexion import Noun
+from inflex import Noun
 
 
 class TestNouns(unittest.TestCase):

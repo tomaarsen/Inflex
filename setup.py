@@ -12,28 +12,17 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = 'inflexion'
-DESCRIPTION = 'Pluralisation and Singularisation of the English Language.'
-URL = 'https://github.com/CubieDev/inflexion'
+NAME = 'inflex'
+DESCRIPTION = 'Inflection (conjugation and declension) of the English Language.'
+URL = 'https://github.com/tomaarsen/inflex'
 EMAIL = 'cubiegamedev@gmail.com'
-AUTHOR = 'CubieDev'
+AUTHOR = 'Tom Aarsen'
 REQUIRES_PYTHON = '>=3.7.0'
 VERSION = '0.1.0'
 
-# What packages are required for this module to be executed?
-REQUIRED = [
-    # 'requests', 'maya', 'records',
-]
+REQUIRED = []
 
-# What packages are optional?
-EXTRAS = {
-    # 'fancy feature': ['django'],
-}
-
-# The rest you shouldn't have to touch too much :)
-# ------------------------------------------------
-# Except, perhaps the License and Trove Classifiers!
-# If you do change the License, remember to change the Trove Classifier for that!
+EXTRAS = {}
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -103,9 +92,8 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
-    # If your package is a single module, use this instead of 'packages':
-    # py_modules=['mypackage'],
+    # packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    py_modules=['inflex'],
 
     # entry_points={
     #     'console_scripts': ['mycli=mymodule:cli'],
@@ -121,11 +109,13 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy'
     ],
     # $ setup.py publish support.
-    #cmdclass={
-    #    'upload': UploadCommand,
-    #},
+    cmdclass={
+       'upload': UploadCommand,
+    },
 )
