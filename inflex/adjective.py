@@ -121,14 +121,14 @@ class Adjective(Term):
         """Creates an Adjective instance with detection and conversion methods.
 
         Examples:
-            >>>adj = Adjective("my")
-            >>>adj.plural()
+            >>> adj = Adjective("my")
+            >>> adj.plural()
             'our'
 
-            >>>adj = Adjective("pretty")
-            >>>adj.comparative()
+            >>> adj = Adjective("pretty")
+            >>> adj.comparative()
             'prettier'
-            >>>adj.superlative()
+            >>> adj.superlative()
             'prettiest'
 
         Note:
@@ -141,15 +141,39 @@ class Adjective(Term):
         super().__init__(term)
 
     def is_adj(self) -> bool:
+        """Returns `True` only if this adjective is instantiated via `Adjective(term)`.
+
+        Returns:
+            bool: Returns `True` only if this adjective is instantiated via `Adjective(term)`.
+        """
         return True
 
     def is_singular(self) -> bool:
+        """Detect whether this adjective is in singular form.
+
+        Returns:
+            bool: True if this adjective is deemed singular.
+        """
         return is_singular(self.term)
 
     def is_plural(self) -> bool:
+        """Detect whether this adjective is in plural form.
+
+        Returns:
+            bool: True if this adjective is deemed plural.
+        """
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
+        """Returns this adjective's singular form.
+
+        Args:
+            person (Optional[int], optional): Represents the grammatical "person" (1st, 2nd, 3rd).
+                This option only affects possessive adjectives. Defaults to 0.
+
+        Returns:
+            str: This adjective's singular form.
+        """
         self._check_valid_person(person)
         # Is it possessive form?
         match = self._possessive_regex.match(self.term)
@@ -162,6 +186,15 @@ class Adjective(Term):
         return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
+        """Returns this adjective's plural form.
+
+        Args:
+            person (Optional[int], optional): Represents the grammatical "person" (1st, 2nd, 3rd).
+                This option only affects possessive adjectives. Defaults to 0.
+
+        Returns:
+            str: This adjective's plural form.
+        """
         self._check_valid_person(person)
         # Is it possessive form?
         match = self._possessive_regex.match(self.term)
@@ -243,8 +276,8 @@ class Adjective(Term):
         """Returns this Adjective's comparative form.
 
         Examples:
-            >>>adj = Adjective("pretty")
-            >>>adj.comparative()
+            >>> adj = Adjective("pretty")
+            >>> adj.comparative()
             prettier
 
         Note:
@@ -300,8 +333,8 @@ class Adjective(Term):
         """Returns this Adjective's superlative form.
 
         Examples:
-            >>>adj = Adjective("pretty")
-            >>>adj.superlative()
+            >>> adj = Adjective("pretty")
+            >>> adj.superlative()
             prettiest
 
         Note:

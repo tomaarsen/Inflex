@@ -91,7 +91,7 @@ class Verb(Term):
     }
 
     _stem_double_regex = re.compile(
-        r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z")
+        r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z", re.I)
 
     """
     Override default methods from Term
@@ -101,17 +101,17 @@ class Verb(Term):
         """Creates a Verb instance with detection and conversion methods.
 
         Examples:
-            >>>verb = Verb("fly")
-            >>>verb.singular()
+            >>> verb = Verb("fly")
+            >>> verb.singular()
             'flies'
-            >>>verb.past()
+            >>> verb.past()
             'flew'
-            >>>verb.past_part()
+            >>> verb.past_part()
             'flying'
-            >>>verb.pres_part()
+            >>> verb.pres_part()
             'flown'
 
-            >>>verb.is_plural()
+            >>> verb.is_plural()
             True
 
         Note:
@@ -124,21 +124,45 @@ class Verb(Term):
         super().__init__(term)
 
     def is_verb(self) -> bool:
+        """Returns `True` only if this verb is instantiated via `Verb(term)`.
+
+        Returns:
+            bool: Returns `True` only if this verb is instantiated via `Verb(term)`.
+        """
         return True
 
     def is_singular(self) -> bool:
+        """Detect whether this verb is in singular form.
+
+        Returns:
+            bool: True if this verb is deemed singular.
+        """
         # Get first word, last section of that word (if "-" in the word)
         term, _ = self.get_subterm(self.term)
 
         return is_singular(term)
 
     def is_plural(self) -> bool:
+        """Detect whether this verb is in plural form.
+
+        Returns:
+            bool: True if this verb is deemed plural.
+        """
         # Get first word, last section of that word (if "-" in the word)
         term, _ = self.get_subterm(self.term)
 
         return is_plural(term)
 
     def singular(self, person: Optional[int] = 0) -> str:
+        """Returns this verb's singular form.
+
+        Args:
+            person (Optional[int], optional): Represents the grammatical "person" (1st, 2nd, 3rd).
+                Defaults to 0.
+
+        Returns:
+            str: This verb's singular form.
+        """
         self._check_valid_person(person)
 
         # "To be" is special
@@ -184,6 +208,15 @@ class Verb(Term):
         return self.plural()
 
     def plural(self, person: Optional[int] = 0) -> str:
+        """Returns this verb's plural form.
+
+        Args:
+            person (Optional[int], optional): Represents the grammatical "person" (1st, 2nd, 3rd).
+                Defaults to 0.
+
+        Returns:
+            str: This verb's plural form.
+        """
         self._check_valid_person(person)
 
         known = None
@@ -210,6 +243,16 @@ class Verb(Term):
         return self._reapply_whitespace(self.term)
 
     def as_regex(self) -> "re.Pattern":
+        """Returns a `re.Pattern` which case-insensitively matches any inflected form of the verb.
+
+        Returns:
+            re.Pattern: Compiled regex object which case-insensitively matches any inflected form
+                of the verb.
+
+        Examples:
+            >>> Verb('eat').as_regex()
+            re.compile('eats|eating|eaten|eat|ate', re.IGNORECASE)
+        """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
                                                           self.past(),
@@ -263,13 +306,13 @@ class Verb(Term):
         """Split the prefix from the term.
 
         Examples:
-            >>>self.split_prefix("unbind")
+            >>> self.split_prefix("unbind")
             ("un", "bind")
-            >>>self.split_prefix("mistake")
+            >>> self.split_prefix("mistake")
             ("mis", "take")
-            >>>self.split_prefix("reappear")
+            >>> self.split_prefix("reappear")
             ("re", "appear")
-            >>>self.split_prefix("use")
+            >>> self.split_prefix("use")
             ("", "use")
 
         Args:
@@ -290,7 +333,7 @@ class Verb(Term):
         """Extract last sub-section (split by '-') of the first word.
 
         Examples:
-            >>>self.get_subterm("aaa-bbb ccc")
+            >>> self.get_subterm("aaa-bbb ccc")
             ("aaa-{} ccc", "bbb")
 
         Args:
@@ -317,8 +360,8 @@ class Verb(Term):
         """Returns this Verb's past form.
 
         Examples:
-            >>>verb = Verb("fly")
-            >>>verb.past()
+            >>> verb = Verb("fly")
+            >>> verb.past()
             "flew"
 
         Returns:
@@ -360,8 +403,8 @@ class Verb(Term):
         """Returns this Verb's present participle form.
 
         Examples:
-            >>>verb = Verb("fly")
-            >>>verb.pres_part()
+            >>> verb = Verb("fly")
+            >>> verb.pres_part()
             "flying"
 
         Returns:
@@ -395,8 +438,8 @@ class Verb(Term):
         """Returns this Verb's past participle form.
 
         Examples:
-            >>>verb = Verb("fly")
-            >>>verb.pres_part()
+            >>> verb = Verb("fly")
+            >>> verb.pres_part()
             "flown"
 
         Returns:
@@ -463,10 +506,10 @@ class Verb(Term):
         """Return the singular if `count` == 1, and the plural otherwise.
 
         Examples:
-            >>>verb = Verb("fly")
-            >>>verb.indefinite(count = 1)
+            >>> verb = Verb("fly")
+            >>> verb.indefinite(count = 1)
             'flies'
-            >>>verb.indefinite(count = 3)
+            >>> verb.indefinite(count = 3)
             'fly'
 
         Args:

@@ -21,7 +21,7 @@ class Syllable:
         """Lazy load syllable and stress data when requested.
 
         Examples:
-            >>>Stress.data()
+            >>> Stress.data()
             {
                 "ab": [[1], [1, 1]],
                 "ababa": [[0, 1, 0], [1, 0, 0]],
@@ -49,8 +49,9 @@ class Syllable:
         """Return a list of syllable interpretations that correspond to stress values, for `word`.
 
         Examples:
-            >>>Stress.get_stress("abdomen")
+            >>> Stress.get_stress("abdomen")
             [[0, 1, 0], [1, 0, 0]]
+            
             This shows that the word has two interpretations, both with 3 syllables.
             In the first interpretation, the second syllable has primary stress, while
             in the second interpretation, the first syllable has primary stress.

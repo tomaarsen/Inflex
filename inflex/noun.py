@@ -370,13 +370,13 @@ class Noun(Term):
         """Creates a Noun instance with detection and conversion methods.
 
         Examples:
-            >>>noun = Noun("brother")
-            >>>noun.plural()
+            >>> noun = Noun("brother")
+            >>> noun.plural()
             'brothers'
-            >>>noun.classical().plural()
+            >>> noun.classical().plural()
             'brethren'
 
-            >>>noun.is_singular()
+            >>> noun.is_singular()
             True
 
         Note:
@@ -396,15 +396,39 @@ class Noun(Term):
     """
 
     def is_noun(self) -> bool:
+        """Returns `True` only if this noun is instantiated via `Noun(term)`.
+
+        Returns:
+            bool: Returns `True` only if this noun is instantiated via `Noun(term)`.
+        """
         return True
 
     def is_singular(self) -> bool:
+        """Detect whether this noun is in singular form.
+
+        Returns:
+            bool: True if this noun is deemed singular.
+        """
         return is_singular(self.term)
 
     def is_plural(self) -> bool:
+        """Detect whether this object is in plural form.
+
+        Returns:
+            bool: True if this object is deemed plural.
+        """
         return is_plural(self.term)
 
     def singular(self, person: Optional[int] = 0) -> str:
+        """Returns this noun's singular form.
+
+        Args:
+            person (Optional[int], optional): Represents the grammatical "person" (1st, 2nd, 3rd).
+                This option only affects personal and possessive pronouns. Defaults to 0.
+
+        Returns:
+            str: This noun's singular form.
+        """
         self._check_valid_person(person)
         match = Noun._prep_regex.match(self.term)
 
@@ -425,6 +449,15 @@ class Noun(Term):
         return self._encase(convert_to_singular(self.term))
 
     def plural(self, person: Optional[int] = 0) -> str:
+        """Returns this noun's plural form.
+
+        Args:
+            person (Optional[int], optional): Represents the grammatical "person" (1st, 2nd, 3rd).
+                This option only affects personal and possessive pronouns. Defaults to 0.
+
+        Returns:
+            str: This noun's plural form.
+        """
         self._check_valid_person(person)
         match = Noun._prep_regex.match(self.term)
 
@@ -456,6 +489,20 @@ class Noun(Term):
         return convert_to_modern_plural(term)
 
     def classical(self) -> "ClassicalNoun":
+        """Returns an object always inflecting in the classical/unassimilated manner.
+
+        Examples:
+            >>> Noun('cow').plural()
+            'cows'
+            >>> Noun('cow').classical().plural()
+            'kine'
+
+        Note:
+            Identical to `unassimilated()`.
+
+        Returns:
+            ClassicalNoun: A Noun object that pluralises according to classical rules.
+        """
         if self._classical:
             return self._classical
 
@@ -469,6 +516,16 @@ class Noun(Term):
         return self._classical
 
     def as_regex(self) -> "re.Pattern":
+        """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
+
+        Returns:
+            re.Pattern: Compiled regex object which case-insensitively matches any inflected form
+                of the word.
+
+        Examples:
+            >>> Noun('cherub').as_regex()
+            re.compile('cherubs|cherubim|cherub', re.IGNORECASE)
+        """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
                                                           self.classical().plural()
@@ -493,10 +550,10 @@ class Noun(Term):
         """Prepend "a" or "an" or the number to the correct form of this Noun.
 
         Examples:
-            >>>noun = Noun("book")
-            >>>noun.indefinite(count = 1)
+            >>> noun = Noun("book")
+            >>> noun.indefinite(count = 1)
             'a book'
-            >>>noun.indefinite(count = 3)
+            >>> noun.indefinite(count = 3)
             '3 books'
 
         TODO: self.term versus self.singular()
@@ -537,10 +594,31 @@ class ClassicalNoun(Noun):
         self._modern = modern
 
     def _convert_to_plural(self, term) -> str:
-        # Override the call from Noun's plural() to use the classical variant instead.
+        """The convert to classical plural call used by this class.
+
+        Args:
+            term (term): The input word or collocation.
+
+        Returns:
+            str: The plural form of `term`.
+        """
         return convert_to_classical_plural(term)
 
     def classical(self) -> "ClassicalNoun":
+        """Returns an object always inflecting in the classical/unassimilated manner.
+
+        Examples:
+            >>> Noun('cow').plural()
+            'cows'
+            >>> Noun('cow').unassimilated().plural()
+            'kine'
+
+        Note:
+            Identical to `unassimilated()`.
+
+        Returns:
+            Term: A Term object, or a subclass thereof.
+        """
         return self
 
     def modern(self) -> "Noun":
@@ -557,9 +635,26 @@ class ClassicalNoun(Noun):
         return self._modern
 
     def as_regex(self) -> "re.Pattern":
+        """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
+
+        Returns:
+            re.Pattern: Compiled regex object which case-insensitively matches any inflected form
+                of the word.
+
+        Examples:
+            >>> Noun('brother').classical().as_regex()
+            re.compile('brother|brethren', re.IGNORECASE)
+        """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
                                                           self.plural(),
                                                           }), reverse=True)), flags=re.I)
 
     def __repr__(self) -> str:
+        """Return `repr(self)`.
+
+        Examples:
+            >>> noun = Noun("book").classical()
+            >>> f"My noun: {noun!r}"
+            "My noun: Noun('book').classical()"
+        """
         return f"{self._modern!r}.classical()"

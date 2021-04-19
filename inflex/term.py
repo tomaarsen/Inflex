@@ -109,26 +109,26 @@ class Term(object):
             self.term = re.sub(r"\s{2,}", " ", self.term)
 
     def is_noun(self) -> bool:
-        """Returns `True` only if this object is instantiated via Noun(term).
+        """Returns `True` only if this object is instantiated via `Noun(term)`.
 
         Returns:
-            bool: Returns `True` only if this object is instantiated via Noun(term).
+            bool: Returns `True` only if this object is instantiated via `Noun(term)`.
         """
         return False
 
     def is_verb(self) -> bool:
-        """Returns `True` only if this object is instantiated via Verb(term).
+        """Returns `True` only if this object is instantiated via `Verb(term)`.
 
         Returns:
-            bool: Returns `True` only if this object is instantiated via Verb(term).
+            bool: Returns `True` only if this object is instantiated via `Verb(term)`.
         """
         return False
 
     def is_adj(self) -> bool:
-        """Returns `True` only if this object is instantiated via Adjective(term)
+        """Returns `True` only if this object is instantiated via `Adjective(term)`.
 
         Returns:
-            bool: Returns `True` only if this object is instantiated via Adjective(term).
+            bool: Returns `True` only if this object is instantiated via `Adjective(term)`.
         """
         return False
 
@@ -245,11 +245,11 @@ class Term(object):
                                                           self.plural()}), reverse=True)), flags=re.I)
 
     def __repr__(self) -> str:
-        """Return repr(self)
+        """Return `repr(self)`.
 
         Examples:
-            >>>noun = Noun("book")
-            >>>f"My noun: {noun!r}"
+            >>> noun = Noun("book")
+            >>> f"My noun: {noun!r}"
             "My noun: Noun('book')"
         """
         return f"{self.__class__.__name__}({self._reapply_whitespace(self.term)!r})"
