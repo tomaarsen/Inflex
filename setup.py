@@ -18,7 +18,7 @@ URL = 'https://github.com/tomaarsen/inflex'
 EMAIL = 'cubiegamedev@gmail.com'
 AUTHOR = 'Tom Aarsen'
 REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 
 REQUIRED = []
 
@@ -92,8 +92,8 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    # packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
-    py_modules=['inflex'],
+    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    # py_modules=['inflex'],
 
     # entry_points={
     #     'console_scripts': ['mycli=mymodule:cli'],
