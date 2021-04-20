@@ -277,6 +277,11 @@ class Adjective(Term):
     def comparative(self, only_suffix: bool = False) -> str:
         """Returns this Adjective's comparative form.
 
+        Args:
+            only_suffix (bool, optional): If `True`, then only convert by modifying suffix. 
+                If `False`, `more` can also be prepended as a means of converting to comparative. 
+                Defaults to `False`.
+
         Examples:
             >>> adj = Adjective("pretty")
             >>> adj.comparative()
@@ -335,6 +340,11 @@ class Adjective(Term):
 
     def superlative(self, only_suffix: bool = False) -> str:
         """Returns this Adjective's superlative form.
+
+        Args:
+            only_suffix (bool, optional): If `True`, then only convert by modifying suffix. 
+                If `False`, `most` can also be prepended as a means of converting to superlative. 
+                Defaults to `False`.
 
         Examples:
             >>> adj = Adjective("pretty")
