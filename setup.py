@@ -18,7 +18,7 @@ URL = 'https://github.com/tomaarsen/inflex'
 EMAIL = 'cubiegamedev@gmail.com'
 AUTHOR = 'Tom Aarsen'
 REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '1.0.4'
+VERSION = '1.0.5'
 
 REQUIRED = []
 
