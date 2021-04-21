@@ -1,5 +1,6 @@
 # Inflex
- Natural Language Inflection in English
+Natural Language Inflection in English<br>
+(Formerly called Inflexion)
 
 ---
 
@@ -8,6 +9,8 @@ This README is a stub, and is yet to be written.
 ---
 
 ## Install
+Inflex has no module requirements, and has support for Python version 3.7 onwards.<br>
+Install it via:
 ```
 pip install inflex
 ```
