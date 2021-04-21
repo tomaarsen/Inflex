@@ -17,8 +17,8 @@ DESCRIPTION = 'Inflection (conjugation and declension) of the English Language.'
 URL = 'https://github.com/tomaarsen/inflex'
 EMAIL = 'cubiegamedev@gmail.com'
 AUTHOR = 'Tom Aarsen'
-REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '1.0.5'
+REQUIRES_PYTHON = '>=3.6.0'
+VERSION = '1.0.6'
 
 REQUIRED = []
 
@@ -108,6 +108,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',

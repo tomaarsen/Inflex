@@ -10,7 +10,7 @@ import re
 
 VERSION = 20210419.190716
 
-def rei(regex: str) -> re.Pattern:
+def rei(regex: str) -> "re.Pattern":
     """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
 
     Args:
