@@ -9,7 +9,7 @@ This README is a stub, and is yet to be written.
 ---
 
 ## Install
-Inflex has no module requirements, and has support for Python version 3.6 onwards.<br>
+Inflex has no requirements, and has support for Python version 3.6 onwards.<br>
 Install it via:
 ```
 pip install inflex
