@@ -1,7 +1,9 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python package
+# Perhaps move to using tox rather than pytest on different Python versions
+
+name: Build
 
 on:
   push:
@@ -9,7 +11,6 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
-    branches: [ master ]
 
 jobs:
   build:
@@ -17,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
