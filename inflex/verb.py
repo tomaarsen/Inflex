@@ -344,16 +344,25 @@ class Verb(Term):
                 the second string is the last sub-section, e.g. "bbb".
         """
         form = "{}"
-        if " " in term:
-            split_term = term.split()
-            # form = f"{{}} {' '.join(split_term[1:])}"
-            form = "{}" + "".join(" " + t for t in split_term[1:])
-            term = split_term[0]
-        if "-" in term:
-            split_term = term.split("-")
-            # form = f"{'-'.join(split_term[:-1])}-" + form
-            form = "".join(t + "-" for t in split_term[:-1]) + form
-            term = split_term[-1]
+        # Split off first word
+        try:
+            index = term.index(" ")
+            form += term[index:]
+            term = term[:index]
+        except ValueError:
+            pass
+
+        # Don't split if the word ends with a hyphen
+        if term.endswith("-"):
+            return term, form
+
+        # Split off last sub-word of first word
+        try:
+            index = term.rindex("-") + 1
+            form = term[:index] + form
+            term = term[index:]
+        except ValueError:
+            pass
         return term, form
 
     def past(self) -> str:
