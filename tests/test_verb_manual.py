@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+from typing import Dict, List, Tuple
 import unittest
 
 from inflex import Verb
@@ -37,6 +38,36 @@ class TestVerbs(unittest.TestCase):
                     prediction = Verb(term).singular(person)
                     self.assertEqual(prediction, output,
                                      "Check whether singular() with a supplied person works with 'to be'.")
+
+        test_args: Dict[int, List[Tuple[str, str]]] = {
+            0: [ # "Regular" singular
+                ("fly", "flies"),
+                ("walk", "walks"),
+                ("study", "studies")
+            ],
+            1: [ # I fly, I walk, I study, i.e. plural
+                ("fly", "fly"),
+                ("walk", "walk"),
+                ("study", "study")
+            ],
+            2: [ # You fly, You walk, You study, i.e. plural
+                ("fly", "fly"),
+                ("walk", "walk"),
+                ("study", "study")
+            ],
+            3: [ # She flies, He walks, It studies, i.e. singular
+                ("fly", "flies"),
+                ("walk", "walks"),
+                ("study", "studies")
+            ],
+        }
+
+        for person, args in test_args.items():
+            for term, correct in args:
+                with self.subTest():
+                    prediction = Verb(term).singular(person)
+                    self.assertEqual(prediction, correct,
+                                     f"Check whether singular() with person = {person} works for {term!r}.")
 
     def test_plural_wrong_person(self):
         with self.assertRaises(ValueError):
