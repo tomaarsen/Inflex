@@ -908,7 +908,7 @@ class TestVerbToSingular(unittest.TestCase):
                 # Expand test_case with default cases, if optional keys are not provided
                 test_case = {**test_case, **{
                     "desc": f"singular({repr(test_case['in'])}) => {repr(test_case['out'])}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }}
                 self.assertEqual(Verb(test_case["in"]).singular(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 

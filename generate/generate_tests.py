@@ -41,7 +41,7 @@ class Test{test_name_pascal}(unittest.TestCase):
                 # Expand test_case with default cases, if optional keys are not provided
                 test_case = {{**test_case, **{{
                     "desc": f"{test_function}({{repr(test_case['in'])}}) => {{repr(test_case['out'])}}",
-                    "kwargs": dict()
+                    "kwargs": {{}}
                 }}}}
                 self.assertEqual({test_class}(test_case["in"]).{test_function}(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 

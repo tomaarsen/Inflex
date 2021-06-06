@@ -295,7 +295,7 @@ class TestPrependIndefiniteArticle(unittest.TestCase):
                 # Expand test_case with default cases, if optional keys are not provided
                 test_case = {**test_case, **{
                     "desc": f"indefinite({repr(test_case['in'])}) => {repr(test_case['out'])}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }}
                 self.assertEqual(Noun(test_case["in"]).indefinite(**test_case["kwargs"]), test_case["out"], test_case["desc"])
 

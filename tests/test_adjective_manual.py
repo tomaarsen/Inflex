@@ -383,7 +383,7 @@ class TestAdjectives(unittest.TestCase):
             with self.subTest():
                 # Add default `kwargs` if it doesn't exist in test_case yet
                 test_case = {**{
-                    "kwargs": dict()
+                    "kwargs": {}
                 }, **test_case}
                 test_case["desc"] = f"Adjective({repr(test_case['in'])}).singular({test_case['kwargs']}) => {repr(test_case['out'])}"
                 adj = Adjective(test_case["in"])
@@ -395,7 +395,7 @@ class TestAdjectives(unittest.TestCase):
             with self.subTest():
                 # Add default `kwargs` if it doesn't exist in test_case yet
                 test_case = {**{
-                    "kwargs": dict()
+                    "kwargs": {}
                 }, **test_case}
                 test_case["desc"] = f"Adjective({repr(test_case['in'])}).plural({test_case['kwargs']}) => {repr(test_case['out'])}"
                 adj = Adjective(test_case["in"])
@@ -409,7 +409,7 @@ class TestAdjectives(unittest.TestCase):
                     "in": adjective,
                     "out": adjective,
                     "desc": f"Adjective({repr(adjective)}).singular() => {repr(adjective)}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }
                 adj = Adjective(test_case["in"])
                 self.assertEqual(adj.singular(
@@ -422,7 +422,7 @@ class TestAdjectives(unittest.TestCase):
                     "in": adjective,
                     "out": adjective,
                     "desc": f"Adjective({repr(adjective)}).plural() => {repr(adjective)}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }
                 adj = Adjective(test_case["in"])
                 self.assertEqual(adj.plural(
@@ -435,7 +435,7 @@ class TestAdjectives(unittest.TestCase):
                     "in": adjective,
                     "out": adjective,
                     "desc": f"Adjective({repr(adjective)}).classical().plural() => {repr(adjective)}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }
                 adj = Adjective(test_case["in"])
                 self.assertEqual(adj.classical().plural(
@@ -675,7 +675,7 @@ class TestAdjectives(unittest.TestCase):
                     "in": adjective,
                     "out": comparative,
                     "desc": f"Adjective({repr(adjective)}).comparative() => {repr(comparative)}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }
                 adj = Adjective(test_case["in"])
                 self.assertEqual(adj.comparative(**test_case["kwargs"]), test_case["out"],
@@ -688,7 +688,7 @@ class TestAdjectives(unittest.TestCase):
                     "in": adjective,
                     "out": superlative,
                     "desc": f"Adjective({repr(adjective)}).superlative() => {repr(superlative)}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }
                 adj = Adjective(test_case["in"])
                 self.assertEqual(adj.superlative(**test_case["kwargs"]), test_case["out"],
@@ -707,7 +707,7 @@ class TestAdjectives(unittest.TestCase):
                     "in": comparative,
                     "out": comparative,
                     "desc": f"Adjective({repr(comparative)}).comparative() => {repr(comparative)}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }
                 adj = Adjective(test_case["in"])
                 self.assertEqual(adj.comparative(**test_case["kwargs"]), test_case["out"],
@@ -726,7 +726,7 @@ class TestAdjectives(unittest.TestCase):
                     "in": superlative,
                     "out": superlative,
                     "desc": f"Adjective({repr(superlative)}).superlative() => {repr(superlative)}",
-                    "kwargs": dict()
+                    "kwargs": {}
                 }
                 adj = Adjective(test_case["in"])
                 self.assertEqual(adj.superlative(**test_case["kwargs"]), test_case["out"],
