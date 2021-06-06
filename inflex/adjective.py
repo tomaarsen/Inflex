@@ -111,9 +111,9 @@ class Adjective(Term):
         "lesser": "least",
     }
 
-    """
-    Override default methods from Term
-    """
+    # ---------------------------------- #
+    # Override default methods from Term #
+    # ---------------------------------- #
 
     def __init__(self, term: str): # pylint: disable=W0235
         """Creates an Adjective instance with detection and conversion methods.
@@ -206,6 +206,10 @@ class Adjective(Term):
             return self._encase(self._possessive_inflexion[self.term.lower()]["plural"][person])
 
         return self._encase(convert_to_plural(self.term))
+
+    # --------------------------------- #
+    # Methods exclusively for Adjective #
+    # --------------------------------- #
 
     @staticmethod
     def _stem(term: str) -> str:
