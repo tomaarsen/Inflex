@@ -6,9 +6,7 @@
 ## Contains no user-servicable parts!!! ##
 ##########################################
 
-import re
-
-VERSION = 20210606.145938
+VERSION = 20210606.161222
 
 adj_is_singular = [
     "a",

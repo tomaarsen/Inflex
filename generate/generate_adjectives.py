@@ -101,8 +101,6 @@ class CodeWriter(object):
 ## Contains no user-servicable parts!!! ##
 ##########################################
 
-import re
-
 VERSION = {version}
 
 adj_is_singular = {json.dumps(sorted(self.reader.words["singular"]), indent=4)}
