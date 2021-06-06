@@ -3,7 +3,6 @@
 
 import json
 import os
-import re
 from typing import Dict, List, Set
 
 
@@ -40,8 +39,8 @@ class Syllable:
 
         path = os.path.join(os.path.dirname(__file__),
                             "data/cmudict_stress.json")
-        with open(path, "r", encoding="utf8") as f:
-            Syllable._data = json.load(f)
+        with open(path, "r", encoding="utf8") as file:
+            Syllable._data = json.load(file)
         return Syllable._data
 
     @staticmethod
@@ -148,9 +147,9 @@ class Syllable:
         # Remove trailing "e"
         while word.endswith("e"):
             word = word[:-1]
-        # Convert to "CVCC"
-        vc = "".join('V' if char in 'aeiouy' else 'C' for char in word)
+        # Convert string to only V's and C's
+        speech_sounds = "".join('V' if char in 'aeiouy' else 'C' for char in word)
         # Remove duplicate V's
-        while "VV" in vc:
-            vc = vc.replace("VV", "V")
-        return vc.count("V")
+        while "VV" in speech_sounds:
+            speech_sounds = speech_sounds.replace("VV", "V")
+        return speech_sounds.count("V")
