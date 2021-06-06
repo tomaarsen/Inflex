@@ -263,8 +263,6 @@ class Adjective(Term):
                 Based on the deemed syllable count of `word`
         """
         syllable_counts = Syllable.count_reduced_syllables(word)
-        if not syllable_counts:
-            return False
 
         if max(syllable_counts) > 2:
             return True
