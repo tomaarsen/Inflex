@@ -404,10 +404,10 @@ class Reader(object):
 
 
 class CodeWriter(object):
-    def __init__(self, reader, fname):
+    def __init__(self, reader: Reader, fname: str):
         super().__init__()
-        self.reader = reader
-        self.fname = fname
+        self.reader: Reader = reader
+        self.fname: str = fname
 
     def write_file(self):
         version = datetime.strftime(datetime.now(), '%Y%m%d.%H%M%S')
@@ -469,7 +469,7 @@ def rei(regex: str) -> Pattern[str]:
         generated_code += self.get_recognize_rule_output(
             "plural", self.reader.patterns["singular"]) + "\n\n"
         generated_code += self.get_recognize_rule_output(
-            "singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
+            "singular", self.reader.patterns["modern_plural"]) + "\n\n"
 
         generated_code += '''def known_plural(word: str) -> bool:
     """True if `word` is known to be plural.
@@ -613,10 +613,18 @@ def known_singular(word):
                 used_lines.append(line)
                 output += line
         """
-        non_cond_regexes = {repl_dict["from"] for repl_dict in replacement_suffixes if not (
-            "check_conditional" in repl_dict and repl_dict["check_conditional"]) and repl_dict["tag"] != "nonindicative"}
-        cond_regexes = [repl_dict for repl_dict in replacement_suffixes if "check_conditional" in repl_dict and repl_dict["check_conditional"]
-                        and repl_dict["tag"] != "nonindicative"]
+        non_cond_regexes = {
+            repl_dict["from"]
+            for repl_dict in replacement_suffixes
+            if not ("check_conditional" in repl_dict and repl_dict["check_conditional"])
+            and repl_dict["tag"] != "nonindicative"
+        }
+        cond_regexes = [
+            repl_dict
+            for repl_dict in replacement_suffixes
+            if "check_conditional" in repl_dict and repl_dict["check_conditional"]
+            and repl_dict["tag"] != "nonindicative"
+        ]
         large_regex = "|".join(sorted(
             sorted(non_cond_regexes), key=lambda x: len(x) - x.find(")") + x.find("(")))
         output += f'    rei(r"^(?:{large_regex})$"): {{}},\n'

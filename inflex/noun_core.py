@@ -9,7 +9,7 @@
 import re
 from typing import Pattern
 
-VERSION = 20210606.161044
+VERSION = 20210606.180733
 
 def rei(regex: str) -> Pattern[str]:
     """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
@@ -9153,16 +9153,6 @@ plural_recognize_rules = {
 
 singular_recognize_rules = {
     rei(r"^(?:(.+)o|(.+)x|(.+)y|(.+)z|(.+[^aeiouy])z|(.+[aeiou])o|(.+[aeiou])y|(.+[cs])h|(.+)oe|(.+)ss|(.+)um|(.+)us|(.+[aeo])lf|(.+[aiy])nx|(.+[rnlpwaeio])se|(.*)cow|(.*)elf|(.*)man|(.*)pox|(.+)arf|(.+)eaf|(.+)eau|(.+)ieu|(.+)nge|(.+)oux|(.+)quy|(.+[^aeoui][aeouiy])che|(.+[^ns])sis|(.+[aeo])use|(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) it|(.*)bass|(.*)bema|(.*)buzz|(.*)deer|(.*)fish|(.*)fizz|(.*)foot|(.*)fowl|(.*)fuzz|(.*)hoof|(.*)jazz|(.*)leaf|(.*)loaf|(.*)nova|(.*)wife|(.*)wolf|(.+)ceps|(.+)nife|(.+)trix|(.+)zoon|(.*)child|(.*)craft|(.*)datum|(.*)drama|(.*)edema|(.*)frizz|(.*)genus|(.*)goose|(.*)helix|(.*)hertz|(.*)human|(.*)knife|(.*)lemma|(.*)lumen|(.*)mouse|(.*)sheep|(.*)shelf|(.*)staff|(.*)stave|(.*)stoma|(.*)thief|(.*)tooth|(.*)umbra|(.*)hedron|(.*)helion|(.*)mensch|(.*)person|(.+)thesis|(.*)brother|(.*)measles|(.*)nucleus|(.*)sarcoma|(.*)siemens|(.*)stratum|(.*)bacillus|(.*)legomenon|(.*)proboscis|(.*)phenomenon|(.*)wildebeest|(.+)star general)$"): {},
-    rei(r"^son-of-a-(.*?)$"): {"conditional": lambda match: is_singular(match.group(1))},
-    rei(r"^son of a (.*?)$"): {"conditional": lambda match: is_singular(match.group(1))},
-    rei(r"^(.*?)-(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)$"): {"conditional": lambda match: is_singular(match.group(1))},
-    rei(r"^(.*?) (about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)$"): {"conditional": lambda match: is_singular(match.group(1))},
-    rei(r"^(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)$"): {"conditional": lambda match: is_singular(match.group(2))},
-    rei(r"^(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with) (.*?)$"): {"conditional": lambda match: is_singular(match.group(2))},
-    rei(r"^(.*?)-errant$"): {"conditional": lambda match: is_singular(match.group(1))},
-    rei(r"^(.*?) errant$"): {"conditional": lambda match: is_singular(match.group(1))},
-    rei(r"^(.*?)-(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)$"): {"conditional": lambda match: is_singular(match.group(1))},
-    rei(r"^(.*?) (above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)$"): {"conditional": lambda match: is_singular(match.group(1))},
     rei(r"^son-of-a-(.*?)$"): {"conditional": lambda match: is_singular(match.group(1))},
     rei(r"^son of a (.*?)$"): {"conditional": lambda match: is_singular(match.group(1))},
     rei(r"^(.*?)-(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)-(.*?)$"): {"conditional": lambda match: is_singular(match.group(1))},
