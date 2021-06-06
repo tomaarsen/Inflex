@@ -510,7 +510,7 @@ class Noun(Term):
         if self._classical:
             return self._classical
 
-        # "them" is an exception, as "it -> they" and "it -> them" is ambigious
+        # "them" is an exception, as "it -> they" and "it -> them" is ambiguous
         if self.term.split()[-1].lower() in ["them", "they"]:
             self._classical = ClassicalNoun(self._encase(self.term), self)
         else:

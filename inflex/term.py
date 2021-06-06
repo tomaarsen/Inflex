@@ -6,7 +6,7 @@ __all__ = [
 ]
 
 import re
-from typing import Any, Callable, Dict, Generator, List, Optional, Pattern, TypeVar, Union
+from typing import Callable, Dict, Generator, List, Pattern, TypeVar, Union
 
 T = TypeVar("T")  # pylint: disable=C0103
 

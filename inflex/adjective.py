@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import re
-from typing import Optional
 
 
 from inflex.syllable import Syllable
