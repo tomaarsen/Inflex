@@ -152,4 +152,7 @@ class Syllable:
         # Remove duplicate V's
         while "VV" in speech_sounds:
             speech_sounds = speech_sounds.replace("VV", "V")
-        return speech_sounds.count("V")
+        guess = speech_sounds.count("V")
+        if "ia" in word.lower() or not guess:
+            guess += 1
+        return guess
