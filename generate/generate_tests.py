@@ -49,7 +49,7 @@ class Test{test_name_pascal}(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 """
-   
+
     def _format_test_args(self, test_args):
         """
         Give test_args a nicer formatting.

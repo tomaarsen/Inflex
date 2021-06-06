@@ -60,13 +60,13 @@ class Reader(object):
 
     def parse_file(self):
         lines = self.get_readlines()
-       
+
         # Read lines in reverse so the first lines are eventually checked before the later ones
         for line in lines[::-1]:
             # Skip empty or comment lines
             if COMMENT_LINE_PAT.match(line) or BLANK_LINE_PAT.match(line):
                 continue
-           
+
             # Extract data
             match = DATA_PAT.match(line)
             if match:
@@ -79,14 +79,14 @@ class Reader(object):
             else:
                 # TODO: Change exception
                 raise Exception("Unknown input:", line)
-           
+
 
 class CodeWriter(object):
     def __init__(self, reader, fname):
         super().__init__()
         self.reader = reader
         self.fname = fname
-   
+
     def write_file(self):
         version = datetime.strftime(datetime.now(), '%Y%m%d.%H%M%S')
         generated_code = f'''\
@@ -183,7 +183,7 @@ class VerbTestWriter(TestWriter):
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
         """
-   
+
     def write_tests(self):
         self.write_is_singular_test()
         self.write_is_plural_test()
@@ -296,9 +296,9 @@ if __name__ == "__main__":
     class_name = "Adjective"
     reader = Reader(in_fname)
     reader.parse_file()
-   
+
     cwriter = CodeWriter(reader, out_fname)
     cwriter.write_file()
-   
+
     twriter = VerbTestWriter(reader, class_name)
     twriter.write_tests()

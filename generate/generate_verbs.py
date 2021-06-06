@@ -89,7 +89,7 @@ class Verb(object):
         super().__init__()
         """
         Extract line information.
-       
+
         sing -> Singular
         plur -> Plural
         pret -> Preterite
@@ -161,12 +161,12 @@ class Reader(object):
         Fill `pattern`, `literal` and `words`
         """
         lines = self.get_readlines()
-       
+
         for line in lines:
             # Skip empty or comment lines
             if COMMENT_LINE_PAT.match(line) or BLANK_LINE_PAT.match(line):
                 continue
-           
+
             # Extract data
             match = DATA_PAT.match(line)
             if match:
@@ -174,7 +174,7 @@ class Reader(object):
             else:
                 # TODO: Change exception
                 raise Exception("Unknown input:", line)
-           
+
             if verb.has_gen():
                 self.optionally_add_pattern(self.patterns["plural"], {
                     "is": f"({verb.plur.gen}{verb.plur.restrict}){verb.plur.word}",
@@ -246,7 +246,7 @@ class Reader(object):
                         "to": f'"{verb.plur.word}"'
                     })
                     """
-           
+
             if not (verb.sing.gen and verb.plur.gen and verb.pret.gen):
                 self.add_literals_and_words(verb)
 
@@ -272,7 +272,7 @@ class Reader(object):
 
         self.words["singular"].add(verb.sing.word)
         self.words["plural"].add(verb.plur.word)
-   
+
         if verb.pret.word:
             self.words["past"].add(verb.pret.word)
 
@@ -286,7 +286,7 @@ class Reader(object):
                 self.words["past"].add(verb.pret_plur)
             else:
                 self.optionally_add_literal(self.literals["past"], verb.plur.word, verb.pret.word)
-       
+
         if verb.pres.word:
             self.words["pres_part"].add(verb.pres.word)
 
@@ -310,7 +310,7 @@ class CodeWriter(object):
         super().__init__()
         self.reader = reader
         self.fname = fname
-   
+
     def write_file(self):
         version = datetime.strftime(datetime.now(), '%Y%m%d.%H%M%S')
         generated_code = f'''\
@@ -330,13 +330,13 @@ VERSION = {version}
 
         for key in self.reader.literals:
             generated_code += f"{key}_of = " + json.dumps(reader.literals[key], indent=4, sort_keys=True) + "\n\n"
-       
+
         for key in self.reader.literals:
             generated_code += self.get_convert_rule_output(key, self.reader.patterns[key]) + "\n\n"
-       
+
         for key in self.reader.literals:
             generated_code += self.get_recognize_rule_output(key, self.reader.patterns[key]) + "\n\n"
-       
+
         generated_code += '''\
 past_of_values = set(past_of.values())
 pres_part_of_values = set(pres_part_of.values())
@@ -531,12 +531,12 @@ class VerbTestWriter(TestWriter):
         test_args:          List of dictionaries with testing arguments.
         test_name_pascal:   Name of the test in Pascal Case
         """
-   
+
     def write_tests(self):
         # Ignore "am", "is" and "are" for these tests
         self.reader.words["plural"] -= {"am", "is", "are"}
         self.reader.words["singular"] -= {"am", "is", "are"}
-       
+
         self.write_is_singular_test()
         self.write_is_plural_test()
         self.write_is_past_test()
@@ -773,15 +773,15 @@ class VerbTestWriter(TestWriter):
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
 
-if __name__ == "__main__":   
+if __name__ == "__main__":
     in_fname = "lei//verbs.lei"
     out_fname = "inflex//verb_core.py"
     class_name = "Verb"
     reader = Reader(in_fname)
     reader.parse_file()
-   
+
     cwriter = CodeWriter(reader, out_fname)
     cwriter.write_file()
-   
+
     twriter = VerbTestWriter(reader, class_name)
     twriter.write_tests()
