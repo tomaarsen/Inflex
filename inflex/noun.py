@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from typing import Optional, Tuple
+from typing import Optional
 
 
 from inflex.term import Term
@@ -391,9 +391,9 @@ class Noun(Term):
         # Cached classical form of this Noun, to be lazily loaded just once.
         self._classical = None
 
-    """
-    Override default methods from Term
-    """
+    # ---------------------------------- #
+    # Override default methods from Term #
+    # ---------------------------------- #
 
     def is_noun(self) -> bool:
         """Returns `True` only if this noun is instantiated via `Noun(term)`.
@@ -412,10 +412,10 @@ class Noun(Term):
         return is_singular(self.term)
 
     def is_plural(self) -> bool:
-        """Detect whether this object is in plural form.
+        """Detect whether this noun is in plural form.
 
         Returns:
-            bool: True if this object is deemed plural.
+            bool: True if this noun is deemed plural.
         """
         return is_plural(self.term)
 
@@ -438,13 +438,15 @@ class Noun(Term):
 
             for case in ["objective", "possessive", "reflexive", "nominative"]:
                 if term.lower() in Noun._noun_inflection[case]:
-                    return self._encase(prep + Noun._noun_inflection[case][term.lower()]["singular"][person])
+                    converted = Noun._noun_inflection[case][term.lower()]["singular"][person]
+                    return self._encase(prep + converted)
 
             return self._encase(prep + convert_to_singular(term))
 
         for case in ["nominative", "objective", "possessive", "reflexive"]:
             if self.term.lower() in Noun._noun_inflection[case]:
-                return self._encase(Noun._noun_inflection[case][self.term.lower()]["singular"][person])
+                converted = Noun._noun_inflection[case][self.term.lower()]["singular"][person]
+                return self._encase(converted)
 
         return self._encase(convert_to_singular(self.term))
 
@@ -467,17 +469,19 @@ class Noun(Term):
 
             for case in ["objective", "possessive", "reflexive", "nominative"]:
                 if term.lower() in Noun._noun_inflection[case]:
-                    return self._encase(prep + Noun._noun_inflection[case][term.lower()]["plural"][person])
+                    converted = Noun._noun_inflection[case][term.lower()]["plural"][person]
+                    return self._encase(prep + converted)
 
             return self._encase(prep + self._convert_to_plural(term))
 
         for case in ["nominative", "objective", "possessive", "reflexive"]:
             if self.term.lower() in Noun._noun_inflection[case]:
-                return self._encase(Noun._noun_inflection[case][self.term.lower()]["plural"][person])
+                converted = Noun._noun_inflection[case][self.term.lower()]["plural"][person]
+                return self._encase(converted)
 
         return self._encase(self._convert_to_plural(self.term))
 
-    def _convert_to_plural(self, term) -> str:
+    def _convert_to_plural(self, term) -> str: # pylint: disable=R0201
         """The convert to plural call used by this class. Is overridden for classical nouns.
 
         Args:
@@ -510,8 +514,9 @@ class Noun(Term):
         if self.term.split()[-1].lower() in ["them", "they"]:
             self._classical = ClassicalNoun(self._encase(self.term), self)
         else:
-            # TODO: self.singular() versus self.term
-            # TODO: Prevent needing to encase and then re-encase
+            # TODO: # pylint: disable=W0511
+            # - self.singular() versus self.term
+            # - Prevent needing to encase and then re-encase
             self._classical = ClassicalNoun(self._encase(self.term), self)
         return self._classical
 
@@ -531,9 +536,9 @@ class Noun(Term):
                                                           self.classical().plural()
                                                           }), reverse=True)), flags=re.I)
 
-    """
-    Methods exclusively for Noun
-    """
+    # ---------------------------- #
+    # Methods exclusively for Noun #
+    # ---------------------------- #
 
     def indef_article(self) -> str:
         """Return the correct indefinite article ("a" or "an") for `word`.
