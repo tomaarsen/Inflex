@@ -104,6 +104,70 @@ class TestVerbs(unittest.TestCase):
         prediction = Verb("la-la-").pres_part()
         self.assertEqual(prediction, "la-la-ing", "Input word ending in '-' must not throw an Exception.")
 
+    def test_indefinite(self):
+        test_data = [('transliterate', 'transliterates'),
+                     ('sour', 'sours'),
+                     ('annul', 'annuls'),
+                     ('fix', 'fixes'),
+                     ('centre', 'centres'),
+                     ('develop', 'develops'),
+                     ('admit of', 'admits of'),
+                     ('stereotype', 'stereotypes'),
+                     ('overrun', 'overruns'),
+                     ('prostrate', 'prostrates'),
+                     ('fluster', 'flusters'),
+                     ('about-face', 'about-faces'),
+                     ('receive', 'receives'),
+                     ('offend', 'offends'),
+                     ('hoot down', 'hoots down'),
+                     ('fuss over', 'fusses over'),
+                     ('come before', 'comes before'),
+                     ('bollix up', 'bollixes up'),
+                     ('balance', 'balances'),
+                     ('preheat', 'preheats'),
+                     ('whip up', 'whips up'),
+                     ('immure', 'immures'),
+                     ('roughen', 'roughens'),
+                     ('come on', 'comes on'),
+                     ('move for', 'moves for'),
+                     ('chicken out', 'chickens out'),
+                     ('crown', 'crowns'),
+                     ('slaver', 'slavers'),
+                     ('disgrace', 'disgraces'),
+                     ('fathom', 'fathoms'),
+                     ('work off', 'works off'),
+                     ('awaken', 'awakens'),
+                     ('clock off', 'clocks off'),
+                     ('steady', 'steadies'),
+                     ('court-martial', 'court-martials'),
+                     ('muffle', 'muffles'),
+                     ('prize out', 'prizes out'),
+                     ('intervene', 'intervenes'),
+                     ('brace', 'braces'),
+                     ('harden to', 'hardens to'),
+                     ('leak out', 'leaks out'),
+                     ('kick out', 'kicks out'),
+                     ('contrast', 'contrasts'),
+                     ('dehumanize', 'dehumanizes'),
+                     ('move in', 'moves in'),
+                     ('run out', 'runs out'),
+                     ('diversify', 'diversifies'),
+                     ('insist', 'insists'),
+                     ('overcharge', 'overcharges'),
+                     ('solidify', 'solidifies')]
+        for plur, sing in test_data:
+            for term, correct, count in [
+                (plur, sing, 1),
+                (plur, plur, 0),
+                (plur, plur, 3),
+                (sing, sing, 1),
+                (sing, plur, 0),
+                (sing, plur, 3),
+            ]:
+                with self.subTest():
+                    prediction = Verb(term).indefinite(count)
+                    self.assertEqual(prediction, correct, f"Verb({term!r}).indefinite(count = {count}) => {correct!r}")
+
     def test_singular_to_singular(self):
         test_data = [('overcrops', {'overcrops'}),
                      ('peels', {'peels'}),
