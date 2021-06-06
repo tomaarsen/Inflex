@@ -216,7 +216,6 @@ class Verb(Term):
         Returns:
             str: This verb's plural form.
         """
-        breakpoint()
         self._check_valid_person(person)
 
         known = None
