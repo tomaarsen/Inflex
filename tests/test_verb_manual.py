@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import re
-import random
 import unittest
 
 from inflex import Verb
@@ -56,7 +55,17 @@ class TestVerbs(unittest.TestCase):
             Verb("fly").singular("first")
 
     def test_empty(self):
-        self.assertEqual(Verb("").plural(), "", "Verb('').plural() => ''")
+        verb = Verb("")
+        verb.is_singular()
+        verb.is_plural()
+        verb.is_past()
+        verb.is_pres_part()
+        verb.is_past_part()
+        verb.singular()
+        verb.plural()
+        verb.past()
+        verb.pres_part()
+        verb.past_part()
 
     def test_singular_to_singular(self):
         test_data = [('overcrops', {'overcrops'}),

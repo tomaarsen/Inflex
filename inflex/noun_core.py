@@ -9,7 +9,7 @@
 import re
 from typing import Pattern
 
-VERSION = 20210606.180733
+VERSION = 20210606.190936
 
 def rei(regex: str) -> Pattern[str]:
     """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
@@ -8534,6 +8534,7 @@ modern_plural_convert_outputs = [
     lambda subterms: f"{subterms[0]}ses",
     lambda subterms: f"{subterms[0]}s",
 ]
+
 modern_plural_convert_slices = [
     (0, [1]),
     (1, [2]),
@@ -8757,6 +8758,7 @@ classical_plural_convert_outputs = [
     lambda subterms: f"{subterms[0]}ses",
     lambda subterms: f"{subterms[0]}s",
 ]
+
 classical_plural_convert_slices = [
     (0, [1]),
     (1, [2]),
@@ -9001,6 +9003,7 @@ singular_convert_outputs = [
     lambda subterms: f"{subterms[0]}s",
     lambda subterms: f"{subterms[0]}",
 ]
+
 singular_convert_slices = [
     (0, [1]),
     (1, [2]),

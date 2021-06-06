@@ -170,7 +170,13 @@ class TestNouns(unittest.TestCase):
             Noun("brother").singular("first")
 
     def test_empty(self):
-        self.assertEqual(Noun("").plural(), "", "Noun('').plural() => ''")
+        noun = Noun("")
+        noun.is_singular()
+        noun.is_plural()
+        noun.classical().is_plural()
+        noun.singular()
+        noun.plural()
+        noun.classical().plural()
 
     def test_is_singular_not_plural(self):
         test_data = [

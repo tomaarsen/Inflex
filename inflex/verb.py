@@ -274,6 +274,9 @@ class Verb(Term):
         Returns:
             str: The stemmed version of `term`, ready for appending "-ed" or "-ing".
         """
+        if not term:
+            return term
+
         # Utility method that adjusts final consonants when they need to be doubled in inflexions
         # Apply the first relevant transform
         for regex in Verb._stem_regexes:

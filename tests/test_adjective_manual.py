@@ -376,7 +376,13 @@ class TestAdjectives(unittest.TestCase):
             Adjective("our").singular("first")
 
     def test_empty(self):
-        self.assertEqual(Adjective("").plural(), "", "Adjective('').plural() => ''")
+        adj = Adjective("")
+        adj.is_singular()
+        adj.is_plural()
+        adj.singular()
+        adj.plural()
+        adj.comparative()
+        adj.superlative()
 
     def test_possessive_to_singular(self):
         for test_case in self.test_possessive_to_singular_args:

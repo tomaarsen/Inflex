@@ -551,7 +551,7 @@ def known_singular(word):
 
         output = f"{name}_convert_rule_regex = rei(r\"^(?:{'|'.join(regexes)})$\")\n\n"
         output += f"{name}_convert_outputs = [" + ''.join(
-            '\n    ' + output + ',' for output in outputs) + "\n]\n"
+            '\n    ' + output + ',' for output in outputs) + "\n]\n\n"
         output += f"{name}_convert_slices = [" + ''.join(
             '\n    ' + str(index_list) + ',' for index_list in slices) + "\n]"
 
