@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from typing import Optional, Tuple
+from typing import Optional, Pattern, Tuple
 
 from inflex.syllable import Syllable
 from inflex.term import Term
@@ -242,7 +242,7 @@ class Verb(Term):
         # If all else fails, return the term
         return self._reapply_whitespace(self.term)
 
-    def as_regex(self) -> "re.Pattern":
+    def as_regex(self) -> Pattern[str]:
         """Returns a `re.Pattern` which case-insensitively matches any inflected form of the verb.
 
         Returns:

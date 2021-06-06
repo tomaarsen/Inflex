@@ -6,7 +6,7 @@ __all__ = [
 ]
 
 import re
-from typing import Callable, Dict, Generator, List, Optional, TypeVar, Union
+from typing import Any, Callable, Dict, Generator, List, Optional, Pattern, TypeVar, Union
 
 T = TypeVar("T")  # pylint: disable=C0103
 
@@ -48,7 +48,7 @@ class Term:
 
     # Supported casing formats: I, lower, Title, UPPER, Mc
     # Note that if the passed word is "i", we always output "I"
-    _casing_formats: Dict[str, Dict[str, Union[re.Pattern, Callable[[str], str]]]] = {
+    _casing_formats: Dict[str, Dict[str, Union[Pattern[str], Callable[[str], str]]]] = {
         "I": {
             "regex": re.compile(r"^I$"),
             "transformation": _transform(str.lower)
@@ -236,7 +236,7 @@ class Term:
                 "Invalid `person` parameter supplied. Valid values include 0, 1, 2, and 3.")
         return True
 
-    def as_regex(self) -> "re.Pattern":
+    def as_regex(self) -> Pattern[str]:
         """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
 
         Returns:

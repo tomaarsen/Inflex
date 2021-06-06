@@ -7,10 +7,11 @@
 ##########################################
 
 import re
+from typing import Pattern
 
-VERSION = 20210606.145934
+VERSION = 20210606.161044
 
-def rei(regex: str) -> "re.Pattern":
+def rei(regex: str) -> Pattern[str]:
     """Return compiled `re.Pattern` with `regex` as pattern, and the IGNORECASE flag.
 
     Args:

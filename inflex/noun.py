@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Pattern, Union
 
 
 from inflex.term import Term
@@ -520,7 +520,7 @@ class Noun(Term):
             self._classical = ClassicalNoun(self._encase(self.term), self)
         return self._classical
 
-    def as_regex(self) -> "re.Pattern":
+    def as_regex(self) -> Pattern[str]:
         """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
 
         Returns:
@@ -639,7 +639,7 @@ class ClassicalNoun(Noun):
         """
         return self._modern
 
-    def as_regex(self) -> "re.Pattern":
+    def as_regex(self) -> Pattern[str]:
         """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
 
         Returns:
