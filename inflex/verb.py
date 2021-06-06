@@ -76,7 +76,7 @@ class Verb(Term):
         re.compile(r"ski\Z"): lambda match: "ski",
         # Words ending with "e" prepended by anything other than an "e"
         # have that "e" stripped. e.g. "argue" -> "argu"
-        re.compile(r"(.)e\Z"): lambda match: match.group(1), # TODO: Merge with lower rule?
+        re.compile(r"(.)e\Z"): lambda match: match.group(1),
         # Words ending with "er" don't duplicate.
         re.compile(r"er\Z"): lambda match: match.group(),
         # Words ending with "en" don't duplicate,
