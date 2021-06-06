@@ -76,7 +76,7 @@ class Verb(Term):
         re.compile(r"ski\Z"): lambda match: "ski",
         # Words ending with "e" prepended by anything other than an "e"
         # have that "e" stripped. e.g. "argue" -> "argu"
-        re.compile(r"([^e])e\Z"): lambda match: match.group(1),
+        re.compile(r"(.)e\Z"): lambda match: match.group(1), # TODO: Merge with lower rule?
         # Words ending with "er" don't duplicate.
         re.compile(r"er\Z"): lambda match: match.group(),
         # Words ending with "en" don't duplicate,
@@ -84,8 +84,6 @@ class Verb(Term):
         re.compile(r"..en\Z"): lambda match: match.group(),
         # Words ending with "on" don't duplicate.
         re.compile(r"(.[bdghklmnprstzy]on)\Z"): lambda match: match.group(1),
-        # Convert duplicate "ee" into just one "e"
-        re.compile(r"ee\Z"): lambda match: "e",
         # Always duplicate CVl (British English)
         re.compile(r"[^aeo][aeiuo]l\Z"): lambda match: match.group() + "l",
     }
