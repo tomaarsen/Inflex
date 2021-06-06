@@ -35,5 +35,7 @@ repos:
     rev: v2.0.0
     hooks:
     -   id: codespell # spell-check source code
+        args: ["-L", "sing,plur,pres,part,past,pres_part,past_part"]
+        exclude: ^(*_core\.py|inflex/data/|tests/)
         language: python
         types: [text]

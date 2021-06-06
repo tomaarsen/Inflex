@@ -27,7 +27,7 @@ ABBREV_AN = re.compile(r"""
     [FHLMNRSX][A-Z]
 """, flags=xms)
 
-# This pattern codes the beginnings of all english words begining with a
+# This pattern codes the beginnings of all english words beginning with a
 # 'Y' followed by a consonant. Any other Y-consonant prefix therefore
 # implies an abbreviation...
 
