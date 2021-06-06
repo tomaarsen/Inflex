@@ -19,18 +19,16 @@ from inflex.noun import Noun
 class Adjective(Term):
     """Class for detecting and converting to adjective forms."""
 
-    """
-    Regexes to be tried before applying -er or -est.
-    E.g. "pretty" is converted to "pretti" according to these regexes,
-    and then "er" or "est" are appended for comparative and
-    superlative respectively.
-    This produces "prettier" and "prettiest".
-    """
+    # Regexes to be tried before applying -er or -est.
+    # E.g. "pretty" is converted to "pretti" according to these regexes,
+    # and then "er" or "est" are appended for comparative and
+    # superlative respectively.
+    # This produces "prettier" and "prettiest".
     _stem_regexes = {
         re.compile(r"[aiou]y\Z"): lambda match: match.group(),
-        re.compile(r"ey\Z"): lambda match: "i",
-        re.compile(r"y\Z"): lambda match: "i",
-        re.compile(r"e\Z"): lambda match: "",
+        re.compile(r"ey\Z"): lambda _match: "i",
+        re.compile(r"y\Z"): lambda _match: "i",
+        re.compile(r"e\Z"): lambda _match: "",
         # re.compile(r"([dbmnt])\Z"): lambda match: match.group(1) * 2,
     }
 
@@ -117,7 +115,7 @@ class Adjective(Term):
     Override default methods from Term
     """
 
-    def __init__(self, term: str):
+    def __init__(self, term: str): # pylint: disable=W0235
         """Creates an Adjective instance with detection and conversion methods.
 
         Examples:
@@ -209,7 +207,8 @@ class Adjective(Term):
 
         return self._encase(convert_to_plural(self.term))
 
-    def _stem(self, term: str) -> str:
+    @staticmethod
+    def _stem(term: str) -> str:
         """Stem `term` so that "-er"/"-est" can be appended for comparative/superlative forms.
 
         Args:
@@ -245,7 +244,8 @@ class Adjective(Term):
 
         return term
 
-    def _prepend_more_most(self, word: str) -> bool:
+    @staticmethod
+    def _prepend_more_most(word: str) -> bool:
         """Specify whether "more" or "most" should be prepended before `word` for comp/super.
 
         Args:
@@ -278,8 +278,8 @@ class Adjective(Term):
         """Returns this Adjective's comparative form.
 
         Args:
-            only_suffix (bool, optional): If `True`, then only convert by modifying suffix. 
-                If `False`, `more` can also be prepended as a means of converting to comparative. 
+            only_suffix (bool, optional): If `True`, then only convert by modifying suffix.
+                If `False`, `more` can also be prepended as a means of converting to comparative.
                 Defaults to `False`.
 
         Examples:
@@ -333,17 +333,17 @@ class Adjective(Term):
 
             return output_format.format(Adjective(term).comparative(only_suffix), remainder)
 
-        if not only_suffix and (self.term.isupper() or self._prepend_more_most(self.term)):
+        if not only_suffix and (self.term.isupper() or Adjective._prepend_more_most(self.term)):
             return f"more {self._encase(self.term)}"
 
-        return self._encase(self._stem(self.term) + "er")
+        return self._encase(Adjective._stem(self.term) + "er")
 
     def superlative(self, only_suffix: bool = False) -> str:
         """Returns this Adjective's superlative form.
 
         Args:
-            only_suffix (bool, optional): If `True`, then only convert by modifying suffix. 
-                If `False`, `most` can also be prepended as a means of converting to superlative. 
+            only_suffix (bool, optional): If `True`, then only convert by modifying suffix.
+                If `False`, `most` can also be prepended as a means of converting to superlative.
                 Defaults to `False`.
 
         Examples:
@@ -399,7 +399,7 @@ class Adjective(Term):
 
             return output_format.format(Adjective(term).superlative(only_suffix), remainder)
 
-        if not only_suffix and (self.term.isupper() or self._prepend_more_most(self.term)):
+        if not only_suffix and (self.term.isupper() or Adjective._prepend_more_most(self.term)):
             return f"most {self._encase(self.term)}"
 
-        return self._encase(self._stem(self.term) + "est")
+        return self._encase(Adjective._stem(self.term) + "est")
