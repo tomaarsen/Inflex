@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from typing import Optional
+from typing import Dict, List, Optional, Union
 
 
 from inflex.term import Term
@@ -22,7 +22,7 @@ from inflex.indefinite_core import (
 class Noun(Term):
     """Class for detecting and converting to noun forms."""
 
-    _noun_inflection = {
+    _noun_inflection: Dict[str, Dict[str, Dict[str, Union[str, int, List[str]]]]] = {
         # CASE
         #   TERM             0TH            1ST             2ND             3RD
         "nominative": {
@@ -389,7 +389,7 @@ class Noun(Term):
         super().__init__(term)
 
         # Cached classical form of this Noun, to be lazily loaded just once.
-        self._classical = None
+        self._classical: Optional[ClassicalNoun] = None
 
     # ---------------------------------- #
     # Override default methods from Term #
@@ -419,7 +419,7 @@ class Noun(Term):
         """
         return is_plural(self.term)
 
-    def singular(self, person: Optional[int] = 0) -> str:
+    def singular(self, person: int = 0) -> str:
         """Returns this noun's singular form.
 
         Args:
@@ -438,19 +438,19 @@ class Noun(Term):
 
             for case in ["objective", "possessive", "reflexive", "nominative"]:
                 if term.lower() in Noun._noun_inflection[case]:
-                    converted = Noun._noun_inflection[case][term.lower()]["singular"][person]
+                    converted = Noun._noun_inflection[case][term.lower()]["singular"][person] # type: ignore
                     return self._encase(prep + converted)
 
             return self._encase(prep + convert_to_singular(term))
 
         for case in ["nominative", "objective", "possessive", "reflexive"]:
             if self.term.lower() in Noun._noun_inflection[case]:
-                converted = Noun._noun_inflection[case][self.term.lower()]["singular"][person]
+                converted = Noun._noun_inflection[case][self.term.lower()]["singular"][person] # type: ignore
                 return self._encase(converted)
 
         return self._encase(convert_to_singular(self.term))
 
-    def plural(self, person: Optional[int] = 0) -> str:
+    def plural(self, person: int = 0) -> str:
         """Returns this noun's plural form.
 
         Args:
@@ -469,14 +469,14 @@ class Noun(Term):
 
             for case in ["objective", "possessive", "reflexive", "nominative"]:
                 if term.lower() in Noun._noun_inflection[case]:
-                    converted = Noun._noun_inflection[case][term.lower()]["plural"][person]
+                    converted = Noun._noun_inflection[case][term.lower()]["plural"][person] # type: ignore
                     return self._encase(prep + converted)
 
             return self._encase(prep + self._convert_to_plural(term))
 
         for case in ["nominative", "objective", "possessive", "reflexive"]:
             if self.term.lower() in Noun._noun_inflection[case]:
-                converted = Noun._noun_inflection[case][self.term.lower()]["plural"][person]
+                converted = Noun._noun_inflection[case][self.term.lower()]["plural"][person] # type: ignore
                 return self._encase(converted)
 
         return self._encase(self._convert_to_plural(self.term))
@@ -531,7 +531,7 @@ class Noun(Term):
             >>> Noun('cherub').as_regex()
             re.compile('cherubs|cherubim|cherub', re.IGNORECASE)
         """
-        return re.compile("|".join(sorted(map(re.escape, {self.singular(),
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(), # type: ignore
                                                           self.plural(),
                                                           self.classical().plural()
                                                           }), reverse=True)), flags=re.I)
@@ -650,7 +650,7 @@ class ClassicalNoun(Noun):
             >>> Noun('brother').classical().as_regex()
             re.compile('brother|brethren', re.IGNORECASE)
         """
-        return re.compile("|".join(sorted(map(re.escape, {self.singular(),
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(), # type: ignore
                                                           self.plural(),
                                                           }), reverse=True)), flags=re.I)
 

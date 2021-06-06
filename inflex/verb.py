@@ -151,7 +151,7 @@ class Verb(Term):
 
         return is_plural(term)
 
-    def singular(self, person: Optional[int] = 0) -> str: # pylint: disable=R0911
+    def singular(self, person: int = 0) -> str: # pylint: disable=R0911
         """Returns this verb's singular form.
 
         Args:
@@ -206,7 +206,7 @@ class Verb(Term):
         # First and second person always use the uninflected (i.e. "notational plural" form)
         return self.plural()
 
-    def plural(self, person: Optional[int] = 0) -> str:
+    def plural(self, person: int = 0) -> str:
         """Returns this verb's plural form.
 
         Args:
@@ -253,7 +253,7 @@ class Verb(Term):
             >>> Verb('eat').as_regex()
             re.compile('eats|eating|eaten|eat|ate', re.IGNORECASE)
         """
-        return re.compile("|".join(sorted(map(re.escape, {self.singular(),
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(), # type: ignore
                                                           self.plural(),
                                                           self.past(),
                                                           self.past_part(),

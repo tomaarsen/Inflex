@@ -162,7 +162,7 @@ class Adjective(Term):
         """
         return is_plural(self.term)
 
-    def singular(self, person: Optional[int] = 0) -> str:
+    def singular(self, person: int = 0) -> str:
         """Returns this adjective's singular form.
 
         Args:
@@ -183,7 +183,7 @@ class Adjective(Term):
 
         return self._encase(convert_to_singular(self.term))
 
-    def plural(self, person: Optional[int] = 0) -> str:
+    def plural(self, person: int = 0) -> str:
         """Returns this adjective's plural form.
 
         Args:

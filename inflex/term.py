@@ -6,7 +6,7 @@ __all__ = [
 ]
 
 import re
-from typing import Callable, Generator, List, Optional, TypeVar
+from typing import Callable, Dict, Generator, List, Optional, TypeVar, Union
 
 T = TypeVar("T")  # pylint: disable=C0103
 
@@ -26,7 +26,7 @@ def list_to_generator(input_list: List[T]) -> Generator[T, None, None]:
             input_list = input_list[1:]
 
 
-def _transform(func: Callable[[str], str]) -> str:
+def _transform(func: Callable[[str], str]) -> Callable[[str], str]:
     """If `func` is called with "i" or "I", then return "I", otherwise simply call `func`
 
     Args:
@@ -48,7 +48,7 @@ class Term:
 
     # Supported casing formats: I, lower, Title, UPPER, Mc
     # Note that if the passed word is "i", we always output "I"
-    _casing_formats = {
+    _casing_formats: Dict[str, Dict[str, Union[re.Pattern, Callable[[str], str]]]] = {
         "I": {
             "regex": re.compile(r"^I$"),
             "transformation": _transform(str.lower)
@@ -106,7 +106,7 @@ class Term:
 
         # Extract whitespace before and after the term
         if term.startswith(" ") or term.endswith(" "):
-            self.start, self.end = Term._whitespace_regex.match(term).groups()
+            self.start, self.end = Term._whitespace_regex.match(term).groups() # type: ignore
 
         # If there is troublesome double whitespace, find the substrings
         # between words and normalize them
@@ -156,7 +156,7 @@ class Term:
         """
         raise NotImplementedError()
 
-    def singular(self, person: Optional[int] = 0) -> str:
+    def singular(self, person: int = 0) -> str:
         """Returns this object's singular form.
 
         Args:
@@ -169,7 +169,7 @@ class Term:
         """
         raise NotImplementedError()
 
-    def plural(self, person: Optional[int] = 0) -> str:
+    def plural(self, person: int = 0) -> str:
         """Returns this object's plural form.
 
         Args:
@@ -249,7 +249,7 @@ class Term:
             >>> Verb('eat').as_regex()
             re.compile('eats|eating|eaten|eat|ate', re.IGNORECASE)
         """
-        return re.compile("|".join(sorted(map(re.escape, {self.singular(),
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(), # type: ignore
                                                           self.plural()}), reverse=True)),
                           flags=re.I)
 
@@ -292,11 +292,11 @@ class Term:
 
         # Get list of lambda functions that correspond to the
         # casing formats for `original`.
-        transformations = []
+        transformations: List[Callable[[str], str]] = []
         for word in Term._word_regex.findall(self.term):
             for casing_format in Term._casing_formats.values():
-                if casing_format["regex"].match(word):
-                    transformations.append(casing_format["transformation"])
+                if casing_format["regex"].match(word): # type: ignore
+                    transformations.append(casing_format["transformation"]) # type: ignore
                     break
             else:
                 # If no casing regexes matches

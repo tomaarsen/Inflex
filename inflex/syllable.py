@@ -13,7 +13,7 @@ class Syllable:
     the word ends with stress.
     """
 
-    _data = {}
+    _data: Dict[str, List[List[float]]] = {}
 
     @staticmethod
     def data() -> Dict[str, List[List[float]]]:
