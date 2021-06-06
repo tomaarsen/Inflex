@@ -7,9 +7,8 @@ __all__ = [
 
 import re
 from typing import Callable, Generator, List, Optional, TypeVar
-import warnings
 
-T = TypeVar("T")
+T = TypeVar("T")  # pylint: disable=C0103
 
 
 def list_to_generator(input_list: List[T]) -> Generator[T, None, None]:
@@ -27,24 +26,25 @@ def list_to_generator(input_list: List[T]) -> Generator[T, None, None]:
             input_list = input_list[1:]
 
 
-class Term(object):
+def _transform(func: Callable[[str], str]) -> str:
+    """If `func` is called with "i" or "I", then return "I", otherwise simply call `func`
+
+    Args:
+        func (Callable[[str], str]): Function for converting the casing of an input string.
+
+    Returns:
+        str: Input string converted according to `func`'s casing rules.
+    """
+    return lambda word: "I" if word.lower() == "i" else func(word)
+
+
+class Term:
     """`Term` is the base class of the `Noun`, `Verb`, `Adjective` subclasses,
     and holds some default implementations of methods used across these
     subclasses.
 
     Method docstrings from this class are inherited to the subclasses' methods.
     """
-
-    def _transform(func: Callable[[str], str]) -> str:
-        """If `func` is called with "i" or "I", then return "I", otherwise simply call `func`
-
-        Args:
-            func (Callable[[str], str]): Function for converting the casing of an input string.
-
-        Returns:
-            str: Input string converted according to `func`'s casing rules.
-        """
-        return lambda word: "I" if word.lower() == "i" else func(word)
 
     # Supported casing formats: I, lower, Title, UPPER, Mc
     # Note that if the passed word is "i", we always output "I"
@@ -63,11 +63,19 @@ class Term(object):
         },
         "upper": {
             "regex": re.compile(r"^[A-Z]+s?$"),
-            "transformation": _transform(lambda word: word[:-1].upper() + word[-1] if word.endswith(("s", "S")) else word.upper())
+            "transformation": _transform(lambda word:
+                                         word[:-1].upper() + word[-1]
+                                         if word.endswith(("s", "S"))
+                                         else word.upper()
+                                         )
         },
         "Mc": {
             "regex": re.compile(r"^Mc[A-Z][^A-Z]+$"),
-            "transformation": _transform(lambda word: "Mc" + word[2:].title() if word.lower().startswith("mc") else word.title())
+            "transformation": _transform(lambda word:
+                                         "Mc" + word[2:].title()
+                                         if word.lower().startswith("mc")
+                                         else word.title()
+                                         )
         },
     }
 
@@ -108,7 +116,7 @@ class Term(object):
         if "  " in self.term:
             self.term = re.sub(r"\s{2,}", " ", self.term)
 
-    def is_noun(self) -> bool:
+    def is_noun(self) -> bool: # pylint: disable=R0201
         """Returns `True` only if this object is instantiated via `Noun(term)`.
 
         Returns:
@@ -116,7 +124,7 @@ class Term(object):
         """
         return False
 
-    def is_verb(self) -> bool:
+    def is_verb(self) -> bool: # pylint: disable=R0201
         """Returns `True` only if this object is instantiated via `Verb(term)`.
 
         Returns:
@@ -124,7 +132,7 @@ class Term(object):
         """
         return False
 
-    def is_adj(self) -> bool:
+    def is_adj(self) -> bool: # pylint: disable=R0201
         """Returns `True` only if this object is instantiated via `Adjective(term)`.
 
         Returns:
@@ -206,9 +214,9 @@ class Term(object):
         Returns:
             Term: A Term object, or a subclass thereof.
         """
-        return self.classical()  # pragma: no cover
+        return self.classical() # pragma: no cover
 
-    def _check_valid_person(self, person: int) -> bool:
+    def _check_valid_person(self, person: int) -> bool: # pylint: disable=R0201
         """Return True if `person` is valid, i.e. in [0, 1, 2, 3].
 
         Otherwise, return False and output a warning stating that the
@@ -242,7 +250,8 @@ class Term(object):
             re.compile('eats|eating|eaten|eat|ate', re.IGNORECASE)
         """
         return re.compile("|".join(sorted(map(re.escape, {self.singular(),
-                                                          self.plural()}), reverse=True)), flags=re.I)
+                                                          self.plural()}), reverse=True)),
+                          flags=re.I)
 
     def __repr__(self) -> str:
         """Return `repr(self)`.
