@@ -82,7 +82,7 @@ class TestNouns(unittest.TestCase):
             ('Oth', 'Oths')]
         for sing, plur in test_data:
             with self.subTest():
-                digit = random.randrange(2, 10)
+                digit = random.randrange(2, 10) # nosec
                 out = Noun(sing).indefinite(count=digit)
                 self.assertEqual(out, f'{digit} {plur}',
                                  f"Noun({sing!r}).indefinite(count={digit})")
