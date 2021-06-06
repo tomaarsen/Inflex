@@ -91,11 +91,11 @@ class Verb(Term):
     _stem_double_regex = re.compile(
         r"((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z", re.I)
 
-    """
-    Override default methods from Term
-    """
+    # ---------------------------------- #
+    # Override default methods from Term #
+    # ---------------------------------- #
 
-    def __init__(self, term: str):
+    def __init__(self, term: str): # pylint: disable=W0235
         """Creates a Verb instance with detection and conversion methods.
 
         Examples:
@@ -136,7 +136,7 @@ class Verb(Term):
             bool: True if this verb is deemed singular.
         """
         # Get first word, last section of that word (if "-" in the word)
-        term, _ = self.get_subterm(self.term)
+        term, _ = Verb.get_subterm(self.term)
 
         return is_singular(term)
 
@@ -147,11 +147,11 @@ class Verb(Term):
             bool: True if this verb is deemed plural.
         """
         # Get first word, last section of that word (if "-" in the word)
-        term, _ = self.get_subterm(self.term)
+        term, _ = Verb.get_subterm(self.term)
 
         return is_plural(term)
 
-    def singular(self, person: Optional[int] = 0) -> str:
+    def singular(self, person: Optional[int] = 0) -> str: # pylint: disable=R0911
         """Returns this verb's singular form.
 
         Args:
@@ -178,17 +178,18 @@ class Verb(Term):
             return self._encase("is")
 
         # Third person uses the "notational" singular inflection
-        if person == 3 or person == 0:
+        if person in (3, 0):
             # Get first word, last section of that word (if "-" in the word)
-            term, form = self.get_subterm(self.term)
+            term, form = Verb.get_subterm(self.term)
 
             # If this term is in the list of known cases
-            # TODO: This partially overlaps with `known = convert_to_singular(term)` from below
+            # TODO: # pylint: disable=W0511
+            # - This partially overlaps with `known = convert_to_singular(term)` from below
             if term.lower() in singular_of:
                 return self._encase(form.format(singular_of[term.lower()]))
 
             # Try splitting off a prefix
-            prefix, subterm = self.split_prefix(term)
+            prefix, subterm = Verb.split_prefix(term)
             if prefix:
                 known = convert_to_singular(subterm)
                 if known:
@@ -219,15 +220,16 @@ class Verb(Term):
 
         known = None
         # Get first word, last section of that word (if "-" in the word)
-        term, form = self.get_subterm(self.term)
+        term, form = Verb.get_subterm(self.term)
 
         # If this term is in the list of known cases
-        # TODO: This partially overlaps with `known = convert_to_plural(term)` from below
+        # TODO: # pylint: disable=W0511
+        # - This partially overlaps with `known = convert_to_singular(term)` from below
         if term.lower() in plural_of:
             return self._encase(form.format(plural_of[term.lower()]))
 
         # Try splitting off a prefix
-        prefix, subterm = self.split_prefix(term)
+        prefix, subterm = Verb.split_prefix(term)
         known = convert_to_plural(subterm)
         if known:
             return self._encase(form.format(prefix + known))
@@ -258,11 +260,12 @@ class Verb(Term):
                                                           self.pres_part()
                                                           }), reverse=True)), flags=re.I)
 
-    """
-    Methods exclusively for Verb
-    """
+    # ---------------------------- #
+    # Methods exclusively for Verb #
+    # ---------------------------- #
 
-    def _stem(self, term: str) -> str:
+    @staticmethod
+    def _stem(term: str) -> str:
         """Stem `term` so that "-ed"/"-ing" can be appended for past and present participle forms.
 
         Args:
@@ -282,7 +285,7 @@ class Verb(Term):
 
         # Get the last word from the term, and remove a potential prefix
         last_word = term.replace("-", " ").split()[-1]
-        _, last_word = self.split_prefix(last_word)
+        _, last_word = Verb.split_prefix(last_word)
 
         # Get a set of known syllable counts for last_word
         syllable_count = Syllable.count_syllables(last_word)
@@ -300,17 +303,18 @@ class Verb(Term):
 
         return term
 
-    def split_prefix(self, term: str) -> Tuple[str, str]:
+    @staticmethod
+    def split_prefix(term: str) -> Tuple[str, str]:
         """Split the prefix from the term.
 
         Examples:
-            >>> self.split_prefix("unbind")
+            >>> Verb.split_prefix("unbind")
             ("un", "bind")
-            >>> self.split_prefix("mistake")
+            >>> Verb.split_prefix("mistake")
             ("mis", "take")
-            >>> self.split_prefix("reappear")
+            >>> Verb.split_prefix("reappear")
             ("re", "appear")
-            >>> self.split_prefix("use")
+            >>> Verb.split_prefix("use")
             ("", "use")
 
         Args:
@@ -327,11 +331,12 @@ class Verb(Term):
                     return prefix, term[len(prefix):]
         return "", term
 
-    def get_subterm(self, term: str) -> Tuple[str, str]:
+    @staticmethod
+    def get_subterm(term: str) -> Tuple[str, str]:
         """Extract last sub-section (split by '-') of the first word.
 
         Examples:
-            >>> self.get_subterm("aaa-bbb ccc")
+            >>> Verb.get_subterm("aaa-bbb ccc")
             ("aaa-{} ccc", "bbb")
 
         Args:
@@ -382,27 +387,27 @@ class Verb(Term):
             return self._encase("were")
 
         # Get first word, last section of that word (if "-" in the word)
-        term, form = self.get_subterm(self.term)
+        term, form = Verb.get_subterm(self.term)
 
         # If this term is in the list of known cases
         if term.lower() in past_of:
             return self._encase(form.format(past_of[term.lower()]))
 
         # Try splitting off a prefix
-        prefix, subterm = self.split_prefix(term)
+        prefix, subterm = Verb.split_prefix(term)
         if prefix:
             known = convert_to_past(subterm)
             if known:
                 return self._encase(form.format(prefix + known))
 
         # Convert the root of the term
-        root, form = self.get_subterm(self.plural())
+        root, form = Verb.get_subterm(self.plural())
         known = convert_to_past(root)
         if known:
             return self._encase(form.format(known))
 
         # Otherwise use the standard pattern on the root
-        known = self._stem(root) + "ed"
+        known = Verb._stem(root) + "ed"
 
         return self._encase(form.format(known))
 
@@ -423,10 +428,10 @@ class Verb(Term):
             return self._encase(pres_part_of[self.term.lower()])
 
         # Get first word, last section of that word (if "-" in the word)
-        term, form = self.get_subterm(self.plural())
+        term, form = Verb.get_subterm(self.plural())
 
         # Try splitting off a prefix
-        prefix, subterm = self.split_prefix(term)
+        prefix, subterm = Verb.split_prefix(term)
         if prefix:
             known = convert_to_pres_part(subterm)
             if known:
@@ -437,7 +442,7 @@ class Verb(Term):
 
         # Otherwise use the standard pattern on the root
         if known is None:
-            known = self._stem(term) + "ing"
+            known = Verb._stem(term) + "ing"
 
         return self._encase(form.format(known))
 
@@ -458,10 +463,10 @@ class Verb(Term):
             return self._encase(past_part_of[self.term.lower()])
 
         # Get first word, last section of that word (if "-" in the word)
-        term, form = self.get_subterm(self.plural())
+        term, form = Verb.get_subterm(self.plural())
 
         # Try splitting off a prefix
-        prefix, subterm = self.split_prefix(term)
+        prefix, subterm = Verb.split_prefix(term)
         if prefix:
             known = convert_to_past_part(subterm)
             if known:
@@ -472,7 +477,7 @@ class Verb(Term):
 
         # Otherwise use the standard pattern on the root
         if known is None:
-            known = self._stem(term) + "ed"
+            known = Verb._stem(term) + "ed"
 
         return self._encase(form.format(known))
 
@@ -483,7 +488,7 @@ class Verb(Term):
             bool: True if this Verb is deemed past.
         """
         # Get first word, last section of that word (if "-" in the word)
-        term, _ = self.get_subterm(self.term)
+        term, _ = Verb.get_subterm(self.term)
 
         return is_past(term)
 
@@ -494,7 +499,7 @@ class Verb(Term):
             bool: True if this Verb is deemed present participle.
         """
         # Get first word, last section of that word (if "-" in the word)
-        term, _ = self.get_subterm(self.term)
+        term, _ = Verb.get_subterm(self.term)
 
         return is_pres_part(term)
 
@@ -505,7 +510,7 @@ class Verb(Term):
             bool: True if this Verb is deemed past participle.
         """
         # Get first word, last section of that word (if "-" in the word)
-        term, _ = self.get_subterm(self.term)
+        term, _ = Verb.get_subterm(self.term)
 
         return is_past_part(term)
 
