@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, json
+import re
+import json
 from datetime import datetime
 from typing import Generator, List, Tuple, Optional
 
@@ -45,7 +46,7 @@ DATA_PAT         = re.compile(r"""
     \Z                          # ...trailing whitespace
 """.format(WS=WS.pattern, COMMENT_PAT=COMMENT_PAT.pattern),
     flags=xms)
-RECURSE  = re.compile(r"\(SING\) | \(PREP\)", flags=xms)
+RECURSE = re.compile(r"\(SING\) | \(PREP\)", flags=xms)
 RECURSE_GROUPED = re.compile(r"""
       (?P<star>   \*        )
     | (?P<sing>   \(SING\)  )
@@ -58,18 +59,19 @@ CONS     = re.compile(r"\(CONS\)", flags=xms)
 VOWEL    = re.compile(r"\(VOWEL\)", flags=xms)
 VOWELY   = re.compile(r"\(VOWELY\)", flags=xms)
 """
-DASH     = re.compile(r"-")
-STAR     = re.compile(r"\*")
+DASH = re.compile(r"-")
+STAR = re.compile(r"\*")
 RESTRICT = re.compile(r"( \[.*?\] )+", flags=xms)
 """
 SPLIT    = re.compile(r"(.*?) [|] (.*)", flags=xms)
 """
 
+
 class Word(object):
     def __init__(self, gen: Optional[str], word: Optional[str]):
         super().__init__()
-        self.gen      = gen or ""
-        self.word     = word or ""
+        self.gen = gen or ""
+        self.word = word or ""
         self.restrict = ""
 
     def expand_dash_star(self):
@@ -114,6 +116,7 @@ class Word(object):
     def __str__(self) -> str:
         return f"{self.gen or ''}{self.restrict}{self.word}"
 
+
 class Noun(object):
     def __init__(self, match):
         super().__init__()
@@ -124,8 +127,8 @@ class Noun(object):
         # pl1:                  Plural word 1
         # other                 "*", "", "-", None
         # pl2:                  Plural word 2
-        self.tag      = match.group(1) or ""
-        self.sing     = Word(match.group(2), match.group(3))
+        self.tag = match.group(1) or ""
+        self.sing = Word(match.group(2), match.group(3))
         self.sing.expand_dash_star()
         self.sing.restrict_word()
 
@@ -136,7 +139,7 @@ class Noun(object):
         # TODO: Check if this can be removed
         # If the first plural does not exist, have both point to the same object
         # if not self.plur_one.word:
-            # self.plur_one = self.plur_two
+        # self.plur_one = self.plur_two
 
     def has_hyphen(self):
         return "-" in self.sing.word or "-" in self.plur_one.word or "-" in self.plur_two.word
@@ -147,22 +150,23 @@ class Noun(object):
         self.plur_two.word = self.plur_two.word.replace("-", repl)
 
     def __str__(self) -> str:
-        #return (f"<{self.tag}> " if self.tag else "") + f"{self.sing}: {self.plur_one} | "
+        # return (f"<{self.tag}> " if self.tag else "") + f"{self.sing}: {self.plur_one} | "
         return "{: <14} : {: <20} => {: <20} | {: <20}".format(self.tag or "",
-                                                              str(self.sing),
-                                                              str(self.plur_one) if self.plur_one.word else "",
-                                                              str(self.plur_two) if self.plur_two.word else "")
+                                                               str(self.sing),
+                                                               str(self.plur_one) if self.plur_one.word else "",
+                                                               str(self.plur_two) if self.plur_two.word else "")
+
 
 class Reader(object):
     def __init__(self, fname: str):
         types = ["modern_plural", "classical_plural", "singular"]
-        self.patterns = {key:[] for key in types}
-        self.literals = {key:{} for key in types}
-        self.words    = {
+        self.patterns = {key: [] for key in types}
+        self.literals = {key: {} for key in types}
+        self.words = {
             "plural": set(),
             "singular": set()
         }
-        self.fname    = fname
+        self.fname = fname
 
     def get_readlines(self) -> List[str]:
         with open(self.fname, "r") as f:
@@ -257,7 +261,7 @@ class Reader(object):
                         self.optionally_add_pattern(self.patterns["classical_plural"], {
                             "from": f"({noun.sing.gen}{noun.sing.restrict}){noun.sing.word}",
                             "to": f'lambda subterms: f"{{subterms[0]}}{noun.plur_one.word}"',
-                            #"conditional": "lambda match: True",
+                            # "conditional": "lambda match: True",
                             "tag": noun.tag
                         })
 
@@ -323,10 +327,14 @@ class Reader(object):
         if not noun.plur_two.word:
             noun.plur_two = noun.plur_one
 
-        self.optionally_add_literal(self.literals["modern_plural"], noun.sing.word, noun.plur_one.word)
-        self.optionally_add_literal(self.literals["classical_plural"],noun.sing.word, noun.plur_two.word)
-        self.optionally_add_literal(self.literals["singular"],noun.plur_one.word, noun.sing.word)
-        self.optionally_add_literal(self.literals["singular"],noun.plur_two.word, noun.sing.word)
+        self.optionally_add_literal(
+            self.literals["modern_plural"], noun.sing.word, noun.plur_one.word)
+        self.optionally_add_literal(
+            self.literals["classical_plural"], noun.sing.word, noun.plur_two.word)
+        self.optionally_add_literal(
+            self.literals["singular"], noun.plur_one.word, noun.sing.word)
+        self.optionally_add_literal(
+            self.literals["singular"], noun.plur_two.word, noun.sing.word)
 
     def add_words(self, noun):
         self.words["plural"].add(noun.plur_one.word)
@@ -350,7 +358,7 @@ class Reader(object):
         # This way we can use match indices to replace, rather than relying on substitutions
         # which causes issues with * being both in the input and output
         from_matches = list(RECURSE_GROUPED.finditer(_from))[::-1]
-        to_matches   = list(RECURSE_GROUPED.finditer(to))[::-1]
+        to_matches = list(RECURSE_GROUPED.finditer(to))[::-1]
         if len(from_matches) != len(to_matches):
             # TODO: Write exception
             raise Exception()
@@ -360,29 +368,31 @@ class Reader(object):
         for from_match, to_match in zip(from_matches, to_matches):
             if from_match.group("star"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
+                to = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
 
             elif from_match.group("sing"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(subterms[{n-1}]) if is_singular(subterms[{n-1}]) else subterms[{n-1}]"))
+                to = irepl(to_match, to, wrap(
+                    f"convert_to_{to_type}(subterms[{n-1}]) if is_singular(subterms[{n-1}]) else subterms[{n-1}]"))
                 if not check_conditional:
                     check_conditional = f"lambda match: is_singular(match.group({n}))"
 
             elif from_match.group("plur"):
                 _from = irepl(from_match, _from, r"(.*?)")
-                to    = irepl(to_match, to, wrap(f"convert_to_{to_type}(subterms[{n-1}]) if is_plural(subterms[{n-1}]) else subterms[{n-1}]"))
+                to = irepl(to_match, to, wrap(
+                    f"convert_to_{to_type}(subterms[{n-1}]) if is_plural(subterms[{n-1}]) else subterms[{n-1}]"))
                 if not check_conditional:
                     check_conditional = f"lambda match: is_plural(match.group({n}))"
 
             elif from_match.group("prep"):
-                _from=irepl(from_match, _from, r"(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)")
-                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
+                _from = irepl(from_match, _from, r"(about|above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|in|near|off|of|onto|on|out|over|since|till|to|under|until|unto|upon|with)")
+                to = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
 
             elif from_match.group("prepr"):
                 # Relative to prep, prepr(educed) lacks:
                 # out, about, off, in, on, over
-                _from=irepl(from_match, _from, r"(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)")
-                to    = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
+                _from = irepl(from_match, _from, r"(above|across|after|among|around|athwart|at|before|behind|below|beneath|besides?|between|betwixt|beyond|but|by|during|except|for|from|into|near|of|onto|since|till|to|under|until|unto|upon|with)")
+                to = irepl(to_match, to, wrap(f'subterms[{n-1}]'))
 
             n -= 1
 
@@ -391,6 +401,7 @@ class Reader(object):
             "to": f'lambda subterms: f"{to}"',
             "check_conditional": check_conditional
         }
+
 
 class CodeWriter(object):
     def __init__(self, reader, fname):
@@ -426,7 +437,8 @@ def rei(regex: str) -> "re.Pattern":
 
 '''
         # If there is no modern plural known, use the classical plural
-        self.reader.literals["modern_plural"] = {key: (value if value else self.reader.literals["classical_plural"][key]) for key, value in self.reader.literals["modern_plural"].items()}
+        self.reader.literals["modern_plural"] = {key: (
+            value if value else self.reader.literals["classical_plural"][key]) for key, value in self.reader.literals["modern_plural"].items()}
 
         for key in self.reader.literals:
             # For phrases with dashes, also add variants with spaces
@@ -434,9 +446,10 @@ def rei(regex: str) -> "re.Pattern":
             for phrase_key, phrase_value in self.reader.literals[key].items():
                 data[phrase_key] = phrase_value
                 # if not phrase_key.islower():
-                    # data[phrase_key.lower()] = phrase_value.lower()
+                # data[phrase_key.lower()] = phrase_value.lower()
                 if "-" in phrase_key and "-" in phrase_value:
-                    data[phrase_key.replace("-", " ")] = phrase_value.replace("-", " ")
+                    data[phrase_key.replace(
+                        "-", " ")] = phrase_value.replace("-", " ")
 
             data_to_add = {}
             for data_key in data:
@@ -445,13 +458,17 @@ def rei(regex: str) -> "re.Pattern":
                         data_to_add[data_key.lower()] = data[data_key].lower()
 
             data = {**data, **data_to_add}
-            generated_code += f"{key}_of = " + json.dumps(data, indent=4, sort_keys=True) + "\n\n"
+            generated_code += f"{key}_of = " + \
+                json.dumps(data, indent=4, sort_keys=True) + "\n\n"
 
         for key in self.reader.literals:
-            generated_code += self.get_convert_rule_output(key, self.reader.patterns[key]) + "\n\n"
+            generated_code += self.get_convert_rule_output(
+                key, self.reader.patterns[key]) + "\n\n"
 
-        generated_code += self.get_recognize_rule_output("plural", self.reader.patterns["singular"]) + "\n\n"
-        generated_code += self.get_recognize_rule_output("singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
+        generated_code += self.get_recognize_rule_output(
+            "plural", self.reader.patterns["singular"]) + "\n\n"
+        generated_code += self.get_recognize_rule_output(
+            "singular", self.reader.patterns["modern_plural"] + self.reader.patterns["classical_plural"]) + "\n\n"
 
         generated_code += '''def known_plural(word: str) -> bool:
     """True if `word` is known to be plural.
@@ -478,10 +495,13 @@ def known_singular(word):
 '''
 
         for key in self.reader.literals:
-            generated_code += self.get_converter_output(key, self.reader.patterns[key]) + "\n\n"
+            generated_code += self.get_converter_output(
+                key, self.reader.patterns[key]) + "\n\n"
 
-        generated_code += self.get_recognizer_output("plural", "singular") + "\n\n"
-        generated_code += self.get_recognizer_output("singular", "plural") + "\n\n"
+        generated_code += self.get_recognizer_output(
+            "plural", "singular") + "\n\n"
+        generated_code += self.get_recognizer_output(
+            "singular", "plural") + "\n\n"
 
         self.output_code(generated_code)
 
@@ -524,12 +544,15 @@ def known_singular(word):
                 # Optionally, use re.compile(replacement_dict["from"]).groups
                 n_captures = re.compile(replacement_dict["from"]).groups
                 for _ in range(n_captures):
-                    slices.append((index ,[i + group_id for group_id in range(n_captures)]))
+                    slices.append(
+                        (index, [i + group_id for group_id in range(n_captures)]))
                 i += n_captures
 
         output = f"{name}_convert_rule_regex = rei(r\"^(?:{'|'.join(regexes)})$\")\n\n"
-        output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]\n"
-        output += f"{name}_convert_slices = [" + ''.join('\n    ' + str(index_list) + ',' for index_list in slices) + "\n]"
+        output += f"{name}_convert_outputs = [" + ''.join(
+            '\n    ' + output + ',' for output in outputs) + "\n]\n"
+        output += f"{name}_convert_slices = [" + ''.join(
+            '\n    ' + str(index_list) + ',' for index_list in slices) + "\n]"
 
         return output
 
@@ -589,11 +612,15 @@ def known_singular(word):
                 used_lines.append(line)
                 output += line
         """
-        non_cond_regexes = {repl_dict["from"] for repl_dict in replacement_suffixes if not ("check_conditional" in repl_dict and repl_dict["check_conditional"]) and repl_dict["tag"] != "nonindicative"}
-        cond_regexes     = [repl_dict for repl_dict in replacement_suffixes if "check_conditional" in repl_dict and repl_dict["check_conditional"] and repl_dict["tag"] != "nonindicative"]
-        large_regex = "|".join(sorted(sorted(non_cond_regexes), key=lambda x: len(x) - x.find(")") + x.find("(")))
+        non_cond_regexes = {repl_dict["from"] for repl_dict in replacement_suffixes if not (
+            "check_conditional" in repl_dict and repl_dict["check_conditional"]) and repl_dict["tag"] != "nonindicative"}
+        cond_regexes = [repl_dict for repl_dict in replacement_suffixes if "check_conditional" in repl_dict and repl_dict["check_conditional"]
+                        and repl_dict["tag"] != "nonindicative"]
+        large_regex = "|".join(sorted(
+            sorted(non_cond_regexes), key=lambda x: len(x) - x.find(")") + x.find("(")))
         output += f'    rei(r"^(?:{large_regex})$"): {{}},\n'
-        for replacement_dict in cond_regexes:#sorted(cond_regexes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
+        # sorted(cond_regexes, key=lambda x: len(x["from"]) - x["from"].find(")") + x["from"].find("(")):
+        for replacement_dict in cond_regexes:
             output += f'    rei(r"^{replacement_dict["from"]}$"): {{"conditional": {replacement_dict["check_conditional"]}}},\n'
         output += "}"
         return output
@@ -631,6 +658,7 @@ def known_singular(word):
             output += "return word.endswith(('s', 'S'))"
         return output
 
+
 class NounTestWriter(TestWriter):
     def __init__(self, reader, class_name):
         super().__init__(class_name)
@@ -652,11 +680,11 @@ class NounTestWriter(TestWriter):
         self.prep_n = 1
 
         self.to_plural_upper_exceptions = ["I",
-            "Jerry", "jerry", "Jerrys", "jerries",
-            "Auslese", "auslese",
-            "Mary", "mary", "Marys", "maries",
-            "Atlas", "atlas",
-            "Nenets", "nenets", "Nentsi", "nentsi", "nentsy"]
+                                           "Jerry", "jerry", "Jerrys", "jerries",
+                                           "Auslese", "auslese",
+                                           "Mary", "mary", "Marys", "maries",
+                                           "Atlas", "atlas",
+                                           "Nenets", "nenets", "Nentsi", "nentsi", "nentsy"]
 
     def preposition_gen(self) -> Generator[str, None, None]:
         while True:
@@ -754,14 +782,14 @@ class NounTestWriter(TestWriter):
                 "in": plur,
                 "out": sing
             } for plur, sing in self.reader.literals["singular"].items()
-              if plur and plur != "_" and sing and sing != "_"
+            if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": sing,
                 "out": sing
             } for sing in self.reader.literals["singular"].values()
-              if sing not in self.reader.words["plural"] and sing and sing != "_"
+            if sing not in self.reader.words["plural"] and sing and sing != "_"
         ]
         converted_test_args = []
         preposition_gen = self.preposition_gen()
@@ -787,7 +815,8 @@ class NounTestWriter(TestWriter):
                 "in": test_arg["in"].title(),
                 "out": test_arg["out"].title(),
             })
-        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
+        self.write_test(test_path, test_function,
+                        test_name_pascal, converted_test_args)
 
     def write_to_modern_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_modern_plural.py"
@@ -798,14 +827,14 @@ class NounTestWriter(TestWriter):
                 "in": sing,
                 "out": plur
             } for sing, plur in self.reader.literals["modern_plural"].items()
-              if plur and plur != "_" and sing and sing != "_"
+            if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": plur,
                 "out": plur
             } for plur in self.reader.literals["modern_plural"].values()
-              if plur not in self.reader.words["singular"] and plur and plur != "_"
+            if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
         converted_test_args = []
         preposition_gen = self.preposition_gen()
@@ -833,7 +862,8 @@ class NounTestWriter(TestWriter):
                     "in": test_arg["in"].title(),
                     "out": test_arg["out"].title(),
                 })
-        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
+        self.write_test(test_path, test_function,
+                        test_name_pascal, converted_test_args)
 
     def write_to_classical_plural_test(self):
         test_path = self.test_folder_name + "//test_noun_core_to_classical_plural.py"
@@ -844,7 +874,7 @@ class NounTestWriter(TestWriter):
                 "in": sing,
                 "out": plur
             } for sing, plur in self.reader.literals["classical_plural"].items()
-              if plur and plur != "_" and sing and sing != "_"
+            if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
@@ -879,7 +909,9 @@ class NounTestWriter(TestWriter):
                     "in": test_arg["in"].title(),
                     "out": test_arg["out"].title(),
                 })
-        self.write_test(test_path, test_function, test_name_pascal, converted_test_args)
+        self.write_test(test_path, test_function,
+                        test_name_pascal, converted_test_args)
+
 
 if __name__ == "__main__":
     in_fname = "lei//nouns.lei"

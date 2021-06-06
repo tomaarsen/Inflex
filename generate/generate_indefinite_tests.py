@@ -271,6 +271,7 @@ test_data = [
     ("a",  "zoo"),
 ]
 
+
 class IndefiniteTestWriter(TestWriter):
     def __init__(self, class_name):
         super().__init__(class_name)
@@ -309,6 +310,7 @@ class IndefiniteTestWriter(TestWriter):
             } for article, word in test_data
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
+
 
 if __name__ == "__main__":
     class_name = "Noun"

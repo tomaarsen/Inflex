@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, json
+import re
+import json
 from datetime import datetime
 from typing import List, Tuple, Optional
 
@@ -33,19 +34,20 @@ DATA_PAT         = re.compile(r"""
     \Z
 """.format(WS=WS.pattern, WORD_SEQ=WORD_SEQ.pattern, COMMENT_PAT=COMMENT_PAT.pattern),
     flags=xms)
-CONS     = re.compile(r"\(CONS\)", flags=xms)
-VOWEL    = re.compile(r"\(VOWEL\)", flags=xms)
-VOWELY   = re.compile(r"\(VOWELY\)", flags=xms)
-DASH     = re.compile(r"-")
-STAR     = re.compile(r"\*")
+CONS = re.compile(r"\(CONS\)", flags=xms)
+VOWEL = re.compile(r"\(VOWEL\)", flags=xms)
+VOWELY = re.compile(r"\(VOWELY\)", flags=xms)
+DASH = re.compile(r"-")
+STAR = re.compile(r"\*")
 RESTRICT = re.compile(r"( \[.*?\] )+", flags=xms)
-SPLIT    = re.compile(r"(.*?) [|] (.*)", flags=xms)
+SPLIT = re.compile(r"(.*?) [|] (.*)", flags=xms)
+
 
 class Word(object):
     def __init__(self, gen: Optional[str], word: str):
         super().__init__()
-        self.gen      = gen
-        self.word     = word
+        self.gen = gen
+        self.word = word
         self.restrict = ""
 
     def expand_dash_star(self):
@@ -84,6 +86,7 @@ class Word(object):
     def __str__(self) -> str:
         return f"{self.gen or ''}{self.restrict}{self.word}"
 
+
 class Verb(object):
     def __init__(self, match):
         super().__init__()
@@ -102,7 +105,7 @@ class Verb(object):
         self.verbs = {}
         for i, key in enumerate(types):
             # Get gen and verb of this word
-            gen  = match.group(i * 2 + 1)
+            gen = match.group(i * 2 + 1)
             verb = match.group(i * 2 + 2)
             # Turn into Word object and add to list for this type
             w = Word(gen, verb)
@@ -144,13 +147,14 @@ class Verb(object):
     def __str__(self) -> str:
         return "\n".join(f"{key: <9}: {self.verbs[key]}" for key in self.verbs) + (f"\npret_plur: {self.pret_plur}" if self.pret_plur else "")
 
+
 class Reader(object):
     def __init__(self, fname: str):
         types = ["plural", "singular", "past", "pres_part", "past_part"]
-        self.patterns = {key:[] for key in types}
-        self.literals = {key:{} for key in types}
-        self.words    = {key:set() for key in types}
-        self.fname    = fname
+        self.patterns = {key: [] for key in types}
+        self.literals = {key: {} for key in types}
+        self.words = {key: set() for key in types}
+        self.fname = fname
 
     def get_readlines(self) -> List[str]:
         with open(self.fname, "r") as f:
@@ -267,8 +271,10 @@ class Reader(object):
             collection[key] = word
 
     def add_literals_and_words(self, verb):
-        self.optionally_add_literal(self.literals["plural"], verb.sing.word, verb.plur.word)
-        self.optionally_add_literal(self.literals["singular"], verb.plur.word, verb.sing.word)
+        self.optionally_add_literal(
+            self.literals["plural"], verb.sing.word, verb.plur.word)
+        self.optionally_add_literal(
+            self.literals["singular"], verb.plur.word, verb.sing.word)
 
         self.words["singular"].add(verb.sing.word)
         self.words["plural"].add(verb.plur.word)
@@ -276,34 +282,51 @@ class Reader(object):
         if verb.pret.word:
             self.words["past"].add(verb.pret.word)
 
-            self.optionally_add_literal(self.literals["past"], verb.sing.word, verb.pret.word)
-            self.optionally_add_literal(self.literals["past"], verb.past.word, verb.pret.word)
-            self.optionally_add_literal(self.literals["past"], verb.pres.word, verb.pret.word)
-            self.optionally_add_literal(self.literals["past"], verb.past.word, verb.pret.word)
+            self.optionally_add_literal(
+                self.literals["past"], verb.sing.word, verb.pret.word)
+            self.optionally_add_literal(
+                self.literals["past"], verb.past.word, verb.pret.word)
+            self.optionally_add_literal(
+                self.literals["past"], verb.pres.word, verb.pret.word)
+            self.optionally_add_literal(
+                self.literals["past"], verb.past.word, verb.pret.word)
 
             if verb.pret_plur:
-                self.optionally_add_literal(self.literals["past"], verb.plur.word, verb.pret_plur)
+                self.optionally_add_literal(
+                    self.literals["past"], verb.plur.word, verb.pret_plur)
                 self.words["past"].add(verb.pret_plur)
             else:
-                self.optionally_add_literal(self.literals["past"], verb.plur.word, verb.pret.word)
+                self.optionally_add_literal(
+                    self.literals["past"], verb.plur.word, verb.pret.word)
 
         if verb.pres.word:
             self.words["pres_part"].add(verb.pres.word)
 
-            self.optionally_add_literal(self.literals["pres_part"], verb.sing.word, verb.pres.word)
-            self.optionally_add_literal(self.literals["pres_part"], verb.plur.word, verb.pres.word)
-            self.optionally_add_literal(self.literals["pres_part"], verb.pret.word, verb.pres.word)
-            self.optionally_add_literal(self.literals["pres_part"], verb.pres.word, verb.pres.word)
-            self.optionally_add_literal(self.literals["pres_part"], verb.past.word, verb.pres.word)
+            self.optionally_add_literal(
+                self.literals["pres_part"], verb.sing.word, verb.pres.word)
+            self.optionally_add_literal(
+                self.literals["pres_part"], verb.plur.word, verb.pres.word)
+            self.optionally_add_literal(
+                self.literals["pres_part"], verb.pret.word, verb.pres.word)
+            self.optionally_add_literal(
+                self.literals["pres_part"], verb.pres.word, verb.pres.word)
+            self.optionally_add_literal(
+                self.literals["pres_part"], verb.past.word, verb.pres.word)
 
         if verb.past.word:
             self.words["past_part"].add(verb.past.word)
 
-            self.optionally_add_literal(self.literals["past_part"], verb.sing.word, verb.past.word)
-            self.optionally_add_literal(self.literals["past_part"], verb.plur.word, verb.past.word)
-            self.optionally_add_literal(self.literals["past_part"], verb.pret.word, verb.past.word)
-            self.optionally_add_literal(self.literals["past_part"], verb.pres.word, verb.past.word)
-            self.optionally_add_literal(self.literals["past_part"], verb.past.word, verb.past.word)
+            self.optionally_add_literal(
+                self.literals["past_part"], verb.sing.word, verb.past.word)
+            self.optionally_add_literal(
+                self.literals["past_part"], verb.plur.word, verb.past.word)
+            self.optionally_add_literal(
+                self.literals["past_part"], verb.pret.word, verb.past.word)
+            self.optionally_add_literal(
+                self.literals["past_part"], verb.pres.word, verb.past.word)
+            self.optionally_add_literal(
+                self.literals["past_part"], verb.past.word, verb.past.word)
+
 
 class CodeWriter(object):
     def __init__(self, reader, fname):
@@ -329,13 +352,16 @@ VERSION = {version}
 '''
 
         for key in self.reader.literals:
-            generated_code += f"{key}_of = " + json.dumps(reader.literals[key], indent=4, sort_keys=True) + "\n\n"
+            generated_code += f"{key}_of = " + json.dumps(
+                reader.literals[key], indent=4, sort_keys=True) + "\n\n"
 
         for key in self.reader.literals:
-            generated_code += self.get_convert_rule_output(key, self.reader.patterns[key]) + "\n\n"
+            generated_code += self.get_convert_rule_output(
+                key, self.reader.patterns[key]) + "\n\n"
 
         for key in self.reader.literals:
-            generated_code += self.get_recognize_rule_output(key, self.reader.patterns[key]) + "\n\n"
+            generated_code += self.get_recognize_rule_output(
+                key, self.reader.patterns[key]) + "\n\n"
 
         generated_code += '''\
 past_of_values = set(past_of.values())
@@ -408,13 +434,19 @@ def known_pres_part(word):
 '''
 
         for key in self.reader.literals:
-            generated_code += self.get_converter_output(key, self.reader.patterns[key]) + "\n\n"
+            generated_code += self.get_converter_output(
+                key, self.reader.patterns[key]) + "\n\n"
 
-        generated_code += self.get_recognizer_output("plural", "singular", self.reader.literals["plural"]) + "\n\n"
-        generated_code += self.get_recognizer_output("singular", "plural", self.reader.literals["singular"]) + "\n\n"
-        generated_code += self.get_recognizer_output("past", None, self.reader.literals["past"]) + "\n\n"
-        generated_code += self.get_recognizer_output("pres_part", None, self.reader.literals["pres_part"]) + "\n\n"
-        generated_code += self.get_recognizer_output("past_part", None, self.reader.literals["past_part"]) + "\n"
+        generated_code += self.get_recognizer_output(
+            "plural", "singular", self.reader.literals["plural"]) + "\n\n"
+        generated_code += self.get_recognizer_output(
+            "singular", "plural", self.reader.literals["singular"]) + "\n\n"
+        generated_code += self.get_recognizer_output(
+            "past", None, self.reader.literals["past"]) + "\n\n"
+        generated_code += self.get_recognizer_output(
+            "pres_part", None, self.reader.literals["pres_part"]) + "\n\n"
+        generated_code += self.get_recognizer_output(
+            "past_part", None, self.reader.literals["past_part"]) + "\n"
 
         self.output_code(generated_code)
 
@@ -446,7 +478,8 @@ def known_pres_part(word):
             # output += f'    re.compile(r"^{replacement_dict["from"]}$"): {replacement_dict["to"]},\n'
         output = f"{name}_convert_rule_regex = re.compile(r\"^(?:{'|'.join(regexes)})$\")\n\n"
 
-        output += f"{name}_convert_outputs = [" + ''.join('\n    ' + output + ',' for output in outputs) + "\n]"
+        output += f"{name}_convert_outputs = [" + ''.join(
+            '\n    ' + output + ',' for output in outputs) + "\n]"
         return output
 
     def get_converter_output(self, name, replacement_suffixes):
@@ -489,7 +522,8 @@ def convert_to_{name}(word):
         for regex in sorted(regexes, key=lambda x: len(x) - x.rfind(")") + x.find("(")):
             output += f'    re.compile(r"^{regex}$"),\n'
         """
-        regex = '|'.join(sorted(sorted(replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict), key=lambda x: len(x) - x.rfind(")") + x.find("(")))
+        regex = '|'.join(sorted(sorted(replacement_dict["is"] for replacement_dict in replacement_suffixes if "is" in replacement_dict), key=lambda x: len(
+            x) - x.rfind(")") + x.find("(")))
         output += f're.compile(r"^(?:{regex})$")'
         return output
 
@@ -519,6 +553,7 @@ def is_{name}(word: str):
         else:
             output += "    return False"
         return output
+
 
 class VerbTestWriter(TestWriter):
     def __init__(self, reader, class_name):
@@ -562,7 +597,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["singular"]
-              if word and word != "_"
+            if word and word != "_"
         ]
         test_args += [
             {
@@ -585,7 +620,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["plural"]
-              if word and word != "_"
+            if word and word != "_"
         ]
         test_args += [
             {
@@ -608,7 +643,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["past"]
-              if word and word != "_"
+            if word and word != "_"
         ]
         test_args += [
             {
@@ -631,7 +666,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["pres_part"]
-              if word and word != "_"
+            if word and word != "_"
         ]
         test_args += [
             {
@@ -654,7 +689,7 @@ class VerbTestWriter(TestWriter):
                 "in": word,
                 "out": True
             } for word in self.reader.words["past_part"]
-              if word and word != "_"
+            if word and word != "_"
         ]
         test_args += [
             {
@@ -673,14 +708,14 @@ class VerbTestWriter(TestWriter):
                 "in": plur,
                 "out": sing
             } for plur, sing in self.reader.literals["singular"].items()
-              if plur and plur != "_" and sing and sing != "_"
+            if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": sing,
                 "out": sing
             } for sing in self.reader.literals["singular"].values()
-              if sing not in self.reader.words["plural"] and sing and sing != "_"
+            if sing not in self.reader.words["plural"] and sing and sing != "_"
         ]
         test_args += [
             {
@@ -699,14 +734,14 @@ class VerbTestWriter(TestWriter):
                 "in": sing,
                 "out": plur
             } for sing, plur in self.reader.literals["plural"].items()
-              if plur and plur != "_" and sing and sing != "_"
+            if plur and plur != "_" and sing and sing != "_"
         ]
         test_args += [
             {
                 "in": plur,
                 "out": plur
             } for plur in self.reader.literals["plural"].values()
-              if plur not in self.reader.words["singular"] and plur and plur != "_"
+            if plur not in self.reader.words["singular"] and plur and plur != "_"
         ]
         test_args += [
             {
@@ -725,7 +760,7 @@ class VerbTestWriter(TestWriter):
                 "in": verb,
                 "out": past
             } for verb, past in self.reader.literals["past"].items()
-              if verb and verb != "_" and past and past != "_"
+            if verb and verb != "_" and past and past != "_"
         ]
         test_args += [
             {
@@ -744,7 +779,7 @@ class VerbTestWriter(TestWriter):
                 "in": verb,
                 "out": pres_part
             } for verb, pres_part in self.reader.literals["pres_part"].items()
-              if verb and verb != "_" and pres_part and pres_part != "_"
+            if verb and verb != "_" and pres_part and pres_part != "_"
         ]
         test_args += [
             {
@@ -763,7 +798,7 @@ class VerbTestWriter(TestWriter):
                 "in": verb,
                 "out": past_part
             } for verb, past_part in self.reader.literals["past_part"].items()
-              if verb and verb != "_" and past_part and past_part != "_"
+            if verb and verb != "_" and past_part and past_part != "_"
         ]
         test_args += [
             {
@@ -772,6 +807,7 @@ class VerbTestWriter(TestWriter):
             } for data in test_args
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
+
 
 if __name__ == "__main__":
     in_fname = "lei//verbs.lei"

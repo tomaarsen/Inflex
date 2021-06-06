@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, json
+import re
+import json
 from datetime import datetime
 from typing import List, Tuple, Optional
 
@@ -37,6 +38,7 @@ RESTRICT = re.compile(r"( \[.*?\] )+", flags=xms)
 SPLIT    = re.compile(r"(.*?) [|] (.*)", flags=xms)
 """
 
+
 class Adjective(object):
     def __init__(self, match):
         super().__init__()
@@ -47,12 +49,13 @@ class Adjective(object):
     def __str__(self) -> str:
         return f"Singular: {self.sing}\nPlural  : {self.plur}"
 
+
 class Reader(object):
     def __init__(self, fname: str):
         types = ["plural", "singular"]
-        self.literals = {key:{} for key in types}
-        self.words    = {key:set() for key in types}
-        self.fname    = fname
+        self.literals = {key: {} for key in types}
+        self.words = {key: set() for key in types}
+        self.fname = fname
 
     def get_readlines(self) -> List[str]:
         with open(self.fname, "r") as f:
@@ -72,7 +75,7 @@ class Reader(object):
             if match:
                 sing = match.group(1)
                 plur = match.group(2)
-                self.literals["plural"][sing]   = plur
+                self.literals["plural"][sing] = plur
                 self.literals["singular"][plur] = sing
                 self.words["plural"].add(plur)
                 self.words["singular"].add(sing)
@@ -171,6 +174,7 @@ def convert_to_singular(word: str) -> str:
     def output_code(self, generated_code):
         with open(self.fname, "w+") as f:
             f.write(generated_code)
+
 
 class VerbTestWriter(TestWriter):
     def __init__(self, reader, class_name):
@@ -289,6 +293,7 @@ class VerbTestWriter(TestWriter):
             if len(args["in"]) > 1
         ]
         self.write_test(test_path, test_function, test_name_pascal, test_args)
+
 
 if __name__ == "__main__":
     in_fname = "lei//adjectives.lei"

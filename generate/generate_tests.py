@@ -1,6 +1,7 @@
 
 import json
 
+
 class TestWriter(object):
     def __init__(self, test_class):
         super().__init__()
@@ -63,7 +64,8 @@ if __name__ == "__main__":
         with open(test_path, "w+") as f:
             f.write(self.test_file_format.format(import_folder_name=self.import_folder_name,
                                                  test_class=self.test_class,
-                                                 test_name_snake="".join([f"_{char.lower()}" if char.isupper() else char for char in test_name_pascal])[1:],
+                                                 test_name_snake="".join(
+                                                     [f"_{char.lower()}" if char.isupper() else char for char in test_name_pascal])[1:],
                                                  test_function=test_function,
                                                  test_name_pascal=test_name_pascal,
                                                  test_args=self._format_test_args(test_args)))
