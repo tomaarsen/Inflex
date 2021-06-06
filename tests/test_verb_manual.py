@@ -98,6 +98,12 @@ class TestVerbs(unittest.TestCase):
         verb.pres_part()
         verb.past_part()
 
+    def test_ends_hyphen(self):
+        prediction = Verb("la-la-s").pres_part()
+        self.assertEqual(prediction, "la-la-ing", "Input word ending in '-s' must not throw an Exception.")
+        prediction = Verb("la-la-").pres_part()
+        self.assertEqual(prediction, "la-la-ing", "Input word ending in '-' must not throw an Exception.")
+
     def test_singular_to_singular(self):
         test_data = [('overcrops', {'overcrops'}),
                      ('peels', {'peels'}),
