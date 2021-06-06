@@ -216,6 +216,7 @@ class Verb(Term):
         Returns:
             str: This verb's plural form.
         """
+        breakpoint()
         self._check_valid_person(person)
 
         known = None
@@ -230,9 +231,10 @@ class Verb(Term):
 
         # Try splitting off a prefix
         prefix, subterm = Verb.split_prefix(term)
-        known = convert_to_plural(subterm)
-        if known:
-            return self._encase(form.format(prefix + known))
+        if prefix:
+            known = convert_to_plural(subterm)
+            if known:
+                return self._encase(form.format(prefix + known))
 
         # Otherwise convert the first word, last section
         known = convert_to_plural(term)
