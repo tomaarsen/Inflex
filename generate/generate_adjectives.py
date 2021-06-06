@@ -4,7 +4,7 @@
 import re
 import json
 from datetime import datetime
-from typing import List, Tuple, Optional
+from typing import Dict, List, Set, Tuple, Optional
 
 from generate_tests import TestWriter
 
@@ -53,8 +53,8 @@ class Adjective(object):
 class Reader(object):
     def __init__(self, fname: str):
         types = ["plural", "singular"]
-        self.literals = {key: {} for key in types}
-        self.words = {key: set() for key in types}
+        self.literals: Dict[str, Dict[str, str]] = {key: {} for key in types}
+        self.words: Dict[str, Set[str]] = {key: set() for key in types}
         self.fname = fname
 
     def get_readlines(self) -> List[str]:

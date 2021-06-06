@@ -4,7 +4,7 @@
 import re
 import json
 from datetime import datetime
-from typing import Generator, List, Tuple, Optional
+from typing import Dict, Generator, List, Set, Tuple, Optional
 
 from generate_tests import TestWriter
 
@@ -93,7 +93,7 @@ class Word(object):
         self.word = VOWELY.sub(r"[aeiouy]", self.word)
     '''
 
-    def restrict_word(self) -> str:
+    def restrict_word(self) -> None:
         """
         Input verb (e.g. "[aeiou]ys") is split up into restriction (e.g. "[aeiou]") and remainder (e.g. "ys")
         """
@@ -160,9 +160,9 @@ class Noun(object):
 class Reader(object):
     def __init__(self, fname: str):
         types = ["modern_plural", "classical_plural", "singular"]
-        self.patterns = {key: [] for key in types}
-        self.literals = {key: {} for key in types}
-        self.words = {
+        self.patterns: Dict[str, List[Dict[str, str]]] = {key: [] for key in types}
+        self.literals: Dict[str, Dict[str, str]] = {key: {} for key in types}
+        self.words: Dict[str, Set[str]] = {
             "plural": set(),
             "singular": set()
         }

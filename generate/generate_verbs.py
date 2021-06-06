@@ -4,7 +4,7 @@
 import re
 import json
 from datetime import datetime
-from typing import List, Tuple, Optional
+from typing import Dict, List, Set, Tuple, Optional
 
 from generate_tests import TestWriter
 
@@ -50,7 +50,7 @@ class Word(object):
         self.word = word
         self.restrict = ""
 
-    def expand_dash_star(self):
+    def expand_dash_star(self) -> None:
         """
         Replace - and * with the proper regex variant in input gen: "-" -> ".+"
         """
@@ -59,7 +59,7 @@ class Word(object):
         self.gen = DASH.sub(r".+", self.gen)
         self.gen = STAR.sub(r"(?:.{2,})?", self.gen)
 
-    def expand_cons_vowel(self) -> str:
+    def expand_cons_vowel(self) -> None:
         """
         Replace (CONS), (VOWEL) and (VOWELS) macros in input verb, e.g. "(VOWEL)ys" -> "[aeiou]ys"
         """
@@ -67,7 +67,7 @@ class Word(object):
         self.word = VOWEL.sub(r"[aeiou]", self.word)
         self.word = VOWELY.sub(r"[aeiouy]", self.word)
 
-    def restrict_word(self) -> str:
+    def restrict_word(self) -> None:
         """
         Input verb (e.g. "[aeiou]ys") is split up into restriction (e.g. "[aeiou]") and remainder (e.g. "ys")
         """
@@ -151,9 +151,9 @@ class Verb(object):
 class Reader(object):
     def __init__(self, fname: str):
         types = ["plural", "singular", "past", "pres_part", "past_part"]
-        self.patterns = {key: [] for key in types}
-        self.literals = {key: {} for key in types}
-        self.words = {key: set() for key in types}
+        self.patterns: Dict[str, List[Dict[str, str]]] = {key: [] for key in types}
+        self.literals: Dict[str, Dict[str, str]] = {key: {} for key in types}
+        self.words: Dict[str, Set[str]] = {key: set() for key in types}
         self.fname = fname
 
     def get_readlines(self) -> List[str]:
