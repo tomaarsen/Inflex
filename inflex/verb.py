@@ -341,7 +341,7 @@ class Verb(Term):
 
         Examples:
             >>> Verb.get_subterm("aaa-bbb ccc")
-            ("aaa-{} ccc", "bbb")
+            ('bbb', 'aaa-{} ccc')
 
         Args:
             term (str): The input word to potentially split the subterm from.
