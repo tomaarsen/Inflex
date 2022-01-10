@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: Inflex</title>
+  
+  <link rel="index" title="Index" href="genindex.html"/>
+
+  <link rel="stylesheet" href="_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="#">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/inflex.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.noun.html">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <section id="inflex">
+<h1>Inflex<a class="headerlink" href="#inflex" title="Permalink to this headline">¶</a></h1>
+<p>The Inflex module is a rule-based morphological analyser and generator.
+It allows for conversions of any noun, verb or adjective to a specific wordform such as singular, plural, past, past participle or present participle.</p>
+<p>Inflex can be tried out and compared against competitors including <code class="docutils literal notranslate"><span class="pre">nltk</span></code>, <code class="docutils literal notranslate"><span class="pre">textblob</span></code>, <code class="docutils literal notranslate"><span class="pre">pattern</span></code>, <code class="docutils literal notranslate"><span class="pre">inflect</span></code>, <code class="docutils literal notranslate"><span class="pre">inflection</span></code>, <code class="docutils literal notranslate"><span class="pre">inflector</span></code>, <code class="docutils literal notranslate"><span class="pre">lemminflect</span></code>, and <code class="docutils literal notranslate"><span class="pre">pyinflect</span></code> on <a class="reference external" href="https://www.tomaarsen.com/projects/inflex/try">https://www.tomaarsen.com/projects/inflex/try</a>.
+Furthermore, the comparison of performance of all of these modules is visualised on <a class="reference external" href="https://www.tomaarsen.com/projects/inflex/performance">https://www.tomaarsen.com/projects/inflex/performance</a>, using several different datasets.
+These results show that Inflex outperforms all existing modules for noun conversions, and performs competitively for verbs.
+This website also contains the thesis out of which Inflex (formerly called Inflexion) was born.</p>
+<section id="sample-usage">
+<h2>Sample usage<a class="headerlink" href="#sample-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">inflex</span> <span class="kn">import</span> <span class="n">Noun</span><span class="p">,</span> <span class="n">Verb</span><span class="p">,</span> <span class="n">Adjective</span>
+
+<span class="c1"># Converting Nouns</span>
+<span class="n">Noun</span><span class="p">(</span><span class="s2">&quot;book&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>   <span class="c1"># Produces &quot;books&quot;</span>
+<span class="n">Noun</span><span class="p">(</span><span class="s2">&quot;book&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span> <span class="c1"># Produces &quot;book&quot;</span>
+
+<span class="c1"># Converting Verbs</span>
+<span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>    <span class="c1"># Produces &quot;fly&quot;</span>
+<span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>  <span class="c1"># Produces &quot;flies&quot;</span>
+<span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">past</span><span class="p">()</span>      <span class="c1"># Produces &quot;flew&quot;</span>
+<span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pres_part</span><span class="p">()</span> <span class="c1"># Produces &quot;flying&quot;</span>
+<span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">past_part</span><span class="p">()</span> <span class="c1"># Produces &quot;flown&quot;</span>
+
+<span class="c1"># Converting Adjectives</span>
+<span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;my&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>       <span class="c1"># Produces &quot;my&quot;</span>
+<span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;our&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>        <span class="c1"># Produces &quot;our&quot;</span>
+<span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;small&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">comparative</span><span class="p">()</span> <span class="c1"># Produces &quot;smallest&quot;</span>
+<span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;small&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">superlative</span><span class="p">()</span> <span class="c1"># Produces &quot;smaller&quot;</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="/reference.html">Quick Reference</a> for a brief reference of Inflex, or <a class="reference external" href="/api/inflex.html">API Reference</a> for the full API Reference.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+                <li class="footer-element">
+                    
+                        <a href="_sources/index.rst.txt" rel="nofollow"> source</a>
+                    
+                </li>
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

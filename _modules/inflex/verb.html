@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: inflex.verb</title>
+  
+  <link rel="index" title="Index" href="../../genindex.html"/>
+
+  <link rel="stylesheet" href="../../_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="../../_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="../../index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/inflex.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.noun.html">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <h1>Source code for inflex.verb</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">inflex.syllable</span> <span class="kn">import</span> <span class="n">Syllable</span>
+<span class="kn">from</span> <span class="nn">inflex.term</span> <span class="kn">import</span> <span class="n">Term</span>
+<span class="kn">from</span> <span class="nn">inflex.verb_core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">is_plural</span><span class="p">,</span>
+    <span class="n">is_singular</span><span class="p">,</span>
+    <span class="n">is_past</span><span class="p">,</span>
+    <span class="n">is_pres_part</span><span class="p">,</span>
+    <span class="n">is_past_part</span><span class="p">,</span>
+    <span class="n">convert_to_singular</span><span class="p">,</span>
+    <span class="n">convert_to_plural</span><span class="p">,</span>
+    <span class="n">convert_to_past</span><span class="p">,</span>
+    <span class="n">convert_to_pres_part</span><span class="p">,</span>
+    <span class="n">convert_to_past_part</span><span class="p">,</span>
+    <span class="n">plural_of</span><span class="p">,</span>
+    <span class="n">singular_of</span><span class="p">,</span>
+    <span class="n">past_of</span><span class="p">,</span>
+    <span class="n">pres_part_of</span><span class="p">,</span>
+    <span class="n">past_part_of</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="Verb"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb">[docs]</a><span class="k">class</span> <span class="nc">Verb</span><span class="p">(</span><span class="n">Term</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for detecting and converting to verb forms.&quot;&quot;&quot;</span>
+
+    <span class="n">_prefixes</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;counter&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;trans&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cross&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;inter&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;under&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;fore&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;back&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;over&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;post&#39;,</span>
+        <span class="s1">&#39;out&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;mis&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;for&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dis&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;way&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;pre&#39;,</span>
+        <span class="c1"># &#39;sub&#39;,</span>
+        <span class="s1">&#39;un&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;in&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;be&#39;,</span>
+        <span class="s1">&#39;up&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;re&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;co&#39;,</span>
+        <span class="c1"># &#39;de&#39;,</span>
+    <span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Regexes to be tried before applying -ed or -ing.</span>
+<span class="sd">    E.g. &quot;argue&quot; is converted to &quot;argu&quot; according to these regexes,</span>
+<span class="sd">    and then &quot;ing&quot; or &quot;ed&quot; are appended for present participle,</span>
+<span class="sd">    and past/past participle respectively.</span>
+<span class="sd">    This produces &quot;arguing&quot; and &quot;argued&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_stem_regexes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># Words ending in &quot;fer&quot; always duplicate their consonant,</span>
+        <span class="c1"># e.g. &quot;transfer&quot; -&gt; &quot;transferr&quot; (+ &quot;ed&quot; or &quot;ing&quot;)</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;fer\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="s2">&quot;ferr&quot;</span><span class="p">,</span>
+        <span class="c1"># Words ending in &quot;c&quot; will have an extra &quot;k&quot; appended before</span>
+        <span class="c1"># -ed and -ing. One exception is &quot;arc&quot; -&gt; &quot;arced&quot;.</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;c\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="s2">&quot;ck&quot;</span><span class="p">,</span>
+        <span class="c1"># Words ending in &quot;ie&quot; will end in &quot;y&quot; before appending</span>
+        <span class="c1"># -ed or -ing.</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;ie\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span>
+        <span class="c1"># Words ending with &quot;ski&quot; don&#39;t change,</span>
+        <span class="c1"># and then immediately have -ed or -ing appended.</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;ski\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="s2">&quot;ski&quot;</span><span class="p">,</span>
+        <span class="c1"># Words ending with &quot;e&quot; prepended by anything other than an &quot;e&quot;</span>
+        <span class="c1"># have that &quot;e&quot; stripped. e.g. &quot;argue&quot; -&gt; &quot;argu&quot;</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.)e\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="c1"># Words ending with &quot;er&quot; don&#39;t duplicate.</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;er\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span>
+        <span class="c1"># Words ending with &quot;en&quot; don&#39;t duplicate,</span>
+        <span class="c1"># unless the word is small, e.g. ken -&gt; kenned, pen -&gt; penned, yen -&gt; yenned</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;..en\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span>
+        <span class="c1"># Words ending with &quot;on&quot; don&#39;t duplicate.</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.[bdghklmnprstzy]on)\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="c1"># Always duplicate CVl (British English)</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^aeo][aeiuo]l\Z&quot;</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;l&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">_stem_double_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s2">&quot;((?:[^aeiou]|^)[aeiouy]([bcdlgkmnprstvz]))\Z&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+
+    <span class="c1"># ---------------------------------- #</span>
+    <span class="c1"># Override default methods from Term #</span>
+    <span class="c1"># ---------------------------------- #</span>
+
+<div class="viewcode-block" id="Verb.__init__"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span> <span class="c1"># pylint: disable=W0235</span>
+        <span class="sd">&quot;&quot;&quot;Creates a Verb instance with detection and conversion methods.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; verb = Verb(&quot;fly&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; verb.singular()</span>
+<span class="sd">            &#39;flies&#39;</span>
+<span class="sd">            &gt;&gt;&gt; verb.past()</span>
+<span class="sd">            &#39;flew&#39;</span>
+<span class="sd">            &gt;&gt;&gt; verb.past_part()</span>
+<span class="sd">            &#39;flying&#39;</span>
+<span class="sd">            &gt;&gt;&gt; verb.pres_part()</span>
+<span class="sd">            &#39;flown&#39;</span>
+
+<span class="sd">            &gt;&gt;&gt; verb.is_plural()</span>
+<span class="sd">            True</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Capitalisation and whitespace will be preserved between input `term` and</span>
+<span class="sd">            generated output.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (str): Input word or collocation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Verb.is_verb"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.is_verb">[docs]</a>    <span class="k">def</span> <span class="nf">is_verb</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns `True` only if this verb is instantiated via `Verb(term)`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Returns `True` only if this verb is instantiated via `Verb(term)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Verb.is_singular"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.is_singular">[docs]</a>    <span class="k">def</span> <span class="nf">is_singular</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this verb is in singular form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this verb is deemed singular.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">is_singular</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Verb.is_plural"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.is_plural">[docs]</a>    <span class="k">def</span> <span class="nf">is_plural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this verb is in plural form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this verb is deemed plural.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">is_plural</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Verb.singular"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.singular">[docs]</a>    <span class="k">def</span> <span class="nf">singular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="c1"># pylint: disable=R0911</span>
+        <span class="sd">&quot;&quot;&quot;Returns this verb&#39;s singular form.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            person (Optional[int], optional): Represents the grammatical &quot;person&quot; (1st, 2nd, 3rd).</span>
+<span class="sd">                Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This verb&#39;s singular form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_valid_person</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+
+        <span class="c1"># &quot;To be&quot; is special</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;am&quot;</span><span class="p">,</span> <span class="s2">&quot;are&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">person</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># &quot;are&quot; is already singular, e.g. &quot;they are my friend&quot;,</span>
+                <span class="c1"># but the expected result is &quot;is&quot;, so we opt for that.</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;are&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="s2">&quot;is&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reapply_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">person</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_singular</span><span class="p">():</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="s2">&quot;are&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">person</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="s2">&quot;am&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="s2">&quot;is&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Third person uses the &quot;notational&quot; singular inflection</span>
+        <span class="k">if</span> <span class="n">person</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+            <span class="n">term</span><span class="p">,</span> <span class="n">form</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+            <span class="c1"># If this term is in the list of known cases</span>
+            <span class="c1"># TODO: # pylint: disable=W0511</span>
+            <span class="c1"># - This partially overlaps with `known = convert_to_singular(term)` from below</span>
+            <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">singular_of</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">singular_of</span><span class="p">[</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()]))</span>
+
+            <span class="c1"># Try splitting off a prefix</span>
+            <span class="n">prefix</span><span class="p">,</span> <span class="n">subterm</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+                <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_singular</span><span class="p">(</span><span class="n">subterm</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">known</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">known</span><span class="p">))</span>
+
+            <span class="c1"># Otherwise convert the first word, last section</span>
+            <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_singular</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">known</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">known</span><span class="p">))</span>
+
+            <span class="c1"># If all else fails, return the term</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reapply_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="c1"># First and second person always use the uninflected (i.e. &quot;notational plural&quot; form)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Verb.plural"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.plural">[docs]</a>    <span class="k">def</span> <span class="nf">plural</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns this verb&#39;s plural form.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            person (Optional[int], optional): Represents the grammatical &quot;person&quot; (1st, 2nd, 3rd).</span>
+<span class="sd">                Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This verb&#39;s plural form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_valid_person</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+
+        <span class="n">known</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">form</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="c1"># If this term is in the list of known cases</span>
+        <span class="c1"># TODO: # pylint: disable=W0511</span>
+        <span class="c1"># - This partially overlaps with `known = convert_to_singular(term)` from below</span>
+        <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">plural_of</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plural_of</span><span class="p">[</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()]))</span>
+
+        <span class="c1"># Try splitting off a prefix</span>
+        <span class="n">prefix</span><span class="p">,</span> <span class="n">subterm</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_plural</span><span class="p">(</span><span class="n">subterm</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">known</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">known</span><span class="p">))</span>
+
+        <span class="c1"># Otherwise convert the first word, last section</span>
+        <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_plural</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">known</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">known</span><span class="p">))</span>
+
+        <span class="c1"># If all else fails, return the term</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reapply_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Verb.lemma"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.lemma">[docs]</a>    <span class="k">def</span> <span class="nf">lemma</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return this object&#39;s lemma form.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Verb(&#39;eating&#39;).lemma()</span>
+<span class="sd">            &#39;eat&#39;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This object&#39;s lemma form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Verb.as_regex"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.as_regex">[docs]</a>    <span class="k">def</span> <span class="nf">as_regex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a `re.Pattern` which case-insensitively matches any inflected form of the verb.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            re.Pattern: Compiled regex object which case-insensitively matches any inflected form</span>
+<span class="sd">                of the verb.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Verb(&#39;eat&#39;).as_regex()</span>
+<span class="sd">            re.compile(&#39;eats|eating|eaten|eat|ate&#39;, re.IGNORECASE)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">singular</span><span class="p">(),</span> <span class="c1"># type: ignore</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">(),</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">past</span><span class="p">(),</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">past_part</span><span class="p">(),</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">pres_part</span><span class="p">()</span>
+                                                          <span class="p">}),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span></div>
+
+    <span class="c1"># ---------------------------- #</span>
+    <span class="c1"># Methods exclusively for Verb #</span>
+    <span class="c1"># ---------------------------- #</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_stem</span><span class="p">(</span><span class="n">term</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Stem `term` so that &quot;-ed&quot;/&quot;-ing&quot; can be appended for past and present participle forms.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (str): The input word to stem.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The stemmed version of `term`, ready for appending &quot;-ed&quot; or &quot;-ing&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">term</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">term</span>
+
+        <span class="c1"># Utility method that adjusts final consonants when they need to be doubled in inflexions</span>
+        <span class="c1"># Apply the first relevant transform</span>
+        <span class="k">for</span> <span class="n">regex</span> <span class="ow">in</span> <span class="n">Verb</span><span class="o">.</span><span class="n">_stem_regexes</span><span class="p">:</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="c1"># Adding `term[match.end():]` is unnecessary for now,</span>
+                <span class="c1"># but allows for more complex regexes.</span>
+                <span class="k">return</span> <span class="n">term</span><span class="p">[:</span><span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()]</span> <span class="o">+</span> <span class="n">Verb</span><span class="o">.</span><span class="n">_stem_regexes</span><span class="p">[</span><span class="n">regex</span><span class="p">](</span><span class="n">match</span><span class="p">)</span> <span class="o">+</span> <span class="n">term</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">():]</span>
+
+        <span class="c1"># Get the last word from the term, and remove a potential prefix</span>
+        <span class="n">last_word</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">last_word</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="n">last_word</span><span class="p">)</span>
+
+        <span class="c1"># Get a set of known syllable counts for last_word</span>
+        <span class="n">syllable_count</span> <span class="o">=</span> <span class="n">Syllable</span><span class="o">.</span><span class="n">count_syllables</span><span class="p">(</span><span class="n">last_word</span><span class="p">)</span>
+
+        <span class="c1"># Duplicate last letter if:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="c1"># The word is certainly just one syllable, or</span>
+            <span class="mi">1</span> <span class="ow">in</span> <span class="n">syllable_count</span>
+            <span class="c1"># The word is just one syllable, or</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">syllable_count</span> <span class="ow">and</span> <span class="n">Syllable</span><span class="o">.</span><span class="n">guess_if_one_syllable</span><span class="p">(</span><span class="n">last_word</span><span class="p">))</span>
+            <span class="c1"># The last syllable is stressed</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">Syllable</span><span class="o">.</span><span class="n">ends_with_stress</span><span class="p">(</span><span class="n">last_word</span><span class="p">))</span>
+        <span class="p">)</span> <span class="ow">and</span> <span class="n">Verb</span><span class="o">.</span><span class="n">_stem_double_regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">term</span><span class="p">):</span>  <span class="c1"># AND the word ends in (roughly) CVC</span>
+            <span class="k">return</span> <span class="n">term</span> <span class="o">+</span> <span class="n">term</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">term</span>
+
+<div class="viewcode-block" id="Verb.split_prefix"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.split_prefix">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">split_prefix</span><span class="p">(</span><span class="n">term</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Split the prefix from the term.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Verb.split_prefix(&quot;unbind&quot;)</span>
+<span class="sd">            (&quot;un&quot;, &quot;bind&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; Verb.split_prefix(&quot;mistake&quot;)</span>
+<span class="sd">            (&quot;mis&quot;, &quot;take&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; Verb.split_prefix(&quot;reappear&quot;)</span>
+<span class="sd">            (&quot;re&quot;, &quot;appear&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; Verb.split_prefix(&quot;use&quot;)</span>
+<span class="sd">            (&quot;&quot;, &quot;use&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (str): The input word to potentially split a prefix from.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple[str, str]: The first string is the prefix, the second string is the remainder.</span>
+<span class="sd">                If the input does not have a prefix to split, then the first string is empty,</span>
+<span class="sd">                while the second string is the full input `term`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Verb</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">Verb</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">term</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">term</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):]</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">term</span></div>
+
+<div class="viewcode-block" id="Verb.get_subterm"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.get_subterm">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_subterm</span><span class="p">(</span><span class="n">term</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Extract last sub-section (split by &#39;-&#39;) of the first word.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Verb.get_subterm(&quot;aaa-bbb ccc&quot;)</span>
+<span class="sd">            (&#39;bbb&#39;, &#39;aaa-{} ccc&#39;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (str): The input word to potentially split the subterm from.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple[str, str]: The first string is the format string, e.g. &quot;aaa-{} ccc&quot;, while</span>
+<span class="sd">                the second string is the last sub-section, e.g. &quot;bbb&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span>
+        <span class="c1"># Split off first word</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">form</span> <span class="o">+=</span> <span class="n">term</span><span class="p">[</span><span class="n">index</span><span class="p">:]</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="n">term</span><span class="p">[:</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># Don&#39;t split if the word ends with a hyphen</span>
+        <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">term</span><span class="p">,</span> <span class="n">form</span>
+
+        <span class="c1"># Split off last sub-word of first word</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">term</span><span class="p">[:</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">form</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="n">term</span><span class="p">[</span><span class="n">index</span><span class="p">:]</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">term</span><span class="p">,</span> <span class="n">form</span></div>
+
+<div class="viewcode-block" id="Verb.past"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.past">[docs]</a>    <span class="k">def</span> <span class="nf">past</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns this Verb&#39;s past form.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; verb = Verb(&quot;fly&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; verb.past()</span>
+<span class="sd">            &quot;flew&quot;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This Verb&#39;s past form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">known</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># &quot;To be&quot; is special</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;am&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="s2">&quot;was&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;are&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="s2">&quot;were&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">form</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="c1"># If this term is in the list of known cases</span>
+        <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">past_of</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">past_of</span><span class="p">[</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()]))</span>
+
+        <span class="c1"># Try splitting off a prefix</span>
+        <span class="n">prefix</span><span class="p">,</span> <span class="n">subterm</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_past</span><span class="p">(</span><span class="n">subterm</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">known</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">known</span><span class="p">))</span>
+
+        <span class="c1"># Convert the root of the term</span>
+        <span class="n">root</span><span class="p">,</span> <span class="n">form</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">())</span>
+        <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_past</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">known</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">known</span><span class="p">))</span>
+
+        <span class="c1"># Otherwise use the standard pattern on the root</span>
+        <span class="n">known</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">_stem</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ed&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">known</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Verb.pres_part"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.pres_part">[docs]</a>    <span class="k">def</span> <span class="nf">pres_part</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns this Verb&#39;s present participle form.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; verb = Verb(&quot;fly&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; verb.pres_part()</span>
+<span class="sd">            &quot;flying&quot;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This Verb&#39;s present participle form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">known</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># If this term is in the list of known cases</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">pres_part_of</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">pres_part_of</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()])</span>
+
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">form</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">())</span>
+
+        <span class="c1"># Try splitting off a prefix</span>
+        <span class="n">prefix</span><span class="p">,</span> <span class="n">subterm</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_pres_part</span><span class="p">(</span><span class="n">subterm</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">known</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">known</span><span class="p">))</span>
+
+        <span class="c1"># Convert the full (sub)term</span>
+        <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_pres_part</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="c1"># Otherwise use the standard pattern on the root</span>
+        <span class="k">if</span> <span class="n">known</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">known</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">_stem</span><span class="p">(</span><span class="n">term</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ing&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">known</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Verb.past_part"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.past_part">[docs]</a>    <span class="k">def</span> <span class="nf">past_part</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns this Verb&#39;s past participle form.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; verb = Verb(&quot;fly&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; verb.pres_part()</span>
+<span class="sd">            &quot;flown&quot;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This Verb&#39;s past participle form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">known</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># If this term is in the list of known cases</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">past_part_of</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">past_part_of</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()])</span>
+
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">form</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">())</span>
+
+        <span class="c1"># Try splitting off a prefix</span>
+        <span class="n">prefix</span><span class="p">,</span> <span class="n">subterm</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_past_part</span><span class="p">(</span><span class="n">subterm</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">known</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">known</span><span class="p">))</span>
+
+        <span class="c1"># Convert the full (sub)term</span>
+        <span class="n">known</span> <span class="o">=</span> <span class="n">convert_to_past_part</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="c1"># Otherwise use the standard pattern on the root</span>
+        <span class="k">if</span> <span class="n">known</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">known</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">_stem</span><span class="p">(</span><span class="n">term</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ed&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">known</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Verb.is_past"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.is_past">[docs]</a>    <span class="k">def</span> <span class="nf">is_past</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this Verb is in past form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this Verb is deemed past.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">is_past</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Verb.is_pres_part"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.is_pres_part">[docs]</a>    <span class="k">def</span> <span class="nf">is_pres_part</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this Verb is in present participle form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this Verb is deemed present participle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">is_pres_part</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Verb.is_past_part"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.is_past_part">[docs]</a>    <span class="k">def</span> <span class="nf">is_past_part</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this Verb is in past participle form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this Verb is deemed past participle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get first word, last section of that word (if &quot;-&quot; in the word)</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">is_past_part</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Verb.indefinite"><a class="viewcode-back" href="../../api/inflex.verb.html#inflex.verb.Verb.indefinite">[docs]</a>    <span class="k">def</span> <span class="nf">indefinite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return the singular if `count` == 1, and the plural otherwise.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; verb = Verb(&quot;fly&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; verb.indefinite(count = 1)</span>
+<span class="sd">            &#39;flies&#39;</span>
+<span class="sd">            &gt;&gt;&gt; verb.indefinite(count = 3)</span>
+<span class="sd">            &#39;fly&#39;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count (Optional[int], optional): The number of objects on which this verb applies.</span>
+<span class="sd">                Defaults to 1.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The singular if `count` == 1, and the plural otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span></div></div>
+</pre></div>
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

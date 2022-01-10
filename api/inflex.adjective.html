@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: adjective module</title>
+  
+  <link rel="index" title="Index" href="../genindex.html"/>
+
+  <link rel="stylesheet" href="../_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="../_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="../index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="inflex.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.noun.html">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <section id="module-inflex.adjective">
+<span id="adjective-module"></span><h1>adjective module<a class="headerlink" href="#module-inflex.adjective" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inflex.adjective.</span></span><span class="sig-name descname"><span class="pre">Adjective</span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">inflex.term.Term</span></code></a></p>
+<p>Class for detecting and converting to adjective forms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an Adjective instance with detection and conversion methods.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;my&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;our&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;pretty&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">comparative</span><span class="p">()</span>
+<span class="go">&#39;prettier&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">superlative</span><span class="p">()</span>
+<span class="go">&#39;prettiest&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Capitalisation and whitespace will be preserved between input <cite>term</cite> and
+generated output.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>term</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.is_adj">
+<span class="sig-name descname"><span class="pre">is_adj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.is_adj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.is_adj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this adjective is instantiated via <cite>Adjective(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this adjective is instantiated via <cite>Adjective(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.is_singular">
+<span class="sig-name descname"><span class="pre">is_singular</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.is_singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.is_singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this adjective is in singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this adjective is deemed singular.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.is_plural">
+<span class="sig-name descname"><span class="pre">is_plural</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.is_plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.is_plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this adjective is in plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this adjective is deemed plural.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.singular">
+<span class="sig-name descname"><span class="pre">singular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">person</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this adjective’s singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>person</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Represents the grammatical “person” (1st, 2nd, 3rd).
+This option only affects possessive adjectives. Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This adjective’s singular form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.plural">
+<span class="sig-name descname"><span class="pre">plural</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">person</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this adjective’s plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>person</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Represents the grammatical “person” (1st, 2nd, 3rd).
+This option only affects possessive adjectives. Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This adjective’s plural form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.lemma">
+<span class="sig-name descname"><span class="pre">lemma</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.lemma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.lemma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this object’s lemma form.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Adjective</span><span class="p">(</span><span class="s1">&#39;pretty&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lemma</span><span class="p">()</span>
+<span class="go">&#39;pretty&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This object’s lemma form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.comparative">
+<span class="sig-name descname"><span class="pre">comparative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">only_suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.comparative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.comparative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this Adjective’s comparative form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>only_suffix</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <cite>True</cite>, then only convert by modifying suffix.
+If <cite>False</cite>, <cite>more</cite> can also be prepended as a means of converting to comparative.
+Defaults to <cite>False</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;pretty&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">comparative</span><span class="p">()</span>
+<span class="go">prettier</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<dl class="simple">
+<dt>“little” or “far” will fail due to having multiple options:</dt><dd><ul class="simple">
+<li><p>little (kid)  -&gt; littler (kid)</p></li>
+<li><p>little (food) -&gt; less (food)</p></li>
+</ul>
+</dd>
+<dt>and</dt><dd><ul class="simple">
+<li><p>far -&gt; further</p></li>
+<li><p>far -&gt; farther</p></li>
+</ul>
+</dd>
+</dl>
+<p>Fails on e.g. “boring” or “famous”
+We convert these to “boringer” and “famouser”.
+In reality they should be “more boring” and “more famous”</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This Adjective’s comparative form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>only_suffix</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.superlative">
+<span class="sig-name descname"><span class="pre">superlative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">only_suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/adjective.html#Adjective.superlative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.adjective.Adjective.superlative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this Adjective’s superlative form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>only_suffix</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <cite>True</cite>, then only convert by modifying suffix.
+If <cite>False</cite>, <cite>most</cite> can also be prepended as a means of converting to superlative.
+Defaults to <cite>False</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;pretty&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">superlative</span><span class="p">()</span>
+<span class="go">prettiest</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<dl class="simple">
+<dt>“little” or “far” will fail due to having multiple options:</dt><dd><ul class="simple">
+<li><p>little (kid)  -&gt; littlest (kid)</p></li>
+<li><p>little (food) -&gt; least (food)</p></li>
+</ul>
+</dd>
+<dt>and</dt><dd><ul class="simple">
+<li><p>far -&gt; furthest</p></li>
+<li><p>far -&gt; farthest</p></li>
+</ul>
+</dd>
+</dl>
+<p>Fails on e.g. “boring” or “famous”
+We convert these to “boringest” and “famousest”.
+In reality they should be “most boring” and “most famous”</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This Adjective’s superlative form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>only_suffix</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.as_regex">
+<span class="sig-name descname"><span class="pre">as_regex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#inflex.adjective.Adjective.as_regex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>re.Pattern</cite> which case-insensitively matches any inflected form of the word.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Compiled regex object which case-insensitively matches any inflected form</dt><dd><p>of the word.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>re.Pattern</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cherub&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as_regex</span><span class="p">()</span>
+<span class="go">re.compile(&#39;cherubs|cherubim|cherub&#39;, re.IGNORECASE)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Verb</span><span class="p">(</span><span class="s1">&#39;eat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as_regex</span><span class="p">()</span>
+<span class="go">re.compile(&#39;eats|eating|eaten|eat|ate&#39;, re.IGNORECASE)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.classical">
+<span class="sig-name descname"><span class="pre">classical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><span class="pre">inflex.term.Term</span></a></span></span><a class="headerlink" href="#inflex.adjective.Adjective.classical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an object always inflecting in the classical/unassimilated manner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;cows&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unassimilated</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;kine&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Identical to <cite>unassimilated()</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Term object, or a subclass thereof.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term">Term</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.is_noun">
+<span class="sig-name descname"><span class="pre">is_noun</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.adjective.Adjective.is_noun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Noun(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Noun(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.is_verb">
+<span class="sig-name descname"><span class="pre">is_verb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.adjective.Adjective.is_verb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Verb(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Verb(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.adjective.Adjective.unassimilated">
+<span class="sig-name descname"><span class="pre">unassimilated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><span class="pre">inflex.term.Term</span></a></span></span><a class="headerlink" href="#inflex.adjective.Adjective.unassimilated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an object always inflecting in the classical/unassimilated manner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;cows&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unassimilated</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;kine&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Identical to <cite>classical()</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Term object, or a subclass thereof.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term">Term</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+                <li class="footer-element">
+                    
+                        <a href="../_sources/api/inflex.adjective.rst.txt" rel="nofollow"> source</a>
+                    
+                </li>
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

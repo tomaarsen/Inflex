@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: Example Usage</title>
+  
+  <link rel="index" title="Index" href="genindex.html"/>
+
+  <link rel="stylesheet" href="_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/inflex.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.noun.html">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <section id="example-usage">
+<h1>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h1>
+<section id="quick-reference">
+<h2>Quick Reference<a class="headerlink" href="#quick-reference" title="Permalink to this headline">¶</a></h2>
+<p>Inflex provides three objects, which contain the following most important methods:</p>
+<dl class="field-list">
+<dt class="field-odd"><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun">Noun</a></dt>
+<dd class="field-odd"><p>Let’s introduce a running example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span> <span class="o">=</span> <span class="n">Noun</span><span class="p">(</span><span class="s2">&quot;brother&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.singular">singular</a>: Return the singular form of this noun.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>
+<span class="go">&quot;brother&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.plural">plural</a>: Return the plural form of this noun.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&quot;brothers&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.lemma">lemma</a>: Return the lemma for this noun, identical to <a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.singular">singular</a>.</p></li>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.is_singular">is_singular</a>: Return whether this noun is singular.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">is_singular</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.is_plural">is_plural</a>: Return whether this noun is plural.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">is_plural</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.classical">classical</a> / <a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.unassimilated">unassimilated</a>: Return a <a class="reference external" href="/api/inflex.noun.html#inflex.noun.ClassicalNoun">ClassicalNoun</a> instance, which is a subclass of <a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun">Noun</a>, but with classical conversions instead.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">classical</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&quot;brethren&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.as_regex">as_regex</a>: Return a re.Pattern which matches any inflected form of the word.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">as_regex</span><span class="p">()</span>
+<span class="go">re.compile(&#39;brothers|brother|brethren&#39;, re.IGNORECASE)</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.indef_article">indef_article</a>: Return the correct indefinite article (‘a’ or ‘an’) for word.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">indef_article</span><span class="p">()</span>
+<span class="go">&quot;a&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.noun.html#inflex.noun.Noun.indefinite">indefinite</a>: Prepend ‘a’ or ‘an’ or the number to the correct form of this Noun.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">indefinite</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">&quot;a brother&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">indefinite</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;3 brothers&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+<dt class="field-even"><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb">Verb</a></dt>
+<dd class="field-even"><p>Let’s introduce a running example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span> <span class="o">=</span> <span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.singular">singular</a>: Return the singular form of this verb.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>
+<span class="go">&quot;flies&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.plural">plural</a>: Return the plural form of this verb.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&quot;fly&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.past">past</a>: Return the past form of this verb.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">past</span><span class="p">()</span>
+<span class="go">&quot;flew&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.pres_part">pres_part</a>: Return the present participle form of this verb.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">pres_part</span><span class="p">()</span>
+<span class="go">&quot;flying&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.past_part">past_part</a>: Return the past participle form of this verb.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">past_part</span><span class="p">()</span>
+<span class="go">&quot;flown&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.lemma">lemma</a>: Return the lemma for this noun, identical to <a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.plural">plural</a>.</p></li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.is_singular">is_singular</a>: Return whether this verb is in singular form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">is_singular</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.is_plural">is_plural</a>: Return whether this verb is in plural form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">is_plural</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.is_past">is_past</a>: Return whether this verb is in past form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">is_past</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.is_pres_part">is_pres_part</a>: Return whether this verb is in present participle form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">is_pres_part</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.is_past_part">is_past_part</a>: Return whether this verb is in past participle form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">is_past_part</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.verb.html#inflex.verb.Verb.as_regex">as_regex</a>: Return a re.Pattern which matches any inflected form of the word.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">as_regex</span><span class="p">()</span>
+<span class="go">re.compile(&#39;flying|fly|flown|flies|flew&#39;, re.IGNORECASE)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+<dt class="field-odd"><a class="reference external" href="/api/inflex.adjective.html#inflex.adjective.Adjective">Adjective</a></dt>
+<dd class="field-odd"><p>Let’s introduce a running example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="n">Adjective</span><span class="p">(</span><span class="s2">&quot;pretty&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul>
+<li><p><a class="reference external" href="/api/inflex.adjective.html#inflex.adjective.Adjective.singular">singular</a>: Return the singular form of this adjective.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>
+<span class="go">&quot;pretty&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.adjective.html#inflex.adjective.Adjective.plural">plural</a>: Return the plural form of this adjective.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&quot;pretty&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.adjective.html#inflex.adjective.Adjective.comparative">comparative</a>: Return the comparative form of this adjective.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>
+<span class="go">&quot;prettier&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.adjective.html#inflex.adjective.Adjective.superlative">superlative</a>: Return the superlative form of this adjective.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>
+<span class="go">&quot;prettiest&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.adjective.html#inflex.adjective.Adjective.is_singular">is_singular</a>: Return whether this adjective is in singular form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">is_singular</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.adjective.html#inflex.adjective.Adjective.is_plural">is_plural</a>:  Return whether this adjective is in plural form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">is_singular</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="/api/inflex.adjective.html#inflex.adjective.Adjective.as_regex">as_regex</a>: Return a re.Pattern which matches any inflected form of the word. (Only plural and singular)</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span><span class="o">.</span><span class="n">as_regex</span><span class="p">()</span>
+<span class="go">re.compile(&#39;pretty&#39;, re.IGNORECASE)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+<p>This quick reference is not exhaustive, but does cover the most important functionality supported by Inflex. Feel free to look at the full <a class="reference external" href="/api/inflex.html">API Reference</a> for more detailed information.</p>
+</section>
+</section>
+
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+                <li class="footer-element">
+                    
+                        <a href="_sources/reference.rst.txt" rel="nofollow"> source</a>
+                    
+                </li>
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

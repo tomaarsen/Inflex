@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: verb module</title>
+  
+  <link rel="index" title="Index" href="../genindex.html"/>
+
+  <link rel="stylesheet" href="../_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="../_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="../index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="inflex.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.noun.html">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.term.html">term module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <section id="module-inflex.verb">
+<span id="verb-module"></span><h1>verb module<a class="headerlink" href="#module-inflex.verb" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="inflex.verb.Verb">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inflex.verb.</span></span><span class="sig-name descname"><span class="pre">Verb</span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">inflex.term.Term</span></code></a></p>
+<p>Class for detecting and converting to verb forms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Verb instance with detection and conversion methods.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span> <span class="o">=</span> <span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span>
+<span class="go">&#39;flies&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">past</span><span class="p">()</span>
+<span class="go">&#39;flew&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">past_part</span><span class="p">()</span>
+<span class="go">&#39;flying&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">pres_part</span><span class="p">()</span>
+<span class="go">&#39;flown&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">is_plural</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Capitalisation and whitespace will be preserved between input <cite>term</cite> and
+generated output.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>term</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.is_verb">
+<span class="sig-name descname"><span class="pre">is_verb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.is_verb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.is_verb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this verb is instantiated via <cite>Verb(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this verb is instantiated via <cite>Verb(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.is_singular">
+<span class="sig-name descname"><span class="pre">is_singular</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.is_singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.is_singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this verb is in singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this verb is deemed singular.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.is_plural">
+<span class="sig-name descname"><span class="pre">is_plural</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.is_plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.is_plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this verb is in plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this verb is deemed plural.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.singular">
+<span class="sig-name descname"><span class="pre">singular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">person</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this verb’s singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>person</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Represents the grammatical “person” (1st, 2nd, 3rd).
+Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This verb’s singular form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.plural">
+<span class="sig-name descname"><span class="pre">plural</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">person</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this verb’s plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>person</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Represents the grammatical “person” (1st, 2nd, 3rd).
+Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This verb’s plural form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.lemma">
+<span class="sig-name descname"><span class="pre">lemma</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.lemma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.lemma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this object’s lemma form.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Verb</span><span class="p">(</span><span class="s1">&#39;eating&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lemma</span><span class="p">()</span>
+<span class="go">&#39;eat&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This object’s lemma form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.as_regex">
+<span class="sig-name descname"><span class="pre">as_regex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.as_regex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.as_regex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>re.Pattern</cite> which case-insensitively matches any inflected form of the verb.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Compiled regex object which case-insensitively matches any inflected form</dt><dd><p>of the verb.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>re.Pattern</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Verb</span><span class="p">(</span><span class="s1">&#39;eat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as_regex</span><span class="p">()</span>
+<span class="go">re.compile(&#39;eats|eating|eaten|eat|ate&#39;, re.IGNORECASE)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.split_prefix">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">split_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.split_prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.split_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split the prefix from the term.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="s2">&quot;unbind&quot;</span><span class="p">)</span>
+<span class="go">(&quot;un&quot;, &quot;bind&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="s2">&quot;mistake&quot;</span><span class="p">)</span>
+<span class="go">(&quot;mis&quot;, &quot;take&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="s2">&quot;reappear&quot;</span><span class="p">)</span>
+<span class="go">(&quot;re&quot;, &quot;appear&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Verb</span><span class="o">.</span><span class="n">split_prefix</span><span class="p">(</span><span class="s2">&quot;use&quot;</span><span class="p">)</span>
+<span class="go">(&quot;&quot;, &quot;use&quot;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>term</strong> (<em>str</em>) – The input word to potentially split a prefix from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The first string is the prefix, the second string is the remainder.</dt><dd><p>If the input does not have a prefix to split, then the first string is empty,
+while the second string is the full input <cite>term</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.get_subterm">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_subterm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.get_subterm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.get_subterm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract last sub-section (split by ‘-’) of the first word.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Verb</span><span class="o">.</span><span class="n">get_subterm</span><span class="p">(</span><span class="s2">&quot;aaa-bbb ccc&quot;</span><span class="p">)</span>
+<span class="go">(&#39;bbb&#39;, &#39;aaa-{} ccc&#39;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>term</strong> (<em>str</em>) – The input word to potentially split the subterm from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The first string is the format string, e.g. “aaa-{} ccc”, while</dt><dd><p>the second string is the last sub-section, e.g. “bbb”.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.past">
+<span class="sig-name descname"><span class="pre">past</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.past"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.past" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this Verb’s past form.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span> <span class="o">=</span> <span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">past</span><span class="p">()</span>
+<span class="go">&quot;flew&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This Verb’s past form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.pres_part">
+<span class="sig-name descname"><span class="pre">pres_part</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.pres_part"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.pres_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this Verb’s present participle form.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span> <span class="o">=</span> <span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">pres_part</span><span class="p">()</span>
+<span class="go">&quot;flying&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This Verb’s present participle form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.past_part">
+<span class="sig-name descname"><span class="pre">past_part</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.past_part"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.past_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this Verb’s past participle form.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span> <span class="o">=</span> <span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">pres_part</span><span class="p">()</span>
+<span class="go">&quot;flown&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This Verb’s past participle form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.is_past">
+<span class="sig-name descname"><span class="pre">is_past</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.is_past"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.is_past" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this Verb is in past form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this Verb is deemed past.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.is_pres_part">
+<span class="sig-name descname"><span class="pre">is_pres_part</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.is_pres_part"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.is_pres_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this Verb is in present participle form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this Verb is deemed present participle.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.is_past_part">
+<span class="sig-name descname"><span class="pre">is_past_part</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.is_past_part"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.is_past_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this Verb is in past participle form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this Verb is deemed past participle.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.classical">
+<span class="sig-name descname"><span class="pre">classical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><span class="pre">inflex.term.Term</span></a></span></span><a class="headerlink" href="#inflex.verb.Verb.classical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an object always inflecting in the classical/unassimilated manner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;cows&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unassimilated</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;kine&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Identical to <cite>unassimilated()</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Term object, or a subclass thereof.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term">Term</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.indefinite">
+<span class="sig-name descname"><span class="pre">indefinite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/verb.html#Verb.indefinite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.verb.Verb.indefinite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the singular if <cite>count</cite> == 1, and the plural otherwise.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span> <span class="o">=</span> <span class="n">Verb</span><span class="p">(</span><span class="s2">&quot;fly&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">indefinite</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;flies&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verb</span><span class="o">.</span><span class="n">indefinite</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;fly&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – The number of objects on which this verb applies.
+Defaults to 1.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The singular if <cite>count</cite> == 1, and the plural otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.is_adj">
+<span class="sig-name descname"><span class="pre">is_adj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.verb.Verb.is_adj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Adjective(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Adjective(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.is_noun">
+<span class="sig-name descname"><span class="pre">is_noun</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.verb.Verb.is_noun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Noun(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Noun(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.verb.Verb.unassimilated">
+<span class="sig-name descname"><span class="pre">unassimilated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><span class="pre">inflex.term.Term</span></a></span></span><a class="headerlink" href="#inflex.verb.Verb.unassimilated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an object always inflecting in the classical/unassimilated manner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;cows&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unassimilated</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;kine&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Identical to <cite>classical()</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Term object, or a subclass thereof.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term">Term</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+                <li class="footer-element">
+                    
+                        <a href="../_sources/api/inflex.verb.rst.txt" rel="nofollow"> source</a>
+                    
+                </li>
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

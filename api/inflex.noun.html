@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: noun module</title>
+  
+  <link rel="index" title="Index" href="../genindex.html"/>
+
+  <link rel="stylesheet" href="../_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="../_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="../index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="inflex.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <section id="module-inflex.noun">
+<span id="noun-module"></span><h1>noun module<a class="headerlink" href="#module-inflex.noun" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="inflex.noun.Noun">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inflex.noun.</span></span><span class="sig-name descname"><span class="pre">Noun</span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">inflex.term.Term</span></code></a></p>
+<p>Class for detecting and converting to noun forms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Noun instance with detection and conversion methods.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span> <span class="o">=</span> <span class="n">Noun</span><span class="p">(</span><span class="s2">&quot;brother&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;brothers&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">classical</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;brethren&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">is_singular</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Capitalisation and whitespace will be preserved between input <cite>term</cite> and
+generated output.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>term</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.is_noun">
+<span class="sig-name descname"><span class="pre">is_noun</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.is_noun"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.is_noun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this noun is instantiated via <cite>Noun(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this noun is instantiated via <cite>Noun(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.is_singular">
+<span class="sig-name descname"><span class="pre">is_singular</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.is_singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.is_singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this noun is in singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this noun is deemed singular.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.is_plural">
+<span class="sig-name descname"><span class="pre">is_plural</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.is_plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.is_plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this noun is in plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this noun is deemed plural.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.singular">
+<span class="sig-name descname"><span class="pre">singular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">person</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this noun’s singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>person</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Represents the grammatical “person” (1st, 2nd, 3rd).
+This option only affects personal and possessive pronouns. Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This noun’s singular form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.plural">
+<span class="sig-name descname"><span class="pre">plural</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">person</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this noun’s plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>person</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Represents the grammatical “person” (1st, 2nd, 3rd).
+This option only affects personal and possessive pronouns. Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This noun’s plural form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.classical">
+<span class="sig-name descname"><span class="pre">classical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#inflex.noun.ClassicalNoun" title="inflex.noun.ClassicalNoun"><span class="pre">inflex.noun.ClassicalNoun</span></a></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.classical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.classical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an object always inflecting in the classical/unassimilated manner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;cows&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">classical</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;kine&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Identical to <cite>unassimilated()</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Noun object that pluralises according to classical rules.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#inflex.noun.ClassicalNoun" title="inflex.noun.ClassicalNoun">ClassicalNoun</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.lemma">
+<span class="sig-name descname"><span class="pre">lemma</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.lemma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.lemma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this object’s lemma form.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;books&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lemma</span><span class="p">()</span>
+<span class="go">&#39;book&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This object’s lemma form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.as_regex">
+<span class="sig-name descname"><span class="pre">as_regex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.as_regex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.as_regex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>re.Pattern</cite> which case-insensitively matches any inflected form of the word.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Compiled regex object which case-insensitively matches any inflected form</dt><dd><p>of the word.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>re.Pattern</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cherub&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as_regex</span><span class="p">()</span>
+<span class="go">re.compile(&#39;cherubs|cherubim|cherub&#39;, re.IGNORECASE)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.indef_article">
+<span class="sig-name descname"><span class="pre">indef_article</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.indef_article"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.indef_article" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the correct indefinite article (“a” or “an”) for <cite>word</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Either “a” or “an”.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.indefinite">
+<span class="sig-name descname"><span class="pre">indefinite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#Noun.indefinite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.Noun.indefinite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepend “a” or “an” or the number to the correct form of this Noun.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span> <span class="o">=</span> <span class="n">Noun</span><span class="p">(</span><span class="s2">&quot;book&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">indefinite</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;a book&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">indefinite</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;3 books&#39;</span>
+</pre></div>
+</div>
+<p>TODO: self.term versus self.singular()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – The number of objects on which this verb applies.
+Defaults to 1.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The singular if <cite>count</cite> == 1, and the plural otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.is_adj">
+<span class="sig-name descname"><span class="pre">is_adj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.noun.Noun.is_adj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Adjective(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Adjective(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.is_verb">
+<span class="sig-name descname"><span class="pre">is_verb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.noun.Noun.is_verb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Verb(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Verb(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.Noun.unassimilated">
+<span class="sig-name descname"><span class="pre">unassimilated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><span class="pre">inflex.term.Term</span></a></span></span><a class="headerlink" href="#inflex.noun.Noun.unassimilated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an object always inflecting in the classical/unassimilated manner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;cows&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unassimilated</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;kine&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Identical to <cite>classical()</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Term object, or a subclass thereof.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term">Term</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inflex.noun.</span></span><span class="sig-name descname"><span class="pre">ClassicalNoun</span></span><a class="reference internal" href="../_modules/inflex/noun.html#ClassicalNoun"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.ClassicalNoun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#inflex.noun.Noun" title="inflex.noun.Noun"><code class="xref py py-class docutils literal notranslate"><span class="pre">inflex.noun.Noun</span></code></a></p>
+<p>Subclass of noun for detecting and converting to noun forms, with a classical plural.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#inflex.noun.Noun" title="inflex.noun.Noun"><span class="pre">inflex.noun.Noun</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#ClassicalNoun.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.ClassicalNoun.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates ClassicalNoun instance with detection and conversion methods.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Capitalisation and whitespace will be preserved between input <cite>term</cite> and
+output generated via e.g. <cite>singular</cite>.</p>
+<p>The main difference to Noun is that the <cite>plural</cite> method is overridden.
+Another difference is that this class is generally initialized using the
+singular form of the Noun. <cite>as_regex()</cite> and <cite>__repr__()</cite> are also overridden.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>term</strong> (<em>str</em>) – Input word or collocation.</p></li>
+<li><p><strong>modern</strong> (<a class="reference internal" href="#inflex.noun.Noun" title="inflex.noun.Noun"><em>Noun</em></a>) – The Noun object from which <cite>classical()</cite> or <cite>unassimilated</cite> was
+called to create this object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.classical">
+<span class="sig-name descname"><span class="pre">classical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#inflex.noun.ClassicalNoun" title="inflex.noun.ClassicalNoun"><span class="pre">inflex.noun.ClassicalNoun</span></a></span></span><a class="reference internal" href="../_modules/inflex/noun.html#ClassicalNoun.classical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.ClassicalNoun.classical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an object always inflecting in the classical/unassimilated manner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;cows&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unassimilated</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;kine&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Identical to <cite>unassimilated()</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Term object, or a subclass thereof.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term">Term</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.modern">
+<span class="sig-name descname"><span class="pre">modern</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#inflex.noun.Noun" title="inflex.noun.Noun"><span class="pre">inflex.noun.Noun</span></a></span></span><a class="reference internal" href="../_modules/inflex/noun.html#ClassicalNoun.modern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.ClassicalNoun.modern" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the non-classical modern version of this Noun.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span> <span class="o">=</span> <span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span> <span class="o">==</span> <span class="n">noun</span><span class="o">.</span><span class="n">classical</span><span class="p">()</span><span class="o">.</span><span class="n">modern</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The Noun object that will pluralize according to modern rules.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#inflex.noun.Noun" title="inflex.noun.Noun">Noun</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.as_regex">
+<span class="sig-name descname"><span class="pre">as_regex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/noun.html#ClassicalNoun.as_regex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun.ClassicalNoun.as_regex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>re.Pattern</cite> which case-insensitively matches any inflected form of the word.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Compiled regex object which case-insensitively matches any inflected form</dt><dd><p>of the word.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>re.Pattern</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;brother&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">classical</span><span class="p">()</span><span class="o">.</span><span class="n">as_regex</span><span class="p">()</span>
+<span class="go">re.compile(&#39;brother|brethren&#39;, re.IGNORECASE)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.indef_article">
+<span class="sig-name descname"><span class="pre">indef_article</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.indef_article" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the correct indefinite article (“a” or “an”) for <cite>word</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Either “a” or “an”.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.indefinite">
+<span class="sig-name descname"><span class="pre">indefinite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.indefinite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepend “a” or “an” or the number to the correct form of this Noun.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span> <span class="o">=</span> <span class="n">Noun</span><span class="p">(</span><span class="s2">&quot;book&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">indefinite</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;a book&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noun</span><span class="o">.</span><span class="n">indefinite</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;3 books&#39;</span>
+</pre></div>
+</div>
+<p>TODO: self.term versus self.singular()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – The number of objects on which this verb applies.
+Defaults to 1.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The singular if <cite>count</cite> == 1, and the plural otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.is_adj">
+<span class="sig-name descname"><span class="pre">is_adj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.is_adj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Adjective(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Adjective(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.is_noun">
+<span class="sig-name descname"><span class="pre">is_noun</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.is_noun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this noun is instantiated via <cite>Noun(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this noun is instantiated via <cite>Noun(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.is_plural">
+<span class="sig-name descname"><span class="pre">is_plural</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.is_plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this noun is in plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this noun is deemed plural.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.is_singular">
+<span class="sig-name descname"><span class="pre">is_singular</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.is_singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether this noun is in singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if this noun is deemed singular.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.is_verb">
+<span class="sig-name descname"><span class="pre">is_verb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.is_verb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Verb(term)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns <cite>True</cite> only if this object is instantiated via <cite>Verb(term)</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.lemma">
+<span class="sig-name descname"><span class="pre">lemma</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.lemma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this object’s lemma form.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;books&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lemma</span><span class="p">()</span>
+<span class="go">&#39;book&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This object’s lemma form.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.plural">
+<span class="sig-name descname"><span class="pre">plural</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">person</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this noun’s plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>person</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Represents the grammatical “person” (1st, 2nd, 3rd).
+This option only affects personal and possessive pronouns. Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This noun’s plural form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.singular">
+<span class="sig-name descname"><span class="pre">singular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">person</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this noun’s singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>person</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Represents the grammatical “person” (1st, 2nd, 3rd).
+This option only affects personal and possessive pronouns. Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This noun’s singular form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.noun.ClassicalNoun.unassimilated">
+<span class="sig-name descname"><span class="pre">unassimilated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term"><span class="pre">inflex.term.Term</span></a></span></span><a class="headerlink" href="#inflex.noun.ClassicalNoun.unassimilated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an object always inflecting in the classical/unassimilated manner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;cows&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Noun</span><span class="p">(</span><span class="s1">&#39;cow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unassimilated</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+<span class="go">&#39;kine&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Identical to <cite>classical()</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Term object, or a subclass thereof.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="inflex.term.html#inflex.term.Term" title="inflex.term.Term">Term</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+                <li class="footer-element">
+                    
+                        <a href="../_sources/api/inflex.noun.rst.txt" rel="nofollow"> source</a>
+                    
+                </li>
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

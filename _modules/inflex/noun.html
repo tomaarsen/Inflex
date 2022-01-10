@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: inflex.noun</title>
+  
+  <link rel="index" title="Index" href="../../genindex.html"/>
+
+  <link rel="stylesheet" href="../../_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="../../_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="../../index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/inflex.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.noun.html">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <h1>Source code for inflex.noun</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">Union</span>
+
+
+<span class="kn">from</span> <span class="nn">inflex.term</span> <span class="kn">import</span> <span class="n">Term</span>
+<span class="kn">from</span> <span class="nn">inflex.noun_core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">is_singular</span><span class="p">,</span>
+    <span class="n">is_plural</span><span class="p">,</span>
+    <span class="n">convert_to_classical_plural</span><span class="p">,</span>
+    <span class="n">convert_to_modern_plural</span><span class="p">,</span>
+    <span class="n">convert_to_singular</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">inflex.indefinite_core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">select_indefinite_article</span><span class="p">,</span>
+    <span class="n">prepend_indefinite_article</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="Noun"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun">[docs]</a><span class="k">class</span> <span class="nc">Noun</span><span class="p">(</span><span class="n">Term</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for detecting and converting to noun forms.&quot;&quot;&quot;</span>
+
+    <span class="n">_noun_inflection</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># CASE</span>
+        <span class="c1">#   TERM             0TH            1ST             2ND             3RD</span>
+        <span class="s2">&quot;nominative&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">,</span>           <span class="s2">&quot;I&quot;</span><span class="p">,</span>            <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;we&quot;</span><span class="p">,</span>          <span class="s2">&quot;we&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;they&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;you&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;you&quot;</span><span class="p">,</span>         <span class="s2">&quot;I&quot;</span><span class="p">,</span>            <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;you&quot;</span><span class="p">,</span>         <span class="s2">&quot;we&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;they&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;she&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;she&quot;</span><span class="p">,</span>         <span class="s2">&quot;I&quot;</span><span class="p">,</span>            <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;she&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;they&quot;</span><span class="p">,</span>        <span class="s2">&quot;we&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;they&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;he&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;he&quot;</span><span class="p">,</span>          <span class="s2">&quot;I&quot;</span><span class="p">,</span>            <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;he&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;they&quot;</span><span class="p">,</span>        <span class="s2">&quot;we&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;they&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;it&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;it&quot;</span><span class="p">,</span>          <span class="s2">&quot;I&quot;</span><span class="p">,</span>            <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;they&quot;</span><span class="p">,</span>        <span class="s2">&quot;we&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;they&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;we&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">,</span>           <span class="s2">&quot;I&quot;</span><span class="p">,</span>            <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;we&quot;</span><span class="p">,</span>          <span class="s2">&quot;we&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;they&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;they&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;it&quot;</span><span class="p">,</span>          <span class="s2">&quot;I&quot;</span><span class="p">,</span>            <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;they&quot;</span><span class="p">,</span>        <span class="s2">&quot;we&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;they&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;one&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span>         <span class="s2">&quot;I&quot;</span><span class="p">,</span>            <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;one&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;some&quot;</span><span class="p">,</span>        <span class="s2">&quot;we&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;some&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;this&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span>        <span class="s2">&quot;this&quot;</span><span class="p">,</span>         <span class="s2">&quot;this&quot;</span><span class="p">,</span>         <span class="s2">&quot;this&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;these&quot;</span><span class="p">,</span>       <span class="s2">&quot;these&quot;</span><span class="p">,</span>        <span class="s2">&quot;these&quot;</span><span class="p">,</span>        <span class="s2">&quot;these&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;that&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;that&quot;</span><span class="p">,</span>        <span class="s2">&quot;that&quot;</span><span class="p">,</span>         <span class="s2">&quot;that&quot;</span><span class="p">,</span>         <span class="s2">&quot;that&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;those&quot;</span><span class="p">,</span>       <span class="s2">&quot;those&quot;</span><span class="p">,</span>        <span class="s2">&quot;those&quot;</span><span class="p">,</span>        <span class="s2">&quot;those&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;these&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span>        <span class="s2">&quot;this&quot;</span><span class="p">,</span>         <span class="s2">&quot;this&quot;</span><span class="p">,</span>         <span class="s2">&quot;this&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;these&quot;</span><span class="p">,</span>       <span class="s2">&quot;these&quot;</span><span class="p">,</span>        <span class="s2">&quot;these&quot;</span><span class="p">,</span>        <span class="s2">&quot;these&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;those&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;that&quot;</span><span class="p">,</span>		<span class="s2">&quot;that&quot;</span><span class="p">,</span>			<span class="s2">&quot;that&quot;</span><span class="p">,</span>			<span class="s2">&quot;that&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;those&quot;</span><span class="p">,</span> <span class="s2">&quot;those&quot;</span><span class="p">,</span> <span class="s2">&quot;those&quot;</span><span class="p">,</span> <span class="s2">&quot;those&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;who&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;who&quot;</span><span class="p">,</span>         <span class="s2">&quot;who&quot;</span><span class="p">,</span>          <span class="s2">&quot;who&quot;</span><span class="p">,</span>          <span class="s2">&quot;who&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;who&quot;</span><span class="p">,</span>         <span class="s2">&quot;who&quot;</span><span class="p">,</span>          <span class="s2">&quot;who&quot;</span><span class="p">,</span>          <span class="s2">&quot;who&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;whoever&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;whoever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whoever&quot;</span><span class="p">,</span>      <span class="s2">&quot;whoever&quot;</span><span class="p">,</span>      <span class="s2">&quot;whoever&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;whoever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whoever&quot;</span><span class="p">,</span>      <span class="s2">&quot;whoever&quot;</span><span class="p">,</span>      <span class="s2">&quot;whoever&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;whosoever&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;whosoever&quot;</span><span class="p">,</span>   <span class="s2">&quot;whosoever&quot;</span><span class="p">,</span>    <span class="s2">&quot;whosoever&quot;</span><span class="p">,</span>    <span class="s2">&quot;whosoever&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;whosoever&quot;</span><span class="p">,</span>   <span class="s2">&quot;whosoever&quot;</span><span class="p">,</span>    <span class="s2">&quot;whosoever&quot;</span><span class="p">,</span>    <span class="s2">&quot;whosoever&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="c1"># CASE</span>
+        <span class="c1">#   TERM             0TH            1ST             2ND             3RD</span>
+        <span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;me&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;me&quot;</span><span class="p">,</span>          <span class="s2">&quot;me&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;us&quot;</span><span class="p">,</span>          <span class="s2">&quot;us&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;them&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;you&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;you&quot;</span><span class="p">,</span>         <span class="s2">&quot;me&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;you&quot;</span><span class="p">,</span>         <span class="s2">&quot;us&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;them&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;her&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;her&quot;</span><span class="p">,</span>         <span class="s2">&quot;me&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;her&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;them&quot;</span><span class="p">,</span>        <span class="s2">&quot;us&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;them&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;him&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;him&quot;</span><span class="p">,</span>         <span class="s2">&quot;me&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;him&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;them&quot;</span><span class="p">,</span>        <span class="s2">&quot;us&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;them&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;it&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;it&quot;</span><span class="p">,</span>          <span class="s2">&quot;me&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;them&quot;</span><span class="p">,</span>        <span class="s2">&quot;us&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;them&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;one&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span>         <span class="s2">&quot;me&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;one&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;some&quot;</span><span class="p">,</span>        <span class="s2">&quot;us&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;some&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;us&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;me&quot;</span><span class="p">,</span>          <span class="s2">&quot;me&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;us&quot;</span><span class="p">,</span>          <span class="s2">&quot;us&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;them&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;them&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;it&quot;</span><span class="p">,</span>          <span class="s2">&quot;me&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;it&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;them&quot;</span><span class="p">,</span>        <span class="s2">&quot;us&quot;</span><span class="p">,</span>           <span class="s2">&quot;you&quot;</span><span class="p">,</span>          <span class="s2">&quot;them&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;this&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span>        <span class="s2">&quot;this&quot;</span><span class="p">,</span>         <span class="s2">&quot;this&quot;</span><span class="p">,</span>         <span class="s2">&quot;this&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;these&quot;</span><span class="p">,</span>       <span class="s2">&quot;these&quot;</span><span class="p">,</span>        <span class="s2">&quot;these&quot;</span><span class="p">,</span>        <span class="s2">&quot;these&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;that&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;that&quot;</span><span class="p">,</span>        <span class="s2">&quot;that&quot;</span><span class="p">,</span>         <span class="s2">&quot;that&quot;</span><span class="p">,</span>         <span class="s2">&quot;that&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;those&quot;</span><span class="p">,</span>       <span class="s2">&quot;those&quot;</span><span class="p">,</span>        <span class="s2">&quot;those&quot;</span><span class="p">,</span>        <span class="s2">&quot;those&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;these&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span>        <span class="s2">&quot;this&quot;</span><span class="p">,</span>         <span class="s2">&quot;this&quot;</span><span class="p">,</span>         <span class="s2">&quot;this&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;these&quot;</span><span class="p">,</span>       <span class="s2">&quot;these&quot;</span><span class="p">,</span>        <span class="s2">&quot;these&quot;</span><span class="p">,</span>        <span class="s2">&quot;these&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;those&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;that&quot;</span><span class="p">,</span>        <span class="s2">&quot;that&quot;</span><span class="p">,</span>         <span class="s2">&quot;that&quot;</span><span class="p">,</span>         <span class="s2">&quot;that&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;those&quot;</span><span class="p">,</span>       <span class="s2">&quot;those&quot;</span><span class="p">,</span>        <span class="s2">&quot;those&quot;</span><span class="p">,</span>        <span class="s2">&quot;those&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;whom&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;whom&quot;</span><span class="p">,</span>        <span class="s2">&quot;whom&quot;</span><span class="p">,</span>         <span class="s2">&quot;whom&quot;</span><span class="p">,</span>         <span class="s2">&quot;whom&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;whom&quot;</span><span class="p">,</span>        <span class="s2">&quot;whom&quot;</span><span class="p">,</span>         <span class="s2">&quot;whom&quot;</span><span class="p">,</span>         <span class="s2">&quot;whom&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;whomever&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;whomever&quot;</span><span class="p">,</span>    <span class="s2">&quot;whomever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whomever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whomever&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;whomever&quot;</span><span class="p">,</span>    <span class="s2">&quot;whomever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whomever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whomever&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;whomsoever&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;whomsoever&quot;</span><span class="p">,</span>  <span class="s2">&quot;whomsoever&quot;</span><span class="p">,</span>   <span class="s2">&quot;whomsoever&quot;</span><span class="p">,</span>   <span class="s2">&quot;whomsoever&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;whomsoever&quot;</span><span class="p">,</span>  <span class="s2">&quot;whomsoever&quot;</span><span class="p">,</span>   <span class="s2">&quot;whomsoever&quot;</span><span class="p">,</span>   <span class="s2">&quot;whomsoever&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="c1"># CASE</span>
+        <span class="c1">#   TERM              0TH            1ST             2ND             3RD</span>
+        <span class="s2">&quot;possessive&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;mine&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;mine&quot;</span><span class="p">,</span>        <span class="s2">&quot;mine&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;its&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;ours&quot;</span><span class="p">,</span>        <span class="s2">&quot;ours&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;theirs&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;yours&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;yours&quot;</span><span class="p">,</span>       <span class="s2">&quot;mine&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;its&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;yours&quot;</span><span class="p">,</span>       <span class="s2">&quot;ours&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;theirs&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;hers&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;hers&quot;</span><span class="p">,</span>        <span class="s2">&quot;mine&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;hers&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;theirs&quot;</span><span class="p">,</span>      <span class="s2">&quot;ours&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;theirs&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;his&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;his&quot;</span><span class="p">,</span>         <span class="s2">&quot;mine&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;his&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;theirs&quot;</span><span class="p">,</span>      <span class="s2">&quot;ours&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;theirs&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;its&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;its&quot;</span><span class="p">,</span>         <span class="s2">&quot;mine&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;its&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;theirs&quot;</span><span class="p">,</span>      <span class="s2">&quot;ours&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;theirs&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;one&#39;s&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;one&#39;s&quot;</span><span class="p">,</span>       <span class="s2">&quot;mine&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;one&#39;s&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;theirs&quot;</span><span class="p">,</span>      <span class="s2">&quot;ours&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;theirs&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;ours&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;mine&quot;</span><span class="p">,</span>        <span class="s2">&quot;mine&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;its&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;ours&quot;</span><span class="p">,</span>        <span class="s2">&quot;ours&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;theirs&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;theirs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;its&quot;</span><span class="p">,</span>         <span class="s2">&quot;mine&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;its&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;theirs&quot;</span><span class="p">,</span>      <span class="s2">&quot;ours&quot;</span><span class="p">,</span>         <span class="s2">&quot;yours&quot;</span><span class="p">,</span>        <span class="s2">&quot;theirs&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;whose&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;whose&quot;</span><span class="p">,</span>       <span class="s2">&quot;whose&quot;</span><span class="p">,</span>        <span class="s2">&quot;whose&quot;</span><span class="p">,</span>        <span class="s2">&quot;whose&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;whose&quot;</span><span class="p">,</span>       <span class="s2">&quot;whose&quot;</span><span class="p">,</span>        <span class="s2">&quot;whose&quot;</span><span class="p">,</span>        <span class="s2">&quot;whose&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;whosever&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;whosever&quot;</span><span class="p">,</span>    <span class="s2">&quot;whosever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whosever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whosever&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;whosever&quot;</span><span class="p">,</span>    <span class="s2">&quot;whosever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whosever&quot;</span><span class="p">,</span>     <span class="s2">&quot;whosever&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;whosesoever&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;whosesoever&quot;</span><span class="p">,</span> <span class="s2">&quot;whosesoever&quot;</span><span class="p">,</span>  <span class="s2">&quot;whosesoever&quot;</span><span class="p">,</span>  <span class="s2">&quot;whosesoever&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;whosesoever&quot;</span><span class="p">,</span> <span class="s2">&quot;whosesoever&quot;</span><span class="p">,</span>  <span class="s2">&quot;whosesoever&quot;</span><span class="p">,</span>  <span class="s2">&quot;whosesoever&quot;</span><span class="p">]</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="c1"># CASE</span>
+        <span class="c1">#   TERM                0TH            1ST             2ND             3RD</span>
+        <span class="s2">&quot;reflexive&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;myself&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;myself&quot;</span><span class="p">,</span>      <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;itself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;yourself&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;yourself&quot;</span><span class="p">,</span>    <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;itself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>  <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;herself&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;herself&quot;</span><span class="p">,</span>     <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;herself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;themselves&quot;</span><span class="p">,</span>  <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;himself&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;himself&quot;</span><span class="p">,</span>     <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;himself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;themselves&quot;</span><span class="p">,</span>  <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;themself&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;themselves&quot;</span><span class="p">,</span>  <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;themselves&quot;</span><span class="p">,</span>  <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;itself&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;itself&quot;</span><span class="p">,</span>      <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;itself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;themselves&quot;</span><span class="p">,</span>  <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;oneself&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;singular&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;oneself&quot;</span><span class="p">,</span>     <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;oneself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;oneselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;oneselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;ourselves&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;myself&quot;</span><span class="p">,</span>      <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;itself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;yourselves&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;yourself&quot;</span><span class="p">,</span>    <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;itself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>  <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;themselves&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;itself&quot;</span><span class="p">,</span>      <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;themselves&quot;</span><span class="p">,</span>  <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;themselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;oneselves&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;singular&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;oneself&quot;</span><span class="p">,</span>     <span class="s2">&quot;myself&quot;</span><span class="p">,</span>       <span class="s2">&quot;yourself&quot;</span><span class="p">,</span>     <span class="s2">&quot;oneself&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;plural&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;oneselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;ourselves&quot;</span><span class="p">,</span>    <span class="s2">&quot;yourselves&quot;</span><span class="p">,</span>   <span class="s2">&quot;oneselves&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Regex to detect a preposition</span>
+    <span class="n">_prep_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;\A ( \s*(?:</span>
+<span class="sd">              about   | above   | across  | after  | among   | around   | athwart</span>
+<span class="sd">            | at      | before  | behind  | below  | beneath | besides?</span>
+<span class="sd">            | between | betwixt | beyond  | but    | by      | during</span>
+<span class="sd">            | except  | for     | from    | into   | in      | near     | off</span>
+<span class="sd">            | of      | onto    | on      | out    | over    | since    | till</span>
+<span class="sd">            | to      | under   | until   | unto   | upon    | within   | without | with</span>
+<span class="sd">        )\s+)</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="Noun.__init__"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a Noun instance with detection and conversion methods.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; noun = Noun(&quot;brother&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; noun.plural()</span>
+<span class="sd">            &#39;brothers&#39;</span>
+<span class="sd">            &gt;&gt;&gt; noun.classical().plural()</span>
+<span class="sd">            &#39;brethren&#39;</span>
+
+<span class="sd">            &gt;&gt;&gt; noun.is_singular()</span>
+<span class="sd">            True</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Capitalisation and whitespace will be preserved between input `term` and</span>
+<span class="sd">            generated output.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (str): Input word or collocation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="c1"># Cached classical form of this Noun, to be lazily loaded just once.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_classical</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClassicalNoun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="c1"># ---------------------------------- #</span>
+    <span class="c1"># Override default methods from Term #</span>
+    <span class="c1"># ---------------------------------- #</span>
+
+<div class="viewcode-block" id="Noun.is_noun"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.is_noun">[docs]</a>    <span class="k">def</span> <span class="nf">is_noun</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns `True` only if this noun is instantiated via `Noun(term)`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Returns `True` only if this noun is instantiated via `Noun(term)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Noun.is_singular"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.is_singular">[docs]</a>    <span class="k">def</span> <span class="nf">is_singular</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this noun is in singular form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this noun is deemed singular.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">is_singular</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Noun.is_plural"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.is_plural">[docs]</a>    <span class="k">def</span> <span class="nf">is_plural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this noun is in plural form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this noun is deemed plural.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">is_plural</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Noun.singular"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.singular">[docs]</a>    <span class="k">def</span> <span class="nf">singular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns this noun&#39;s singular form.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            person (Optional[int], optional): Represents the grammatical &quot;person&quot; (1st, 2nd, 3rd).</span>
+<span class="sd">                This option only affects personal and possessive pronouns. Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This noun&#39;s singular form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_valid_person</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_prep_regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">prep</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">():]</span>
+
+            <span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;objective&quot;</span><span class="p">,</span> <span class="s2">&quot;possessive&quot;</span><span class="p">,</span> <span class="s2">&quot;reflexive&quot;</span><span class="p">,</span> <span class="s2">&quot;nominative&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_noun_inflection</span><span class="p">[</span><span class="n">case</span><span class="p">]:</span>
+                    <span class="n">converted</span> <span class="o">=</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_noun_inflection</span><span class="p">[</span><span class="n">case</span><span class="p">][</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="s2">&quot;singular&quot;</span><span class="p">][</span><span class="n">person</span><span class="p">]</span> <span class="c1"># type: ignore</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">prep</span> <span class="o">+</span> <span class="n">converted</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">prep</span> <span class="o">+</span> <span class="n">convert_to_singular</span><span class="p">(</span><span class="n">term</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;nominative&quot;</span><span class="p">,</span> <span class="s2">&quot;objective&quot;</span><span class="p">,</span> <span class="s2">&quot;possessive&quot;</span><span class="p">,</span> <span class="s2">&quot;reflexive&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_noun_inflection</span><span class="p">[</span><span class="n">case</span><span class="p">]:</span>
+                <span class="n">converted</span> <span class="o">=</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_noun_inflection</span><span class="p">[</span><span class="n">case</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="s2">&quot;singular&quot;</span><span class="p">][</span><span class="n">person</span><span class="p">]</span> <span class="c1"># type: ignore</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">converted</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">convert_to_singular</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Noun.plural"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.plural">[docs]</a>    <span class="k">def</span> <span class="nf">plural</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns this noun&#39;s plural form.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            person (Optional[int], optional): Represents the grammatical &quot;person&quot; (1st, 2nd, 3rd).</span>
+<span class="sd">                This option only affects personal and possessive pronouns. Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This noun&#39;s plural form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_valid_person</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_prep_regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">prep</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">():]</span>
+
+            <span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;objective&quot;</span><span class="p">,</span> <span class="s2">&quot;possessive&quot;</span><span class="p">,</span> <span class="s2">&quot;reflexive&quot;</span><span class="p">,</span> <span class="s2">&quot;nominative&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_noun_inflection</span><span class="p">[</span><span class="n">case</span><span class="p">]:</span>
+                    <span class="n">converted</span> <span class="o">=</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_noun_inflection</span><span class="p">[</span><span class="n">case</span><span class="p">][</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="s2">&quot;plural&quot;</span><span class="p">][</span><span class="n">person</span><span class="p">]</span> <span class="c1"># type: ignore</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">prep</span> <span class="o">+</span> <span class="n">converted</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">prep</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_plural</span><span class="p">(</span><span class="n">term</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;nominative&quot;</span><span class="p">,</span> <span class="s2">&quot;objective&quot;</span><span class="p">,</span> <span class="s2">&quot;possessive&quot;</span><span class="p">,</span> <span class="s2">&quot;reflexive&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_noun_inflection</span><span class="p">[</span><span class="n">case</span><span class="p">]:</span>
+                <span class="n">converted</span> <span class="o">=</span> <span class="n">Noun</span><span class="o">.</span><span class="n">_noun_inflection</span><span class="p">[</span><span class="n">case</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="s2">&quot;plural&quot;</span><span class="p">][</span><span class="n">person</span><span class="p">]</span> <span class="c1"># type: ignore</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="n">converted</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_plural</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_convert_to_plural</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="c1"># pylint: disable=R0201</span>
+        <span class="sd">&quot;&quot;&quot;The convert to plural call used by this class. Is overridden for classical nouns.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (term): The input word or collocation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The plural form of `term`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">convert_to_modern_plural</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Noun.classical"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.classical">[docs]</a>    <span class="k">def</span> <span class="nf">classical</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ClassicalNoun&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns an object always inflecting in the classical/unassimilated manner.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cow&#39;).plural()</span>
+<span class="sd">            &#39;cows&#39;</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cow&#39;).classical().plural()</span>
+<span class="sd">            &#39;kine&#39;</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Identical to `unassimilated()`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ClassicalNoun: A Noun object that pluralises according to classical rules.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classical</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classical</span>
+
+        <span class="c1"># &quot;them&quot; is an exception, as &quot;it -&gt; they&quot; and &quot;it -&gt; them&quot; is ambiguous</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;them&quot;</span><span class="p">,</span> <span class="s2">&quot;they&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_classical</span> <span class="o">=</span> <span class="n">ClassicalNoun</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO: # pylint: disable=W0511</span>
+            <span class="c1"># - self.singular() versus self.term</span>
+            <span class="c1"># - Prevent needing to encase and then re-encase</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_classical</span> <span class="o">=</span> <span class="n">ClassicalNoun</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classical</span></div>
+
+<div class="viewcode-block" id="Noun.lemma"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.lemma">[docs]</a>    <span class="k">def</span> <span class="nf">lemma</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return this object&#39;s lemma form.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;books&#39;).lemma()</span>
+<span class="sd">            &#39;book&#39;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This object&#39;s lemma form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">singular</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Noun.as_regex"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.as_regex">[docs]</a>    <span class="k">def</span> <span class="nf">as_regex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            re.Pattern: Compiled regex object which case-insensitively matches any inflected form</span>
+<span class="sd">                of the word.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cherub&#39;).as_regex()</span>
+<span class="sd">            re.compile(&#39;cherubs|cherubim|cherub&#39;, re.IGNORECASE)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">singular</span><span class="p">(),</span> <span class="c1"># type: ignore</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">(),</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">classical</span><span class="p">()</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span>
+                                                          <span class="p">}),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span></div>
+
+    <span class="c1"># ---------------------------- #</span>
+    <span class="c1"># Methods exclusively for Noun #</span>
+    <span class="c1"># ---------------------------- #</span>
+
+<div class="viewcode-block" id="Noun.indef_article"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.indef_article">[docs]</a>    <span class="k">def</span> <span class="nf">indef_article</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return the correct indefinite article (&quot;a&quot; or &quot;an&quot;) for `word`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            word (str): Input word or collocation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Either &quot;a&quot; or &quot;an&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">select_indefinite_article</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Noun.indefinite"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.Noun.indefinite">[docs]</a>    <span class="k">def</span> <span class="nf">indefinite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Prepend &quot;a&quot; or &quot;an&quot; or the number to the correct form of this Noun.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; noun = Noun(&quot;book&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; noun.indefinite(count = 1)</span>
+<span class="sd">            &#39;a book&#39;</span>
+<span class="sd">            &gt;&gt;&gt; noun.indefinite(count = 3)</span>
+<span class="sd">            &#39;3 books&#39;</span>
+
+<span class="sd">        TODO: self.term versus self.singular()</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count (Optional[int], optional): The number of objects on which this verb applies.</span>
+<span class="sd">                Defaults to 1.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The singular if `count` == 1, and the plural otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepend_indefinite_article</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">singular</span><span class="p">())</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="ClassicalNoun"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.ClassicalNoun">[docs]</a><span class="k">class</span> <span class="nc">ClassicalNoun</span><span class="p">(</span><span class="n">Noun</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subclass of noun for detecting and converting to noun forms, with a classical plural.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ClassicalNoun.__init__"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.ClassicalNoun.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">modern</span><span class="p">:</span> <span class="n">Noun</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates ClassicalNoun instance with detection and conversion methods.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Capitalisation and whitespace will be preserved between input `term` and</span>
+<span class="sd">            output generated via e.g. `singular`.</span>
+
+<span class="sd">            The main difference to Noun is that the `plural` method is overridden.</span>
+<span class="sd">            Another difference is that this class is generally initialized using the</span>
+<span class="sd">            singular form of the Noun. `as_regex()` and `__repr__()` are also overridden.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (str): Input word or collocation.</span>
+<span class="sd">            modern (Noun): The Noun object from which `classical()` or `unassimilated` was</span>
+<span class="sd">                called to create this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="c1"># Modern form of this Classical noun</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modern</span> <span class="o">=</span> <span class="n">modern</span></div>
+
+    <span class="k">def</span> <span class="nf">_convert_to_plural</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The convert to classical plural call used by this class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (term): The input word or collocation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The plural form of `term`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">convert_to_classical_plural</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ClassicalNoun.classical"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.ClassicalNoun.classical">[docs]</a>    <span class="k">def</span> <span class="nf">classical</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ClassicalNoun&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns an object always inflecting in the classical/unassimilated manner.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cow&#39;).plural()</span>
+<span class="sd">            &#39;cows&#39;</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cow&#39;).unassimilated().plural()</span>
+<span class="sd">            &#39;kine&#39;</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Identical to `unassimilated()`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Term: A Term object, or a subclass thereof.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ClassicalNoun.modern"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.ClassicalNoun.modern">[docs]</a>    <span class="k">def</span> <span class="nf">modern</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Noun&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the non-classical modern version of this Noun.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; noun = Noun(&#39;cow&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; noun == noun.classical().modern()</span>
+<span class="sd">            True</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Noun: The Noun object that will pluralize according to modern rules.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modern</span></div>
+
+<div class="viewcode-block" id="ClassicalNoun.as_regex"><a class="viewcode-back" href="../../api/inflex.noun.html#inflex.noun.ClassicalNoun.as_regex">[docs]</a>    <span class="k">def</span> <span class="nf">as_regex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            re.Pattern: Compiled regex object which case-insensitively matches any inflected form</span>
+<span class="sd">                of the word.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;brother&#39;).classical().as_regex()</span>
+<span class="sd">            re.compile(&#39;brother|brethren&#39;, re.IGNORECASE)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">singular</span><span class="p">(),</span> <span class="c1"># type: ignore</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">(),</span>
+                                                          <span class="p">}),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return `repr(self)`.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; noun = Noun(&quot;book&quot;).classical()</span>
+<span class="sd">            &gt;&gt;&gt; f&quot;My noun: {noun!r}&quot;</span>
+<span class="sd">            &quot;My noun: Noun(&#39;book&#39;).classical()&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_modern</span><span class="si">!r}</span><span class="s2">.classical()&quot;</span></div>
+</pre></div>
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

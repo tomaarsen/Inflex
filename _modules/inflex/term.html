@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: inflex.term</title>
+  
+  <link rel="index" title="Index" href="../../genindex.html"/>
+
+  <link rel="stylesheet" href="../../_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="../../_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="../../index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/inflex.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.noun.html">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <h1>Source code for inflex.term</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Term&quot;</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=C0103</span>
+
+
+<div class="viewcode-block" id="list_to_generator"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.list_to_generator">[docs]</a><span class="k">def</span> <span class="nf">list_to_generator</span><span class="p">(</span><span class="n">input_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Yield element from list, repeating the very last element infinitely.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_list (List[T]): List of elements.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        T: Element of `input_list`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">input_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">input_list</span> <span class="o">=</span> <span class="n">input_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span></div>
+
+
+<span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;If `func` is called with &quot;i&quot; or &quot;I&quot;, then return &quot;I&quot;, otherwise simply call `func`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func (Callable[[str], str]): Function for converting the casing of an input string.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Input string converted according to `func`&#39;s casing rules.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">word</span><span class="p">:</span> <span class="s2">&quot;I&quot;</span> <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;i&quot;</span> <span class="k">else</span> <span class="n">func</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Term"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term">[docs]</a><span class="k">class</span> <span class="nc">Term</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;`Term` is the base class of the `Noun`, `Verb`, `Adjective` subclasses,</span>
+<span class="sd">    and holds some default implementations of methods used across these</span>
+<span class="sd">    subclasses.</span>
+
+<span class="sd">    Method docstrings from this class are inherited to the subclasses&#39; methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Supported casing formats: I, lower, Title, UPPER, Mc</span>
+    <span class="c1"># Note that if the passed word is &quot;i&quot;, we always output &quot;I&quot;</span>
+    <span class="n">_casing_formats</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;regex&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^I$&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;transformation&quot;</span><span class="p">:</span> <span class="n">_transform</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;regex&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[^A-Z]+$&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;transformation&quot;</span><span class="p">:</span> <span class="n">_transform</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;regex&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[A-Z][^A-Z]+$&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;transformation&quot;</span><span class="p">:</span> <span class="n">_transform</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;regex&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[A-Z]+s?$&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;transformation&quot;</span><span class="p">:</span> <span class="n">_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span>
+                                         <span class="n">word</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">word</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                                         <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">))</span>
+                                         <span class="k">else</span> <span class="n">word</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                                         <span class="p">)</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;Mc&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;regex&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^Mc[A-Z][^A-Z]+$&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;transformation&quot;</span><span class="p">:</span> <span class="n">_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span>
+                                         <span class="s2">&quot;Mc&quot;</span> <span class="o">+</span> <span class="n">word</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+                                         <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mc&quot;</span><span class="p">)</span>
+                                         <span class="k">else</span> <span class="n">word</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+                                         <span class="p">)</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Regex for finding a word</span>
+    <span class="n">_word_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([^\r\n\t\f\v\-\&#39; ]+)&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Regex for extracting whitespace before and after input</span>
+    <span class="n">_whitespace_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;start&gt;^\s*).*?(?P&lt;end&gt;\s*$)&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Term.__init__"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates class instance with detection and conversion methods.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Capitalisation and whitespace will be preserved between input `term` and</span>
+<span class="sd">            generated output.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            term (str): Input word or collocation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Whitestring strings before and after the terms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="c1"># Default format for the separator between words</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">term</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># Extract whitespace before and after the term</span>
+        <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">term</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">Term</span><span class="o">.</span><span class="n">_whitespace_regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">term</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span> <span class="c1"># type: ignore</span>
+
+        <span class="c1"># If there is troublesome double whitespace, find the substrings</span>
+        <span class="c1"># between words and normalize them</span>
+        <span class="c1"># NOTE: Assume there are no tabs, newlines, etc. in the input terms</span>
+        <span class="k">if</span> <span class="s2">&quot; &quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span> <span class="ow">or</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\r\n\t\f\v\- ]+)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;  &quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">term</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s{2,}&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Term.is_noun"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.is_noun">[docs]</a>    <span class="k">def</span> <span class="nf">is_noun</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="c1"># pylint: disable=R0201</span>
+        <span class="sd">&quot;&quot;&quot;Returns `True` only if this object is instantiated via `Noun(term)`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Returns `True` only if this object is instantiated via `Noun(term)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Term.is_verb"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.is_verb">[docs]</a>    <span class="k">def</span> <span class="nf">is_verb</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="c1"># pylint: disable=R0201</span>
+        <span class="sd">&quot;&quot;&quot;Returns `True` only if this object is instantiated via `Verb(term)`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Returns `True` only if this object is instantiated via `Verb(term)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Term.is_adj"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.is_adj">[docs]</a>    <span class="k">def</span> <span class="nf">is_adj</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="c1"># pylint: disable=R0201</span>
+        <span class="sd">&quot;&quot;&quot;Returns `True` only if this object is instantiated via `Adjective(term)`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Returns `True` only if this object is instantiated via `Adjective(term)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Term.is_singular"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.is_singular">[docs]</a>    <span class="k">def</span> <span class="nf">is_singular</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this object is in singular form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this object is deemed singular.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Term.is_plural"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.is_plural">[docs]</a>    <span class="k">def</span> <span class="nf">is_plural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Detect whether this object is in plural form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if this object is deemed plural.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Term.singular"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.singular">[docs]</a>    <span class="k">def</span> <span class="nf">singular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns this object&#39;s singular form.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            person (Optional[int], optional): Represents the grammatical &quot;person&quot; (1st, 2nd, 3rd).</span>
+<span class="sd">                This option only affects personal and possessive pronouns, possessive adjectives,</span>
+<span class="sd">                and verbs. Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This object&#39;s singular form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Term.plural"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.plural">[docs]</a>    <span class="k">def</span> <span class="nf">plural</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns this object&#39;s plural form.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            person (Optional[int], optional): Represents the grammatical &quot;person&quot; (1st, 2nd, 3rd).</span>
+<span class="sd">                This option only affects personal and possessive pronouns, possessive adjectives,</span>
+<span class="sd">                and verbs. Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This object&#39;s plural form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Term.lemma"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.lemma">[docs]</a>    <span class="k">def</span> <span class="nf">lemma</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return this object&#39;s lemma form.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: This object&#39;s lemma form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Term.classical"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.classical">[docs]</a>    <span class="k">def</span> <span class="nf">classical</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Term&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns an object always inflecting in the classical/unassimilated manner.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cow&#39;).plural()</span>
+<span class="sd">            &#39;cows&#39;</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cow&#39;).unassimilated().plural()</span>
+<span class="sd">            &#39;kine&#39;</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Identical to `unassimilated()`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Term: A Term object, or a subclass thereof.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Term.unassimilated"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.unassimilated">[docs]</a>    <span class="k">def</span> <span class="nf">unassimilated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Term&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns an object always inflecting in the classical/unassimilated manner.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cow&#39;).plural()</span>
+<span class="sd">            &#39;cows&#39;</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cow&#39;).unassimilated().plural()</span>
+<span class="sd">            &#39;kine&#39;</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Identical to `classical()`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Term: A Term object, or a subclass thereof.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classical</span><span class="p">()</span> <span class="c1"># pragma: no cover</span></div>
+
+    <span class="k">def</span> <span class="nf">_check_valid_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="c1"># pylint: disable=R0201</span>
+        <span class="sd">&quot;&quot;&quot;Return True if `person` is valid, i.e. in [0, 1, 2, 3].</span>
+
+<span class="sd">        Otherwise, return False and output a warning stating that the</span>
+<span class="sd">        `person` parameter is invalid.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            person (int): Represents the grammatical &quot;person&quot; (1st, 2nd, 3rd).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            UserWarning: If `person` is invalid, this warning is thrown.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if `person` is valid, i.e. in [0, 1, 2, 3]. False Otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">person</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid `person` parameter supplied. Valid values include 0, 1, 2, and 3.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Term.as_regex"><a class="viewcode-back" href="../../api/inflex.term.html#inflex.term.Term.as_regex">[docs]</a>    <span class="k">def</span> <span class="nf">as_regex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            re.Pattern: Compiled regex object which case-insensitively matches any inflected form</span>
+<span class="sd">                of the word.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Noun(&#39;cherub&#39;).as_regex()</span>
+<span class="sd">            re.compile(&#39;cherubs|cherubim|cherub&#39;, re.IGNORECASE)</span>
+<span class="sd">            &gt;&gt;&gt; Verb(&#39;eat&#39;).as_regex()</span>
+<span class="sd">            re.compile(&#39;eats|eating|eaten|eat|ate&#39;, re.IGNORECASE)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">singular</span><span class="p">(),</span> <span class="c1"># type: ignore</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">plural</span><span class="p">()}),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+                          <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return `repr(self)`.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; noun = Noun(&quot;book&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; f&quot;My noun: {noun!r}&quot;</span>
+<span class="sd">            &quot;My noun: Noun(&#39;book&#39;)&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_reapply_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_encase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Apply casing from `self.term` string onto `target` string.</span>
+
+<span class="sd">        TODO: Currently &quot;show--off&quot; -&gt; &quot;show----off&quot;</span>
+<span class="sd">        TODO: self.term as i-th and target as i-th -&gt; I-th</span>
+<span class="sd">            : Perhaps don&#39;t force capitalize I if followed by a hyphen.</span>
+<span class="sd">        TODO: Let self.term as ABC and target as ABCs convert to ABCs rather than ABCS</span>
+<span class="sd">            : Also consider that some Noun tests may be broken</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target (str): The word or collocation on which to apply the casing</span>
+<span class="sd">                that exists on `self.term`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: `target`, but encased according to the patterns applied on `self.term`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Split off &#39;s</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;&#39;s&quot;</span><span class="p">):</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;&#39;s&quot;</span>
+
+        <span class="c1"># Special case for &#39;I&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span> <span class="ow">or</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reapply_whitespace</span><span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+
+        <span class="c1"># Get list of lambda functions that correspond to the</span>
+        <span class="c1"># casing formats for `original`.</span>
+        <span class="n">transformations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">Term</span><span class="o">.</span><span class="n">_word_regex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">casing_format</span> <span class="ow">in</span> <span class="n">Term</span><span class="o">.</span><span class="n">_casing_formats</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">casing_format</span><span class="p">[</span><span class="s2">&quot;regex&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">word</span><span class="p">):</span> <span class="c1"># type: ignore</span>
+                    <span class="n">transformations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">casing_format</span><span class="p">[</span><span class="s2">&quot;transformation&quot;</span><span class="p">])</span> <span class="c1"># type: ignore</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If no casing regexes matches</span>
+                <span class="n">transformations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span> <span class="n">word</span><span class="p">)</span>
+
+        <span class="c1"># If no words found in term, just return target</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">transformations</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reapply_whitespace</span><span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+
+        <span class="c1"># Generator that gets next transformation until there is</span>
+        <span class="c1"># just one transformation left, after which it will</span>
+        <span class="c1"># continuously yield that last transformation</span>
+        <span class="c1"># Apply the transformations found in `original` to `target`</span>
+        <span class="n">transformations_gen</span> <span class="o">=</span> <span class="n">list_to_generator</span><span class="p">(</span><span class="n">transformations</span><span class="p">)</span>
+        <span class="c1"># Phrase is target, but with the proper casing from the term applied</span>
+        <span class="n">phrase</span> <span class="o">=</span> <span class="n">Term</span><span class="o">.</span><span class="n">_word_regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">match_obj</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">transformations_gen</span><span class="p">)(</span><span class="n">match_obj</span><span class="o">.</span><span class="n">group</span><span class="p">()),</span>
+            <span class="n">target</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reapply_whitespace</span><span class="p">(</span><span class="n">phrase</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_reapply_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phrase</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Reapply whitespace formats before, after and within a phrase.</span>
+<span class="sd">        Based on `self.start`, `self.end` and `self.spaces` which were saved at __init__().</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            phrase (str): The word or collocation on which whitespace and hyphens are added.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: `phrase`, but with whitespace before, after and within a phrase.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">:</span>
+            <span class="n">spaces_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span>\
+                <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;-| &quot;</span><span class="p">,</span>
+                       <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">spaces_iter</span><span class="p">),</span>
+                       <span class="n">phrase</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                       <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">))</span> <span class="o">+</span>\
+                <span class="bp">self</span><span class="o">.</span><span class="n">end</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">phrase</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span></div>
+</pre></div>
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

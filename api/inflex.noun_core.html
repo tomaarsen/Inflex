@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: noun_core module</title>
+  
+  <link rel="index" title="Index" href="../genindex.html"/>
+
+  <link rel="stylesheet" href="../_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="../_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="../index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="inflex.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.noun.html">noun module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">noun_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.syllable.html">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <section id="module-inflex.noun_core">
+<span id="noun-core-module"></span><h1>noun_core module<a class="headerlink" href="#module-inflex.noun_core" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="inflex.noun_core.rei">
+<span class="sig-prename descclassname"><span class="pre">inflex.noun_core.</span></span><span class="sig-name descname"><span class="pre">rei</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/noun_core.html#rei"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun_core.rei" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return compiled <cite>re.Pattern</cite> with <cite>regex</cite> as pattern, and the IGNORECASE flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>regex</strong> (<em>str</em>) – Regular expression pattern.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Compiled version of <cite>regex</cite>, with IGNORECASE flag.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>re.Pattern</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inflex.noun_core.known_plural">
+<span class="sig-prename descclassname"><span class="pre">inflex.noun_core.</span></span><span class="sig-name descname"><span class="pre">known_plural</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/noun_core.html#known_plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun_core.known_plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if <cite>word</cite> is known to be plural.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if <cite>word</cite> is known to be plural.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inflex.noun_core.known_singular">
+<span class="sig-prename descclassname"><span class="pre">inflex.noun_core.</span></span><span class="sig-name descname"><span class="pre">known_singular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/inflex/noun_core.html#known_singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun_core.known_singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if <cite>word</cite> is known to be singular.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if <cite>word</cite> is known to be singular.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inflex.noun_core.convert_to_modern_plural">
+<span class="sig-prename descclassname"><span class="pre">inflex.noun_core.</span></span><span class="sig-name descname"><span class="pre">convert_to_modern_plural</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/noun_core.html#convert_to_modern_plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun_core.convert_to_modern_plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <cite>word</cite> to modern plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The modern plural form of <cite>word</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inflex.noun_core.convert_to_classical_plural">
+<span class="sig-prename descclassname"><span class="pre">inflex.noun_core.</span></span><span class="sig-name descname"><span class="pre">convert_to_classical_plural</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/noun_core.html#convert_to_classical_plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun_core.convert_to_classical_plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <cite>word</cite> to classical plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The classical plural form of <cite>word</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inflex.noun_core.convert_to_singular">
+<span class="sig-prename descclassname"><span class="pre">inflex.noun_core.</span></span><span class="sig-name descname"><span class="pre">convert_to_singular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/inflex/noun_core.html#convert_to_singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun_core.convert_to_singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <cite>word</cite> to singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The singular form of <cite>word</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inflex.noun_core.is_plural">
+<span class="sig-prename descclassname"><span class="pre">inflex.noun_core.</span></span><span class="sig-name descname"><span class="pre">is_plural</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/inflex/noun_core.html#is_plural"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun_core.is_plural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether <cite>word</cite> is in plural form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if <cite>word</cite> is deemed plural.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inflex.noun_core.is_singular">
+<span class="sig-prename descclassname"><span class="pre">inflex.noun_core.</span></span><span class="sig-name descname"><span class="pre">is_singular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_word_plural</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/inflex/noun_core.html#is_singular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.noun_core.is_singular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect whether <cite>word</cite> is in singular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Input word or collocation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if <cite>word</cite> is deemed singular.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+                <li class="footer-element">
+                    
+                        <a href="../_sources/api/inflex.noun_core.rst.txt" rel="nofollow"> source</a>
+                    
+                </li>
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>

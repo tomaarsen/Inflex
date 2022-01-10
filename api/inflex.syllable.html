@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D2D2D" />
+  
+  <title>Inflex :: syllable module</title>
+  
+  <link rel="index" title="Index" href="../genindex.html"/>
+
+  <link rel="stylesheet" href="../_static/css/nltk_theme.css"/>
+  <link rel="stylesheet" href="../_static/css/custom.css"/>
+
+  <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+  
+
+  <script src="https://email.tl.fortawesome.com/c/eJxNjUEOgyAQAF8jR7Kw6wIHDh7sP1Cw2mgxgmn6-3JsMqc5zEQfE8dkxOY1KKMUOI3ACFKRJpSW2AAp7ontYIaxI6i7XPJVwyeVfCQ550Os3jLrGSNOLgbdAy6s0PBk2TFNjEbsfq31LB0OnX407pJa5v2faRadwSW63mn5KuLyR9j2tgx3zecanl-55R_-jjPs"></script> 
+</head>
+
+<body>
+  <div id="nltk-theme-container">
+    <header>
+      <div id="logo-container">
+          
+          <h1>
+            <a href="../index.html">Inflex</a>
+          </h1>
+          
+      </div>
+      <div id="project-container">
+        
+        <h1>Documentation</h1>
+        
+      </div>
+
+      <a id="menu-toggle" class="fa fa-bars" aria-hidden="true"></a>
+
+      <script type="text/javascript">
+        $("#menu-toggle").click(function() {
+          $("#menu-toggle").toggleClass("toggled");
+          $("#side-menu-container").slideToggle(300);
+        });
+      </script>
+    </header>
+
+    <div id="content-container">
+
+      <div id="side-menu-container">
+
+        <div id="search" role="search">
+        <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+        </form>
+</div>
+
+        <div id="side-menu" role="navigation">
+          
+  
+    
+  
+  
+    <p class="caption" role="heading"><span class="caption-text">Inflex</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="inflex.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective.html">adjective module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.adjective_core.html">adjective_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.indefinite_core.html">indefinite_core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.noun.html">noun module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.noun_core.html">noun_core module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">syllable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.term.html">term module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb.html">verb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inflex.verb_core.html">verb_core module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tomaarsen/Inflex">GitHub</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+</ul>
+
+  
+
+        </div>
+
+        
+      </div>
+
+      <div id="main-content-container">
+        <div id="main-content" role="main">
+          
+  <section id="module-inflex.syllable">
+<span id="syllable-module"></span><h1>syllable module<a class="headerlink" href="#module-inflex.syllable" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="inflex.syllable.Syllable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inflex.syllable.</span></span><span class="sig-name descname"><span class="pre">Syllable</span></span><a class="reference internal" href="../_modules/inflex/syllable.html#Syllable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.syllable.Syllable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class with Syllable information from Carnegie Mellon University’s cmudict.txt.
+This class provides several static methods which can be used to count the
+number of syllables of an input word. Another purpose is to find out whether
+the word ends with stress.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.syllable.Syllable.data">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/syllable.html#Syllable.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.syllable.Syllable.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lazy load syllable and stress data when requested.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Stress</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &quot;ab&quot;: [[1], [1, 1]],</span>
+<span class="go">    &quot;ababa&quot;: [[0, 1, 0], [1, 0, 0]],</span>
+<span class="go">    &quot;abacha&quot;: [[1, 0, 0]],</span>
+<span class="go">    ...</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The dictionary key is a regular word, which maps</dt><dd><p>to a list of syllable interpretations. Each interpretation is a list of stress
+values, where 1 means Primary stress, 0.5 means secondary stress,
+and 0 is unstressed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, List[List[float]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.syllable.Syllable.get_stress">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/syllable.html#Syllable.get_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.syllable.Syllable.get_stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of syllable interpretations that correspond to stress values, for <cite>word</cite>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Stress</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="s2">&quot;abdomen&quot;</span><span class="p">)</span>
+<span class="go">[[0, 1, 0], [1, 0, 0]]</span>
+</pre></div>
+</div>
+<p>This shows that the word has two interpretations, both with 3 syllables.
+In the first interpretation, the second syllable has primary stress, while
+in the second interpretation, the first syllable has primary stress.
+The other syllables are unstressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – The input word.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of syllable interpretations that correspond to stress values,</dt><dd><p>for <cite>word</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[List[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.syllable.Syllable.count_syllables">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">count_syllables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/syllable.html#Syllable.count_syllables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.syllable.Syllable.count_syllables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the set of valid syllable counts of <cite>word</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some words have multiple valid syllable counts, like “abdomen”.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – The input word.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The set of valid syllable counts of <cite>word</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Set[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.syllable.Syllable.count_reduced_syllables">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">count_reduced_syllables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/inflex/syllable.html#Syllable.count_reduced_syllables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.syllable.Syllable.count_reduced_syllables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the set of valid syllable counts of <cite>word</cite>, with “un” removed from the start.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – The input word.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The set of valid syllable counts of <cite>word</cite>, but optionally with “un” removed
+from the start of <cite>word</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Set[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.syllable.Syllable.ends_with_stress">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ends_with_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/syllable.html#Syllable.ends_with_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.syllable.Syllable.ends_with_stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if all syllable interpretations of <cite>word</cite> end with stress.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Either primary or secondary stress is considered stress.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – The input word.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>True if all syllable interpretations of <cite>word</cite> end with stress.</dt><dd><p>False otherwise.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.syllable.Syllable.guess_if_one_syllable">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">guess_if_one_syllable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/inflex/syllable.html#Syllable.guess_if_one_syllable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.syllable.Syllable.guess_if_one_syllable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess whether the word is just one Syllable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – The input word.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if <cite>word</cite> is guessed to be just one syllable.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inflex.syllable.Syllable.guess_count_syllables">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">guess_count_syllables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/inflex/syllable.html#Syllable.guess_count_syllables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inflex.syllable.Syllable.guess_count_syllables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess the number of Syllables in <cite>word</cite> using the number of vowel groups.</p>
+<p>Adapted from the pattern.en module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – The input word.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The guessed number of Syllables in <cite>word</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+        </div>
+      </div>
+
+    </div>
+
+<footer>
+    <div id="footer-info">
+        <ul id="build-details">
+            
+                <li class="footer-element">
+                    
+                        <a href="../_sources/api/inflex.syllable.rst.txt" rel="nofollow"> source</a>
+                    
+                </li>
+            
+
+            
+
+            
+        </ul>
+
+        
+            <div id="copyright">
+                &copy; 2022, Tom Aarsen
+            </div>
+        
+
+        <div id="credit">
+            created with <a href="http://sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/tomaarsen/nltk_theme">NLTK Theme</a>
+        </div>
+    </div>
+</footer> 
+
+</div>
+
+</body>
+</html>
