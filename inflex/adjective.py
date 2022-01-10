@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import re
-from typing import Pattern
 
 
 from inflex.syllable import Syllable
@@ -218,23 +217,6 @@ class Adjective(Term):
             str: This object's lemma form.
         """
         return self.plural()
-
-    def as_regex(self) -> Pattern[str]:
-        """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
-
-        Returns:
-            re.Pattern: Compiled regex object which case-insensitively matches any inflected form
-                of the word.
-
-        Examples:
-            >>> Adjective('pretty').as_regex()
-            re.compile('pretty|prettiest|prettier', re.IGNORECASE)
-        """
-        return re.compile("|".join(sorted(map(re.escape, {self.singular(), # type: ignore
-                                                          self.plural(),
-                                                          self.comparative(),
-                                                          self.superlative(),
-                                                          }), reverse=True)), flags=re.I)
 
     # --------------------------------- #
     # Methods exclusively for Adjective #

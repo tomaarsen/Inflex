@@ -154,10 +154,10 @@ Inflex provides three objects, which contain the following most important method
         >>> adj.is_singular()
         True
 
-    * `as_regex </api/inflex.adjective.html#inflex.adjective.Adjective.as_regex>`_: Return a re.Pattern which matches any inflected form of the word.
+    * `as_regex </api/inflex.adjective.html#inflex.adjective.Adjective.as_regex>`_: Return a re.Pattern which matches any inflected form of the word. (Only plural and singular)
 
         >>> adj.as_regex()
-        re.compile('pretty|prettiest|prettier', re.IGNORECASE)
+        re.compile('pretty', re.IGNORECASE)
 
 This quick reference is not exhaustive, but does cover the most important functionality supported by Inflex. Feel free to look at the full `API Reference`_ for more detailed information.
 
