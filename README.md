@@ -8,7 +8,7 @@ The Inflex module is a rule-based morphological analyser and generator. It allow
 
 Inflex can be tried out and compared against competitors including ``nltk``, ``textblob``, ``pattern``, ``inflect``, ``inflection``, ``inflector``, ``lemminflect``, and ``pyinflect`` on https://www.tomaarsen.com/projects/inflex/try. Furthermore, the comparison of performance of all of these modules is visualised on https://www.tomaarsen.com/projects/inflex/performance, using several different datasets. These results show that Inflex outperforms all existing modules for noun conversions, and performs competitively for verbs. This website also contains the thesis out of which Inflex (formerly called Inflexion) was born.
 
-The Inflex documentation can be found [here](https://tomaarsen.github.io/inflex/), alongside a [Quick Reference](https://tomaarsen.github.io/inflex/reference.html).
+The Inflex documentation can be found [here](https://tomaarsen.github.io/Inflex/), alongside a [Quick Reference](https://tomaarsen.github.io/Inflex/reference.html).
 
 ## Sample Usage
 To give a quick idea of this project, this is an example usage of Inflex:
