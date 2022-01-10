@@ -140,3 +140,7 @@ profiling
 compare
 # Demo file for quick testing
 demo.py
+# App.py file for quickly setting up local server for documentation
+app.py
+# Generated .rst files
+docs/api/.*.rst

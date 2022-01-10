@@ -243,6 +243,18 @@ class Verb(Term):
         # If all else fails, return the term
         return self._reapply_whitespace(self.term)
 
+    def lemma(self) -> str:
+        """Return this object's lemma form.
+
+        Examples:
+            >>> Verb('eating').lemma()
+            'eat'
+
+        Returns:
+            str: This object's lemma form.
+        """
+        return self.plural()
+
     def as_regex(self) -> Pattern[str]:
         """Returns a `re.Pattern` which case-insensitively matches any inflected form of the verb.
 

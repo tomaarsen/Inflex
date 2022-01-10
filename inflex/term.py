@@ -182,6 +182,14 @@ class Term:
         """
         raise NotImplementedError()
 
+    def lemma(self) -> str:
+        """Return this object's lemma form.
+
+        Returns:
+            str: This object's lemma form.
+        """
+        raise NotImplementedError()
+
     def classical(self) -> "Term":
         """Returns an object always inflecting in the classical/unassimilated manner.
 

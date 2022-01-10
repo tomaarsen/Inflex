@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+from typing import Pattern
 
 
 from inflex.syllable import Syllable
@@ -206,6 +207,35 @@ class Adjective(Term):
 
         return self._encase(convert_to_plural(self.term))
 
+    def lemma(self) -> str:
+        """Return this object's lemma form.
+
+        Examples:
+            >>> Adjective('pretty').lemma()
+            'pretty'
+
+        Returns:
+            str: This object's lemma form.
+        """
+        return self.plural()
+
+    def as_regex(self) -> Pattern[str]:
+        """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
+
+        Returns:
+            re.Pattern: Compiled regex object which case-insensitively matches any inflected form
+                of the word.
+
+        Examples:
+            >>> Adjective('pretty').as_regex()
+            re.compile('pretty|prettiest|prettier', re.IGNORECASE)
+        """
+        return re.compile("|".join(sorted(map(re.escape, {self.singular(), # type: ignore
+                                                          self.plural(),
+                                                          self.comparative(),
+                                                          self.superlative(),
+                                                          }), reverse=True)), flags=re.I)
+
     # --------------------------------- #
     # Methods exclusively for Adjective #
     # --------------------------------- #
@@ -254,8 +284,9 @@ class Adjective(Term):
         Args:
             word (str): Input word or collocation.
 
-        TODO: Move comparative and superlative into one method which is then called by both.
-        TODO: Mine wiktionary for tests
+        .. TODO:
+            Move comparative and superlative into one method which is then called by both.
+            Mine wiktionary for tests
 
         Returns:
             bool: True if the system believes that "more" or "most" should be prepended to
@@ -290,24 +321,28 @@ class Adjective(Term):
 
         Note:
             "little" or "far" will fail due to having multiple options:
-            * little (kid)  -> littler (kid)
-            * little (food) -> less (food)
+                * little (kid)  -> littler (kid)
+                * little (food) -> less (food)
+
             and
-            * far -> further
-            * far -> farther
+                * far -> further
+                * far -> farther
 
             Fails on e.g. "boring" or "famous"
             We convert these to "boringer" and "famouser".
             In reality they should be "more boring" and "more famous"
 
-        TODO: Adjectives that already represent the greatest degree,
-              e.g. perfect, complete, total, empty
-        TODO: Adjectives that cannot be compared due to their meaning,
-              e.g. pregnant, equal, ideal, British
-        TODO: e.g. "quiet" is converted to "more quiet" rather than "quieter"
+        .. TODO:
+            Adjectives that already represent the greatest degree,
+            e.g. perfect, complete, total, empty
 
-        TODO: Often should change the second word in "dog-friendly" type collocations.
-        TODO: If abbreviation (all caps), then always prepend more
+            Adjectives that cannot be compared due to their meaning,
+            e.g. pregnant, equal, ideal, British
+
+            e.g. "quiet" is converted to "more quiet" rather than "quieter"
+
+            Often should change the second word in "dog-friendly" type collocations.
+            If abbreviation (all caps), then always prepend more
 
         Returns:
             str: This Adjective's comparative form.
@@ -354,27 +389,29 @@ class Adjective(Term):
 
         Note:
             "little" or "far" will fail due to having multiple options:
-            * little (kid)  -> littlest (kid)
-            * little (food) -> least (food)
+                * little (kid)  -> littlest (kid)
+                * little (food) -> least (food)
+
             and
-            * far -> furthest
-            * far -> farthest
+                * far -> furthest
+                * far -> farthest
 
             Fails on e.g. "boring" or "famous"
             We convert these to "boringest" and "famousest".
             In reality they should be "most boring" and "most famous"
 
-        TODO: 'yest_vs_iest': [['plaguy', 'plaguyest', ['plaguiest']],
-                              ['cliquy', 'cliquyest', ['cliquiest']],
-                              ['heauy', 'heauyest', ['heauiest']]],
-        TODO:  'est_vs_most': [['left', 'leftest', ['most left', 'leftmost']],
-                              ['outer', 'outerest', ['outermost']],
-                              ['inner', 'innerest', ['innermost']],
-                              ['upper', 'upperest', ['uppermost']],
-                              ['nether', 'netherest', ['nethermost']],
-                              ['hind', 'hindest', ['hindmost']]],
-        TODO: Adverbs (slowly, carefully, easily, -ly) have more/most
-        TODO: More/most for title case, e.g. more American
+        .. TODO
+            'yest_vs_iest': [['plaguy', 'plaguyest', ['plaguiest']],
+                            ['cliquy', 'cliquyest', ['cliquiest']],
+                            ['heauy', 'heauyest', ['heauiest']]],
+             'est_vs_most': [['left', 'leftest', ['most left', 'leftmost']],
+                            ['outer', 'outerest', ['outermost']],
+                            ['inner', 'innerest', ['innermost']],
+                            ['upper', 'upperest', ['uppermost']],
+                            ['nether', 'netherest', ['nethermost']],
+                            ['hind', 'hindest', ['hindmost']]],
+            Adverbs (slowly, carefully, easily, -ly) have more/most
+            More/most for title case, e.g. more American
 
         Returns:
             str: This Adjective's superlative form.

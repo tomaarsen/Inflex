@@ -520,6 +520,18 @@ class Noun(Term):
             self._classical = ClassicalNoun(self._encase(self.term), self)
         return self._classical
 
+    def lemma(self) -> str:
+        """Return this object's lemma form.
+
+        Examples:
+            >>> Noun('books').lemma()
+            'book'
+
+        Returns:
+            str: This object's lemma form.
+        """
+        return self.singular()
+
     def as_regex(self) -> Pattern[str]:
         """Returns a `re.Pattern` which case-insensitively matches any inflected form of the word.
 
